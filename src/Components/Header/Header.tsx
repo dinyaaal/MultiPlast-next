@@ -6,6 +6,7 @@ import BurgerMenu from "./components/BurgerMenu";
 import NotificationsMobile from "./components/NotificationsMobile";
 import SearchMobile from "./components/SearchMobile";
 import Language from "./components/Language";
+import Link from "next/link";
 
 export default function Header() {
   return (
@@ -13,9 +14,9 @@ export default function Header() {
       <div className="header__body body-header">
         <div className="body-header__container">
           <div className="body-header__block">
-            <a href="#" className="body-header__logo logo">
+            <Link href="/" className="body-header__logo logo">
               л<span>ого</span>
-            </a>
+            </Link>
             <div className="body-header__search search">
               <input
                 type="text"
@@ -308,7 +309,10 @@ export default function Header() {
                     
                 </nav>  */}
           <div className="bottom-header__actions">
-            <a href="#" className="header-icon header-icon--favorites">
+            <Link
+              href="/favorites"
+              className="header-icon header-icon--favorites"
+            >
               <div className="header-icon__image">
                 <Image
                   src="/icons/heart.svg"
@@ -317,7 +321,7 @@ export default function Header() {
                   height={100}
                 />
               </div>
-            </a>
+            </Link>
             <Notifications />
           </div>
         </div>

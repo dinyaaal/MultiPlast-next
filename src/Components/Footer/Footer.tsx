@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 
 export default function Footer() {
@@ -6,9 +7,9 @@ export default function Footer() {
       <div className="footer__container">
         <div className="footer__body">
           <div className="footer__block">
-            <a href="#" className="footer__logo logo">
+            <Link href="/" className="footer__logo logo">
               Л<span>ого</span>
-            </a>
+            </Link>
             <div className="footer__socials socials">
               <p className="socials__text">Ми в соціальних мережах:</p>
               <div className="socials__items">
@@ -92,7 +93,7 @@ export default function Footer() {
                 <a href="#">Форум</a>
               </li>
               <li className="menu-footer__item">
-                <a href="#">Про проект</a>
+                <Link href="/about">Про проект</Link>
               </li>
             </ul>
           </div>

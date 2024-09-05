@@ -29,16 +29,36 @@ export default function HeroSwiper() {
       }}
     >
       <SwiperSlide>
-        <Image src="/hero/items/01.jpg" alt="Image" width={100} height={100} />
+        <Image
+          src="/hero/items/01.jpg"
+          alt="Image"
+          width={1000}
+          height={1000}
+        />
       </SwiperSlide>
       <SwiperSlide>
-        <Image src="/hero/items/02.jpg" alt="Image" width={100} height={100} />
+        <Image
+          src="/hero/items/02.jpg"
+          alt="Image"
+          width={1000}
+          height={1000}
+        />
       </SwiperSlide>
       <SwiperSlide>
-        <Image src="/hero/items/03.jpg" alt="Image" width={100} height={100} />
+        <Image
+          src="/hero/items/03.jpg"
+          alt="Image"
+          width={1000}
+          height={1000}
+        />
       </SwiperSlide>
       <SwiperSlide>
-        <Image src="/hero/items/04.jpg" alt="Image" width={100} height={100} />
+        <Image
+          src="/hero/items/04.jpg"
+          alt="Image"
+          width={1000}
+          height={1000}
+        />
       </SwiperSlide>
     </Swiper>
     // <div className="body-hero__slider swiper">

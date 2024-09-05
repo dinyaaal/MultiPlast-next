@@ -2,6 +2,7 @@ import Image from "next/image";
 import React from "react";
 import Swiper from "swiper";
 import HeroSwiper from "./components/HeroSwiper";
+import Link from "next/link";
 
 export default function Hero() {
   return (
@@ -17,9 +18,9 @@ export default function Hero() {
               спільнота професіоналів полімерного ринку України
             </div>
           </div>
-          <a href="#" className="top-hero__button button">
+          <Link href="/about" className="top-hero__button button">
             Про проект
-          </a>
+          </Link>
         </div>
       </div>
       <div className="hero__body body-hero">
