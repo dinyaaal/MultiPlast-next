@@ -4,7 +4,7 @@ import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import { Navigation, Pagination } from "swiper/modules";
-import AdvertCard from "./components/AdvertCard";
+import ProductCard from "./components/ProductCard";
 
 export default function Adverts() {
   return (
@@ -40,22 +40,25 @@ export default function Adverts() {
             }}
           >
             <SwiperSlide>
-              <AdvertCard />
+              <ProductCard />
             </SwiperSlide>
             <SwiperSlide>
-              <AdvertCard />
+              <ProductCard />
             </SwiperSlide>
             <SwiperSlide>
-              <AdvertCard />
+              <ProductCard />
             </SwiperSlide>
             <SwiperSlide>
-              <AdvertCard />
+              <ProductCard />
             </SwiperSlide>
             <SwiperSlide>
-              <AdvertCard />
+              <ProductCard />
             </SwiperSlide>
             <SwiperSlide>
-              <AdvertCard />
+              <ProductCard />
+            </SwiperSlide>
+            <SwiperSlide>
+              <ProductCard />
             </SwiperSlide>
           </Swiper>
           <button

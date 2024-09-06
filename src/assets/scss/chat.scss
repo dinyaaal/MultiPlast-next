@@ -121,7 +121,7 @@
       content: "";
       width: toRem(30);
       height: toRem(30);
-      // background: url('@img/icons/user.svg') center no-repeat;
+      background: url("/icons/user.svg") center no-repeat;
     }
     img {
       width: 100%;
@@ -442,7 +442,7 @@
         flex: 0 0 toRem(16);
         width: toRem(16);
         height: toRem(16);
-        // background: url('@img/decor/small-arrow.svg') center no-repeat;
+        background: url("/decor/small-arrow.svg") center no-repeat;
         position: absolute;
         top: 100%;
         left: 50%;

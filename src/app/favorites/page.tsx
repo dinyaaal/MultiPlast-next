@@ -1,6 +1,6 @@
-import Adverts from "@/Components/Adverts/Adverts";
-import AdvertCard from "@/Components/Adverts/components/AdvertCard";
-import Image from "next/image";
+import Adverts from "@/Components/Products/Adverts";
+import ProductCard from "@/Components/Products/components/ProductCard";
+
 import React from "react";
 
 export default function Favorite() {
@@ -13,15 +13,13 @@ export default function Favorite() {
           </div>
           <div className="favorite__body">
             <div className="favorite__items">
-              <AdvertCard />
-              <AdvertCard />
-              <AdvertCard />
-              <AdvertCard />
-              <AdvertCard />
-              <AdvertCard />
-              <AdvertCard />
-              <AdvertCard />
-              <AdvertCard />
+              <ProductCard />
+              <ProductCard />
+              <ProductCard />
+              <ProductCard />
+              <ProductCard />
+              <ProductCard />
+              <ProductCard />
             </div>
             <div className="favorite__pages pages">
               <button className="pages__arrow pages__arrow-prev disabled">

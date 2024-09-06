@@ -1,9 +1,10 @@
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 
-export default function AdvertCard() {
+export default function ProductCard() {
   return (
-    <a href="#" className="adverts__item item-advert">
+    <Link href="#" className="adverts__item item-advert">
       <div className="item-advert__image">
         <Image src="/advert/01.jpg" alt="Image" width={1000} height={1000} />
       </div>
@@ -33,6 +34,6 @@ export default function AdvertCard() {
           </button>
         </div>
       </div>
-    </a>
+    </Link>
   );
 }
