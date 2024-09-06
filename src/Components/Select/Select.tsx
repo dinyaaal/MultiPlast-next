@@ -1,3 +1,5 @@
+"use client";
+
 import { useClickOutside } from "@/hooks/ClickOutside";
 import React, { useState } from "react";
 
@@ -8,12 +10,19 @@ interface Option {
 
 interface SelectProps {
   options: Option[];
-  defaultValue: string;
+  defaultValue?: string; // defaultValue теперь необязательный
+  placeholder?: string; // Добавляем placeholder
 }
 
-export default function Select({ options, defaultValue }: SelectProps) {
+export default function Select({
+  options,
+  defaultValue,
+  placeholder = "Select an option", // Дефолтное значение для placeholder
+}: SelectProps) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [selectedValue, setSelectedValue] = useState<string>(defaultValue);
+  const [selectedValue, setSelectedValue] = useState<string | undefined>(
+    defaultValue
+  );
 
   const { rootEl } = useClickOutside(() => setIsOpen(false));
 
@@ -30,11 +39,18 @@ export default function Select({ options, defaultValue }: SelectProps) {
     <div className="select select_input" ref={rootEl}>
       <div className={`select__body ${isOpen ? "active" : ""}`}>
         <button onClick={toggleMenu} type="button" className="select__title">
-          <span className="select__value">
-            <span className="select__content">
-              {options.find((option) => option.value === selectedValue)?.label}
-            </span>
-          </span>
+          <div className="select__value">
+            {selectedValue ? (
+              <span className="select__content">
+                {
+                  options.find((option) => option.value === selectedValue)
+                    ?.label
+                }
+              </span>
+            ) : (
+              <span className="select__placeholder">{placeholder}</span>
+            )}
+          </div>
         </button>
 
         <div className="select__wrapper">
