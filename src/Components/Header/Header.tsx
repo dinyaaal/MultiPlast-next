@@ -126,9 +126,9 @@ export default function Header() {
 
           <ul className="bottom-header__list menu__list">
             <li className="menu__item">
-              <a href="#" className="menu__link">
+              <Link href="/products" className="menu__link">
                 Торгівельний майданчик
-              </a>
+              </Link>
             </li>
             <li className="menu__item">
               <a href="#" className="menu__link">

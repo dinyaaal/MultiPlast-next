@@ -214,6 +214,16 @@
   // .adverts__pagination
   &__pagination {
   }
+
+  .swiper-button-prev {
+    left: -10px;
+    transform: translate(-100%, -50%) rotate(180deg);
+  }
+
+  .swiper-button-next {
+    right: -10px;
+    transform: translate(100%, -50%);
+  }
 }
 
 //====================================================================================================
