@@ -18,6 +18,7 @@
     outline: 1px solid #b0bfd7;
     background-color: #f8fbff;
     &.active {
+      z-index: 10;
       .select__options {
         transform: translateY(0) !important;
       }

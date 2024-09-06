@@ -37,7 +37,7 @@ export default function Login() {
             <a href="#" className="socials-auth__item item-socials-auth">
               <div className="item-socials-auth__image">
                 <Image
-                  src="/socials/google.png"
+                  src="/socials/facebook.svg"
                   alt="Icon"
                   width={100}
                   height={100}

@@ -10,14 +10,14 @@ interface Option {
 
 interface SelectProps {
   options: Option[];
-  defaultValue?: string; // defaultValue теперь необязательный
-  placeholder?: string; // Добавляем placeholder
+  defaultValue?: string;
+  placeholder?: string;
 }
 
 export default function Select({
   options,
   defaultValue,
-  placeholder = "Select an option", // Дефолтное значение для placeholder
+  placeholder = "",
 }: SelectProps) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [selectedValue, setSelectedValue] = useState<string | undefined>(

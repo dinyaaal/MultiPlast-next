@@ -131,7 +131,7 @@ export default function Header() {
               </Link>
             </li>
             <li className="menu__item">
-              <a href="#" className="menu__link">
+              <Link href="/sell" className="menu__link">
                 Подати оголошення
                 <div className="main-menu__arrow menu__arrow">
                   <Image
@@ -141,11 +141,11 @@ export default function Header() {
                     height={100}
                   />
                 </div>
-              </a>
+              </Link>
 
               <ul className="sub-menu__list">
                 <li>
-                  <a href="#" className="sub-menu__link menu__link">
+                  <Link href="/sell" className="sub-menu__link menu__link">
                     Про продаж
                     <div className="sub-menu__arrow menu__arrow">
                       <Image
@@ -155,7 +155,7 @@ export default function Header() {
                         height={100}
                       />
                     </div>
-                  </a>
+                  </Link>
 
                   <ul className="sub-sub-menu__list">
                     <li>
@@ -217,7 +217,7 @@ export default function Header() {
                   </ul>
                 </li>
                 <li>
-                  <a href="" className="sub-menu__link menu__link">
+                  <Link href="/buy" className="sub-menu__link menu__link">
                     Про купівлю
                     <div className="sub-menu__arrow menu__arrow">
                       <Image
@@ -227,7 +227,7 @@ export default function Header() {
                         height={100}
                       />
                     </div>
-                  </a>
+                  </Link>
 
                   <ul className="sub-sub-menu__list">
                     <li>

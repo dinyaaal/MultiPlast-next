@@ -13,11 +13,6 @@ interface LanguageProps {
 }
 
 const Language: FC<LanguageProps> = ({ className = "" }) => {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-  const toggleMenu = () => {
-    setIsOpen(!isOpen);
-  };
-
   return (
     <div className={`language ${className}`}>
       <Select options={options} defaultValue="UA" />
