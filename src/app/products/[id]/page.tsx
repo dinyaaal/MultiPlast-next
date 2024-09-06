@@ -9,6 +9,7 @@ import "swiper/css";
 import "swiper/css/thumbs";
 import { Navigation, Thumbs } from "swiper/modules";
 import Adverts from "@/Components/Products/Adverts";
+import ReadMore from "@/Components/ReadMore";
 export default function Product() {
   const [thumbsSwiper, setThumbsSwiper] = useState<SwiperType | null>(null);
 
@@ -42,6 +43,53 @@ export default function Product() {
       </div>
       <section className="product">
         <div className="product__container">
+          <div className="product__top top-product">
+            <div className="top-product__body">
+              <div className="top-product__block">
+                <h2 className="top-product__title title">
+                  Продам Гранулу РР (Поліпропілен)
+                </h2>
+                <div className="top-product__actions">
+                  <button className="like">
+                    <svg
+                      width="33"
+                      height="30"
+                      viewBox="0 0 33 30"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M15.0002 26.7323L14.998 26.7303C10.7549 22.8862 7.35391 19.7972 4.9962 16.9153C2.65494 14.0535 1.5 11.58 1.5 8.99183C1.5 4.77155 4.78535 1.5 9 1.5C11.3943 1.5 13.7168 2.62136 15.2258 4.37798L16.3636 5.70249L17.5015 4.37798C19.0105 2.62136 21.3329 1.5 23.7273 1.5C27.9419 1.5 31.2273 4.77155 31.2273 8.99183C31.2273 11.58 30.0723 14.0535 27.7311 16.9153C25.3734 19.7972 21.9724 22.8862 17.7293 26.7303L17.7271 26.7323L16.3636 27.9724L15.0002 26.7323Z"
+                        fill="white"
+                        stroke="#BA360C"
+                        stroke-width="3"
+                      />
+                    </svg>
+                  </button>
+                  <a href="#" className="share">
+                    <svg
+                      width="27"
+                      height="30"
+                      viewBox="0 0 27 30"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M22.5 30C21.25 30 20.1875 29.5625 19.3125 28.6875C18.4375 27.8125 18 26.75 18 25.5C18 25.325 18.0125 25.1435 18.0375 24.9555C18.0625 24.7675 18.1 24.599 18.15 24.45L7.575 18.3C7.15 18.675 6.675 18.969 6.15 19.182C5.625 19.395 5.075 19.501 4.5 19.5C3.25 19.5 2.1875 19.0625 1.3125 18.1875C0.4375 17.3125 0 16.25 0 15C0 13.75 0.4375 12.6875 1.3125 11.8125C2.1875 10.9375 3.25 10.5 4.5 10.5C5.075 10.5 5.625 10.6065 6.15 10.8195C6.675 11.0325 7.15 11.326 7.575 11.7L18.15 5.55C18.1 5.4 18.0625 5.2315 18.0375 5.0445C18.0125 4.8575 18 4.676 18 4.5C18 3.25 18.4375 2.1875 19.3125 1.3125C20.1875 0.4375 21.25 0 22.5 0C23.75 0 24.8125 0.4375 25.6875 1.3125C26.5625 2.1875 27 3.25 27 4.5C27 5.75 26.5625 6.8125 25.6875 7.6875C24.8125 8.5625 23.75 9 22.5 9C21.925 9 21.375 8.894 20.85 8.682C20.325 8.47 19.85 8.176 19.425 7.8L8.85 13.95C8.9 14.1 8.9375 14.269 8.9625 14.457C8.9875 14.645 9 14.826 9 15C9 15.175 8.9875 15.3565 8.9625 15.5445C8.9375 15.7325 8.9 15.901 8.85 16.05L19.425 22.2C19.85 21.825 20.325 21.5315 20.85 21.3195C21.375 21.1075 21.925 21.001 22.5 21C23.75 21 24.8125 21.4375 25.6875 22.3125C26.5625 23.1875 27 24.25 27 25.5C27 26.75 26.5625 27.8125 25.6875 28.6875C24.8125 29.5625 23.75 30 22.5 30Z"
+                        fill="#1858B8"
+                      />
+                    </svg>
+                  </a>
+                </div>
+              </div>
+              <div className="top-product__price price-product">
+                <div className="price-product__text title">до 75 грн/кг</div>
+                <div className="price-product__sub-text">
+                  від 3000 кг - 60 грн/кг
+                </div>
+              </div>
+            </div>
+          </div>
           <div className="product__body body-product">
             <div className="body-product__content">
               <div className="body-product__images">
@@ -367,27 +415,13 @@ export default function Product() {
                 <div className="description-body-product__title">
                   Опис товару:
                 </div>
-                <div
-                  data-showmore-content="26"
-                  className="description-body-product__content"
-                >
-                  <p>
-                    Поліпропілен (ПП) - це хімічна сполука, що відноситься до
-                    синтетичних полімерів. Він є продуктом полімеризації
-                    пропілену та належить до класу поліолефінів. Завдяки
-                    винятковій міцності та твердості вироби з поліпропілену
-                    використовуються в багатьох ...
-                  </p>
-                </div>
-                <button
-                  hidden
-                  data-showmore-button
-                  type="button"
-                  className="description-body-product__more"
-                >
-                  <span>Розгорнути повністю</span>
-                  <span>Сховати</span>
-                </button>
+                <ReadMore>
+                  Поліпропілен (ПП) - це хімічна сполука, що відноситься до
+                  синтетичних полімерів. Він є продуктом полімеризації пропілену
+                  та належить до класу поліолефінів. Завдяки винятковій міцності
+                  та твердості вироби з поліпропілену використовуються в
+                  багатьох
+                </ReadMore>
               </div>
             </div>
             <div className="body-product__block">

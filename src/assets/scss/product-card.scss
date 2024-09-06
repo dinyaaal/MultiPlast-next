@@ -211,30 +211,10 @@
   }
   // .description-body-product__content
   &__content {
-    line-height: 26px;
-    display: flex;
-    flex-direction: column;
-    gap: toRem(10);
-    li {
-      margin-left: toRem(15);
-      list-style: disc;
-    }
   }
+
   // .description-body-product__more
   &__more {
-    margin-top: toRem(10);
-    color: var(--greyColor);
-    font-size: toRem(15);
-    display: flex;
-    align-items: center;
-    gap: toRem(10);
-    &::after {
-      content: "";
-      width: toRem(8);
-      height: toRem(14);
-      transition: all 0.5s ease;
-      background: url("/icons/arrow-down.svg") center / 100% no-repeat;
-    }
   }
 }
 

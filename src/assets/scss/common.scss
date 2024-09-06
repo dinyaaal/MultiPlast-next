@@ -435,3 +435,41 @@
     font-weight: 500;
   }
 }
+
+.read-more {
+  line-height: 26px;
+  display: flex;
+  flex-direction: column;
+  gap: toRem(10);
+  li {
+    margin-left: toRem(15);
+    list-style: disc;
+  }
+  &.active {
+    .read-more__text {
+    }
+    .read-more__button {
+      &::after {
+        transform: rotate(180deg);
+      }
+    }
+  }
+  &__text {
+    overflow: hidden;
+  }
+  &__button {
+    color: var(--greyColor);
+    font-size: toRem(15);
+    display: flex;
+    align-items: center;
+    gap: toRem(10);
+    &::after {
+      content: "";
+      width: toRem(8);
+      height: toRem(14);
+      transition: all 0.5s ease;
+      background: url("/icons/arrow-down.svg") center / 100% no-repeat;
+      transition: all 0.3s ease;
+    }
+  }
+}
