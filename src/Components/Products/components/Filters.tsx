@@ -5,13 +5,26 @@ import React, { useState } from "react";
 
 export default function Filters() {
   const [isPrimarySelected, setIsPrimarySelected] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const openMenu = () => {
+    setIsOpen(true);
+  };
+
+  const closeMenu = () => {
+    setIsOpen(false);
+  };
 
   const handlePrimaryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setIsPrimarySelected(event.target.checked);
   };
   return (
     <div className="trade__filters filters-trade">
-      <button className="filters-trade__button filters-trade__button--open button">
+      <button onClick={toggleMenu} className="filters-trade__button button">
         <svg
           width="18"
           height="17"
@@ -26,9 +39,13 @@ export default function Filters() {
         </svg>
         <span>Фільтри</span>
       </button>
-      <div className="filters-trade__body body-filters-trade">
+      <div
+        className={`filters-trade__body body-filters-trade ${
+          isOpen ? "active" : ""
+        }`}
+      >
         <div className="body-filters-trade__wrapper">
-          <button className="body-filters-trade__back">
+          <button onClick={closeMenu} className="body-filters-trade__back">
             <Image
               src="/icons/arrow-back.svg"
               alt="Icon"
@@ -37,7 +54,7 @@ export default function Filters() {
             />
             До товарів
           </button>
-          <button className="filters-trade__button button">
+          <button onClick={toggleMenu} className="filters-trade__button button">
             <svg
               width="18"
               height="17"
@@ -52,8 +69,8 @@ export default function Filters() {
             </svg>
             <span>Фільтри</span>
           </button>
-          <div data-spollers className="body-filters-trade__items spollers">
-            <details data-open className="item-filter spollers__item">
+          <div className="body-filters-trade__items spollers">
+            <details className="item-filter spollers__item">
               <summary className="item-filter__title spollers__title">
                 Тип оголошення
               </summary>

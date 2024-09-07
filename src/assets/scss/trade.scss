@@ -39,6 +39,9 @@
   gap: toRem(30);
   // .filters-trade__button
   &__button {
+    @media (min-width: $tablet) {
+      display: none;
+    }
     max-width: toRem(305);
     gap: toRem(10);
     background-color: #fff;

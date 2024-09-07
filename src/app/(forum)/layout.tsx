@@ -1,7 +1,5 @@
 import Breadcrumbs from "@/Components/Breadcrumbs";
-import ForumCard from "@/Components/Forum/components/ForumCard";
-import Sections from "@/Components/Forum/components/Sections";
-import Select from "@/Components/Select/Select";
+import SelectTabs from "@/Components/Select/SelectTabs";
 import Image from "next/image";
 import React from "react";
 
@@ -18,10 +16,10 @@ export default function AuthLayout({
           <div className="top-forum__container">
             <div className="top-forum__title title">Форум</div>
             <div className="top-forum__block">
-              <Select
+              <SelectTabs
                 options={[
-                  { value: "1", label: "1" },
-                  { value: "2", label: "2" },
+                  { link: "/forum", label: "Форум" },
+                  { link: "/forum-add", label: "Додати тему" },
                 ]}
               />
 
@@ -46,9 +44,7 @@ export default function AuthLayout({
             </div>
           </div>
         </div>
-        <div className="forum__body body-forum">
-          <div className="body-forum__container">{children}</div>
-        </div>
+        <div className="forum__body body-forum">{children}</div>
       </section>
     </>
   );
