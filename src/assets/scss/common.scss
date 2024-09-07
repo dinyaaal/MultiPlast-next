@@ -4,9 +4,7 @@
   &.tabs-advertisement__item {
     background-color: #c4dbff;
   }
-  &.gender__item {
-    background-color: #c4dbff;
-  }
+
   &.item-sections-forum {
     background-color: #c4dbff;
   }
@@ -472,4 +470,16 @@
       transition: all 0.3s ease;
     }
   }
+}
+
+.real-radio {
+  position: absolute;
+  width: 0;
+  height: 0;
+  opacity: 0;
+  z-index: -1;
+}
+
+.real-radio:checked + .gender__item {
+  background-color: #c4dbff !important;
 }

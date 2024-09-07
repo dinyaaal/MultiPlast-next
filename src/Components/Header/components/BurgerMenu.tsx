@@ -1,16 +1,18 @@
 "use client";
 
-import { useClickOutside } from "@/hooks/ClickOutside";
 import Image from "next/image";
 import React, { useState } from "react";
 import Language from "./Language";
+import Link from "next/link";
 
 export default function BurgerMenu() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  //   const { rootEl } = useClickOutside(setIsOpen);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
+  };
+  const closeMenu = () => {
+    setIsOpen(false);
   };
 
   return (
@@ -23,7 +25,11 @@ export default function BurgerMenu() {
       <nav className="menu__body">
         <div className="menu__wrapper">
           <div className="menu__top">
-            <a href="#" className="header-icon header-icon--favorites">
+            <Link
+              onClick={closeMenu}
+              href="/favorites"
+              className="header-icon header-icon--favorites"
+            >
               <div className="header-icon__image">
                 <Image
                   src="/icons/heart.svg"
@@ -31,35 +37,34 @@ export default function BurgerMenu() {
                   width={100}
                   height={100}
                 />
-                {/* <img src="@img/icons/heart.svg" alt="Icon"> */}
               </div>
-            </a>
+            </Link>
             <Language className="language--mobile" />
           </div>
           <ul className="menu__list">
             <li className="menu__item">
-              <a href="#" className="menu__link">
+              <Link onClick={closeMenu} href="/products" className="menu__link">
                 Торгівельний майданчик
-              </a>
+              </Link>
             </li>
             <li className="menu__item">
-              <a href="#" className="menu__link">
+              <Link onClick={closeMenu} href="/sell" className="menu__link">
                 Подати оголошення
-              </a>
+              </Link>
             </li>
 
             <li className="menu__item">
-              <a href="#" className="menu__link">
+              <Link onClick={closeMenu} href="#" className="menu__link">
                 Мої повідомлення
-              </a>
+              </Link>
             </li>
             <li className="menu__item">
-              <a href="#" className="menu__link">
+              <Link onClick={closeMenu} href="forum" className="menu__link">
                 Форум
                 <div className="notification-value">
                   <span className="notification-value__number">99</span>
                 </div>
-              </a>
+              </Link>
             </li>
           </ul>
           <div className="body-header__user user user--mobile">

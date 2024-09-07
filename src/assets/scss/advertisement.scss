@@ -101,9 +101,9 @@
   }
   // .tabs-advertisement__item
   &__item {
-    @media (max-width: $tablet) {
-      display: none;
-    }
+    // @media (max-width: $tablet) {
+    //   display: none;
+    // }
     &--mobile {
       display: block !important;
     }

@@ -38,12 +38,13 @@ export default function AdvertismentLayout({
                 <div className="tabs-advertisement__title">
                   Подати оголошення
                 </div>
-                <Select
+                {/* <Select
                   options={[
                     { value: "sell", label: "Про продаж" },
                     { value: "buy", label: "Про купівлю" },
                   ]}
-                />
+                  defaultValue="sell"
+                /> */}
 
                 <div className="tabs-advertisement__items">
                   <AdvertismentTab href="/sell" text="Про продаж" />
@@ -52,12 +53,13 @@ export default function AdvertismentLayout({
               </SwiperSlide>
               <SwiperSlide>
                 <div className="tabs-advertisement__title">Мої оголошення</div>
-                <Select
+                {/* <Select
                   options={[
                     { value: "my-sell", label: "Мої оголошення про продаж" },
                     { value: "my-buy", label: "Мої оголошення про купівлю" },
                   ]}
-                />
+                  defaultValue="my-sell"
+                /> */}
 
                 <div className="tabs-advertisement__items">
                   <AdvertismentTab
@@ -79,6 +81,7 @@ export default function AdvertismentLayout({
                   <AdvertismentTab
                     href="/profile"
                     text="Редагувати контактні данні"
+                    className="tabs-advertisement__item--mobile"
                   />
                 </div>
               </SwiperSlide>
