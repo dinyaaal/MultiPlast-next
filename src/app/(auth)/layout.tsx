@@ -6,7 +6,7 @@ export default function AuthLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <main className="page page-registration">
+    <div className="page page-registration">
       <div className="login">
         <div className="login__container">
           <div className="login__wrapper">
@@ -14,6 +14,6 @@ export default function AuthLayout({
           </div>
         </div>
       </div>
-    </main>
+    </div>
   );
 }

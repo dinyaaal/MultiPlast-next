@@ -284,9 +284,9 @@ export default function Header() {
               </a>
             </li>
             <li className="menu__item">
-              <a href="#" className="menu__link">
+              <Link href="/forum" className="menu__link">
                 Форум
-              </a>
+              </Link>
               <div className="notification-value">
                 <span className="notification-value__number">99</span>
               </div>
