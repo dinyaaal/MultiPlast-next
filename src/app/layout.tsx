@@ -4,6 +4,7 @@ import { Rubik } from "next/font/google";
 import "../assets/scss/style.scss";
 import Header from "@/Components/Header/Header";
 import Footer from "@/Components/Footer/Footer";
+import ModalContact from "@/Components/Modals/ModalContact";
 
 const rubikFont = Rubik({
   subsets: ["latin"],
@@ -29,6 +30,7 @@ export default function RootLayout({
           <main>{children}</main>
           <Footer />
         </div>
+        <ModalContact />
       </body>
     </html>
   );
