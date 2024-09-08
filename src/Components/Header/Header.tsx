@@ -279,9 +279,9 @@ export default function Header() {
               </ul>
             </li>
             <li className="menu__item">
-              <a href="#" className="menu__link">
+              <Link href="/messages" className="menu__link">
                 Мої повідомлення
-              </a>
+              </Link>
             </li>
             <li className="menu__item">
               <Link href="/forum" className="menu__link">

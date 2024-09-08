@@ -54,12 +54,12 @@ export default function BurgerMenu() {
             </li>
 
             <li className="menu__item">
-              <Link onClick={closeMenu} href="#" className="menu__link">
+              <Link onClick={closeMenu} href="/messages" className="menu__link">
                 Мої повідомлення
               </Link>
             </li>
             <li className="menu__item">
-              <Link onClick={closeMenu} href="forum" className="menu__link">
+              <Link onClick={closeMenu} href="/forum" className="menu__link">
                 Форум
                 <div className="notification-value">
                   <span className="notification-value__number">99</span>
