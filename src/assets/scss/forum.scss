@@ -547,8 +547,7 @@
   &__answers {
     flex-direction: column;
     gap: toRem(15);
-    display: none;
-
+    display: flex;
     @media (max-width: $mobile) {
       .user-chat {
         justify-content: end;

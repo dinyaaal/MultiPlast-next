@@ -3,7 +3,7 @@ import SelectTabs from "@/Components/Select/SelectTabs";
 import Image from "next/image";
 import React from "react";
 
-export default function AuthLayout({
+export default function ForumLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;

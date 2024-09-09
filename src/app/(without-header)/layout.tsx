@@ -9,7 +9,7 @@ export default function Layout({
 }>) {
   return (
     <div className="wrapper">
-      <main>{children}</main>
+      <main className="page">{children}</main>
       <Footer />
     </div>
   );
