@@ -26,11 +26,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${rubikFont.className} `}>
         <NextUIProvider>
-          <div className="wrapper">
-            <Header />
-            <main>{children}</main>
-            <Footer />
-          </div>
+          <main>{children}</main>
         </NextUIProvider>
       </body>
     </html>
