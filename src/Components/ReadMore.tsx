@@ -19,7 +19,7 @@ const ReadMore: React.FC<ReadMoreProps> = ({ children, className }) => {
         isActive ? `${contentRef.current.scrollHeight}px` : `${lineHeight}px`
       );
     }
-  }, [isActive, children]);
+  }, [isActive]);
 
   const toggleActive = () => {
     setIsActive((prevState) => !prevState);
@@ -31,7 +31,6 @@ const ReadMore: React.FC<ReadMoreProps> = ({ children, className }) => {
         ref={contentRef}
         style={{
           maxHeight: height,
-          transition: "max-height 0.3s ease",
         }}
         className="read-more__text"
       >

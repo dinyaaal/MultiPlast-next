@@ -32,7 +32,7 @@
   align-items: center;
 }
 .popup__content {
-  visibility: hidden;
+  // visibility: hidden;
   transform: scale(0);
   transition: transform 0.3s ease 0s;
   background-color: #ffffff;
@@ -43,9 +43,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  .lock & {
-    visibility: visible;
-  }
+  // .lock & {
+  //   visibility: visible;
+  // }
 }
 
 .popup__close {

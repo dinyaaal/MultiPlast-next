@@ -1,5 +1,6 @@
 "use client";
 
+import Spoiler from "@/Components/Spoiler";
 import Image from "next/image";
 import React, { useState } from "react";
 
@@ -70,425 +71,409 @@ export default function Filters() {
             <span>Фільтри</span>
           </button>
           <div className="body-filters-trade__items spollers">
-            <details className="item-filter spollers__item">
-              <summary className="item-filter__title spollers__title">
-                Тип оголошення
-              </summary>
-              <div className="item-filter__body spollers__body">
-                <label className="check">
-                  <input
-                    type="checkbox"
-                    name="remember"
-                    className="real-checkbox"
-                  />
-                  <span className="custom-checkbox"></span>
-                  Про продаж
-                </label>
+            <Spoiler className="item-filter" title="Тип оголошення">
+              <label className="check">
+                <input
+                  type="checkbox"
+                  name="remember"
+                  className="real-checkbox"
+                />
+                <span className="custom-checkbox"></span>
+                Про продаж
+              </label>
 
-                <label className="check">
-                  <input
-                    type="checkbox"
-                    name="remember"
-                    className="real-checkbox"
-                  />
-                  <span className="custom-checkbox"></span>
-                  Про купівлю
-                </label>
-              </div>
-            </details>
-            <details className="item-filter spollers__item">
-              <summary className="item-filter__title spollers__title">
-                Сировина
-              </summary>
-              <div className="item-filter__body spollers__body">
-                <label id="primary-raw" className="check">
-                  <input
-                    onChange={handlePrimaryChange}
-                    type="checkbox"
-                    name="remember"
-                    className="real-checkbox"
-                  />
-                  <span className="custom-checkbox"></span>
-                  Первинна сировина
-                </label>
+              <label className="check">
+                <input
+                  type="checkbox"
+                  name="remember"
+                  className="real-checkbox"
+                />
+                <span className="custom-checkbox"></span>
+                Про купівлю
+              </label>
+            </Spoiler>
+            <Spoiler className="item-filter" title="Сировина">
+              <label id="primary-raw" className="check">
+                <input
+                  onChange={handlePrimaryChange}
+                  type="checkbox"
+                  name="remember"
+                  className="real-checkbox"
+                />
+                <span className="custom-checkbox"></span>
+                Первинна сировина
+              </label>
 
-                <label className="check">
-                  <input
-                    type="checkbox"
-                    name="remember"
-                    className="real-checkbox"
-                  />
-                  <span className="custom-checkbox"></span>
-                  Вторинна сировина
-                </label>
-                {isPrimarySelected && (
-                  <div className="item-filter__block item-filter__block--primary active">
-                    <label className="check">
-                      <input
-                        type="checkbox"
-                        name="remember"
-                        className="real-checkbox"
-                      />
-                      <span className="custom-checkbox"></span>
-                      HDPE (полиэтилен низкого давления)
-                    </label>
-                    <label className="check">
-                      <input
-                        type="checkbox"
-                        name="remember"
-                        className="real-checkbox"
-                      />
-                      <span className="custom-checkbox"></span>
-                      LDPE (полиэтилен высокого давления)
-                    </label>
-                    <label className="check">
-                      <input
-                        type="checkbox"
-                        name="remember"
-                        className="real-checkbox"
-                      />
-                      <span className="custom-checkbox"></span>
-                      LLDPE (линейный полиэтилен высокого давления)
-                    </label>
-                    <label className="check">
-                      <input
-                        type="checkbox"
-                        name="remember"
-                        className="real-checkbox"
-                      />
-                      <span className="custom-checkbox"></span>
-                      PP (полипропилен)
-                    </label>
-                    <label className="check">
-                      <input
-                        type="checkbox"
-                        name="remember"
-                        className="real-checkbox"
-                      />
-                      <span className="custom-checkbox"></span>
-                      PS (полистирол)
-                    </label>
-                    <label className="check">
-                      <input
-                        type="checkbox"
-                        name="remember"
-                        className="real-checkbox"
-                      />
-                      <span className="custom-checkbox"></span>
-                      ABS пластик (акрилонитрил бутадиен стирол)
-                    </label>
-                    <label className="check">
-                      <input
-                        type="checkbox"
-                        name="remember"
-                        className="real-checkbox"
-                      />
-                      <span className="custom-checkbox"></span>
-                      PET (полиэтилентерефталат)
-                    </label>
-                    <label className="check">
-                      <input
-                        type="checkbox"
-                        name="remember"
-                        className="real-checkbox"
-                      />
-                      <span className="custom-checkbox"></span>
-                      PA (полиамид)
-                    </label>
-                    <label className="check">
-                      <input
-                        type="checkbox"
-                        name="remember"
-                        className="real-checkbox"
-                      />
-                      <span className="custom-checkbox"></span>
-                      POM (полиацеталь)
-                    </label>
-                    <label className="check">
-                      <input
-                        type="checkbox"
-                        name="remember"
-                        className="real-checkbox"
-                      />
-                      <span className="custom-checkbox"></span>
-                      PC (поликарбонат)
-                    </label>
-                    <label className="check">
-                      <input
-                        type="checkbox"
-                        name="remember"
-                        className="real-checkbox"
-                      />
-                      <span className="custom-checkbox"></span>
-                      PVC (поливинилхлорид)
-                    </label>
-                    <label className="check">
-                      <input
-                        type="checkbox"
-                        name="remember"
-                        className="real-checkbox"
-                      />
-                      <span className="custom-checkbox"></span>
-                      Другие полимеры
-                    </label>
-                    <label className="check">
-                      <input
-                        type="checkbox"
-                        name="remember"
-                        className="real-checkbox"
-                      />
-                      <span className="custom-checkbox"></span>
-                      Процессинговые добавки и красители для полимеров
-                    </label>
-                  </div>
-                )}
-              </div>
-            </details>
+              <label className="check">
+                <input
+                  type="checkbox"
+                  name="remember"
+                  className="real-checkbox"
+                />
+                <span className="custom-checkbox"></span>
+                Вторинна сировина
+              </label>
+              {isPrimarySelected && (
+                <div className="item-filter__block item-filter__block--primary active">
+                  <label className="check">
+                    <input
+                      type="checkbox"
+                      name="remember"
+                      className="real-checkbox"
+                    />
+                    <span className="custom-checkbox"></span>
+                    HDPE (полиэтилен низкого давления)
+                  </label>
+                  <label className="check">
+                    <input
+                      type="checkbox"
+                      name="remember"
+                      className="real-checkbox"
+                    />
+                    <span className="custom-checkbox"></span>
+                    LDPE (полиэтилен высокого давления)
+                  </label>
+                  <label className="check">
+                    <input
+                      type="checkbox"
+                      name="remember"
+                      className="real-checkbox"
+                    />
+                    <span className="custom-checkbox"></span>
+                    LLDPE (линейный полиэтилен высокого давления)
+                  </label>
+                  <label className="check">
+                    <input
+                      type="checkbox"
+                      name="remember"
+                      className="real-checkbox"
+                    />
+                    <span className="custom-checkbox"></span>
+                    PP (полипропилен)
+                  </label>
+                  <label className="check">
+                    <input
+                      type="checkbox"
+                      name="remember"
+                      className="real-checkbox"
+                    />
+                    <span className="custom-checkbox"></span>
+                    PS (полистирол)
+                  </label>
+                  <label className="check">
+                    <input
+                      type="checkbox"
+                      name="remember"
+                      className="real-checkbox"
+                    />
+                    <span className="custom-checkbox"></span>
+                    ABS пластик (акрилонитрил бутадиен стирол)
+                  </label>
+                  <label className="check">
+                    <input
+                      type="checkbox"
+                      name="remember"
+                      className="real-checkbox"
+                    />
+                    <span className="custom-checkbox"></span>
+                    PET (полиэтилентерефталат)
+                  </label>
+                  <label className="check">
+                    <input
+                      type="checkbox"
+                      name="remember"
+                      className="real-checkbox"
+                    />
+                    <span className="custom-checkbox"></span>
+                    PA (полиамид)
+                  </label>
+                  <label className="check">
+                    <input
+                      type="checkbox"
+                      name="remember"
+                      className="real-checkbox"
+                    />
+                    <span className="custom-checkbox"></span>
+                    POM (полиацеталь)
+                  </label>
+                  <label className="check">
+                    <input
+                      type="checkbox"
+                      name="remember"
+                      className="real-checkbox"
+                    />
+                    <span className="custom-checkbox"></span>
+                    PC (поликарбонат)
+                  </label>
+                  <label className="check">
+                    <input
+                      type="checkbox"
+                      name="remember"
+                      className="real-checkbox"
+                    />
+                    <span className="custom-checkbox"></span>
+                    PVC (поливинилхлорид)
+                  </label>
+                  <label className="check">
+                    <input
+                      type="checkbox"
+                      name="remember"
+                      className="real-checkbox"
+                    />
+                    <span className="custom-checkbox"></span>
+                    Другие полимеры
+                  </label>
+                  <label className="check">
+                    <input
+                      type="checkbox"
+                      name="remember"
+                      className="real-checkbox"
+                    />
+                    <span className="custom-checkbox"></span>
+                    Процессинговые добавки и красители для полимеров
+                  </label>
+                </div>
+              )}
+            </Spoiler>
 
-            <details className="item-filter spollers__item">
-              <summary className="item-filter__title spollers__title">
-                Обладнання для переробки полімерів
-              </summary>
-              <div className="item-filter__body spollers__body">
-                <label className="check">
-                  <input
-                    type="checkbox"
-                    name="remember"
-                    className="real-checkbox"
-                  />
-                  <span className="custom-checkbox"></span>
-                  Гранулятор
-                </label>
-                <label className="check">
-                  <input
-                    type="checkbox"
-                    name="remember"
-                    className="real-checkbox"
-                  />
-                  <span className="custom-checkbox"></span>
-                  Дробарка
-                </label>
-                <label className="check">
-                  <input
-                    type="checkbox"
-                    name="remember"
-                    className="real-checkbox"
-                  />
-                  <span className="custom-checkbox"></span>
-                  Міксер
-                </label>
-                <label className="check">
-                  <input
-                    type="checkbox"
-                    name="remember"
-                    className="real-checkbox"
-                  />
-                  <span className="custom-checkbox"></span>
-                  Устаткування для миття полімерів
-                </label>
-                <label className="check">
-                  <input
-                    type="checkbox"
-                    name="remember"
-                    className="real-checkbox"
-                  />
-                  <span className="custom-checkbox"></span>
-                  Лінія по переробці відходів
-                </label>
-                <label className="check">
-                  <input
-                    type="checkbox"
-                    name="remember"
-                    className="real-checkbox"
-                  />
-                  <span className="custom-checkbox"></span>
-                  Термопластавтомат
-                </label>
-                <label className="check">
-                  <input
-                    type="checkbox"
-                    name="remember"
-                    className="real-checkbox"
-                  />
-                  <span className="custom-checkbox"></span>
-                  Литні форми і преформи
-                </label>
-                <label className="check">
-                  <input
-                    type="checkbox"
-                    name="remember"
-                    className="real-checkbox"
-                  />
-                  <span className="custom-checkbox"></span>
-                  Видувне устаткування
-                </label>
+            <Spoiler
+              className="item-filter"
+              title="Обладнання для переробки полімерів"
+            >
+              <label className="check">
+                <input
+                  type="checkbox"
+                  name="remember"
+                  className="real-checkbox"
+                />
+                <span className="custom-checkbox"></span>
+                Гранулятор
+              </label>
+              <label className="check">
+                <input
+                  type="checkbox"
+                  name="remember"
+                  className="real-checkbox"
+                />
+                <span className="custom-checkbox"></span>
+                Дробарка
+              </label>
+              <label className="check">
+                <input
+                  type="checkbox"
+                  name="remember"
+                  className="real-checkbox"
+                />
+                <span className="custom-checkbox"></span>
+                Міксер
+              </label>
+              <label className="check">
+                <input
+                  type="checkbox"
+                  name="remember"
+                  className="real-checkbox"
+                />
+                <span className="custom-checkbox"></span>
+                Устаткування для миття полімерів
+              </label>
+              <label className="check">
+                <input
+                  type="checkbox"
+                  name="remember"
+                  className="real-checkbox"
+                />
+                <span className="custom-checkbox"></span>
+                Лінія по переробці відходів
+              </label>
+              <label className="check">
+                <input
+                  type="checkbox"
+                  name="remember"
+                  className="real-checkbox"
+                />
+                <span className="custom-checkbox"></span>
+                Термопластавтомат
+              </label>
+              <label className="check">
+                <input
+                  type="checkbox"
+                  name="remember"
+                  className="real-checkbox"
+                />
+                <span className="custom-checkbox"></span>
+                Литні форми і преформи
+              </label>
+              <label className="check">
+                <input
+                  type="checkbox"
+                  name="remember"
+                  className="real-checkbox"
+                />
+                <span className="custom-checkbox"></span>
+                Видувне устаткування
+              </label>
 
-                <label className="check">
-                  <input
-                    type="checkbox"
-                    name="remember"
-                    className="real-checkbox"
-                  />
-                  <span className="custom-checkbox"></span>
-                  Автозавантажувач і сушка для полімерів
-                </label>
-                <label className="check">
-                  <input
-                    type="checkbox"
-                    name="remember"
-                    className="real-checkbox"
-                  />
-                  <span className="custom-checkbox"></span>
-                  Екструдер
-                </label>
-                <label className="check">
-                  <input
-                    type="checkbox"
-                    name="remember"
-                    className="real-checkbox"
-                  />
-                  <span className="custom-checkbox"></span>
-                  Устаткування для виробництва пакетів
-                </label>
-                <label className="check">
-                  <input
-                    type="checkbox"
-                    name="remember"
-                    className="real-checkbox"
-                  />
-                  <span className="custom-checkbox"></span>
-                  Устаткування для виробництва одноразового посуду
-                </label>
-                <label className="check">
-                  <input
-                    type="checkbox"
-                    name="remember"
-                    className="real-checkbox"
-                  />
-                  <span className="custom-checkbox"></span>
-                  Устаткування для видува ПЕТ тари
-                </label>
-                <label className="check">
-                  <input
-                    type="checkbox"
-                    name="remember"
-                    className="real-checkbox"
-                  />
-                  <span className="custom-checkbox"></span>
-                  Машина для різання бобін
-                </label>
-                <label className="check">
-                  <input
-                    type="checkbox"
-                    name="remember"
-                    className="real-checkbox"
-                  />
-                  <span className="custom-checkbox"></span>
-                  Машина для флексадруку
-                </label>
-                <label className="check">
-                  <input
-                    type="checkbox"
-                    name="remember"
-                    className="real-checkbox"
-                  />
-                  <span className="custom-checkbox"></span>
-                  Інші машини
-                </label>
-                <label className="check">
-                  <input
-                    type="checkbox"
-                    name="remember"
-                    className="real-checkbox"
-                  />
-                  <span className="custom-checkbox"></span>
-                  Запасні частини та комплектуючі
-                </label>
-              </div>
-            </details>
-            <details className="item-filter spollers__item">
-              <summary className="item-filter__title spollers__title">
-                Послуги
-              </summary>
-              <div className="item-filter__body spollers__body">
-                <label className="check">
-                  <input
-                    type="checkbox"
-                    name="remember"
-                    className="real-checkbox"
-                  />
-                  <span className="custom-checkbox"></span>
-                  Лиття на термопластавтоматах
-                </label>
+              <label className="check">
+                <input
+                  type="checkbox"
+                  name="remember"
+                  className="real-checkbox"
+                />
+                <span className="custom-checkbox"></span>
+                Автозавантажувач і сушка для полімерів
+              </label>
+              <label className="check">
+                <input
+                  type="checkbox"
+                  name="remember"
+                  className="real-checkbox"
+                />
+                <span className="custom-checkbox"></span>
+                Екструдер
+              </label>
+              <label className="check">
+                <input
+                  type="checkbox"
+                  name="remember"
+                  className="real-checkbox"
+                />
+                <span className="custom-checkbox"></span>
+                Устаткування для виробництва пакетів
+              </label>
+              <label className="check">
+                <input
+                  type="checkbox"
+                  name="remember"
+                  className="real-checkbox"
+                />
+                <span className="custom-checkbox"></span>
+                Устаткування для виробництва одноразового посуду
+              </label>
+              <label className="check">
+                <input
+                  type="checkbox"
+                  name="remember"
+                  className="real-checkbox"
+                />
+                <span className="custom-checkbox"></span>
+                Устаткування для видува ПЕТ тари
+              </label>
+              <label className="check">
+                <input
+                  type="checkbox"
+                  name="remember"
+                  className="real-checkbox"
+                />
+                <span className="custom-checkbox"></span>
+                Машина для різання бобін
+              </label>
+              <label className="check">
+                <input
+                  type="checkbox"
+                  name="remember"
+                  className="real-checkbox"
+                />
+                <span className="custom-checkbox"></span>
+                Машина для флексадруку
+              </label>
+              <label className="check">
+                <input
+                  type="checkbox"
+                  name="remember"
+                  className="real-checkbox"
+                />
+                <span className="custom-checkbox"></span>
+                Інші машини
+              </label>
+              <label className="check">
+                <input
+                  type="checkbox"
+                  name="remember"
+                  className="real-checkbox"
+                />
+                <span className="custom-checkbox"></span>
+                Запасні частини та комплектуючі
+              </label>
+            </Spoiler>
 
-                <label className="check">
-                  <input
-                    type="checkbox"
-                    name="remember"
-                    className="real-checkbox"
-                  />
-                  <span className="custom-checkbox"></span>
-                  Друк на полімерній плівці
-                </label>
-                <label className="check">
-                  <input
-                    type="checkbox"
-                    name="remember"
-                    className="real-checkbox"
-                  />
-                  <span className="custom-checkbox"></span>
-                  Порізка полімерної плівки
-                </label>
+            <Spoiler className="item-filter" title="Послуги">
+              <label className="check">
+                <input
+                  type="checkbox"
+                  name="remember"
+                  className="real-checkbox"
+                />
+                <span className="custom-checkbox"></span>
+                Лиття на термопластавтоматах
+              </label>
 
-                <label className="check">
-                  <input
-                    type="checkbox"
-                    name="remember"
-                    className="real-checkbox"
-                  />
-                  <span className="custom-checkbox"></span>
-                  Миття, дроблення, агломерація, грануляція
-                </label>
-                <label className="check">
-                  <input
-                    type="checkbox"
-                    name="remember"
-                    className="real-checkbox"
-                  />
-                  <span className="custom-checkbox"></span>
-                  Виготовлення ливарних форм та преформ
-                </label>
+              <label className="check">
+                <input
+                  type="checkbox"
+                  name="remember"
+                  className="real-checkbox"
+                />
+                <span className="custom-checkbox"></span>
+                Друк на полімерній плівці
+              </label>
+              <label className="check">
+                <input
+                  type="checkbox"
+                  name="remember"
+                  className="real-checkbox"
+                />
+                <span className="custom-checkbox"></span>
+                Порізка полімерної плівки
+              </label>
 
-                <label className="check">
-                  <input
-                    type="checkbox"
-                    name="remember"
-                    className="real-checkbox"
-                  />
-                  <span className="custom-checkbox"></span>
-                  Виготовлення, налагодження та модернізація обладнання
-                </label>
-                <label className="check">
-                  <input
-                    type="checkbox"
-                    name="remember"
-                    className="real-checkbox"
-                  />
-                  <span className="custom-checkbox"></span>
-                  Ремонт та відновлення обладнання
-                </label>
+              <label className="check">
+                <input
+                  type="checkbox"
+                  name="remember"
+                  className="real-checkbox"
+                />
+                <span className="custom-checkbox"></span>
+                Миття, дроблення, агломерація, грануляція
+              </label>
+              <label className="check">
+                <input
+                  type="checkbox"
+                  name="remember"
+                  className="real-checkbox"
+                />
+                <span className="custom-checkbox"></span>
+                Виготовлення ливарних форм та преформ
+              </label>
 
-                <label className="check">
-                  <input
-                    type="checkbox"
-                    name="remember"
-                    className="real-checkbox"
-                  />
-                  <span className="custom-checkbox"></span>
-                  Інші послуги
-                </label>
-              </div>
-            </details>
+              <label className="check">
+                <input
+                  type="checkbox"
+                  name="remember"
+                  className="real-checkbox"
+                />
+                <span className="custom-checkbox"></span>
+                Виготовлення, налагодження та модернізація обладнання
+              </label>
+              <label className="check">
+                <input
+                  type="checkbox"
+                  name="remember"
+                  className="real-checkbox"
+                />
+                <span className="custom-checkbox"></span>
+                Ремонт та відновлення обладнання
+              </label>
+
+              <label className="check">
+                <input
+                  type="checkbox"
+                  name="remember"
+                  className="real-checkbox"
+                />
+                <span className="custom-checkbox"></span>
+                Інші послуги
+              </label>
+            </Spoiler>
 
             <div className="item-filter">
               <div className="item-filter__title">

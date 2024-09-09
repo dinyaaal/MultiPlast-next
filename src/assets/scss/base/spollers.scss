@@ -9,18 +9,28 @@
 
 .spollers__item {
   font-size: toRem(20);
-}
-
-.spollers__item[open] {
-  .spollers__title {
-    &::before {
-      transform: translateX(-75%) rotate(-40deg);
-    }
-    &::after {
-      transform: rotate(40deg);
+  &.active {
+    .spollers__title {
+      &::before {
+        transform: translateX(-75%) rotate(-40deg);
+      }
+      &::after {
+        transform: rotate(40deg);
+      }
     }
   }
 }
+
+// .spollers__item[open] {
+//   .spollers__title {
+//     &::before {
+//       transform: translateX(-75%) rotate(-40deg);
+//     }
+//     &::after {
+//       transform: rotate(40deg);
+//     }
+//   }
+// }
 
 .spollers__title {
   width: 100%;
@@ -56,5 +66,9 @@
 }
 // Контент спойлера
 .spollers__body {
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+.spollers__content {
   padding-top: toRem(20);
 }

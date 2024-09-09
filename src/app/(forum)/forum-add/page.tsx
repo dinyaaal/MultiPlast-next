@@ -1,3 +1,4 @@
+import ModalContact from "@/Components/Modals/ModalContact";
 import React from "react";
 
 export default function ForumAdd() {
@@ -51,9 +52,7 @@ export default function ForumAdd() {
                 За всіма питаннями і пропозиціями, які у вас виникли, зв'яжіться
                 з адміністрацією форуму
               </p>
-              <a href="#" className="info-contact__button button">
-                Написати нам
-              </a>
+              <ModalContact />
             </div>
           </div>
         </div>

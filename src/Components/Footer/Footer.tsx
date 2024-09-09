@@ -1,5 +1,6 @@
 import Link from "next/link";
 import React from "react";
+import ModalContact from "../Modals/ModalContact";
 
 export default function Footer() {
   return (
@@ -122,13 +123,7 @@ export default function Footer() {
             <p className="support-footer__text">
               Якщо у Вас зʼявились питання чи скарги, повідомте нас.
             </p>
-            <a
-              href="#"
-              data-popup="#popup-form"
-              className="support-footer__button button"
-            >
-              <span>Написати нам</span>
-            </a>
+            <ModalContact />
           </div>
         </div>
         <div className="footer__copy">
