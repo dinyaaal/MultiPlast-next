@@ -1,4 +1,5 @@
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
+import { useLocale } from "next-intl";
 import { usePathname } from "next/navigation";
 import React, { FC } from "react";
 
@@ -14,8 +15,11 @@ const AdvertismentTab: FC<AdvertismentTabProps> = ({
   className = "",
 }) => {
   const pathname = usePathname();
+  const localeActive = useLocale();
 
-  const isActive = pathname === href;
+  const currentPath = `/${localeActive}${href}`;
+
+  const isActive = currentPath === pathname;
 
   return (
     <Link
