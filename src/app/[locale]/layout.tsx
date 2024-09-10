@@ -2,10 +2,10 @@ import type { Metadata } from "next";
 import { Rubik } from "next/font/google";
 import "./globals.css";
 import "../../assets/scss/style.scss";
-
 import { NextUIProvider } from "@nextui-org/system";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
+
 const rubikFont = Rubik({
   subsets: ["latin"],
   weight: ["300", "400", "500", "700"],
@@ -26,7 +26,7 @@ export default async function RootLayout({
 }>) {
   const messages = await getMessages();
   return (
-    <html lang="en">
+    <html lang={locale}>
       <body className={`${rubikFont.className} `}>
         <NextIntlClientProvider messages={messages}>
           <NextUIProvider className=" w-full h-full">{children}</NextUIProvider>

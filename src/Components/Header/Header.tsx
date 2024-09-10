@@ -5,8 +5,9 @@ import Notifications from "./components/Notifications";
 import BurgerMenu from "./components/BurgerMenu";
 import NotificationsMobile from "./components/NotificationsMobile";
 import SearchMobile from "./components/SearchMobile";
-import Language from "./components/Language";
-import Link from "next/link";
+import Language from "../Language/Language";
+import { Link } from "@/i18n/routing";
+
 import { useTranslations } from "next-intl";
 
 export default function Header() {

@@ -2,8 +2,8 @@
 
 import Image from "next/image";
 import React, { useState } from "react";
-import Language from "./Language";
-import Link from "next/link";
+import Language from "../../Language/Language";
+import { Link } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
 
 export default function BurgerMenu() {

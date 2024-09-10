@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 import ModalContact from "../Modals/ModalContact";
 import { useTranslations } from "next-intl";
 
@@ -17,7 +17,7 @@ export default function Footer() {
               <p className="socials__text">{t("socialsText")}</p>
 
               <div className="socials__items">
-                <a href="#" className="socials__item">
+                <Link href="#" className="socials__item">
                   <svg
                     width="35"
                     height="35"
@@ -34,8 +34,8 @@ export default function Footer() {
                       />
                     </g>
                   </svg>
-                </a>
-                <a href="#" className="socials__item">
+                </Link>
+                <Link href="#" className="socials__item">
                   <svg
                     width="35"
                     height="35"
@@ -49,8 +49,8 @@ export default function Footer() {
                       fill="#0E274D"
                     />
                   </svg>
-                </a>
-                <a href="#" className="socials__item">
+                </Link>
+                <Link href="#" className="socials__item">
                   <svg
                     width="35"
                     height="35"
@@ -64,8 +64,8 @@ export default function Footer() {
                       fill="#0E274D"
                     />
                   </svg>
-                </a>
-                <a href="#" className="socials__item">
+                </Link>
+                <Link href="#" className="socials__item">
                   <svg
                     width="35"
                     height="35"
@@ -79,7 +79,7 @@ export default function Footer() {
                     />
                     <circle cx="17.5" cy="17.5" r="17" stroke="#0E274D" />
                   </svg>
-                </a>
+                </Link>
               </div>
             </div>
           </div>
@@ -88,13 +88,13 @@ export default function Footer() {
             <div className="menu-footer__title">{t("informationPages")}</div>
             <ul className="menu-footer__items">
               <li className="menu-footer__item">
-                <a href="#">{t("home")}</a>
+                <Link href="/">{t("home")}</Link>
               </li>
               <li className="menu-footer__item">
-                <a href="#">{t("marketplace")}</a>
+                <Link href="/products">{t("marketplace")}</Link>
               </li>
               <li className="menu-footer__item">
-                <a href="#">{t("forum")}</a>
+                <Link href="/forum">{t("forum")}</Link>
               </li>
               <li className="menu-footer__item">
                 <Link href="/about">{t("aboutProject")}</Link>
@@ -105,19 +105,19 @@ export default function Footer() {
             <div className="menu-footer__title">{t("forClients")}</div>
             <ul className="menu-footer__items">
               <li className="menu-footer__item">
-                <a href="#">{t("myMessages")}</a>
+                <Link href="/messages">{t("myMessages")}</Link>
               </li>
               <li className="menu-footer__item">
-                <a href="#">{t("postAd")}</a>
+                <Link href="/sell">{t("postAd")}</Link>
               </li>
               <li className="menu-footer__item">
-                <a href="#">{t("userAgreement")}</a>
+                <Link href="#">{t("userAgreement")}</Link>
               </li>
               <li className="menu-footer__item">
-                <a href="#">{t("privacyPolicy")}</a>
+                <Link href="#">{t("privacyPolicy")}</Link>
               </li>
               <li className="menu-footer__item">
-                <a href="#">{t("howToSellBuy")}</a>
+                <Link href="#">{t("howToSellBuy")}</Link>
               </li>
             </ul>
           </div>
