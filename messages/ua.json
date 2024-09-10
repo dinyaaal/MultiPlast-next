@@ -1,0 +1,59 @@
+{
+  "Hero": {
+    "text": "спільнота професіоналів полімерного ринку України",
+    "button": "Про проект"
+  },
+  "Header": {
+    "searchPlaceholder": "Пошук по сайту",
+    "login": "Вхід",
+    "registration": "Реєстрація",
+    "logout": "Вийти",
+    "marketplace": "Торгівельний майданчик",
+    "postAd": "Подати оголошення",
+    "sell": "Про продаж",
+    "buy": "Про купівлю",
+    "messages": "Мої повідомлення",
+    "forum": "Форум",
+
+    "primaryMaterial": "Первинна сировина",
+    "secondaryMaterial": "Вторинна сировина",
+    "granules": "Гранула",
+    "agglomerate": "Агломерат",
+    "crushedGravel": "Дріблена крихта",
+    "scrapAndWaste": "Лом та відходи",
+    "equipment": "Обладнання для переробки полімерів",
+    "services": "Надання послуг",
+    "activeBusiness": "Діючий бізнес"
+  },
+  "HeaderMenu": {
+    "menu": "Меню",
+    "aboutProject": "Про проект",
+    "userAgreement": "Угода користувача",
+    "howToSellBuy": "Як продати і купити?"
+  },
+
+  "Footer": {
+    "menu": "Меню",
+    "aboutProject": "Про проєкт",
+    "userAgreement": "Угода користувача",
+    "howToSellBuy": "Як продати і купити?",
+    "informationPages": "Інформаційні сторінки",
+    "home": "Головна",
+    "marketplace": "Торгівельний майданчик",
+    "forum": "Форум",
+    "socialsText": "Ми в соціальних мережах:",
+    "forClients": "Клієнтам",
+    "myMessages": "Мої повідомлення",
+    "postAd": "Подати обʼяву",
+    "privacyPolicy": "Політика конфіденційності",
+    "techSupport": "Тех. підтримка",
+    "contactSupportText": "Якщо у Вас зʼявились питання чи скарги, повідомте нас.",
+    "copyright": "© Copyright 2024 Multi Plast. Всі права захищені."
+  },
+  "HomeForum": {
+    "forum": "Форум",
+    "joinSpecializedForum": "Приєднайтесь до першого спеціалізованого форуму для професіоналів полімерного ринку України!",
+    "chatShareExperience": "Спілкуйтесь, діліться досвідом, набувайте нових знань та нових ділових партнерів!",
+    "goToForum": "Перейти на форум"
+  }
+}

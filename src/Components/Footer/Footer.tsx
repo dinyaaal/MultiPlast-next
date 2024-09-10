@@ -1,8 +1,10 @@
 import Link from "next/link";
-import React from "react";
 import ModalContact from "../Modals/ModalContact";
+import { useTranslations } from "next-intl";
 
 export default function Footer() {
+  const t = useTranslations("Footer");
+
   return (
     <footer className="footer">
       <div className="footer__container">
@@ -12,7 +14,8 @@ export default function Footer() {
               Л<span>ого</span>
             </Link>
             <div className="footer__socials socials">
-              <p className="socials__text">Ми в соціальних мережах:</p>
+              <p className="socials__text">{t("socialsText")}</p>
+
               <div className="socials__items">
                 <a href="#" className="socials__item">
                   <svg
@@ -82,53 +85,49 @@ export default function Footer() {
           </div>
 
           <div className="footer__menu menu-footer">
-            <div className="menu-footer__title">Інформаційні сторінки</div>
+            <div className="menu-footer__title">{t("informationPages")}</div>
             <ul className="menu-footer__items">
               <li className="menu-footer__item">
-                <a href="#">Головна</a>
+                <a href="#">{t("home")}</a>
               </li>
               <li className="menu-footer__item">
-                <a href="#">Торгівельний майданчик</a>
+                <a href="#">{t("marketplace")}</a>
               </li>
               <li className="menu-footer__item">
-                <a href="#">Форум</a>
+                <a href="#">{t("forum")}</a>
               </li>
               <li className="menu-footer__item">
-                <Link href="/about">Про проект</Link>
+                <Link href="/about">{t("aboutProject")}</Link>
               </li>
             </ul>
           </div>
           <div className="footer__menu menu-footer">
-            <div className="menu-footer__title">Клієнтам</div>
+            <div className="menu-footer__title">{t("forClients")}</div>
             <ul className="menu-footer__items">
               <li className="menu-footer__item">
-                <a href="#">Мои повідомлення</a>
+                <a href="#">{t("myMessages")}</a>
               </li>
               <li className="menu-footer__item">
-                <a href="#">Подати обʼяву</a>
+                <a href="#">{t("postAd")}</a>
               </li>
               <li className="menu-footer__item">
-                <a href="#">Угода користувача</a>
+                <a href="#">{t("userAgreement")}</a>
               </li>
               <li className="menu-footer__item">
-                <a href="#">Політика конфідеційности</a>
+                <a href="#">{t("privacyPolicy")}</a>
               </li>
               <li className="menu-footer__item">
-                <a href="#">Як продати й купити?</a>
+                <a href="#">{t("howToSellBuy")}</a>
               </li>
             </ul>
           </div>
           <div className="footer__support support-footer">
-            <div className="support-footer__title">Тех. підтримка</div>
-            <p className="support-footer__text">
-              Якщо у Вас зʼявились питання чи скарги, повідомте нас.
-            </p>
+            <div className="support-footer__title">{t("techSupport")}</div>
+            <p className="support-footer__text">{t("contactSupportText")}</p>
             <ModalContact />
           </div>
         </div>
-        <div className="footer__copy">
-          © Copyright 2024 Multi Plast. Всі права захищені.
-        </div>
+        <div className="footer__copy">{t("copyright")}</div>
       </div>
     </footer>
   );

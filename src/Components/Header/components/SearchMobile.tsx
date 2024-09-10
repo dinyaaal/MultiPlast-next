@@ -1,6 +1,7 @@
 "use client";
 
 import { useClickOutside } from "@/hooks/ClickOutside";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 import React, { useState } from "react";
 
@@ -9,6 +10,8 @@ export default function SearchMobile() {
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
+
+  const t = useTranslations("Header");
 
   return (
     <div>
@@ -53,7 +56,7 @@ export default function SearchMobile() {
         <div className="body-search-mobile__field">
           <input
             type="text"
-            placeholder="Пошук по сайту"
+            placeholder={t("searchPlaceholder")}
             className="search__input"
           />
           <div className="search__icon">

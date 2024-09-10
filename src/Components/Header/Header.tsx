@@ -7,8 +7,11 @@ import NotificationsMobile from "./components/NotificationsMobile";
 import SearchMobile from "./components/SearchMobile";
 import Language from "./components/Language";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 export default function Header() {
+  const t = useTranslations("Header");
+
   return (
     <header className="header">
       <div className="header__body body-header">
@@ -20,7 +23,7 @@ export default function Header() {
             <div className="body-header__search search">
               <input
                 type="text"
-                placeholder="Пошук по сайту"
+                placeholder={t("searchPlaceholder")}
                 className="search__input"
               />
               <button className="search__icon-body">
@@ -64,7 +67,7 @@ export default function Header() {
                       />
                     </svg>
                   </div>
-                  <span>Вхід</span>
+                  <span>{t("login")}</span>
                 </a>
                 <a
                   href="registration.html"
@@ -84,7 +87,7 @@ export default function Header() {
                       />
                     </svg>
                   </div>
-                  <span>Реєстрація</span>
+                  <span>{t("registration")}</span>
                 </a>
               </div>
 
@@ -102,7 +105,7 @@ export default function Header() {
                   </div>
                   <div className="account-body-user__name">Шевченко Тарас</div>
                 </div>
-                <button className="body-user__exit">Вийти</button>
+                <button className="body-user__exit">{t("logout")}</button>
               </div>
             </div>
           </div>
@@ -115,12 +118,12 @@ export default function Header() {
           <ul className="bottom-header__list menu__list">
             <li className="menu__item">
               <Link href="/products" className="menu__link">
-                Торгівельний майданчик
+                {t("marketplace")}
               </Link>
             </li>
             <li className="menu__item">
               <Link href="/sell" className="menu__link">
-                Подати оголошення
+                {t("postAd")}
                 <div className="main-menu__arrow menu__arrow">
                   <Image
                     src="/icons/dropdown-arrow.svg"
@@ -134,7 +137,7 @@ export default function Header() {
               <ul className="sub-menu__list">
                 <li>
                   <Link href="/sell" className="sub-menu__link menu__link">
-                    Про продаж
+                    {t("sell")}
                     <div className="sub-menu__arrow menu__arrow">
                       <Image
                         src="/icons/dropdown-arrow.svg"
@@ -148,12 +151,13 @@ export default function Header() {
                   <ul className="sub-sub-menu__list">
                     <li>
                       <a href="#" className="sub-menu__link">
-                        Первинна сировина
+                        {t("primaryMaterial")}
                       </a>
                     </li>
                     <li>
                       <a href="#" className="sub-menu__link menu__link">
-                        Вторинна сировина
+                        {t("secondaryMaterial")}
+
                         <div className="sub-sub-menu__arrow menu__arrow">
                           <Image
                             src="/icons/dropdown-arrow.svg"
@@ -167,46 +171,46 @@ export default function Header() {
                       <ul className="sub-sub-sub-menu__list">
                         <li>
                           <a href="#" className="sub-menu__link">
-                            Гранула
+                            {t("granules")}
                           </a>
                         </li>
                         <li>
                           <a href="#" className="sub-menu__link">
-                            Агломерат
+                            {t("agglomerate")}
                           </a>
                         </li>
                         <li>
                           <a href="#" className="sub-menu__link">
-                            Дріблена крихта
+                            {t("crushedGravel")}
                           </a>
                         </li>
                         <li>
                           <a href="#" className="sub-menu__link">
-                            Лом та відходи
+                            {t("scrapAndWaste")}
                           </a>
                         </li>
                       </ul>
                     </li>
                     <li>
                       <a href="#" className="sub-menu__link">
-                        Обладнання для переробки полімерів
+                        {t("equipment")}
                       </a>
                     </li>
                     <li>
                       <a href="#" className="sub-menu__link">
-                        Надання послуг
+                        {t("services")}
                       </a>
                     </li>
                     <li>
                       <a href="#" className="sub-menu__link">
-                        Діючий бізнес
+                        {t("activeBusiness")}
                       </a>
                     </li>
                   </ul>
                 </li>
                 <li>
                   <Link href="/buy" className="sub-menu__link menu__link">
-                    Про купівлю
+                    {t("buy")}
                     <div className="sub-menu__arrow menu__arrow">
                       <Image
                         src="/icons/dropdown-arrow.svg"
@@ -220,12 +224,13 @@ export default function Header() {
                   <ul className="sub-sub-menu__list">
                     <li>
                       <a href="#" className="sub-menu__link">
-                        Первинна сировина
+                        {t("primaryMaterial")}
                       </a>
                     </li>
-                    <li className="menu__item">
+                    <li>
                       <a href="#" className="sub-menu__link menu__link">
-                        Вторинна сировина
+                        {t("secondaryMaterial")}
+
                         <div className="sub-sub-menu__arrow menu__arrow">
                           <Image
                             src="/icons/dropdown-arrow.svg"
@@ -239,39 +244,39 @@ export default function Header() {
                       <ul className="sub-sub-sub-menu__list">
                         <li>
                           <a href="#" className="sub-menu__link">
-                            Гранула
+                            {t("granules")}
                           </a>
                         </li>
                         <li>
                           <a href="#" className="sub-menu__link">
-                            Агломерат
+                            {t("agglomerate")}
                           </a>
                         </li>
                         <li>
                           <a href="#" className="sub-menu__link">
-                            Дріблена крихта
+                            {t("crushedGravel")}
                           </a>
                         </li>
                         <li>
                           <a href="#" className="sub-menu__link">
-                            Лом та відходи
+                            {t("scrapAndWaste")}
                           </a>
                         </li>
                       </ul>
                     </li>
                     <li>
                       <a href="#" className="sub-menu__link">
-                        Обладнання для переробки полімерів
+                        {t("equipment")}
                       </a>
                     </li>
                     <li>
                       <a href="#" className="sub-menu__link">
-                        Надання послуг
+                        {t("services")}
                       </a>
                     </li>
                     <li>
                       <a href="#" className="sub-menu__link">
-                        Діючий бізнес
+                        {t("activeBusiness")}
                       </a>
                     </li>
                   </ul>
@@ -280,22 +285,19 @@ export default function Header() {
             </li>
             <li className="menu__item">
               <Link href="/messages" className="menu__link">
-                Мої повідомлення
+                {t("messages")}
               </Link>
             </li>
             <li className="menu__item">
               <Link href="/forum" className="menu__link">
-                Форум
+                {t("forum")}
               </Link>
               <div className="notification-value">
                 <span className="notification-value__number">99</span>
               </div>
             </li>
           </ul>
-          {/* <nav className="menu__body">
 
-                    
-                </nav>  */}
           <div className="bottom-header__actions">
             <Link
               href="/favorites"

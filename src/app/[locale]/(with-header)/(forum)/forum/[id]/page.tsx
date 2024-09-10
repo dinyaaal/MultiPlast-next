@@ -1,6 +1,33 @@
-import ForumComment from "@/Components/Forum/components/ForumComment";
+import ForumComments from "@/Components/Forum/components/ForumComments";
+import ModalContact from "@/Components/Modals/ModalContact";
 import Image from "next/image";
 import React from "react";
+
+const comments = [
+  {
+    id: 1,
+    author: "John Doe",
+    text: "Это первый комментарий",
+    date: "2024-09-10",
+    likes: 5,
+    replies: [
+      {
+        id: 2,
+        author: "Jane Doe",
+        text: "Ответ на первый комментарий",
+        date: "2024-09-10",
+        likes: 2,
+      },
+    ],
+  },
+  {
+    id: 3,
+    author: "Alice",
+    text: "Это второй комментарий",
+    date: "2024-09-09",
+    likes: 3,
+  },
+];
 
 export default function ForumTopic() {
   return (
@@ -80,27 +107,18 @@ export default function ForumTopic() {
                 </h3>
 
                 <div className="input-block editor">
-                  <textarea id="editor" placeholder="Написати..."></textarea>
+                  <textarea
+                    id="editor"
+                    className="description__input input"
+                    placeholder="Написати..."
+                  ></textarea>
                 </div>
               </div>
               <button className="write-forum-comments__button button">
                 Надіслати
               </button>
             </div>
-            <div className="forum-comments__body">
-              <h3 className="forum-comments__title title--small">
-                Обговорення
-              </h3>
-              <div className="forum-comments__content">
-                <ForumComment />
-              </div>
-              <button
-                type="button"
-                className="forum-comments__more block__more button"
-              >
-                <span>Дивитися ще</span>
-              </button>
-            </div>
+            <ForumComments comments={comments} />;
           </div>
         </div>
         <div className="forum-topic__block block-forum-topic">
@@ -190,9 +208,7 @@ export default function ForumTopic() {
                 За всіма питаннями і пропозиціями, які у вас виникли, зв'яжіться
                 з адміністрацією форуму
               </p>
-              <a href="#" className="info-contact__button button">
-                Написати нам
-              </a>
+              <ModalContact />
             </div>
           </div>
         </div>

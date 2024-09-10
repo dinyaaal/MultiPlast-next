@@ -4,6 +4,7 @@ import Image from "next/image";
 import React, { useState } from "react";
 import Language from "./Language";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 export default function BurgerMenu() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -14,6 +15,8 @@ export default function BurgerMenu() {
   const closeMenu = () => {
     setIsOpen(false);
   };
+
+  const t = useTranslations("Header");
 
   return (
     <div className={`header__menu menu ${isOpen ? "menu-open" : ""} `}>
@@ -44,23 +47,23 @@ export default function BurgerMenu() {
           <ul className="menu__list">
             <li className="menu__item">
               <Link onClick={closeMenu} href="/products" className="menu__link">
-                Торгівельний майданчик
+                {t("marketplace")}
               </Link>
             </li>
             <li className="menu__item">
               <Link onClick={closeMenu} href="/sell" className="menu__link">
-                Подати оголошення
+                {t("postAd")}
               </Link>
             </li>
 
             <li className="menu__item">
               <Link onClick={closeMenu} href="/messages" className="menu__link">
-                Мої повідомлення
+                {t("messages")}
               </Link>
             </li>
             <li className="menu__item">
               <Link onClick={closeMenu} href="/forum" className="menu__link">
-                Форум
+                {t("forum")}
                 <div className="notification-value">
                   <span className="notification-value__number">99</span>
                 </div>
@@ -87,7 +90,7 @@ export default function BurgerMenu() {
                     />
                   </svg>
                 </div>
-                <span>Вхід</span>
+                <span> {t("login")}</span>
               </a>
               <a
                 href="registration.html"
@@ -107,7 +110,7 @@ export default function BurgerMenu() {
                     />
                   </svg>
                 </div>
-                <span>Реєстрація</span>
+                <span> {t("registration")}</span>
               </a>
             </div>
 
@@ -125,7 +128,7 @@ export default function BurgerMenu() {
                 </div>
                 <div className="account-body-user__name">Шевченко Тарас</div>
               </div>
-              <button className="body-user__exit">Вийти</button>
+              <button className="body-user__exit">{t("logout")}</button>
             </div>
           </div>
         </div>

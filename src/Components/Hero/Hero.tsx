@@ -3,8 +3,10 @@ import React from "react";
 import Swiper from "swiper";
 import HeroSwiper from "./components/HeroSwiper";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 export default function Hero() {
+  const t = useTranslations("Hero");
   return (
     <section className="hero">
       <div className="hero__bg">
@@ -14,12 +16,10 @@ export default function Hero() {
         <div className="top-hero__container">
           <div className="top-hero__block">
             <h1 className="top-hero__title">multi Plast</h1>
-            <div className="top-hero__text">
-              спільнота професіоналів полімерного ринку України
-            </div>
+            <div className="top-hero__text">{t("text")}</div>
           </div>
           <Link href="/about" className="top-hero__button button">
-            Про проект
+            {t("button")}
           </Link>
         </div>
       </div>
