@@ -3,6 +3,7 @@
 import { useClickOutside } from "@/hooks/ClickOutside";
 import React, { useState, useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
+import { useLocale } from "next-intl";
 
 interface Option {
   label: string;
@@ -19,24 +20,28 @@ export default function SelectTabs({ options }: SelectProps) {
 
   const { rootEl } = useClickOutside(() => setIsOpen(false));
   const router = useRouter();
-  const currentPath = usePathname(); // Используем хук для получения текущего пути
+  const currentPath = usePathname();
+  const localeActive = useLocale(); // Получаем текущую локаль
 
   useEffect(() => {
-    const matchedOption = options.find((option) => option.link === currentPath);
+    const matchedOption = options.find(
+      (option) => `/${localeActive}${option.link}` === currentPath
+    );
     if (matchedOption) {
       setSelectedLink(matchedOption.link);
     }
-  }, [options, currentPath]); // Следим за изменением пути
+  }, [options, currentPath, localeActive]);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
 
   const handleOptionClick = (link: string) => {
-    if (link !== currentPath) {
+    const localizedLink = `/${localeActive}${link}`; // Формируем ссылку с локалью
+    if (localizedLink !== currentPath) {
       setSelectedLink(link);
       setIsOpen(false);
-      router.push(link); // Навигация при клике на опцию
+      router.push(localizedLink); // Навигация с локализованной ссылкой
     }
   };
 

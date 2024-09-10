@@ -1,12 +1,12 @@
-import Breadcrumbs from "@/Components/Breadcrumbs";
-import ForumCard from "@/Components/Forum/components/ForumCard";
 import ForumLayout from "@/Components/Forum/components/ForumLayout";
+import ForumCard from "@/Components/Forum/components/ForumCard";
 import Sections from "@/Components/Forum/components/Sections";
-import Select from "@/Components/Select/Select";
-import Image from "next/image";
 import React from "react";
+import { useTranslations } from "next-intl";
 
 export default function Forum() {
+  const t = useTranslations("Forum");
+
   return (
     <>
       <ForumLayout>
@@ -14,7 +14,7 @@ export default function Forum() {
           <div className="body-forum__content">
             <Sections />
 
-            <p className="body-forum__text">Виберіть тему форуму:</p>
+            <p className="body-forum__text">{t("selectTopic")}</p>
             <div className="body-forum__items">
               <ForumCard />
               <ForumCard />

@@ -130,6 +130,8 @@
 
   // .select__option
   &__option {
+    display: flex;
+    align-items: center;
     width: 100%;
     height: toRem(39);
     text-align: left;

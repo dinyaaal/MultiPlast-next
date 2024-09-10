@@ -1,5 +1,9 @@
 // Заголовки, загальні БЕМ блоки та інше...
 
+.no-scroll {
+  overflow: hidden;
+}
+
 .active {
   &.tabs-advertisement__item {
     background-color: #c4dbff;

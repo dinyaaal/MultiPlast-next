@@ -1,15 +1,18 @@
 import Adverts from "@/Components/Products/Adverts";
 import Filters from "@/Components/Products/components/Filters";
 import ProductCard from "@/Components/Products/components/ProductCard";
+import { useTranslations } from "next-intl";
 import React from "react";
 
 export default function Products() {
+  const t = useTranslations("Products");
+
   return (
     <>
       <section className="trade">
         <div className="trade__container">
           <div className="trade__top">
-            <h2 className="trade__title title">Торгівельний майданчик</h2>
+            <h2 className="trade__title title">{t("title")}</h2>
           </div>
           <div className="trade__body">
             <Filters />

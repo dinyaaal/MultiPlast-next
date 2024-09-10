@@ -9,14 +9,16 @@ import {
   ModalFooter,
   useDisclosure,
 } from "@nextui-org/modal";
+import { useTranslations } from "next-intl";
 
 export default function ModalContact() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const t = useTranslations("Modals");
 
   return (
     <>
       <button onClick={onOpen} className="support-footer__button button">
-        <span>Написати нам</span>
+        <span>{t("support")}</span>
       </button>
 
       <Modal

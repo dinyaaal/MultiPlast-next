@@ -2,24 +2,27 @@ import Breadcrumbs from "@/Components/Breadcrumbs";
 import SelectTabs from "@/Components/Select/SelectTabs";
 import Image from "next/image";
 import React from "react";
+import { useTranslations } from "next-intl";
 
 export default function ForumLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const t = useTranslations("ForumLayout");
+
   return (
     <>
-      <Breadcrumbs position="Форум" />
+      <Breadcrumbs position={t("breadcrumbsPosition")} />
       <section className="forum">
         <div className="forum__top top-forum">
           <div className="top-forum__container">
-            <div className="top-forum__title title">Форум</div>
+            <div className="top-forum__title title">{t("forumTitle")}</div>
             <div className="top-forum__block">
               <SelectTabs
                 options={[
-                  { link: "/forum", label: "Форум" },
-                  { link: "/forum-add", label: "Додати тему" },
+                  { link: "/forum", label: t("forumTab") },
+                  { link: "/forum-add", label: t("addTopicTab") },
                 ]}
               />
 
@@ -27,7 +30,7 @@ export default function ForumLayout({
                 <input
                   autoComplete="off"
                   type="text"
-                  placeholder="Пошук по форуму"
+                  placeholder={t("searchPlaceholder")}
                   className="search__input"
                 />
                 <button className="search__icon-body">

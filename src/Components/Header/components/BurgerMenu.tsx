@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Language from "../../Language/Language";
 import { Link } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
@@ -15,6 +15,14 @@ export default function BurgerMenu() {
   const closeMenu = () => {
     setIsOpen(false);
   };
+
+  useEffect(() => {
+    if (isOpen) {
+      document.body.classList.add("no-scroll");
+    } else {
+      document.body.classList.remove("no-scroll");
+    }
+  }, [isOpen]);
 
   const t = useTranslations("Header");
 
