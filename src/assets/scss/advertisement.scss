@@ -179,6 +179,14 @@
   &--nowrap {
     flex-direction: row;
     justify-content: space-between;
+    align-items: stretch;
+
+    .block-row__item {
+      width: fit-content;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
   }
   .check {
     @media (max-width: $tablet) {
@@ -187,6 +195,7 @@
     text-wrap: nowrap;
   }
 }
+
 .input-body {
   position: relative;
   width: 100%;

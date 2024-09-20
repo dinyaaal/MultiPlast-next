@@ -41,29 +41,35 @@ export default function Sell() {
                   placeholder=" Виберіть полімер:"
                 />
               </div>
-              <div className="input-block">
+              <div className="input-block input-block--price">
                 <p>Вкажіть ціну продукту за кг:</p>
                 <div className="block-row block-row--nowrap">
-                  <div className="block-row__item">
-                    <label className="check">
-                      <input
-                        type="checkbox"
-                        name="remember"
-                        className="real-checkbox"
-                      />
-                      <span className="custom-checkbox"></span>
-                      За домовленістю
-                    </label>
+                  <div className="input-block">
+                    <p> За домовленістю:</p>
+                    <div className="block-row__item">
+                      <label className="check">
+                        <input
+                          type="checkbox"
+                          name="remember"
+                          className="real-checkbox"
+                        />
+                        <span className="custom-checkbox"></span>
+                        Ціна за домовленістю
+                      </label>
+                    </div>
                   </div>
-                  <div className="block-row__item">
-                    <div className="input-body input">
-                      <input
-                        autoComplete="off"
-                        type="number"
-                        placeholder=""
-                        className="input-body__input input-number"
-                      />
-                      <div className="input-body__item">грн</div>
+                  <div className="input-block">
+                    <p>Або фіксована ціна:</p>
+                    <div className="block-row__item">
+                      <div className="input-body input">
+                        <input
+                          autoComplete="off"
+                          type="number"
+                          placeholder=""
+                          className="input-body__input input-number"
+                        />
+                        <div className="input-body__item">грн</div>
+                      </div>
                     </div>
                   </div>
                 </div>

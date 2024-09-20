@@ -49,6 +49,9 @@
   text-align: start;
   flex-direction: column;
   gap: toRem(10);
+  &--price {
+    gap: toRem(30);
+  }
 }
 
 .check {
@@ -57,6 +60,7 @@
   // align-items: center;
   gap: toRem(10);
   height: fit-content;
+
   .real-checkbox {
     width: 0;
     height: 0;
