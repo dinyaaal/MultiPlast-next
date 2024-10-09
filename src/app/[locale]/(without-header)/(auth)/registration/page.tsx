@@ -1,4 +1,5 @@
 import Select from "@/Components/Select/Select";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
@@ -9,25 +10,25 @@ const options = [
 ];
 
 export default function Registration() {
+  const t = useTranslations("Auth");
+
   return (
     <>
       <div className="login__top">
         <div className="login__logo logo">
           л<span>ого</span>
         </div>
-        <h2 className="login__title title">Реєстрація</h2>
+        <h2 className="login__title title">{t("registration-title")}</h2>
         <div className="login__entry entry-login">
-          <p className="entry-login__text">Вже є обліковий запис?</p>
+          <p className="entry-login__text">{t("registration-already")}</p>
           <Link href="/login" className="entry-login__link link">
-            Увійдіть
+            {t("registration-login")}
           </Link>
         </div>
       </div>
       <div className="login__form form-login">
         <div className="socials-auth">
-          <p className="socials-auth__text">
-            Зареєструйтеся на сайті за допомогою облікового запису:
-          </p>
+          <p className="socials-auth__text">{t("registration-services")}</p>
           <div className="socials-auth__body">
             <a href="#" className="socials-auth__item item-socials-auth">
               <div className="item-socials-auth__image">
@@ -54,82 +55,83 @@ export default function Registration() {
           </div>
         </div>
         <div className="form-login__block">
-          <p className="form-login__block-text">Або заповніть форму:</p>
+          <p className="form-login__block-text">{t("registration-form")}</p>
           <div className="input-block">
-            <p>Імʼя</p>
+            <p> {t("registration-name")}</p>
             <input
               autoComplete="off"
               type="text"
               name="form[]"
-              placeholder="Імʼя"
+              placeholder={t("registration-name")}
               className="form-login__input input"
             />
           </div>
           <div className="input-block">
-            <p>Прізвище</p>
+            <p>{t("registration-surname")}</p>
             <input
               autoComplete="off"
               type="text"
               name="form[]"
-              placeholder="Прізвище"
+              placeholder={t("registration-surname")}
               className="form-login__input input"
             />
           </div>
           <div className="input-block">
-            <p>Ваш телефон</p>
+            <p>{t("registration-number")}</p>
             <input
               autoComplete="off"
               type="number"
               name="form[]"
-              placeholder="Ваш телефон"
+              placeholder={t("registration-number")}
               className="form-login__input input"
             />
           </div>
           <div className="input-block">
-            <p>Ваша пошта</p>
+            <p>{t("registration-email")}</p>
             <input
               autoComplete="off"
               type="email"
               name="form[]"
-              placeholder="Ваша пошта"
+              placeholder={t("registration-email")}
               className="form-login__input input"
             />
           </div>
           <div className="input-block">
-            <p>Вибір міста</p>
-            <Select options={options} placeholder="Вибір міста"></Select>
+            <p>{t("registration-city")}</p>
+            <Select
+              options={options}
+              placeholder={t("registration-city")}
+            ></Select>
           </div>
           <div className="input-block">
-            <p>Пароль</p>
+            <p>{t("registration-password")}</p>
             <input
               autoComplete="off"
               type="password"
               name="form[]"
-              placeholder="Введіть пароль"
+              placeholder={t("registration-password")}
               className="form-login__input input"
             />
           </div>
           <div className="input-block">
-            <p>Повторіть пароль</p>
+            <p>{t("registration-repeat-password")}</p>
             <input
               autoComplete="off"
               type="password"
               name="form[]"
-              placeholder="Повторіть пароль"
+              placeholder={t("registration-repeat-password")}
               className="form-login__input input"
             />
           </div>
           <label className="check">
             <input type="checkbox" name="remember" className="real-checkbox" />
             <span className="custom-checkbox"></span>
-            Реєструючись на сайті я підтверджую, що ознайомлений і згоден з
-            умовами Угоди користувача та Політикою конфіденційності і
-            використання файлів cookie
+            {t("registration-checkbox")}
           </label>
         </div>
 
         <a href="#" className="form-login__button button">
-          Зареєструватися
+          {t("registration-button")}
         </a>
       </div>
     </>

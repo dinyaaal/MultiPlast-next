@@ -95,5 +95,29 @@
   },
   "Modals": {
     "support": "Написати нам"
+  },
+  "Auth": {
+    "registration-title": "Реєстрація",
+    "registration-already": "Вже є обліковий запис?",
+    "registration-login": "Увійдіть",
+    "registration-services": "Зареєструйтеся на сайті за допомогою облікового запису:",
+    "registration-form": "Або заповніть форму:",
+    "registration-name": "Імʼя",
+    "registration-surname": "Прізвище",
+    "registration-number": "Ваш телефон",
+    "registration-email": "Ваша пошта",
+    "registration-city": "Вибір міста",
+    "registration-password": "Пароль",
+    "registration-repeat-password": "Повторіть пароль",
+    "registration-checkbox": "Реєструючись на сайті я підтверджую, що ознайомлений і згоден з умовами Угоди користувача та Політикою конфіденційності і використання файлів cookie",
+    "registration-button": "Зареєструватися",
+    "login-title": "Вхід",
+    "login-not": "Нема облікового запису?",
+    "login-registration": "Зареєструйтесь",
+    "login-services": "Увійдіть на сайт за допомогою облікового запису:",
+    "login-form": "Або вкажіть email та поточній пароль:",
+    "login-checkbox": "Запамʼятати мене",
+    "login-forgot": "Забули пароль?",
+    "login-button": "Увійти"
   }
 }
