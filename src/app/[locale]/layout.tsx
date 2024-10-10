@@ -5,6 +5,7 @@ import "../../assets/scss/style.scss";
 import { NextUIProvider } from "@nextui-org/system";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
+import { AuthProviders } from "@/Components/AuthProviders";
 
 const rubikFont = Rubik({
   subsets: ["latin"],
@@ -28,9 +29,13 @@ export default async function RootLayout({
   return (
     <html lang={locale}>
       <body className={`${rubikFont.className} `}>
-        <NextIntlClientProvider messages={messages}>
-          <NextUIProvider className=" w-full h-full">{children}</NextUIProvider>
-        </NextIntlClientProvider>
+        <AuthProviders>
+          <NextIntlClientProvider messages={messages}>
+            <NextUIProvider className=" w-full h-full">
+              {children}
+            </NextUIProvider>
+          </NextIntlClientProvider>
+        </AuthProviders>
       </body>
     </html>
   );
