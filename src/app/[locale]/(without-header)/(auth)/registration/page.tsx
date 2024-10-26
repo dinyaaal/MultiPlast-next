@@ -1,16 +1,64 @@
-import Select from "@/Components/Select/Select";
+"use client";
+
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import { z } from "zod";
+import { RegistrationFormSchema } from "@/lib/schema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm, SubmitHandler, FormProvider } from "react-hook-form";
+import { Select, SelectItem } from "@nextui-org/react";
+import PasswordInput from "@/Components/PasswordInput";
 
-const options = [
-  { value: "1", label: "1" },
-  { value: "2", label: "2" },
-];
+const cities = ["Киев", "Харьков"];
+
+type Inputs = z.infer<typeof RegistrationFormSchema>;
 
 export default function Registration() {
   const t = useTranslations("Auth");
+
+  const {
+    register,
+    handleSubmit,
+    watch,
+    reset,
+    trigger,
+    setValue,
+    formState: { errors },
+  } = useForm<Inputs>({
+    resolver: zodResolver(RegistrationFormSchema),
+  });
+
+  const processForm: SubmitHandler<Inputs> = async (data) => {
+    try {
+      const response = await fetch("/api/auth/registration", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: data.email,
+          firstName: data.firstName,
+          lastName: data.lastName,
+          phoneNumber: data.phoneNumber,
+          city: data.city,
+          agreement: data.agreement,
+          password: data.password,
+          passwordConfirmation: data.passwordConfirmation,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to register");
+      }
+
+      const result = await response.json();
+      console.log("Registration successful:", result);
+    } catch (error) {
+      console.error("Registration error:", error);
+    }
+  };
 
   return (
     <>
@@ -26,7 +74,10 @@ export default function Registration() {
           </Link>
         </div>
       </div>
-      <div className="login__form form-login">
+      <form
+        onSubmit={handleSubmit(processForm)}
+        className="login__form form-login"
+      >
         <div className="socials-auth">
           <p className="socials-auth__text">{t("registration-services")}</p>
           <div className="socials-auth__body">
@@ -61,9 +112,11 @@ export default function Registration() {
             <input
               autoComplete="off"
               type="text"
-              name="form[]"
               placeholder={t("registration-name")}
-              className="form-login__input input"
+              className={`form-login__input input ${
+                errors.firstName ? "input--error" : ""
+              }`}
+              {...register("firstName")}
             />
           </div>
           <div className="input-block">
@@ -71,9 +124,11 @@ export default function Registration() {
             <input
               autoComplete="off"
               type="text"
-              name="form[]"
               placeholder={t("registration-surname")}
-              className="form-login__input input"
+              className={`form-login__input input ${
+                errors.lastName ? "input--error" : ""
+              }`}
+              {...register("lastName")}
             />
           </div>
           <div className="input-block">
@@ -81,9 +136,11 @@ export default function Registration() {
             <input
               autoComplete="off"
               type="number"
-              name="form[]"
               placeholder={t("registration-number")}
-              className="form-login__input input"
+              className={`form-login__input input ${
+                errors.phoneNumber ? "input--error" : ""
+              }`}
+              {...register("phoneNumber")}
             />
           </div>
           <div className="input-block">
@@ -91,26 +148,58 @@ export default function Registration() {
             <input
               autoComplete="off"
               type="email"
-              name="form[]"
               placeholder={t("registration-email")}
-              className="form-login__input input"
+              className={`form-login__input input ${
+                errors.email ? "input--error" : ""
+              }`}
+              {...register("email")}
             />
           </div>
           <div className="input-block">
             <p>{t("registration-city")}</p>
             <Select
-              options={options}
               placeholder={t("registration-city")}
-            ></Select>
+              classNames={{
+                trigger: `min-h-[45px] text-black px-[12px] bg-[#F8FBFF] rounded-[5px] outline-offset-0 outline-[1px]  ${
+                  errors.city ? "outline-[#FF0000]" : "outline-[#B0BFD7]"
+                } `,
+                value: `${errors.city ? "text-[#FF0000]" : ""}`,
+                popoverContent:
+                  "bg-[#F8FBFF] p-0 rounded-[5px] outline-offset-0 outline-[1px] outline-[#B0BFD7]",
+                listbox: "p-0",
+              }}
+              listboxProps={{
+                itemClasses: {
+                  base: [
+                    "min-h-[39px]",
+                    "px-[15px]",
+                    "py-[5px]",
+                    "rounded-none",
+                    "bg-transparent",
+                    "transition-colors",
+
+                    "data-[hover=true]:bg-[#c4dbff]",
+                    "data-[selectable=true]:focus:bg-[#c4dbff]",
+                  ],
+                },
+              }}
+              {...register("city")}
+            >
+              {cities.map((city) => (
+                <SelectItem key={city}>{city}</SelectItem>
+              ))}
+            </Select>
           </div>
           <div className="input-block">
             <p>{t("registration-password")}</p>
             <input
               autoComplete="off"
               type="password"
-              name="form[]"
               placeholder={t("registration-password")}
-              className="form-login__input input"
+              className={`form-login__input input ${
+                errors.password ? "input--error" : ""
+              }`}
+              {...register("password")}
             />
           </div>
           <div className="input-block">
@@ -118,22 +207,35 @@ export default function Registration() {
             <input
               autoComplete="off"
               type="password"
-              name="form[]"
               placeholder={t("registration-repeat-password")}
-              className="form-login__input input"
+              className={`form-login__input input ${
+                errors.passwordConfirmation ? "input--error" : ""
+              }`}
+              {...register("passwordConfirmation")}
             />
           </div>
           <label className="check">
-            <input type="checkbox" name="remember" className="real-checkbox" />
-            <span className="custom-checkbox"></span>
+            <input
+              type="checkbox"
+              className="real-checkbox"
+              {...register("agreement")}
+            />
+            <span
+              className={`custom-checkbox ${
+                errors.agreement ? "custom-checkbox--error" : ""
+              }`}
+            ></span>
             {t("registration-checkbox")}
           </label>
         </div>
 
-        <a href="#" className="form-login__button button">
+        <button
+          onClick={handleSubmit(processForm)}
+          className="form-login__button button"
+        >
           {t("registration-button")}
-        </a>
-      </div>
+        </button>
+      </form>
     </>
   );
 }
