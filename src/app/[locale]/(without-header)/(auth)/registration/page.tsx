@@ -10,6 +10,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, SubmitHandler, FormProvider } from "react-hook-form";
 import { Select, SelectItem } from "@nextui-org/react";
 import PasswordInput from "@/Components/PasswordInput";
+import { useRouter } from "next/navigation";
 
 const cities = ["Киев", "Харьков"];
 
@@ -17,7 +18,7 @@ type Inputs = z.infer<typeof RegistrationFormSchema>;
 
 export default function Registration() {
   const t = useTranslations("Auth");
-
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -229,10 +230,7 @@ export default function Registration() {
           </label>
         </div>
 
-        <button
-          onClick={handleSubmit(processForm)}
-          className="form-login__button button"
-        >
+        <button type="submit" className="form-login__button button">
           {t("registration-button")}
         </button>
       </form>
