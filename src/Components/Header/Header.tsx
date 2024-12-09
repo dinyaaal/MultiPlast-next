@@ -11,7 +11,7 @@ import Language from "../Language/Language";
 import { Link } from "@/i18n/routing";
 
 import { useTranslations } from "next-intl";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 
 export default function Header() {
   const t = useTranslations("Header");
@@ -60,7 +60,7 @@ export default function Header() {
                     <div className="account-body-user__icon-body">
                       <div className="account-body-user__icon">
                         <Image
-                          src="/icons/user.svg"
+                          src={"/icons/user.svg"}
                           alt="Icon"
                           width={100}
                           height={100}
@@ -68,10 +68,16 @@ export default function Header() {
                       </div>
                     </div>
                     <div className="account-body-user__name">
-                      Шевченко Тарас
+                      <p>{session.user?.first_name}</p>
+                      <p>{session.user?.last_name}</p>
                     </div>
                   </div>
-                  <button className="body-user__exit">{t("logout")}</button>
+                  <button
+                    onClick={() => signOut({ callbackUrl: "/" })}
+                    className="body-user__exit"
+                  >
+                    {t("logout")}
+                  </button>
                 </div>
               ) : (
                 <div className="user__login login-user">

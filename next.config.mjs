@@ -1,8 +1,12 @@
 import createNextIntlPlugin from "next-intl/plugin";
 
-const withNextIntl = createNextIntlPlugin();
-
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
+const nextConfig = {
+  images: {
+    domains: ["13.60.7.255"],
+  },
+};
+
+const withNextIntl = createNextIntlPlugin();
 
 export default withNextIntl(nextConfig);

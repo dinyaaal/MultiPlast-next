@@ -2,7 +2,8 @@
 
 import { useTranslations } from "next-intl";
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
+
 import React from "react";
 import { z } from "zod";
 import { RegistrationFormSchema } from "@/lib/schema";
@@ -30,6 +31,26 @@ export default function Registration() {
   } = useForm<Inputs>({
     resolver: zodResolver(RegistrationFormSchema),
   });
+
+  const googleAuth = async () => {
+    try {
+      const response = await fetch("http://13.60.7.255/auth/google", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to register");
+      }
+
+      const result = await response.json();
+      console.log("Registration successful:", result);
+    } catch (error) {
+      console.error("Registration error:", error);
+    }
+  };
 
   const processForm: SubmitHandler<Inputs> = async (data) => {
     try {
@@ -64,9 +85,9 @@ export default function Registration() {
   return (
     <>
       <div className="login__top">
-        <div className="login__logo logo">
+        <Link href="/" className="login__logo logo">
           л<span>ого</span>
-        </div>
+        </Link>
         <h2 className="login__title title">{t("registration-title")}</h2>
         <div className="login__entry entry-login">
           <p className="entry-login__text">{t("registration-already")}</p>
@@ -82,7 +103,10 @@ export default function Registration() {
         <div className="socials-auth">
           <p className="socials-auth__text">{t("registration-services")}</p>
           <div className="socials-auth__body">
-            <a href="#" className="socials-auth__item item-socials-auth">
+            <button
+              onClick={googleAuth}
+              className="socials-auth__item item-socials-auth"
+            >
               <div className="item-socials-auth__image">
                 <Image
                   src="/socials/google.png"
@@ -92,8 +116,8 @@ export default function Registration() {
                 />
               </div>
               <div className="item-socials-auth__name">Google</div>
-            </a>
-            <a href="#" className="socials-auth__item item-socials-auth">
+            </button>
+            <button className="socials-auth__item item-socials-auth">
               <div className="item-socials-auth__image">
                 <Image
                   src="/socials/facebook.svg"
@@ -103,7 +127,7 @@ export default function Registration() {
                 />
               </div>
               <div className="item-socials-auth__name">Facebook</div>
-            </a>
+            </button>
           </div>
         </div>
         <div className="form-login__block">

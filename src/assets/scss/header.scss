@@ -160,14 +160,6 @@
   // .user__link
   &__link {
   }
-  &--authorized {
-    .login-user {
-      display: none !important;
-    }
-    .body-user {
-      display: flex !important;
-    }
-  }
 }
 
 .login-user {
@@ -237,7 +229,6 @@
   align-items: center;
   justify-content: space-between;
   gap: toRem(20);
-  display: none;
 
   // .body-user__account
   &__account {
@@ -276,6 +267,9 @@
   // .account-body-user__name
   &__name {
     text-wrap: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 8px;
   }
 }
 

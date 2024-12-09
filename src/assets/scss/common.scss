@@ -494,3 +494,7 @@
 .real-radio:checked + .gender__item {
   background-color: #c4dbff !important;
 }
+
+.custom-radio--error {
+  border-color: #ff0000 !important;
+}
