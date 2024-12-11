@@ -1,11 +1,15 @@
+import { UserInfoSchema } from "@/lib/schema";
+import { User } from "@/types/user";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function PUT(request: NextRequest) {
+export async function PATCH(request: NextRequest) {
   const { id, token, userInfo } = await request.json();
 
   try {
-    const res = await fetch(`http://13.60.7.255/api/user/${id}`, {
-      method: "PUT",
+    console.log(JSON.stringify(userInfo));
+
+    const res = await fetch(`http://13.60.7.255/api/users/${id}`, {
+      method: "PATCH",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,

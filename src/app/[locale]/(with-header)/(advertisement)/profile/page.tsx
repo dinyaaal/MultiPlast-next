@@ -26,7 +26,7 @@ const years = Array.from({ length: 100 }, (_, i) =>
 );
 
 export default function Profile() {
-  const { data: session, status } = useSession();
+  const { data: session, status, update } = useSession();
   const router = useRouter();
   const [userInfo, setUserInfo] = useState<User | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -99,16 +99,27 @@ export default function Profile() {
 
     console.log(data);
 
+    const { birthday_day, birthday_month, birthday_year, ...otherFields } =
+      data;
+
+    const userData = {
+      ...otherFields,
+      ...(birthday_day && birthday_month && birthday_year
+        ? { birthday: `${birthday_year}-${birthday_month}-${birthday_day}` }
+        : { birthday: "" }),
+    };
+
+    console.log(userData);
     try {
-      const editResponse = await fetch(`/api/users/put`, {
-        method: "PUT",
+      const editResponse = await fetch(`/api/users/edit`, {
+        method: "PATCH",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
           token,
           id,
-          userInfo: data,
+          userInfo: userData,
         }),
       });
 
@@ -252,8 +263,8 @@ export default function Profile() {
                               type="radio"
                               // name="sex"
                               {...register("gender")}
-                              value={"man"}
-                              checked={userInfo?.gender === "man"}
+                              value={"male"}
+                              checked={userInfo?.gender === "male"}
                               onChange={handleGenderChange}
                             />
                             <span
@@ -271,8 +282,8 @@ export default function Profile() {
                               className="real-radio"
                               type="radio"
                               // name="sex"
-                              value={"woman"}
-                              checked={userInfo?.gender === "woman"}
+                              value={"female"}
+                              checked={userInfo?.gender === "female"}
                               {...register("gender")}
                               onChange={handleGenderChange}
                             />
@@ -295,6 +306,11 @@ export default function Profile() {
                     <div className="birth-date__item">
                       <Select
                         placeholder={"День"}
+                        defaultSelectedKeys={
+                          userInfo && userInfo.birthday
+                            ? [userInfo.birthday.split(" ")[0].split("-")[2]]
+                            : [""]
+                        }
                         classNames={{
                           trigger: `min-h-[45px] text-black px-[12px] bg-[#F8FBFF] rounded-[5px] outline-offset-0 outline-[1px]  ${
                             errors.birthday_day
@@ -333,6 +349,11 @@ export default function Profile() {
                     <div className="birth-date__item">
                       <Select
                         placeholder={"Месяц"}
+                        defaultSelectedKeys={
+                          userInfo && userInfo.birthday
+                            ? [userInfo.birthday.split(" ")[0].split("-")[1]]
+                            : [""]
+                        }
                         classNames={{
                           trigger: `min-h-[45px] text-black px-[12px] bg-[#F8FBFF] rounded-[5px] outline-offset-0 outline-[1px]  ${
                             errors.birthday_month
@@ -371,6 +392,11 @@ export default function Profile() {
                     <div className="birth-date__item">
                       <Select
                         placeholder={"Год"}
+                        defaultSelectedKeys={
+                          userInfo && userInfo.birthday
+                            ? [userInfo.birthday.split(" ")[0].split("-")[0]]
+                            : [""]
+                        }
                         classNames={{
                           trigger: `min-h-[45px] text-black px-[12px] bg-[#F8FBFF] rounded-[5px] outline-offset-0 outline-[1px]  ${
                             errors.birthday_year

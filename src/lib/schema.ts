@@ -50,6 +50,7 @@ export const UserInfoSchema = z
     address: z.string().nullable().optional(),
     area: z.string().nullable().optional(),
     web_site: z.string().nullable().optional(),
+    password: z.string().nullable().optional(),
     country: z.string().nullable().optional(),
     ig_link: z.string().nullable().optional(),
     fb_link: z.string().nullable().optional(),

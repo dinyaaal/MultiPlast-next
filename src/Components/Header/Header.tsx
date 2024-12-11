@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import HeaderMenu from "./components/HeaderMenu";
 import Notifications from "./components/Notifications";
 import BurgerMenu from "./components/BurgerMenu";
@@ -12,12 +12,54 @@ import { Link } from "@/i18n/routing";
 
 import { useTranslations } from "next-intl";
 import { signOut, useSession } from "next-auth/react";
+import { User } from "@/types/user";
 
 export default function Header() {
   const t = useTranslations("Header");
   const { data: session, status } = useSession();
 
-  console.log(session);
+  const [userInfo, setUserInfo] = useState<User | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+
+  const fetchUserInfo = async () => {
+    if (!session) return;
+
+    // setLoading(true);
+    setError(null);
+
+    try {
+      const responseOrderStatus = await fetch(
+        `/api/users/get?token=${session?.user.access_token}&id=${session?.user.id}`
+      );
+
+      if (!responseOrderStatus.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      const data = await responseOrderStatus.json();
+
+      if (data) {
+        console.log(`User: ${JSON.stringify(data)} `);
+        setUserInfo(data);
+        setError(null);
+      } else {
+        setError("Unknown error occurred");
+        setUserInfo(null);
+      }
+    } catch (error) {
+      console.error("Error fetching order status:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (!userInfo) {
+      fetchUserInfo();
+    }
+  }, [session]);
+
   return (
     <header className="header">
       <div className="header__body body-header">
@@ -68,8 +110,8 @@ export default function Header() {
                       </div>
                     </div>
                     <div className="account-body-user__name">
-                      <p>{session.user?.first_name}</p>
-                      <p>{session.user?.last_name}</p>
+                      <p>{userInfo?.first_name}</p>
+                      <p>{userInfo?.last_name}</p>
                     </div>
                   </div>
                   <button
