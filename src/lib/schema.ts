@@ -50,7 +50,6 @@ export const UserInfoSchema = z
     address: z.string().nullable().optional(),
     area: z.string().nullable().optional(),
     web_site: z.string().nullable().optional(),
-    password: z.string().nullable().optional(),
     country: z.string().nullable().optional(),
     ig_link: z.string().nullable().optional(),
     fb_link: z.string().nullable().optional(),
@@ -61,13 +60,24 @@ export const UserInfoSchema = z
     birthday_year: z.string().optional(),
 
     gender: z.string().nullable().optional(),
+    oldPassword: z.string().nullable().optional(),
+    newPassword: z.string().nullable().optional(),
+    repeatPassword: z.string().nullable().optional(),
   })
   .refine(
-    (data) =>
-      (!data.birthday_day && !data.birthday_month && !data.birthday_year) ||
-      (data.birthday_day && data.birthday_month && data.birthday_year),
+    (data) => {
+      const { oldPassword, newPassword, repeatPassword } = data;
+      if (!oldPassword && !newPassword && !repeatPassword) {
+        return true; // Все пустые, нет ошибок
+      }
+      if (oldPassword && newPassword && repeatPassword) {
+        return newPassword === repeatPassword; // Все заполнены и пароли совпадают
+      }
+      return false; // Одно или два поля заполнены, но не все
+    },
     {
-      message: "Если заполняете одно поле даты рождения, заполните все поля.",
-      path: ["birthday_day"],
+      message:
+        "Если одно из полей пароля заполнено, заполните все, и новый пароль должен совпадать с подтверждением.",
+      path: ["newPassword"], // Указываем путь для удобства отображения ошибки
     }
   );

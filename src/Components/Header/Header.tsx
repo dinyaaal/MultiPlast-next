@@ -60,6 +60,8 @@ export default function Header() {
     }
   }, [session]);
 
+  console.log(session);
+
   return (
     <header className="header">
       <div className="header__body body-header">
