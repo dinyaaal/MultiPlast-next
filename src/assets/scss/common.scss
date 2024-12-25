@@ -48,6 +48,7 @@
   display: flex;
   text-align: start;
   flex-direction: column;
+  justify-content: space-between;
   gap: toRem(10);
   &--price {
     gap: toRem(30);

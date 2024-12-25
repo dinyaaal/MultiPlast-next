@@ -23,6 +23,11 @@
     flex-direction: column;
     gap: 20px;
   }
+  &__form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
 }
 .tabs-advertisement {
   position: relative;

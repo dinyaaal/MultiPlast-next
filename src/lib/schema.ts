@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { number, z } from "zod";
 
 export const RegistrationFormSchema = z
   .object({
@@ -81,3 +81,20 @@ export const UserInfoSchema = z
       path: ["newPassword"], // Указываем путь для удобства отображения ошибки
     }
   );
+
+export const AdvertismentSchema = z.object({
+  category_id: z.number(),
+  description: z.string().optional(),
+  title: z.string().min(1, { message: "Заголовок обязателен" }),
+  photos: z.array(z.instanceof(File)).optional(),
+  files: z.array(z.instanceof(File)).optional(),
+  name_of_enterprise: z.string().min(1, "Обязательно"),
+  city: z.string().min(1, "Введите ваш город"),
+  address: z.string().min(1, "Введите ваш Адресс"),
+  area: z.string().min(1, "Введите вашу область"),
+  phone_number: z
+    .string()
+    .min(10, "Номер телефона должен содержать минимум 10 символов")
+    .max(15, "Номер телефона не может быть длиннее 15 символов"),
+  name: z.string().min(1, "Введите ваше имя"),
+});
