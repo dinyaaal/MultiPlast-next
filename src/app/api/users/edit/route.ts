@@ -1,5 +1,4 @@
 import { UserInfoSchema } from "@/lib/schema";
-import { User } from "@/types/user";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function PATCH(request: NextRequest) {

@@ -483,7 +483,7 @@
     justify-content: space-between;
     flex-direction: column;
     @media (min-width: $mobile) {
-      flex-direction: row;
+      flex-direction: row-reverse;
     }
   }
   &__block {
@@ -499,11 +499,6 @@
     width: 100%;
     height: fit-content;
     gap: 0;
-    .user-advertisement-contacts {
-      @media (max-width: $mobile) {
-        display: none;
-      }
-    }
   }
   // .advertisement-contacts__user
   &__user {
@@ -591,16 +586,16 @@
       height: 100%;
       object-fit: cover;
     }
-    &::before {
-      content: "";
-      position: absolute;
-      width: 60px;
-      height: 60px;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: url("/icons/image.svg") center / cover no-repeat;
-    }
+    // &::before {
+    //   content: "";
+    //   position: absolute;
+    //   width: 60px;
+    //   height: 60px;
+    //   top: 50%;
+    //   left: 50%;
+    //   transform: translate(-50%, -50%);
+    //   background: url("/icons/image.svg") center / cover no-repeat;
+    // }
   }
   // .photo-advertisement-contacts__save
   &__save {
@@ -627,6 +622,8 @@
   }
   // .password-advertisement-contacts__body
   &__body {
+    width: 100%;
+    max-width: 600px;
     display: flex;
     flex-direction: column;
     gap: toRem(20);

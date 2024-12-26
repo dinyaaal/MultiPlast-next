@@ -7,6 +7,9 @@ import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import { AuthProviders } from "@/Components/AuthProviders";
 
+import { ReduxProvider } from "@/store/provider";
+import { Toaster, toast } from "sonner";
+
 const rubikFont = Rubik({
   subsets: ["latin"],
   weight: ["300", "400", "500", "700"],
@@ -29,13 +32,21 @@ export default async function RootLayout({
   return (
     <html lang={locale}>
       <body className={`${rubikFont.className} `}>
-        <AuthProviders>
-          <NextIntlClientProvider messages={messages}>
-            <NextUIProvider className=" w-full h-full">
-              {children}
-            </NextUIProvider>
-          </NextIntlClientProvider>
-        </AuthProviders>
+        <ReduxProvider>
+          <AuthProviders>
+            <NextIntlClientProvider messages={messages}>
+              <NextUIProvider className=" w-full h-full">
+                {children}
+                <Toaster
+                  position="top-right"
+                  closeButton
+                  richColors
+                  duration={5000}
+                />
+              </NextUIProvider>
+            </NextIntlClientProvider>
+          </AuthProviders>
+        </ReduxProvider>
       </body>
     </html>
   );

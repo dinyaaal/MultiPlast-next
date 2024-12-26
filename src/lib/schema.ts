@@ -60,41 +60,74 @@ export const UserInfoSchema = z
     birthday_year: z.string().optional(),
 
     gender: z.string().nullable().optional(),
-    oldPassword: z.string().nullable().optional(),
-    newPassword: z.string().nullable().optional(),
-    repeatPassword: z.string().nullable().optional(),
   })
   .refine(
     (data) => {
-      const { oldPassword, newPassword, repeatPassword } = data;
-      if (!oldPassword && !newPassword && !repeatPassword) {
-        return true; // Все пустые, нет ошибок
-      }
-      if (oldPassword && newPassword && repeatPassword) {
-        return newPassword === repeatPassword; // Все заполнены и пароли совпадают
-      }
-      return false; // Одно или два поля заполнены, но не все
+      const { birthday_day, birthday_month, birthday_year } = data;
+      const hasAny = birthday_day || birthday_month || birthday_year;
+      const allFilled =
+        birthday_day?.trim() && birthday_month?.trim() && birthday_year?.trim();
+      return !hasAny || allFilled;
     },
     {
-      message:
-        "Если одно из полей пароля заполнено, заполните все, и новый пароль должен совпадать с подтверждением.",
-      path: ["newPassword"], // Указываем путь для удобства отображения ошибки
+      message: "Если вы заполнили одно поле даты рождения, заполните все три",
+      path: ["birthday_day"],
     }
   );
 
-export const AdvertismentSchema = z.object({
-  category_id: z.number(),
-  description: z.string().optional(),
-  title: z.string().min(1, { message: "Заголовок обязателен" }),
-  photos: z.array(z.instanceof(File)).optional(),
-  files: z.array(z.instanceof(File)).optional(),
-  name_of_enterprise: z.string().min(1, "Обязательно"),
-  city: z.string().min(1, "Введите ваш город"),
-  address: z.string().min(1, "Введите ваш Адресс"),
-  area: z.string().min(1, "Введите вашу область"),
-  phone_number: z
-    .string()
-    .min(10, "Номер телефона должен содержать минимум 10 символов")
-    .max(15, "Номер телефона не может быть длиннее 15 символов"),
-  name: z.string().min(1, "Введите ваше имя"),
-});
+export const UserSecuritySchema = z
+  .object({
+    oldPassword: z.string().min(6, "Введите старый пароль"), // обязательное поле
+    newPassword: z.string().min(6, "Введите новый пароль"), // обязательное поле
+    repeatPassword: z.string().min(6, "Повторите новый пароль"), // обязательное поле
+  })
+  .refine((data) => data.newPassword === data.repeatPassword, {
+    message: "Новый пароль и его повтор должны совпадать",
+    path: ["repeatPassword"], // ошибка будет привязана к полю repeatPassword
+  });
+
+export const AdvertismentSchema = z
+  .object({
+    category_id: z.string(),
+    polymer: z.string().optional(),
+    type: z.string().optional(),
+    description: z.string().optional(),
+    title: z.string().min(1, { message: "Заголовок обязателен" }),
+    photos: z.array(z.instanceof(File)).optional(),
+    files: z.array(z.instanceof(File)).optional(),
+    name_of_enterprise: z.string().min(1, "Обязательно"),
+    city: z.string().min(1, "Введите ваш город"),
+    address: z.string().min(1, "Введите ваш Адресс"),
+    area: z.string().min(1, "Введите вашу область"),
+    phone_number: z
+      .string()
+      .min(10, "Номер телефона должен содержать минимум 10 символов")
+      .max(15, "Номер телефона не может быть длиннее 15 символов"),
+    name: z.string().min(1, "Введите ваше имя"),
+  })
+  .refine(
+    (data) => {
+      // Если category_id 1 или 2, поле polymer обязательно
+      if (["1", "2"].includes(data.category_id) && !data.polymer) {
+        return false;
+      }
+      return true;
+    },
+    {
+      message: "Поле polymer обязательно для категорий 1 и 2",
+      path: ["polymer"],
+    }
+  )
+  .refine(
+    (data) => {
+      // Если category_id 2, 3, 4, или 5, поле type обязательно
+      if (["2", "3", "4", "5"].includes(data.category_id) && !data.type) {
+        return false;
+      }
+      return true;
+    },
+    {
+      message: "Поле type обязательно для категорий 2, 3, 4 и 5",
+      path: ["type"],
+    }
+  );

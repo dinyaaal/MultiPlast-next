@@ -1,11 +1,10 @@
 "use client";
 
-import Select from "@/Components/Select/Select";
 import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import "swiper/css";
-import Link from "next/link";
+
 import AdvertismentTab from "@/Components/Advertisment/AdvertismentTab";
 
 export default function AdvertismentLayout({
@@ -81,6 +80,11 @@ export default function AdvertismentLayout({
                   <AdvertismentTab
                     href="/profile"
                     text="Редагувати контактні данні"
+                    className="tabs-advertisement__item--mobile"
+                  />
+                  <AdvertismentTab
+                    href="/security"
+                    text="Конфіденційність"
                     className="tabs-advertisement__item--mobile"
                   />
                 </div>

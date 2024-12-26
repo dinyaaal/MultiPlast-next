@@ -12,53 +12,19 @@ import { Link } from "@/i18n/routing";
 
 import { useTranslations } from "next-intl";
 import { signOut, useSession } from "next-auth/react";
-import { User } from "@/types/user";
+import { User } from "@/types/types";
+import { RootState } from "@/store/store";
+import { useSelector } from "react-redux";
 
 export default function Header() {
   const t = useTranslations("Header");
   const { data: session, status } = useSession();
-
-  const [userInfo, setUserInfo] = useState<User | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const { data: userInfo, error } = useSelector(
+    (state: RootState) => state.userInfo
+  );
+  // const [userInfo, setUserInfo] = useState<User | null>(null);
+  // const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
-
-  const fetchUserInfo = async () => {
-    if (!session) return;
-
-    // setLoading(true);
-    setError(null);
-
-    try {
-      const responseOrderStatus = await fetch(
-        `/api/users/get?token=${session?.user.access_token}&id=${session?.user.id}`
-      );
-
-      if (!responseOrderStatus.ok) {
-        throw new Error("Network response was not ok");
-      }
-
-      const data = await responseOrderStatus.json();
-
-      if (data) {
-        console.log(`User: ${JSON.stringify(data)} `);
-        setUserInfo(data);
-        setError(null);
-      } else {
-        setError("Unknown error occurred");
-        setUserInfo(null);
-      }
-    } catch (error) {
-      console.error("Error fetching order status:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    if (!userInfo) {
-      fetchUserInfo();
-    }
-  }, [session]);
 
   console.log(session);
 
@@ -100,7 +66,10 @@ export default function Header() {
             <div className="body-header__user user  user--desktop">
               {status === "authenticated" ? (
                 <div className="user__body body-user">
-                  <div className="body-user__account account-body-user">
+                  <Link
+                    href="/profile"
+                    className="body-user__account account-body-user"
+                  >
                     <div className="account-body-user__icon-body">
                       <div className="account-body-user__icon">
                         <Image
@@ -115,7 +84,7 @@ export default function Header() {
                       <p>{userInfo?.first_name}</p>
                       <p>{userInfo?.last_name}</p>
                     </div>
-                  </div>
+                  </Link>
                   <button
                     onClick={() => signOut({ callbackUrl: "/" })}
                     className="body-user__exit"
