@@ -246,6 +246,7 @@
   // .account-body-user__icon-body
   &__icon-body {
     border-radius: toRem(4);
+    overflow: hidden;
     background-color: var(--secondary);
     flex: 0 0 toRem(44);
     width: toRem(44);

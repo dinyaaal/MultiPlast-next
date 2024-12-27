@@ -1,19 +1,23 @@
-import { UserInfoSchema } from "@/lib/schema";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function PATCH(request: NextRequest) {
-  const { id, token, userInfo } = await request.json();
+export async function POST(request: NextRequest) {
+  // Получаем formData из запроса
+  const formData = await request.formData();
+
+  const id = request.headers.get("id");
+  const token = request.headers.get("token");
+
+  if (!id || !token) {
+    return NextResponse.json({ error: "Missing id or token" }, { status: 400 });
+  }
 
   try {
-    console.log(JSON.stringify(userInfo));
-
     const res = await fetch(`http://13.60.7.255/api/users/${id}`, {
-      method: "PATCH",
+      method: "POST",
       headers: {
-        "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify(userInfo),
+      body: formData,
     });
 
     if (!res.ok) {

@@ -71,14 +71,24 @@ export default function Header() {
                     className="body-user__account account-body-user"
                   >
                     <div className="account-body-user__icon-body">
-                      <div className="account-body-user__icon">
+                      {userInfo?.photo ? (
                         <Image
-                          src={"/icons/user.svg"}
+                          src={userInfo?.photo.url}
+                          className="ibg"
                           alt="Icon"
                           width={100}
                           height={100}
                         />
-                      </div>
+                      ) : (
+                        <div className="account-body-user__icon">
+                          <Image
+                            src={"/icons/user.svg"}
+                            alt="Icon"
+                            width={100}
+                            height={100}
+                          />
+                        </div>
+                      )}
                     </div>
                     <div className="account-body-user__name">
                       <p>{userInfo?.first_name}</p>

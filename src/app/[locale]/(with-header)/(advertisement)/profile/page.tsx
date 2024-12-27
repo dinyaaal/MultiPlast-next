@@ -37,7 +37,7 @@ export default function Profile() {
     (state: RootState) => state.userInfo
   );
   const dispatch = useDispatch();
-
+  const [photo, setPhoto] = useState<File | null>(null);
   const [userInformation, setUserInformation] = useState<User | null>(null);
   // const [error, setError] = useState<string | null>(null);
 
@@ -46,8 +46,6 @@ export default function Profile() {
       setUserInformation(userInfo);
     }
   }, [userInfo]);
-
-  console.log(userInformation);
 
   const {
     register,
@@ -61,13 +59,17 @@ export default function Profile() {
     resolver: zodResolver(UserInfoSchema),
   });
 
-  // console.log(userInfo);
-
   const handleGenderChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newGender = event.target.value;
     setUserInformation((prev) =>
       prev ? { ...prev, gender: newGender } : null
     );
+  };
+
+  const handlePhotoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files[0]) {
+      setPhoto(event.target.files[0]);
+    }
   };
 
   const processForm: SubmitHandler<Inputs> = async (data) => {
@@ -77,8 +79,6 @@ export default function Profile() {
 
     const token = session.user.access_token;
     const id = session.user.id;
-
-    console.log(data);
 
     const { birthday_day, birthday_month, birthday_year, ...otherFields } =
       data;
@@ -90,37 +90,41 @@ export default function Profile() {
         : { birthday: "" }),
     };
 
-    console.log(userData);
+    const formData = new FormData();
+
+    if (photo) {
+      formData.append("photo", photo);
+    }
+
+    Object.entries(userData).forEach(([key, value]) => {
+      if (value !== undefined && value !== null && value !== "") {
+        formData.append(key, value);
+      }
+    });
     try {
       const editResponse = await fetch(`/api/users/edit`, {
-        method: "PATCH",
+        method: "POST",
         headers: {
-          "Content-Type": "application/json",
+          id: id.toString(),
+          token: token,
         },
-        body: JSON.stringify({
-          token,
-          id,
-          userInfo: userData,
-        }),
+        body: formData,
       });
-
-      if (!editResponse.ok) {
-        toast.error("Ошибка обновления информации пользователя");
-
-        throw new Error("Ошибка обновления информации пользователя");
-      }
-      const editResult = await editResponse.json();
-      console.log(editResult);
-      if (editResult) {
-        dispatch(setUserInfoData(editResult));
+      if (editResponse.ok) {
+        const editResult = await editResponse.json();
+        toast.success("Пароль успешно изменен");
+        if (editResult) {
+          dispatch(setUserInfoData(editResult));
+          toast.success("Данные успешно изменены");
+        } else {
+          dispatch(setUserInfoError("Unknown error occurred"));
+        }
       } else {
-        dispatch(setUserInfoError("Unknown error occurred"));
+        throw new Error("Ошибка обновления информации пользователя");
       }
     } catch (error) {
       console.error("Ошибка при отправке данных:", error);
       toast.error("Ошибка обновления информации пользователя");
-    } finally {
-      toast.success("Данные успешно изменены");
     }
   };
 
@@ -135,7 +139,7 @@ export default function Profile() {
       </div>
     );
   }
-
+  console.log(userInfo);
   return (
     <>
       <div className="advertisement__wrapper wrapper-advertisement advertisement-contacts">
@@ -157,9 +161,17 @@ export default function Profile() {
                   </div>
                   <div className="advertisement-contacts__photo photo-advertisement-contacts">
                     <div className="photo-advertisement-contacts__image">
-                      {userInformation.avatar && (
+                      {photo ? (
                         <Image
-                          src={userInformation.avatar || "/icons/image.svg"}
+                          src={URL.createObjectURL(photo)}
+                          className="ibg"
+                          alt="Uploaded image"
+                          width={600}
+                          height={600}
+                        />
+                      ) : (
+                        <Image
+                          src={userInformation.photo.url || "/icons/image.svg"}
                           className="ibg"
                           alt="User image"
                           width={600}
@@ -169,7 +181,11 @@ export default function Profile() {
                     </div>
                     <label className="photo-advertisement-contacts__save button">
                       Завантажити фото
-                      <input type="file" accept="image/jpeg, image/png" />
+                      <input
+                        type="file"
+                        accept="image/jpeg, image/png"
+                        onChange={handlePhotoChange}
+                      />
                     </label>
                   </div>
                 </div>

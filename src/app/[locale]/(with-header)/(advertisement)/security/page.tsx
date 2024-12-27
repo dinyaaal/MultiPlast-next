@@ -54,30 +54,33 @@ export default function Profile() {
       password: newPassword,
     };
 
+    const formData = new FormData();
+
+    Object.entries(userData).forEach(([key, value]) => {
+      if (value !== undefined && value !== null && value !== "") {
+        formData.append(key, value);
+      }
+    });
+
     try {
       const editResponse = await fetch(`/api/users/edit`, {
-        method: "PATCH",
+        method: "POST",
         headers: {
-          "Content-Type": "application/json",
+          id: id.toString(),
+          token: token,
         },
-        body: JSON.stringify({
-          token,
-          id,
-          userInfo: userData,
-        }),
+        body: formData,
       });
 
-      if (!editResponse.ok) {
-        toast.error("Ошибка обновления информации пользователя");
+      if (editResponse.ok) {
+        const editResult = await editResponse.json();
+        toast.success("Пароль успешно изменен");
+      } else {
         throw new Error("Ошибка обновления информации пользователя");
       }
-      const editResult = await editResponse.json();
-      console.log(editResult);
     } catch (error) {
       console.error("Ошибка при отправке данных:", error);
       toast.error("Ошибка обновления информации пользователя");
-    } finally {
-      toast.success("Пароль успешно изменен");
     }
   };
 

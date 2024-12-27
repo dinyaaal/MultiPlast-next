@@ -58,7 +58,6 @@ export const UserInfoSchema = z
     birthday_day: z.string().optional(),
     birthday_month: z.string().optional(),
     birthday_year: z.string().optional(),
-
     gender: z.string().nullable().optional(),
   })
   .refine(

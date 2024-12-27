@@ -4,6 +4,7 @@ import createNextIntlPlugin from "next-intl/plugin";
 const nextConfig = {
   images: {
     domains: ["13.60.7.255"],
+    domains: ["ec2-13-60-7-255.eu-north-1.compute.amazonaws.com"],
   },
 };
 

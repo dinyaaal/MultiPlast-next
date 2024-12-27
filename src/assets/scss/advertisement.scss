@@ -580,6 +580,8 @@
     border-radius: toRem(7);
     border: 1px solid var(--border);
     position: relative;
+    overflow: hidden;
+
     img {
       position: relative;
       width: 100%;
