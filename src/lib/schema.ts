@@ -87,13 +87,12 @@ export const UserSecuritySchema = z
 
 export const AdvertismentSchema = z
   .object({
-    category_id: z.string(),
+    mainCategory: z.string(),
     polymer: z.string().optional(),
     type: z.string().optional(),
-    description: z.string().optional(),
     title: z.string().min(1, { message: "Заголовок обязателен" }),
-    photos: z.array(z.instanceof(File)).optional(),
-    files: z.array(z.instanceof(File)).optional(),
+    text: z.string().optional(),
+
     name_of_enterprise: z.string().min(1, "Обязательно"),
     city: z.string().min(1, "Введите ваш город"),
     address: z.string().min(1, "Введите ваш Адресс"),
@@ -107,7 +106,7 @@ export const AdvertismentSchema = z
   .refine(
     (data) => {
       // Если category_id 1 или 2, поле polymer обязательно
-      if (["1", "2"].includes(data.category_id) && !data.polymer) {
+      if (["1", "2"].includes(data.mainCategory) && !data.polymer) {
         return false;
       }
       return true;
@@ -120,7 +119,7 @@ export const AdvertismentSchema = z
   .refine(
     (data) => {
       // Если category_id 2, 3, 4, или 5, поле type обязательно
-      if (["2", "3", "4", "5"].includes(data.category_id) && !data.type) {
+      if (["2", "3", "4", "5"].includes(data.mainCategory) && !data.type) {
         return false;
       }
       return true;

@@ -37,6 +37,8 @@ export default function Sell({ categories }: SellProps) {
   const router = useRouter();
   const [userInformation, setUserInformation] = useState<User | null>(null);
   // const [error, setError] = useState<string | null>(null);
+  const [photos, setPhotos] = useState<File[] | null>(null);
+  const [files, setFiles] = useState<File[] | null>(null);
 
   const {
     register,
@@ -53,9 +55,6 @@ export default function Sell({ categories }: SellProps) {
   });
 
   useEffect(() => {
-    // if (!userInformation) {
-    //   setUserInformation(userInfo);
-    // }
     if (userInfo) {
       setValue("name", userInfo?.first_name ? userInfo?.first_name : "");
       setValue(
@@ -72,11 +71,20 @@ export default function Sell({ categories }: SellProps) {
     }
   }, [userInfo]);
 
+  const handlePhotosChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files;
+    if (files) {
+      setPhotos(Array.from(files));
+    }
+  };
+  const handleFilesChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files;
+    if (files) {
+      setFiles(Array.from(files));
+    }
+  };
+
   const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    // setTypeId(null);
-    // setPolymerId(null);
-    // setTypeError(false);
-    // setPolymerError(false);
     clearErrors();
     reset(
       {
@@ -90,22 +98,98 @@ export default function Sell({ categories }: SellProps) {
     setCategoryId(Number(e.target.value));
   };
 
-  // const handleTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-  //   setTypeId(Number(e.target.value));
-  //   // setTypeError(false);
-  // };
-  // const handlePolymerChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-  //   setPolymerId(Number(e.target.value));
-  //   // setPolymerError(false);
-  // };
-
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setIsChecked(e.target.checked);
   };
 
   const processForm: SubmitHandler<Inputs> = async (data) => {
-    console.log(data);
-    toast.success("Оголошення подано");
+    if (!session?.user.access_token && !session?.user.id) {
+      return;
+    }
+
+    const token = session.user.access_token;
+
+    const formData = new FormData();
+
+    const {
+      name_of_enterprise,
+      name,
+      phone_number,
+      address,
+      city,
+      area,
+      mainCategory,
+      type,
+      polymer,
+      title,
+      text,
+    } = data;
+
+    const categoriesData = {
+      mainCategory,
+      type,
+      polymer,
+    };
+
+    const contactData = {
+      name_of_enterprise,
+      name,
+      phone_number,
+      address,
+      city,
+      area,
+    };
+    Object.entries(categoriesData).forEach(([key, value]) => {
+      if (value !== undefined && value !== null && value !== "") {
+        formData.append(`categories[${key}]`, value);
+      }
+    });
+
+    Object.entries(contactData).forEach(([key, value]) => {
+      if (value !== undefined && value !== null && value !== "") {
+        formData.append(`contact_data[${key}]`, value);
+      }
+    });
+
+    if (photos && photos.length > 0) {
+      photos.forEach((photo) => {
+        formData.append("photos[]", photo);
+      });
+    }
+
+    if (files && files.length > 0) {
+      files.forEach((file) => {
+        formData.append("files[]", file);
+      });
+    }
+
+    formData.append("type_of_product", "sell");
+    formData.append("type_price", "for_piece");
+    formData.append("price", "150");
+    formData.append("title", title);
+    if (text) {
+      formData.append("text", text);
+    }
+
+    try {
+      const postResponse = await fetch(`/api/products/add`, {
+        method: "POST",
+        headers: {
+          token: token,
+        },
+        body: formData,
+      });
+      if (postResponse.ok) {
+        toast.success("Оголошення подано");
+      } else {
+        throw new Error("Ошибка обновления информации пользователя");
+      }
+      const editResult = await postResponse.json();
+      console.log(editResult);
+    } catch (error) {
+      console.error("Ошибка при отправке данных:", error);
+      toast.error("Ошибка создания товара");
+    }
   };
 
   if (status === "unauthenticated") {
@@ -141,7 +225,7 @@ export default function Sell({ categories }: SellProps) {
                     disallowEmptySelection
                     classNames={{
                       trigger: `min-h-[45px] text-black px-[12px] bg-[#F8FBFF] rounded-[5px] outline-offset-0 outline-[1px]  ${
-                        errors.category_id
+                        errors.mainCategory
                           ? "outline-[#FF0000]"
                           : "outline-[#B0BFD7]"
                       } `,
@@ -166,7 +250,7 @@ export default function Sell({ categories }: SellProps) {
                       },
                     }}
                     defaultSelectedKeys={[categoryId.toString()]}
-                    {...register("category_id")}
+                    {...register("mainCategory")}
                     onChange={handleCategoryChange}
                   >
                     {categories.map((category) => (
@@ -423,19 +507,9 @@ export default function Sell({ categories }: SellProps) {
                       <input
                         type="file"
                         id="advertisement-photo"
-                        data-error="Помилка"
-                        placeholder=""
-                        className=""
                         accept="image/jpeg, image/png"
                         // {...register("photos")}
-                        onChange={(e) => {
-                          const files = e.target.files;
-                          if (files) {
-                            setValue("photos", Array.from(files), {
-                              shouldValidate: true,
-                            });
-                          }
-                        }}
+                        onChange={handlePhotosChange}
                         multiple
                       />
                     </label>
@@ -445,7 +519,8 @@ export default function Sell({ categories }: SellProps) {
                           <div className="downloads-input-body-file__image"></div>
                         </div>
                         <p className="downloads-input-body-file__text">
-                          <span>0</span> {t("photos-uploaded")}
+                          <span>{photos?.length || 0} </span>{" "}
+                          {t("photos-uploaded")}
                         </p>
                       </div>
                       <div className="input-body-file__actions">
@@ -473,7 +548,7 @@ export default function Sell({ categories }: SellProps) {
                 <textarea
                   placeholder="Написати..."
                   className="description__input input"
-                  {...register("description")}
+                  {...register("text")}
                 ></textarea>
               </div>
               <div className="input-block">
@@ -483,19 +558,10 @@ export default function Sell({ categories }: SellProps) {
                     <div className="input-body-file__actions">
                       <label className="input-body-file__button button">
                         <input
-                          autoComplete="off"
                           id="advertisement-files"
                           type="file"
                           className="advertisement-files__input"
-                          // {...register("files")}
-                          onChange={(e) => {
-                            const files = e.target.files;
-                            if (files) {
-                              setValue("files", Array.from(files), {
-                                shouldValidate: true,
-                              });
-                            }
-                          }}
+                          onChange={handleFilesChange}
                           multiple
                         />
                         {t("upload")}

@@ -22,11 +22,6 @@ export default function Header() {
   const { data: userInfo, error } = useSelector(
     (state: RootState) => state.userInfo
   );
-  // const [userInfo, setUserInfo] = useState<User | null>(null);
-  // const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
-
-  console.log(session);
 
   return (
     <header className="header">
