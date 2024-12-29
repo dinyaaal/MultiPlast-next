@@ -233,8 +233,6 @@ export default function Advertisement({ categories }: SellProps) {
     }
   };
 
-  console.log(typePrice);
-
   return (
     <>
       <form

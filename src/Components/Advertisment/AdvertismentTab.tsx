@@ -35,11 +35,11 @@ const AdvertismentTab: FC<AdvertismentTabProps> = ({
   const isActive = currentPath === targetPath;
 
   const handleClick = () => {
-    if (currentPage) {
-      setCategory(params || null);
-    } else {
-      router.push(targetPath);
-    }
+    // if (currentPage) {
+    //   setCategory(params || null);
+    // } else {
+    // }
+    router.push(targetPath);
   };
 
   return (
