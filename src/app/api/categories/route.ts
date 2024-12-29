@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-export async function fetchCategories(request: NextRequest) {
+export async function GET(request: NextRequest) {
   try {
     const res = await fetch(`http://13.60.7.255/api/categories`, {
       method: "GET",
