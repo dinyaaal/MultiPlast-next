@@ -46,19 +46,20 @@ export default function AdvertismentLayout({
                 /> */}
 
                 <div className="tabs-advertisement__items">
-                  <AdvertismentTab href="/sell" text="Про продаж" />
-                  <AdvertismentTab href="/buy" text="Про купівлю" />
+                  <AdvertismentTab
+                    href="/advertisement"
+                    text="Про продаж"
+                    params="sell"
+                  />
+                  <AdvertismentTab
+                    href="/advertisement"
+                    text="Про купівлю"
+                    params="buy"
+                  />
                 </div>
               </SwiperSlide>
               <SwiperSlide>
                 <div className="tabs-advertisement__title">Мої оголошення</div>
-                {/* <Select
-                  options={[
-                    { value: "my-sell", label: "Мої оголошення про продаж" },
-                    { value: "my-buy", label: "Мої оголошення про купівлю" },
-                  ]}
-                  defaultValue="my-sell"
-                /> */}
 
                 <div className="tabs-advertisement__items">
                   <AdvertismentTab

@@ -18,18 +18,27 @@ interface SellProps {
   categories: Category[];
 }
 
-const units = ["За годину", "За хвилину", "За штуку", "За кілограм"];
+const units = [
+  { key: "for_hour", label: "За годину" },
+  { key: "for_minute", label: "За хвилину" },
+  { key: "for_piece", label: "За штуку" },
+  { key: "for_kg", label: "За кілограм" },
+];
+
+interface typePrice {
+  type: "by_arrangement" | "for_minute" | "for_hour" | "for_piece" | "for_kg";
+}
 
 type Inputs = z.infer<typeof AdvertismentSchema>;
 
-export default function Sell({ categories }: SellProps) {
+export default function Advertisement({ categories }: SellProps) {
   const t = useTranslations("Sell");
   const [categoryId, setCategoryId] = useState<number>(1);
   const [typeId, setTypeId] = useState<number | null>(null);
   const [polymerId, setPolymerId] = useState<number | null>(null);
   const [typeError, setTypeError] = useState<boolean>(false);
   const [polymerError, setPolymerError] = useState<boolean>(false);
-  const [isChecked, setIsChecked] = useState<boolean>(false);
+  const [arrangement, setArrangement] = useState<boolean>(false);
   const { data: userInfo, error } = useSelector(
     (state: RootState) => state.userInfo
   );
@@ -39,6 +48,7 @@ export default function Sell({ categories }: SellProps) {
   // const [error, setError] = useState<string | null>(null);
   const [photos, setPhotos] = useState<File[] | null>(null);
   const [files, setFiles] = useState<File[] | null>(null);
+  const [typePrice, setTypePrice] = useState<typePrice>({ type: "for_kg" });
 
   const {
     register,
@@ -96,10 +106,31 @@ export default function Sell({ categories }: SellProps) {
       }
     );
     setCategoryId(Number(e.target.value));
+    if (Number(e.target.value) === 1 || Number(e.target.value) === 2) {
+      setTypePrice({
+        type: "for_kg",
+      });
+    } else if (Number(e.target.value) === 3 || Number(e.target.value) === 5) {
+      setTypePrice({
+        type: "for_piece",
+      });
+    }
   };
 
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setIsChecked(e.target.checked);
+    setArrangement(e.target.checked);
+  };
+
+  const handleChangeTypePrice = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    const selectedKey = event.target.value;
+    const selectedUnit = units.find((unit) => unit.key === selectedKey);
+    if (selectedUnit) {
+      setTypePrice({
+        type: selectedUnit.key as typePrice["type"],
+      });
+    }
   };
 
   const processForm: SubmitHandler<Inputs> = async (data) => {
@@ -123,6 +154,10 @@ export default function Sell({ categories }: SellProps) {
       polymer,
       title,
       text,
+      price,
+      volume,
+      volume_price,
+      arrangement,
     } = data;
 
     const categoriesData = {
@@ -163,12 +198,18 @@ export default function Sell({ categories }: SellProps) {
       });
     }
 
-    formData.append("type_of_product", "sell");
-    formData.append("type_price", "for_piece");
-    formData.append("price", "150");
     formData.append("title", title);
     if (text) {
       formData.append("text", text);
+    }
+    formData.append("type_of_product", "sell");
+    if (arrangement) {
+      formData.append("type_price", "by_arrangement");
+    } else {
+      formData.append("type_price", typePrice.type);
+    }
+    if (!arrangement && price) {
+      formData.append("price", price);
     }
 
     try {
@@ -192,17 +233,7 @@ export default function Sell({ categories }: SellProps) {
     }
   };
 
-  if (status === "unauthenticated") {
-    router.push("/");
-  }
-
-  if (status === "loading") {
-    return (
-      <div className="flex w-full h-full flex-auto items-center justify-center">
-        <Spinner size="lg" />
-      </div>
-    );
-  }
+  console.log(typePrice);
 
   return (
     <>
@@ -378,7 +409,11 @@ export default function Sell({ categories }: SellProps) {
                 )}
 
                 <div className="input-block input-block--price">
-                  <p>{t("price-per-kg")}</p>
+                  <p>
+                    {categoryId === 1 || categoryId === 2
+                      ? t("price-per-kg")
+                      : t("enter-price")}
+                  </p>
                   <div className="block-row block-row--nowrap">
                     <div className="input-block">
                       {(categoryId === 1 ||
@@ -389,9 +424,9 @@ export default function Sell({ categories }: SellProps) {
                         <label className="check">
                           <input
                             type="checkbox"
-                            name="remember"
                             className="real-checkbox"
-                            checked={isChecked}
+                            checked={arrangement}
+                            {...register("arrangement")}
                             onChange={handleCheckboxChange}
                           />
                           <span className="custom-checkbox"></span>
@@ -400,6 +435,7 @@ export default function Sell({ categories }: SellProps) {
                       </div>
                       {categoryId === 4 && (
                         <Select
+                          isDisabled={arrangement}
                           disallowEmptySelection
                           placeholder={t("select-category")}
                           classNames={{
@@ -424,10 +460,13 @@ export default function Sell({ categories }: SellProps) {
                               ],
                             },
                           }}
-                          defaultSelectedKeys={["За годину"]}
+                          defaultSelectedKeys={["for_hour"]}
+                          onChange={(selectedKey) =>
+                            handleChangeTypePrice(selectedKey)
+                          }
                         >
                           {units.map((unit) => (
-                            <SelectItem key={unit}>{unit}</SelectItem>
+                            <SelectItem key={unit.key}>{unit.label}</SelectItem>
                           ))}
                         </Select>
                       )}
@@ -436,12 +475,18 @@ export default function Sell({ categories }: SellProps) {
                     <div className="input-block">
                       <p>{t("fixed-price")}</p>
                       <div className="block-row__item">
-                        <div className="input-body input">
+                        <div
+                          className={`input-body input ${
+                            errors.price ? "input--error" : ""
+                          }`}
+                        >
                           <input
+                            disabled={arrangement}
                             autoComplete="off"
                             type="number"
                             placeholder=""
                             className="input-body__input input-number"
+                            {...register("price")}
                           />
                           <div className="input-body__item">грн</div>
                         </div>
@@ -457,10 +502,12 @@ export default function Sell({ categories }: SellProps) {
                         <p>{t("enter-volume")}</p>
                         <div className="input-body input">
                           <input
+                            disabled={arrangement}
                             autoComplete="off"
                             type="number"
                             placeholder=""
                             className="input-body__input input-number"
+                            {...register("volume")}
                           />
                           <div className="input-body__item">кг</div>
                         </div>
@@ -472,10 +519,12 @@ export default function Sell({ categories }: SellProps) {
                         <p>{t("enter-price")}</p>
                         <div className="input-body input">
                           <input
+                            disabled={arrangement}
                             autoComplete="off"
                             type="number"
                             placeholder=""
                             className="input-body__input input-number"
+                            {...register("volume_price")}
                           />
                           <div className="input-body__item">грн</div>
                         </div>

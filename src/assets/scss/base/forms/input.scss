@@ -25,6 +25,11 @@ textarea {
   }
   &._form-error {
   }
+  &:has(input:disabled) {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
 }
 .input::placeholder {
   color: #b0bfd7;

@@ -6,7 +6,7 @@ import { NextUIProvider } from "@nextui-org/system";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import { AuthProviders } from "@/Components/AuthProviders";
-
+import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { ReduxProvider } from "@/store/provider";
 import { Toaster, toast } from "sonner";
 
@@ -35,15 +35,17 @@ export default async function RootLayout({
         <ReduxProvider>
           <AuthProviders>
             <NextIntlClientProvider messages={messages}>
-              <NextUIProvider className=" w-full h-full">
-                {children}
-                <Toaster
-                  position="top-right"
-                  closeButton
-                  richColors
-                  duration={5000}
-                />
-              </NextUIProvider>
+              <NuqsAdapter>
+                <NextUIProvider className=" w-full h-full">
+                  {children}
+                  <Toaster
+                    position="top-right"
+                    closeButton
+                    richColors
+                    duration={5000}
+                  />
+                </NextUIProvider>
+              </NuqsAdapter>
             </NextIntlClientProvider>
           </AuthProviders>
         </ReduxProvider>

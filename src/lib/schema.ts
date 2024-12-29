@@ -102,10 +102,13 @@ export const AdvertismentSchema = z
       .min(10, "Номер телефона должен содержать минимум 10 символов")
       .max(15, "Номер телефона не может быть длиннее 15 символов"),
     name: z.string().min(1, "Введите ваше имя"),
+    price: z.string().optional(),
+    volume: z.string().optional(),
+    volume_price: z.string().optional(),
+    arrangement: z.boolean(),
   })
   .refine(
     (data) => {
-      // Если category_id 1 или 2, поле polymer обязательно
       if (["1", "2"].includes(data.mainCategory) && !data.polymer) {
         return false;
       }
@@ -118,7 +121,6 @@ export const AdvertismentSchema = z
   )
   .refine(
     (data) => {
-      // Если category_id 2, 3, 4, или 5, поле type обязательно
       if (["2", "3", "4", "5"].includes(data.mainCategory) && !data.type) {
         return false;
       }
@@ -128,4 +130,8 @@ export const AdvertismentSchema = z
       message: "Поле type обязательно для категорий 2, 3, 4 и 5",
       path: ["type"],
     }
-  );
+  )
+  .refine((data) => data.arrangement || data.price, {
+    message: "Price is required when arrangement is false.",
+    path: ["price"],
+  });

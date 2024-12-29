@@ -1,0 +1,38 @@
+.button {
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: toRem(20);
+  height: toRem(55);
+  width: 100%;
+  max-width: toRem(200);
+  color: #fff;
+  background-color: var(--blueColor);
+  border-radius: toRem(7);
+  transition: all 0.3s ease;
+}
+@media (any-hover: hover) {
+  .button:hover {
+    background-color: var(--blueColor-hover);
+  }
+}
+.button--fw {
+  max-width: none;
+  width: 100%;
+}
+.button--secondary {
+  background-color: var(--secondary);
+  color: #000;
+  border: 1px solid #000;
+}
+@media (any-hover: hover) {
+  .button--secondary:hover {
+    background-color: #c4dbff;
+  }
+}
+.button--secondary:active {
+  transition: none;
+  color: #ba360c;
+}/*# sourceMappingURL=button.css.map */

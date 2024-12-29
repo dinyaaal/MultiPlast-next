@@ -1,0 +1,53 @@
+.spollers {
+  display: grid;
+  gap: 15px;
+}
+
+.spollers__item {
+  font-size: toRem(20);
+}
+.spollers__item.active .spollers__title::before {
+  transform: translateX(-75%) rotate(-40deg);
+}
+.spollers__item.active .spollers__title::after {
+  transform: rotate(40deg);
+}
+
+.spollers__title {
+  width: 100%;
+  cursor: default;
+  text-align: left;
+  padding-right: toRem(15);
+  border-radius: toRem(5);
+  position: relative;
+  list-style: none;
+  cursor: pointer;
+}
+.spollers__title::marker, .spollers__title::-webkit-details-marker {
+  display: none;
+}
+.spollers__title::before, .spollers__title::after {
+  content: "";
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  background-color: var(--greyColor);
+  height: 1.5px;
+  width: 8px;
+  transition: transform 0.5s ease 0s;
+}
+.spollers__title::before {
+  transform: translate(-75%, -50%) rotate(40deg);
+}
+.spollers__title::after {
+  transform: translate(0, -50%) rotate(-40deg);
+}
+
+.spollers__body {
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+.spollers__content {
+  padding-top: toRem(20);
+}/*# sourceMappingURL=spollers.css.map */
