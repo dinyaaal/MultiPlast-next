@@ -1,5 +1,6 @@
 "use client";
 
+import { Link } from "@/i18n/routing";
 import { useLocale } from "next-intl";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import React, { FC } from "react";
@@ -28,25 +29,27 @@ const AdvertismentTab: FC<AdvertismentTabProps> = ({
 
   const categoryParam = params ? `?category=${params}` : "";
 
-  const targetPath = `/${localeActive}${href}${categoryParam}`;
+  // const targetPath = `/${localeActive}${href}${categoryParam}`;
+  const targetPath = `${href}${categoryParam}`;
   const currentPath = query ? `${pathname}?${query}` : `${pathname}`;
 
   const currentPage = pathname === basePath;
   const isActive = currentPath === targetPath;
 
-  const handleClick = () => {
-    router.push(targetPath);
-  };
+  // const handleClick = () => {
+  //   router.push(targetPath);
+  // };
 
   return (
-    <button
-      onClick={handleClick}
+    <Link
+      href={targetPath}
+      // onClick={handleClick}
       className={`tabs-advertisement__item ${
         isActive ? "active" : ""
       } ${className}`}
     >
       {text}
-    </button>
+    </Link>
   );
 };
 
