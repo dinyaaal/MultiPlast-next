@@ -3,7 +3,7 @@
 import { useLocale } from "next-intl";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import React, { FC } from "react";
-import { useQueryState } from "nuqs";
+// import { useQueryState } from "nuqs";
 interface AdvertismentTabProps {
   href: string;
   text: string;
@@ -21,7 +21,7 @@ const AdvertismentTab: FC<AdvertismentTabProps> = ({
   const searchParams = useSearchParams();
   const localeActive = useLocale();
   const pathname = usePathname();
-  const [category, setCategory] = useQueryState("category");
+  // const [category, setCategory] = useQueryState("category");
 
   const basePath = `/${localeActive}${href}`;
   const query = searchParams?.toString() || "";
@@ -35,10 +35,6 @@ const AdvertismentTab: FC<AdvertismentTabProps> = ({
   const isActive = currentPath === targetPath;
 
   const handleClick = () => {
-    // if (currentPage) {
-    //   setCategory(params || null);
-    // } else {
-    // }
     router.push(targetPath);
   };
 

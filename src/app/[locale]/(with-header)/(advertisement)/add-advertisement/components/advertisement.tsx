@@ -34,18 +34,13 @@ type Inputs = z.infer<typeof AdvertismentSchema>;
 export default function Advertisement({ categories }: SellProps) {
   const t = useTranslations("Sell");
   const [categoryId, setCategoryId] = useState<number>(1);
-  const [typeId, setTypeId] = useState<number | null>(null);
-  const [polymerId, setPolymerId] = useState<number | null>(null);
-  const [typeError, setTypeError] = useState<boolean>(false);
-  const [polymerError, setPolymerError] = useState<boolean>(false);
+
   const [arrangement, setArrangement] = useState<boolean>(false);
   const { data: userInfo, error } = useSelector(
     (state: RootState) => state.userInfo
   );
   const { data: session, status } = useSession();
-  const router = useRouter();
-  const [userInformation, setUserInformation] = useState<User | null>(null);
-  // const [error, setError] = useState<string | null>(null);
+
   const [photos, setPhotos] = useState<File[] | null>(null);
   const [files, setFiles] = useState<File[] | null>(null);
   const [typePrice, setTypePrice] = useState<typePrice>({ type: "for_kg" });

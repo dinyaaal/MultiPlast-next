@@ -4,7 +4,6 @@ import Footer from "@/Components/Footer/Footer";
 import Header from "@/Components/Header/Header";
 import { RootState } from "@/store/store";
 import { setUserInfoData, setUserInfoError } from "@/store/userInfoSlice";
-import { User } from "@/types/types";
 import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";

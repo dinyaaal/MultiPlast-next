@@ -28,24 +28,17 @@ export default function Tabs() {
       >
         <SwiperSlide>
           <div className="tabs-advertisement__title">Подати оголошення</div>
-          {/* <Select
-                  options={[
-                    { value: "sell", label: "Про продаж" },
-                    { value: "buy", label: "Про купівлю" },
-                  ]}
-                  defaultValue="sell"
-                /> */}
 
           <div className="tabs-advertisement__items">
             <AdvertismentTab
-              href="/advertisement"
+              href="/add-advertisement"
               text="Про продаж"
-              //   params="sell"
+              params="sell"
             />
             <AdvertismentTab
-              href="/advertisement"
+              href="/add-advertisement"
               text="Про купівлю"
-              //   params="buy"
+              params="buy"
             />
           </div>
         </SwiperSlide>
