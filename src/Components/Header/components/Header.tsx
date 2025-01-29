@@ -2,20 +2,25 @@
 
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
-import HeaderMenu from "./components/HeaderMenu";
-import Notifications from "./components/Notifications";
-import BurgerMenu from "./components/BurgerMenu";
-import NotificationsMobile from "./components/NotificationsMobile";
-import SearchMobile from "./components/SearchMobile";
-import Language from "../Language/Language";
+import HeaderMenu from "./HeaderMenu";
+import Notifications from "./Notifications";
+import BurgerMenu from "./BurgerMenu";
+import NotificationsMobile from "./NotificationsMobile";
+import SearchMobile from "./SearchMobile";
+import Language from "../../Language/Language";
 import { Link } from "@/i18n/routing";
 
 import { useTranslations } from "next-intl";
 import { signOut, useSession } from "next-auth/react";
-import { User } from "@/types/types";
+import { Category, User } from "@/types/types";
 import { RootState } from "@/store/store";
 import { useSelector } from "react-redux";
 
+// interface SellProps {
+//   categories: Category[];
+// }
+
+// export default function Header({ categories }: SellProps) {
 export default function Header() {
   const t = useTranslations("Header");
   const { data: session, status } = useSession();
@@ -156,7 +161,10 @@ export default function Header() {
               </Link>
             </li>
             <li className="menu__item">
-              <Link href="/sell" className="menu__link">
+              <Link
+                href="/add-advertisement?category=sell"
+                className="menu__link"
+              >
                 {t("postAd")}
                 <div className="main-menu__arrow menu__arrow">
                   <Image

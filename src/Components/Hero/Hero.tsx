@@ -2,8 +2,8 @@ import Image from "next/image";
 import React from "react";
 import Swiper from "swiper";
 import HeroSwiper from "./components/HeroSwiper";
-import Link from "next/link";
 import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/routing";
 
 export default function Hero() {
   const t = useTranslations("Hero");

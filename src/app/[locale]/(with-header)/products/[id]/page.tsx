@@ -13,7 +13,11 @@ import ReadMore from "@/Components/ReadMore";
 import Breadcrumbs from "@/Components/Breadcrumbs";
 export default function Product() {
   const [thumbsSwiper, setThumbsSwiper] = useState<SwiperType | null>(null);
+  const [isLiked, setIsLiked] = useState(false);
 
+  const handleLikeClick = () => {
+    setIsLiked(!isLiked);
+  };
   return (
     <>
       <Breadcrumbs position="РР (Поліпропілен)" />
@@ -26,7 +30,12 @@ export default function Product() {
                   Продам Гранулу РР (Поліпропілен)
                 </h2>
                 <div className="top-product__actions">
-                  <button className="like">
+                  <button
+                    className={` like ${isLiked ? "active" : ""}`}
+                    onClick={(e) => {
+                      handleLikeClick();
+                    }}
+                  >
                     <svg
                       width="33"
                       height="30"

@@ -27,11 +27,11 @@ const handler = NextAuth({
               }),
             });
 
-            if (!res.ok) {
-              return null;
-            }
-
             const user = await res.json();
+
+            if (!res.ok || ("success" in user && !user.success)) {
+              throw new Error(user.message || "Login failed");
+            }
 
             return {
               ...user,

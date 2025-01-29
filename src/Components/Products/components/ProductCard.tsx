@@ -1,8 +1,16 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 
 export default function ProductCard() {
+  const [isLiked, setIsLiked] = useState(false);
+
+  const handleLikeClick = () => {
+    setIsLiked(!isLiked);
+  };
+
   return (
     <Link href="#" className="adverts__item item-advert">
       <div className="item-advert__image">
@@ -17,7 +25,14 @@ export default function ProductCard() {
           <div className="item-advert__price">
             <span>35</span> грн
           </div>
-          <button className="item-advert__like like">
+          <button
+            type="button"
+            className={`item-advert__like like ${isLiked ? "active" : ""}`}
+            onClick={(e) => {
+              e.preventDefault();
+              handleLikeClick();
+            }}
+          >
             <svg
               width="24"
               height="22"

@@ -7,9 +7,10 @@ import Image from "next/image";
 import { Link } from "@/i18n/routing";
 
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
+import { toast } from "sonner";
 
 type Inputs = z.infer<typeof LoginFormSchema>;
 
@@ -29,28 +30,32 @@ export default function Login() {
     resolver: zodResolver(LoginFormSchema),
   });
 
-  const googleAuth = async () => {
-    try {
-      const response = await fetch(
-        "http://ec2-13-60-7-255.eu-north-1.compute.amazonaws.com/auth/google",
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          mode: "no-cors",
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("Failed to register");
-      }
-
-      const result = await response.json();
-      console.log("Registration successful:", result);
-    } catch (error) {
-      console.error("Registration error:", error);
+  useEffect(() => {
+    if (errors.password) {
+      toast.error(errors.password.message);
     }
+  }, [errors.password]);
+
+  const googleAuth = async () => {
+    // try {
+    //   const response = await fetch(
+    //     "http://ec2-13-60-7-255.eu-north-1.compute.amazonaws.com/auth/google",
+    //     {
+    //       method: "GET",
+    //       headers: {
+    //         "Content-Type": "application/json",
+    //       },
+    //       mode: "no-cors",
+    //     }
+    //   );
+    //   if (!response.ok) {
+    //     throw new Error("Failed to register");
+    //   }
+    //   const result = await response.json();
+    //   console.log("Registration successful:", result);
+    // } catch (error) {
+    //   console.error("Registration error:", error);
+    // }
   };
 
   const processForm: SubmitHandler<Inputs> = async (data) => {
@@ -61,9 +66,12 @@ export default function Login() {
     });
 
     if (res?.error) {
-      console.error("Ошибка входа:", res.error);
-      setError("Неверный логин или пароль");
+      toast.error("Ошибка входа");
+      // console.error("Ошибка входа:", res.error);
+      // setError("Неверный логин или пароль");
     } else {
+      toast.success("Успешный вход");
+
       setError(null);
       router.push("/");
     }
@@ -92,6 +100,7 @@ export default function Login() {
           <p className="socials-auth__text">{t("login-services")}</p>
           <div className="socials-auth__body">
             <button
+              type="button"
               onClick={googleAuth}
               className="socials-auth__item item-socials-auth"
             >
@@ -105,7 +114,10 @@ export default function Login() {
               </div>
               <div className="item-socials-auth__name">Google</div>
             </button>
-            <button className="socials-auth__item item-socials-auth">
+            <button
+              type="button"
+              className="socials-auth__item item-socials-auth"
+            >
               <div className="item-socials-auth__image">
                 <Image
                   src="/socials/facebook.svg"

@@ -171,6 +171,8 @@
 
     // width: 100%;
     .swiper-slide {
+      border: 2px solid transparent;
+      transition: all 0.3s ease;
       border-radius: toRem(4) !important;
       overflow: hidden !important;
       width: toRem(41) !important;
@@ -180,6 +182,9 @@
         height: 100% !important;
         object-fit: cover !important;
       }
+    }
+    .swiper-slide-thumb-active {
+      border-color: var(--blueColor);
     }
   }
   // .body-product__info

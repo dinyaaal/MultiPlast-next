@@ -4,7 +4,7 @@ import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { Link } from "@/i18n/routing";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { z } from "zod";
 import { RegistrationFormSchema } from "@/lib/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -12,6 +12,7 @@ import { useForm, SubmitHandler, FormProvider } from "react-hook-form";
 import { Select, SelectItem } from "@nextui-org/react";
 import PasswordInput from "@/Components/PasswordInput";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 const cities = ["Киев", "Харьков"];
 
@@ -31,6 +32,18 @@ export default function Registration() {
   } = useForm<Inputs>({
     resolver: zodResolver(RegistrationFormSchema),
   });
+
+  useEffect(() => {
+    if (errors.password) {
+      toast.error(errors.password.message);
+    }
+    if (errors.passwordConfirmation) {
+      toast.error(errors.passwordConfirmation.message);
+    }
+    if (errors.agreement) {
+      toast.error(errors.agreement.message);
+    }
+  }, [errors.password, errors.passwordConfirmation, errors.agreement]);
 
   const googleAuth = async () => {
     try {
@@ -53,6 +66,16 @@ export default function Registration() {
   };
 
   const processForm: SubmitHandler<Inputs> = async (data) => {
+    // if (data.password.length && data.passwordConfirmation.length < 6) {
+    //   toast.error("Password must be at least 6 characters long");
+    //   return;
+    // }
+
+    // if (data.password !== data.passwordConfirmation) {
+    //   toast.error("Passwords do not match");
+    //   return;
+    // }
+
     try {
       const response = await fetch("/api/auth/registration", {
         method: "POST",
@@ -76,9 +99,9 @@ export default function Registration() {
       }
 
       const result = await response.json();
-      console.log("Registration successful:", result);
+      toast.success("Registration successful");
     } catch (error) {
-      console.error("Registration error:", error);
+      toast.error("Registration error");
     }
   };
 
@@ -104,6 +127,7 @@ export default function Registration() {
           <p className="socials-auth__text">{t("registration-services")}</p>
           <div className="socials-auth__body">
             <button
+              type="button"
               onClick={googleAuth}
               className="socials-auth__item item-socials-auth"
             >
@@ -117,7 +141,10 @@ export default function Registration() {
               </div>
               <div className="item-socials-auth__name">Google</div>
             </button>
-            <button className="socials-auth__item item-socials-auth">
+            <button
+              type="button"
+              className="socials-auth__item item-socials-auth"
+            >
               <div className="item-socials-auth__image">
                 <Image
                   src="/socials/facebook.svg"

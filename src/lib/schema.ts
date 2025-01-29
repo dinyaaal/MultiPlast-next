@@ -14,8 +14,8 @@ export const RegistrationFormSchema = z
     agreement: z.boolean().refine((val) => val === true, {
       message: "Вы должны принять пользовательское соглашение",
     }),
-    password: z.string().min(6, "required"),
-    passwordConfirmation: z.string().min(6, "required"),
+    password: z.string().min(6, "Минимум 6 знаков"),
+    passwordConfirmation: z.string().min(6, "Минимум 6 знаков"),
   })
   .refine((data) => data.password === data.passwordConfirmation, {
     message: "Пароли должны быть одинаковые",
@@ -28,7 +28,7 @@ export const LoginFormSchema = z.object({
     .email("Введите корректный email")
     .min(1, "Введите свой email "),
 
-  password: z.string().min(6, "required"),
+  password: z.string().min(6, "Минимум 6 знаков"),
   remember: z.boolean().optional(),
 });
 
@@ -90,7 +90,10 @@ export const AdvertismentSchema = z
     mainCategory: z.string(),
     polymer: z.string().optional(),
     type: z.string().optional(),
-    title: z.string().min(1, { message: "Заголовок обязателен" }),
+    title: z
+      .string()
+      .min(1, { message: "Заголовок обязателен" })
+      .max(150, { message: "Максимальная длина 150 символов" }),
     text: z.string().optional(),
 
     name_of_enterprise: z.string().min(1, "Обязательно"),

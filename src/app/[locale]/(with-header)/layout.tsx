@@ -1,7 +1,7 @@
 "use client";
 
 import Footer from "@/Components/Footer/Footer";
-import Header from "@/Components/Header/Header";
+import Header from "@/Components/Header/components/Header";
 import { RootState } from "@/store/store";
 import { setUserInfoData, setUserInfoError } from "@/store/userInfoSlice";
 import { useSession } from "next-auth/react";
