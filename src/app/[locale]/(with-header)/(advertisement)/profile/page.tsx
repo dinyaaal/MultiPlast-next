@@ -112,10 +112,10 @@ export default function Profile() {
       });
       if (editResponse.ok) {
         const editResult = await editResponse.json();
-        toast.success("Пароль успешно изменен");
+        toast.success("Данные успешно изменены");
+
         if (editResult) {
           dispatch(setUserInfoData(editResult));
-          toast.success("Данные успешно изменены");
         } else {
           dispatch(setUserInfoError("Unknown error occurred"));
         }
@@ -126,6 +126,14 @@ export default function Profile() {
       console.error("Ошибка при отправке данных:", error);
       toast.error("Ошибка обновления информации пользователя");
     }
+  };
+  const handleDeleteAccount = () => {
+    toast("Вы уверены, что хотите удалить свой аккаунт?", {
+      action: {
+        label: "Удалить",
+        onClick: () => console.log("Удалить"),
+      },
+    });
   };
 
   if (status === "unauthenticated") {
@@ -748,7 +756,11 @@ export default function Profile() {
                 >
                   Зберегти
                 </button>
-                <button className="advertisement-contacts__delete button button--secondary">
+                <button
+                  type="button"
+                  onClick={handleDeleteAccount}
+                  className="advertisement-contacts__delete button button--secondary"
+                >
                   Видалити акаунт
                 </button>
               </div>

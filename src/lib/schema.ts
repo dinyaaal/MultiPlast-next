@@ -138,3 +138,13 @@ export const AdvertismentSchema = z
     message: "Price is required when arrangement is false.",
     path: ["price"],
   });
+
+export const ContactFormSchema = z.object({
+  email: z
+    .string()
+    .email("Введите корректный email")
+    .min(1, "Введите свой email "),
+
+  name: z.string().min(1, "Введите Ваше имя"),
+  message: z.string().min(1, "Введите Ваше сообщение"),
+});
