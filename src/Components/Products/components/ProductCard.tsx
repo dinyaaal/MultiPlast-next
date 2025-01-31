@@ -1,17 +1,18 @@
 "use client";
 
+import { Product } from "@/types/types";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
 
-interface ProductProps {
-  title: string;
-  price: number | null;
-  type_price: string;
-  photoUrl: string;
-}
+// interface ProductProps {
+//   title: string;
+//   price: number | null;
+//   type_price: string;
+//   photoUrl: string;
+// }
 
-const ProductCard: React.FC<{ product: ProductProps }> = ({ product }) => {
+export const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
   const [isLiked, setIsLiked] = useState(false);
 
   const handleLikeClick = () => {
@@ -22,12 +23,12 @@ const ProductCard: React.FC<{ product: ProductProps }> = ({ product }) => {
     <Link href="#" className="adverts__item item-advert">
       <div className="item-advert__image">
         {/* <Image src="/advert/01.jpg" alt="Image" width={1000} height={1000} /> */}
-        <Image
-          src={product.photoUrl ? product.photoUrl : "/advert/01.jpg"}
+        {/* <Image
+          src={product.photos[0].url ? product.photos[0].url : "/advert/01.jpg"}
           alt={product.title}
           width={1000}
           height={1000}
-        />
+        /> */}
       </div>
       <div className="item-advert__body">
         <div className="item-advert__content">
