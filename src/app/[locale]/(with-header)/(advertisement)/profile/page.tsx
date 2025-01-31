@@ -129,6 +129,9 @@ export default function Profile() {
   };
   const handleDeleteAccount = () => {
     toast("Вы уверены, что хотите удалить свой аккаунт?", {
+      classNames: {
+        actionButton: "!bg-red-600 !p-4",
+      },
       action: {
         label: "Удалить",
         onClick: () => console.log("Удалить"),

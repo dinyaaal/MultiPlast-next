@@ -19,6 +19,8 @@ export default function UserProvider({
     (state: RootState) => state.userInfo
   );
 
+  console.log(session);
+
   const fetchUserInfo = async () => {
     if (!session) return;
 

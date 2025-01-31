@@ -47,3 +47,40 @@ interface Photo {
   created_at: string;
   updated_at: string;
 }
+
+interface ProductCategory {
+  id: number;
+  name: string;
+  parent_id: number | null;
+  type: string;
+  created_at: string | null;
+  updated_at: string | null;
+  position: number | null;
+}
+
+interface Contact {
+  id: number;
+  product_id: number;
+  name_of_enterprise: string;
+  name: string;
+  phone_number: string;
+  address: string;
+  city: string;
+  area: string;
+}
+
+export interface Product {
+  id: number;
+  title: string;
+  text: string;
+  type_price: string;
+  price: number | null;
+  type_of_product: string;
+  user_id: number;
+  created_at: string;
+  updated_at: string;
+  categories: ProductCategory[];
+  photos: Photo[];
+  files: any[];
+  contact: Contact;
+}

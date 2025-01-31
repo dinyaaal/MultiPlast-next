@@ -4,7 +4,14 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
 
-export default function ProductCard() {
+interface ProductProps {
+  title: string;
+  price: number | null;
+  type_price: string;
+  photoUrl: string;
+}
+
+const ProductCard: React.FC<{ product: ProductProps }> = ({ product }) => {
   const [isLiked, setIsLiked] = useState(false);
 
   const handleLikeClick = () => {
@@ -14,16 +21,26 @@ export default function ProductCard() {
   return (
     <Link href="#" className="adverts__item item-advert">
       <div className="item-advert__image">
-        <Image src="/advert/01.jpg" alt="Image" width={1000} height={1000} />
+        {/* <Image src="/advert/01.jpg" alt="Image" width={1000} height={1000} /> */}
+        <Image
+          src={product.photoUrl ? product.photoUrl : "/advert/01.jpg"}
+          alt={product.title}
+          width={1000}
+          height={1000}
+        />
       </div>
       <div className="item-advert__body">
         <div className="item-advert__content">
-          <div className="item-advert__name">Полікарбонат</div>
-          <div className="item-advert__value">125г</div>
+          <div className="item-advert__name">{product.title}</div>
+          {/* <div className="item-advert__value">125г</div> */}
         </div>
         <div className="item-advert__bottom">
           <div className="item-advert__price">
-            <span>35</span> грн
+            <span>
+              {product.type_price === "by_arrangement"
+                ? "По договорённости"
+                : `${product.price} грн`}
+            </span>
           </div>
           <button
             type="button"
@@ -51,4 +68,4 @@ export default function ProductCard() {
       </div>
     </Link>
   );
-}
+};

@@ -47,10 +47,7 @@ export default function Tabs() {
 
           <div className="tabs-advertisement__items">
             <AdvertismentTab href="/my-sell" text="Мої оголошення про продаж" />
-            <AdvertismentTab
-              href="/my-sell"
-              text="Мої оголошення про купівлю"
-            />
+            <AdvertismentTab href="/my-buy" text="Мої оголошення про купівлю" />
           </div>
         </SwiperSlide>
         <SwiperSlide>
