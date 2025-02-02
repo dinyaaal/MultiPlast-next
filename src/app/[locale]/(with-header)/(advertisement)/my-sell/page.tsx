@@ -18,7 +18,7 @@ export default function page() {
 
     try {
       const res = await fetch(
-        `/api/products/my?token=${session.user.access_token}&status=1`
+        `/api/products/my?token=${session.user.access_token}&status=0`
       );
       if (!res.ok) {
         throw new Error("Network response was not ok");
@@ -45,7 +45,7 @@ export default function page() {
   if (status === "unauthenticated") {
     <div className="advertisement__block my-advertisement__block">
       <h2 className="my-advertisement__title title title--small">
-        Мої оголошення про купівлю
+        Мої оголошення про продаж
       </h2>
       <div className="my-advertisement__content"></div>
     </div>;
@@ -62,7 +62,7 @@ export default function page() {
   return (
     <div className="advertisement__block my-advertisement__block">
       <h2 className="my-advertisement__title title title--small">
-        Мої оголошення про купівлю
+        Мої оголошення про продаж
       </h2>
       <div className="my-advertisement__content">
         {products.length > 0 ? (

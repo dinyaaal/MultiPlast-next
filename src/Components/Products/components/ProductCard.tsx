@@ -13,22 +13,25 @@ import React, { useState } from "react";
 // }
 
 export const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
-  const [isLiked, setIsLiked] = useState(false);
+  const [isLiked, setIsLiked] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleLikeClick = () => {
     setIsLiked(!isLiked);
   };
 
   return (
-    <Link href="#" className="adverts__item item-advert">
+    <Link href="./products/1" className="adverts__item item-advert">
       <div className="item-advert__image">
         {/* <Image src="/advert/01.jpg" alt="Image" width={1000} height={1000} /> */}
-        {/* <Image
-          src={product.photos[0].url ? product.photos[0].url : "/advert/01.jpg"}
+        <Image
+          src={
+            product.photos.length > 0 ? product.photos[0].url : "/advert/01.jpg"
+          }
           alt={product.title}
           width={1000}
           height={1000}
-        /> */}
+        />
       </div>
       <div className="item-advert__body">
         <div className="item-advert__content">
@@ -36,13 +39,14 @@ export const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
           {/* <div className="item-advert__value">125г</div> */}
         </div>
         <div className="item-advert__bottom">
-          <div className="item-advert__price">
-            <span>
-              {product.type_price === "by_arrangement"
-                ? "По договорённости"
-                : `${product.price} грн`}
-            </span>
-          </div>
+          {product.type_price === "by_arrangement" ? (
+            <p>По договорённости</p>
+          ) : (
+            <div className="item-advert__price">
+              <span>${product.price} грн</span>
+            </div>
+          )}
+
           <button
             type="button"
             className={`item-advert__like like ${isLiked ? "active" : ""}`}
