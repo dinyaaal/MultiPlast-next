@@ -1,11 +1,18 @@
+'use client'
 import Adverts from "@/Components/Products/Adverts";
 import Filters from "@/Components/Products/components/Filters";
-import ProductCard from "@/Components/Products/components/ProductCard";
+import { Product } from "@/types/types";
+import { Spinner } from "@nextui-org/react";
 import { useTranslations } from "next-intl";
-import React from "react";
+import React, { useState } from "react";
 
 export default function Products() {
   const t = useTranslations("Products");
+  const [products, setProducts] = useState<Product[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+
+
 
   return (
     <>
@@ -18,14 +25,14 @@ export default function Products() {
             <Filters />
             <div className="trade__content content-trade">
               <div className="content-trade__items">
+                {/* <ProductCard />
                 <ProductCard />
                 <ProductCard />
                 <ProductCard />
                 <ProductCard />
                 <ProductCard />
                 <ProductCard />
-                <ProductCard />
-                <ProductCard />
+                <ProductCard /> */}
               </div>
               <div className="pages">
                 <button className="pages__arrow pages__arrow-prev disabled">
@@ -85,7 +92,7 @@ export default function Products() {
           </div>
         </div>
       </section>
-      <Adverts />
+      {/* <Adverts /> */}
     </>
   );
 }

@@ -11,8 +11,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, SubmitHandler, FormProvider } from "react-hook-form";
 import { Select, SelectItem } from "@nextui-org/react";
 import PasswordInput from "@/Components/PasswordInput";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
+import { signIn } from "next-auth/react";
 
 const cities = ["Киев", "Харьков"];
 
@@ -21,6 +22,8 @@ type Inputs = z.infer<typeof RegistrationFormSchema>;
 export default function Registration() {
   const t = useTranslations("Auth");
   const router = useRouter();
+  const searchParams  = useSearchParams()
+  const callbackUrl = searchParams.get('callbackUrl') || "./"
   const {
     register,
     handleSubmit,
@@ -66,15 +69,7 @@ export default function Registration() {
   };
 
   const processForm: SubmitHandler<Inputs> = async (data) => {
-    // if (data.password.length && data.passwordConfirmation.length < 6) {
-    //   toast.error("Password must be at least 6 characters long");
-    //   return;
-    // }
 
-    // if (data.password !== data.passwordConfirmation) {
-    //   toast.error("Passwords do not match");
-    //   return;
-    // }
 
     try {
       const response = await fetch("/api/auth/registration", {
@@ -128,7 +123,7 @@ export default function Registration() {
           <div className="socials-auth__body">
             <button
               type="button"
-              onClick={googleAuth}
+              onClick={() => signIn('google',{callbackUrl})}
               className="socials-auth__item item-socials-auth"
             >
               <div className="item-socials-auth__image">

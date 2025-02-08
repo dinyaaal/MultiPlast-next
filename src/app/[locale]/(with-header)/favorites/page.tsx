@@ -1,5 +1,5 @@
-import Adverts from "@/Components/Products/Adverts";
-import ProductCard from "@/Components/Products/components/ProductCard";
+// import Adverts from "@/Components/Products/Adverts";
+// import ProductCard from "@/Components/Products/components/ProductCard";
 
 import React from "react";
 
@@ -13,13 +13,13 @@ export default function Favorite() {
           </div>
           <div className="favorite__body">
             <div className="favorite__items">
+              {/* <ProductCard />
               <ProductCard />
               <ProductCard />
               <ProductCard />
               <ProductCard />
               <ProductCard />
-              <ProductCard />
-              <ProductCard />
+              <ProductCard /> */}
             </div>
             <div className="favorite__pages pages">
               <button className="pages__arrow pages__arrow-prev disabled">
@@ -78,7 +78,7 @@ export default function Favorite() {
           </div>
         </div>
       </section>
-      <Adverts />
+      {/* <Adverts /> */}
     </>
   );
 }

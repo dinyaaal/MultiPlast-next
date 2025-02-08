@@ -8,7 +8,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/thumbs";
 import { Navigation, Thumbs } from "swiper/modules";
-import Adverts from "@/Components/Products/Adverts";
+// import Adverts from "@/Components/Products/Adverts";
 import ReadMore from "@/Components/ReadMore";
 import Breadcrumbs from "@/Components/Breadcrumbs";
 export default function Product() {
@@ -554,7 +554,7 @@ export default function Product() {
           </div>
         </div>
       </section>
-      <Adverts />
+      {/* <Adverts /> */}
     </>
   );
 }

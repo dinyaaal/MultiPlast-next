@@ -1,10 +1,19 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-// import GoogleProvider from "next-auth/providers/google";
+import GoogleProvider from "next-auth/providers/google";
 import { signOut } from "next-auth/react";
 
 const handler = NextAuth({
   providers: [
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_SECRET!,
+      authorization: {
+        params: {
+          scope: "openid profile email", // Это позволит вам получать нужные данные
+        },
+      },
+    }),
     CredentialsProvider({
       name: "Credentials",
       credentials: {
@@ -44,6 +53,7 @@ const handler = NextAuth({
       },
     }),
   ],
+
   callbacks: {
     async jwt({ token, account, user }) {
       if (user) {

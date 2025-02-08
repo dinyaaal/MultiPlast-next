@@ -4,7 +4,7 @@ import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import { Navigation, Pagination } from "swiper/modules";
-import ProductCard from "./components/ProductCard";
+// import ProductCard from "./components/ProductCard";
 
 export default function Adverts() {
   return (
@@ -39,7 +39,7 @@ export default function Adverts() {
               },
             }}
           >
-            <SwiperSlide>
+            {/* <SwiperSlide>
               <ProductCard />
             </SwiperSlide>
             <SwiperSlide>
@@ -59,7 +59,7 @@ export default function Adverts() {
             </SwiperSlide>
             <SwiperSlide>
               <ProductCard />
-            </SwiperSlide>
+            </SwiperSlide> */}
           </Swiper>
           <button
             type="button"

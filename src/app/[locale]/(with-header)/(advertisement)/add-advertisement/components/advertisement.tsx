@@ -250,7 +250,7 @@ export default function Advertisement({ categories }: SellProps) {
                     classNames={{
                       trigger: `min-h-[45px] text-black px-[12px] bg-[#F8FBFF] rounded-[5px] outline-offset-0 outline-[1px]  ${
                         errors.mainCategory
-                          ? "outline-[#FF0000]"
+                          ? "outline-[#FF0000] "
                           : "outline-[#B0BFD7]"
                       } `,
 
@@ -312,7 +312,7 @@ export default function Advertisement({ categories }: SellProps) {
                       classNames={{
                         trigger: `min-h-[45px] text-black px-[12px] bg-[#F8FBFF] rounded-[5px] outline-offset-0 outline-[1px]  ${
                           errors.type
-                            ? "outline-[#FF0000]"
+                            ? "outline-[#FF0000] "
                             : "outline-[#B0BFD7]"
                         } `,
 
@@ -361,7 +361,7 @@ export default function Advertisement({ categories }: SellProps) {
                       classNames={{
                         trigger: `min-h-[45px] text-black px-[12px] bg-[#F8FBFF] rounded-[5px] outline-offset-0 outline-[1px]  ${
                           errors.polymer
-                            ? "outline-[#FF0000]"
+                            ? "outline-[#FF0000] "
                             : "outline-[#B0BFD7]"
                         } `,
 
@@ -589,7 +589,7 @@ export default function Advertisement({ categories }: SellProps) {
                 <p>{t("enter-description")}</p>
                 <textarea
                   placeholder="Написати..."
-                  className="description__input input"
+                  className={`description__input input ${errors.text ? 'input--error' : ''}`}
                   {...register("text")}
                 ></textarea>
               </div>

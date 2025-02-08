@@ -1,4 +1,5 @@
 "use client";
+
 import { LoginFormSchema, RegistrationFormSchema } from "@/lib/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signIn } from "next-auth/react";
@@ -6,7 +7,7 @@ import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { Link } from "@/i18n/routing";
 
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
@@ -18,6 +19,8 @@ export default function Login() {
   const t = useTranslations("Auth");
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
+    const searchParams  = useSearchParams()
+  const callbackUrl = searchParams.get('callbackUrl') || "./"
   const {
     register,
     handleSubmit,
@@ -36,27 +39,7 @@ export default function Login() {
     }
   }, [errors.password]);
 
-  const googleAuth = async () => {
-    // try {
-    //   const response = await fetch(
-    //     "http://ec2-13-60-7-255.eu-north-1.compute.amazonaws.com/auth/google",
-    //     {
-    //       method: "GET",
-    //       headers: {
-    //         "Content-Type": "application/json",
-    //       },
-    //       mode: "no-cors",
-    //     }
-    //   );
-    //   if (!response.ok) {
-    //     throw new Error("Failed to register");
-    //   }
-    //   const result = await response.json();
-    //   console.log("Registration successful:", result);
-    // } catch (error) {
-    //   console.error("Registration error:", error);
-    // }
-  };
+
 
   const processForm: SubmitHandler<Inputs> = async (data) => {
     const res = await signIn("credentials", {
@@ -99,21 +82,22 @@ export default function Login() {
         <div className="socials-auth">
           <p className="socials-auth__text">{t("login-services")}</p>
           <div className="socials-auth__body">
-            <button
-              type="button"
-              onClick={googleAuth}
-              className="socials-auth__item item-socials-auth"
-            >
-              <div className="item-socials-auth__image">
-                <Image
-                  src="/socials/google.png"
-                  alt="Icon"
-                  width={100}
-                  height={100}
-                />
-              </div>
-              <div className="item-socials-auth__name">Google</div>
-            </button>
+              <button
+                  type="button"
+                       
+                  className="socials-auth__item item-socials-auth"
+                  onClick={() => signIn('google')}
+                >
+                  <div className="item-socials-auth__image">
+                    <Image
+                      src="/socials/google.png"
+                      alt="Icon"
+                      width={100}
+                      height={100}
+                    />
+                  </div>
+                  <div className="item-socials-auth__name">Google</div>
+                </button>      
             <button
               type="button"
               className="socials-auth__item item-socials-auth"
