@@ -84,3 +84,9 @@ export interface Product {
   files: any[];
   contact: Contact;
 }
+
+export interface Page {
+    url: string | null,
+    label: string,
+    active: boolean
+}

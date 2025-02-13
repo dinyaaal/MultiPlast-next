@@ -8,7 +8,7 @@ import {
   ModalBody,
   ModalFooter,
   useDisclosure,
-} from "@nextui-org/modal";
+} from "@heroui/modal";
 import { useTranslations } from "next-intl";
 import { ContactFormSchema, UserInfoSchema } from "@/lib/schema";
 import { setUserInfoData, setUserInfoError } from "@/store/userInfoSlice";

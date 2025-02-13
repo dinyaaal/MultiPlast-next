@@ -162,7 +162,7 @@
   border-radius: toRem(7);
   min-width: toRem(260);
   width: 100%;
-  max-width: toRem(305);
+  // max-width: toRem(305);
   transition: all 0.3s ease;
   @media (any-hover: hover) {
     &:hover {
@@ -275,6 +275,7 @@
     }
 
     &.disabled {
+      pointer-events: none;
       svg {
         rect {
           fill: #fff;

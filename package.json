@@ -1,42 +1,42 @@
 {
-  "name": "multi-plast",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
-  },
-  "dependencies": {
-    "@hookform/resolvers": "^3.9.0",
-    "@nextui-org/modal": "^2.0.39",
-    "@nextui-org/react": "^2.4.6",
-    "@nextui-org/select": "^2.2.7",
-    "@nextui-org/system": "^2.2.5",
-    "@nextui-org/theme": "^2.2.9",
-    "@reduxjs/toolkit": "^2.5.0",
-    "framer-motion": "^11.5.4",
-    "next": "14.2.8",
-    "next-auth": "^4.24.8",
-    "next-intl": "^3.19.1",
-    "nuqs": "^2.2.3",
-    "react": "^18",
-    "react-dom": "^18",
-    "react-hook-form": "^7.53.1",
-    "react-redux": "^9.2.0",
-    "sonner": "^1.7.1",
-    "swiper": "^11.1.12",
-    "zod": "^3.23.8"
-  },
-  "devDependencies": {
-    "@types/node": "^20",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
-    "autoprefixer": "^10.4.20",
-    "postcss": "^8.4.45",
-    "sass": "^1.78.0",
-    "tailwindcss": "^3.4.10",
-    "typescript": "^5"
-  }
+   "name": "multi-plast",
+   "version": "0.1.0",
+   "private": true,
+   "scripts": {
+      "dev": "next dev",
+      "build": "next build",
+      "start": "next start",
+      "lint": "next lint"
+   },
+   "dependencies": {
+      "@hookform/resolvers": "^3.9.0",
+      "@heroui/modal": "2.2.8",
+      "@heroui/react": "2.6.14",
+      "@heroui/select": "2.4.10",
+      "@heroui/system": "2.4.7",
+      "@heroui/theme": "2.4.6",
+      "@reduxjs/toolkit": "^2.5.0",
+      "framer-motion": "^11.5.4",
+      "next": "14.2.8",
+      "next-auth": "^4.24.8",
+      "next-intl": "^3.19.1",
+      "nuqs": "^2.2.3",
+      "react": "^18",
+      "react-dom": "^18",
+      "react-hook-form": "^7.53.1",
+      "react-redux": "^9.2.0",
+      "sonner": "^1.7.1",
+      "swiper": "^11.1.12",
+      "zod": "^3.23.8"
+   },
+   "devDependencies": {
+      "@types/node": "^20",
+      "@types/react": "^18",
+      "@types/react-dom": "^18",
+      "autoprefixer": "^10.4.20",
+      "postcss": "^8.4.45",
+      "sass": "^1.78.0",
+      "tailwindcss": "^3.4.10",
+      "typescript": "^5"
+   }
 }

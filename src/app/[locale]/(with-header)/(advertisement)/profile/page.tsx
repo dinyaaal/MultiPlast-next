@@ -2,13 +2,13 @@
 import PasswordInput from "@/Components/PasswordInput";
 import { UserInfoSchema } from "@/lib/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Select, SelectItem, Spinner } from "@nextui-org/react";
+import { Select, SelectItem, Spinner } from "@heroui/react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
-import { Input } from "@nextui-org/react";
+import { Input } from "@heroui/react";
 import { User } from "@/types/types";
 import { RootState } from "@/store/store";
 import { useDispatch, useSelector } from "react-redux";

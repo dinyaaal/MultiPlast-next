@@ -1,10 +1,16 @@
 "use client";
 
 import Spoiler from "@/Components/Spoiler";
+import { Category } from "@/types/types";
 import Image from "next/image";
 import React, { useState } from "react";
 
-export default function Filters() {
+
+interface FiltersProps {
+  categories: Category[];
+}
+
+export default function Filters({ categories }: FiltersProps) {
   const [isPrimarySelected, setIsPrimarySelected] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -92,7 +98,7 @@ export default function Filters() {
                 Про купівлю
               </label>
             </Spoiler>
-            <Spoiler className="item-filter" title="Сировина">
+            {/* <Spoiler className="item-filter" title="Сировина">
               <label id="primary-raw" className="check">
                 <input
                   onChange={handlePrimaryChange}
@@ -473,9 +479,22 @@ export default function Filters() {
                 <span className="custom-checkbox"></span>
                 Інші послуги
               </label>
+            </Spoiler> */}
+            <Spoiler className="item-filter" title={'Категория'}>
+                   {categories.map((category) => (
+                    <label key={category.id} className="check">
+                    <input
+                      type="checkbox"
+                      name={category.name}
+                      className="real-checkbox"
+                    />
+                    <span className="custom-checkbox"></span>
+                     {category.name}
+                  </label>
+                    ))}
             </Spoiler>
-
-            <div className="item-filter">
+          
+            {/* <div className="item-filter">
               <div className="item-filter__title">
                 <label className="check">
                   <input
@@ -487,7 +506,7 @@ export default function Filters() {
                   Діючий бізнес
                 </label>
               </div>
-            </div>
+            </div> */}
           </div>
           <button className="body-filters-trade__button button">
             Застосувати фільтри

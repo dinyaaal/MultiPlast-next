@@ -1,7 +1,7 @@
 "use client";
 import { ProductCard } from "@/Components/Products/components/ProductCard";
 import { Product } from "@/types/types";
-import { Spinner } from "@nextui-org/react";
+import { Spinner } from "@heroui/react";
 import { useSession } from "next-auth/react";
 import router from "next/router";
 import React, { useEffect, useState } from "react";

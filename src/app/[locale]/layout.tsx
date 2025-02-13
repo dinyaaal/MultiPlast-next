@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Rubik } from "next/font/google";
 import "./globals.css";
 import "../../assets/scss/style.scss";
-import { NextUIProvider } from "@nextui-org/system";
+import { HeroUIProvider } from "@heroui/system";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import { AuthProviders } from "@/Components/AuthProviders";
@@ -36,7 +36,7 @@ export default async function RootLayout({
           <AuthProviders>
             <NextIntlClientProvider messages={messages}>
               <NuqsAdapter>
-                <NextUIProvider className=" w-full h-full">
+                <HeroUIProvider className=" w-full h-full">
                   {children}
                   <Toaster
                     position="top-right"
@@ -44,7 +44,7 @@ export default async function RootLayout({
                     richColors
                     duration={5000}
                   />
-                </NextUIProvider>
+                </HeroUIProvider>
               </NuqsAdapter>
             </NextIntlClientProvider>
           </AuthProviders>

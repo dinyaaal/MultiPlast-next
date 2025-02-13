@@ -4,7 +4,7 @@ import { AdvertismentSchema } from "@/lib/schema";
 import { RootState } from "@/store/store";
 import { Category, User } from "@/types/types";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Select, SelectItem, Spinner } from "@nextui-org/react";
+import { Select, SelectItem, Spinner } from "@heroui/react";
 import { useSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";

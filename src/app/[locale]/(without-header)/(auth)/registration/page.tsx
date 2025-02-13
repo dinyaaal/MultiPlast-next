@@ -9,7 +9,7 @@ import { z } from "zod";
 import { RegistrationFormSchema } from "@/lib/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, SubmitHandler, FormProvider } from "react-hook-form";
-import { Select, SelectItem } from "@nextui-org/react";
+import { Select, SelectItem } from "@heroui/react";
 import PasswordInput from "@/Components/PasswordInput";
 import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";

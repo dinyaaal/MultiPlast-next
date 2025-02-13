@@ -3,7 +3,7 @@
 import { UserSecuritySchema } from "@/lib/schema";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Spinner } from "@nextui-org/react";
+import { Spinner } from "@heroui/react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import React from "react";

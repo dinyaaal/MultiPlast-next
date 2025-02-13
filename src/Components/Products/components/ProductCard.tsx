@@ -14,7 +14,6 @@ import React, { useState } from "react";
 
 export const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
   const [isLiked, setIsLiked] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleLikeClick = () => {
     setIsLiked(!isLiked);
