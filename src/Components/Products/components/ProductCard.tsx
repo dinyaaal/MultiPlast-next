@@ -1,22 +1,57 @@
 "use client";
 
+import { RootState } from "@/store/store";
 import { Product } from "@/types/types";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
+import { toast } from "sonner";
+import { addFavorite, removeFavorite } from "@/store/favoritesSlice";
 
-// interface ProductProps {
-//   title: string;
-//   price: number | null;
-//   type_price: string;
-//   photoUrl: string;
-// }
+
 
 export const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
-  const [isLiked, setIsLiked] = useState<boolean>(false);
+  
+  const { data: session, status } = useSession();
+  const favorites = useSelector((state: RootState) => state.favorites.items);
+  const isFavorite = favorites.some((item) => item.id === product.id);
 
-  const handleLikeClick = () => {
-    setIsLiked(!isLiked);
+  const [isLiked, setIsLiked] = useState<boolean>(isFavorite);
+
+  const handleLikeClick = async () => {
+    if (status==='unauthenticated') {
+      toast.error('Сначала войдите в аккаунт')
+      return
+    }
+    if(!isLiked) {
+      try {
+        const response = await fetch("/api/favorites/add", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ id: product.id, token: session?.user.access_token }),
+        });
+  
+        if (!response.ok) {
+          throw new Error("Failed to add to favorites");
+        }
+  
+        const data = await response.json();
+        console.log("Favorite added:", data);
+        setIsLiked(true);
+        toast.success('Товар добавлен в избранное')
+      } catch (error) {
+        console.error("Error adding to favorites:", error);
+        toast.error('Error adding to favorites')
+      }
+    } else {
+      setIsLiked(false)
+    }
+    
+
   };
 
   return (

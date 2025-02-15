@@ -1,18 +1,46 @@
 "use client";
-
+import {RadioGroup, Radio} from "@heroui/radio";
 import Spoiler from "@/Components/Spoiler";
 import { Category } from "@/types/types";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 
 interface FiltersProps {
   categories: Category[];
+  onSelectionConfirm: (category: string | null, subCategories: string[], options: string[]) => void;
 }
 
-export default function Filters({ categories }: FiltersProps) {
-  const [isPrimarySelected, setIsPrimarySelected] = useState(false);
+export const Filters: React.FC<FiltersProps> = ({ categories, onSelectionConfirm }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [selectedSubCategories, setSelectedSubCategories] = useState<string[]>([]);
+  const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
+
+  const handleCheckboxChange = (subCategoryId: string) => {
+    setSelectedSubCategories((prev) =>
+      prev.includes(subCategoryId)
+        ? prev.filter((id) => id !== subCategoryId) // Убираем, если уже выбран
+        : [...prev, subCategoryId] // Добавляем, если не выбран
+    );
+  };
+
+  const handleOptionChange = (value: string) => {
+    setSelectedOptions((prev) =>
+      prev.includes(value) ? prev.filter((id) => id !== value) : [...prev, value]
+    );
+  };
+
+  useEffect(() => {
+    setSelectedSubCategories([]);
+  }, [selectedCategory]);
+
+  const handleConfirm = () => {
+    console.log("Выбранная категория:", selectedCategory);
+    console.log("Выбранные подкатегории:", selectedSubCategories);
+    console.log("Выбранные опции:", selectedOptions);
+    onSelectionConfirm(selectedCategory, selectedSubCategories, selectedOptions);
+  };
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -26,9 +54,6 @@ export default function Filters({ categories }: FiltersProps) {
     setIsOpen(false);
   };
 
-  const handlePrimaryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setIsPrimarySelected(event.target.checked);
-  };
   return (
     <div className="trade__filters filters-trade">
       <button onClick={toggleMenu} className="filters-trade__button button">
@@ -78,437 +103,64 @@ export default function Filters({ categories }: FiltersProps) {
           </button>
           <div className="body-filters-trade__items spollers">
             <Spoiler className="item-filter" title="Тип оголошення">
-              <label className="check">
-                <input
-                  type="checkbox"
-                  name="remember"
-                  className="real-checkbox"
-                />
-                <span className="custom-checkbox"></span>
-                Про продаж
-              </label>
+            <label className="check">
+              <input
+                type="checkbox"
+                className="real-checkbox"
+                value="sell"
+                checked={selectedOptions.includes("sell")}
+                onChange={() => handleOptionChange("sell")}
+              />
+              <span className="custom-checkbox"></span>
+              Продажа
+            </label>
 
-              <label className="check">
-                <input
-                  type="checkbox"
-                  name="remember"
-                  className="real-checkbox"
-                />
-                <span className="custom-checkbox"></span>
-                Про купівлю
-              </label>
-            </Spoiler>
-            {/* <Spoiler className="item-filter" title="Сировина">
-              <label id="primary-raw" className="check">
-                <input
-                  onChange={handlePrimaryChange}
-                  type="checkbox"
-                  name="remember"
-                  className="real-checkbox"
-                />
-                <span className="custom-checkbox"></span>
-                Первинна сировина
-              </label>
-
-              <label className="check">
-                <input
-                  type="checkbox"
-                  name="remember"
-                  className="real-checkbox"
-                />
-                <span className="custom-checkbox"></span>
-                Вторинна сировина
-              </label>
-              {isPrimarySelected && (
-                <div className="item-filter__block item-filter__block--primary active">
-                  <label className="check">
-                    <input
-                      type="checkbox"
-                      name="remember"
-                      className="real-checkbox"
-                    />
-                    <span className="custom-checkbox"></span>
-                    HDPE (полиэтилен низкого давления)
-                  </label>
-                  <label className="check">
-                    <input
-                      type="checkbox"
-                      name="remember"
-                      className="real-checkbox"
-                    />
-                    <span className="custom-checkbox"></span>
-                    LDPE (полиэтилен высокого давления)
-                  </label>
-                  <label className="check">
-                    <input
-                      type="checkbox"
-                      name="remember"
-                      className="real-checkbox"
-                    />
-                    <span className="custom-checkbox"></span>
-                    LLDPE (линейный полиэтилен высокого давления)
-                  </label>
-                  <label className="check">
-                    <input
-                      type="checkbox"
-                      name="remember"
-                      className="real-checkbox"
-                    />
-                    <span className="custom-checkbox"></span>
-                    PP (полипропилен)
-                  </label>
-                  <label className="check">
-                    <input
-                      type="checkbox"
-                      name="remember"
-                      className="real-checkbox"
-                    />
-                    <span className="custom-checkbox"></span>
-                    PS (полистирол)
-                  </label>
-                  <label className="check">
-                    <input
-                      type="checkbox"
-                      name="remember"
-                      className="real-checkbox"
-                    />
-                    <span className="custom-checkbox"></span>
-                    ABS пластик (акрилонитрил бутадиен стирол)
-                  </label>
-                  <label className="check">
-                    <input
-                      type="checkbox"
-                      name="remember"
-                      className="real-checkbox"
-                    />
-                    <span className="custom-checkbox"></span>
-                    PET (полиэтилентерефталат)
-                  </label>
-                  <label className="check">
-                    <input
-                      type="checkbox"
-                      name="remember"
-                      className="real-checkbox"
-                    />
-                    <span className="custom-checkbox"></span>
-                    PA (полиамид)
-                  </label>
-                  <label className="check">
-                    <input
-                      type="checkbox"
-                      name="remember"
-                      className="real-checkbox"
-                    />
-                    <span className="custom-checkbox"></span>
-                    POM (полиацеталь)
-                  </label>
-                  <label className="check">
-                    <input
-                      type="checkbox"
-                      name="remember"
-                      className="real-checkbox"
-                    />
-                    <span className="custom-checkbox"></span>
-                    PC (поликарбонат)
-                  </label>
-                  <label className="check">
-                    <input
-                      type="checkbox"
-                      name="remember"
-                      className="real-checkbox"
-                    />
-                    <span className="custom-checkbox"></span>
-                    PVC (поливинилхлорид)
-                  </label>
-                  <label className="check">
-                    <input
-                      type="checkbox"
-                      name="remember"
-                      className="real-checkbox"
-                    />
-                    <span className="custom-checkbox"></span>
-                    Другие полимеры
-                  </label>
-                  <label className="check">
-                    <input
-                      type="checkbox"
-                      name="remember"
-                      className="real-checkbox"
-                    />
-                    <span className="custom-checkbox"></span>
-                    Процессинговые добавки и красители для полимеров
-                  </label>
-                </div>
-              )}
+            <label className="check">
+              <input
+                type="checkbox"
+                className="real-checkbox"
+                value="buy"
+                checked={selectedOptions.includes("buy")}
+                onChange={() => handleOptionChange("buy")}
+              />
+              <span className="custom-checkbox"></span>
+              Покупка
+            </label>
             </Spoiler>
 
-            <Spoiler
-              className="item-filter"
-              title="Обладнання для переробки полімерів"
-            >
-              <label className="check">
-                <input
-                  type="checkbox"
-                  name="remember"
-                  className="real-checkbox"
-                />
-                <span className="custom-checkbox"></span>
-                Гранулятор
-              </label>
-              <label className="check">
-                <input
-                  type="checkbox"
-                  name="remember"
-                  className="real-checkbox"
-                />
-                <span className="custom-checkbox"></span>
-                Дробарка
-              </label>
-              <label className="check">
-                <input
-                  type="checkbox"
-                  name="remember"
-                  className="real-checkbox"
-                />
-                <span className="custom-checkbox"></span>
-                Міксер
-              </label>
-              <label className="check">
-                <input
-                  type="checkbox"
-                  name="remember"
-                  className="real-checkbox"
-                />
-                <span className="custom-checkbox"></span>
-                Устаткування для миття полімерів
-              </label>
-              <label className="check">
-                <input
-                  type="checkbox"
-                  name="remember"
-                  className="real-checkbox"
-                />
-                <span className="custom-checkbox"></span>
-                Лінія по переробці відходів
-              </label>
-              <label className="check">
-                <input
-                  type="checkbox"
-                  name="remember"
-                  className="real-checkbox"
-                />
-                <span className="custom-checkbox"></span>
-                Термопластавтомат
-              </label>
-              <label className="check">
-                <input
-                  type="checkbox"
-                  name="remember"
-                  className="real-checkbox"
-                />
-                <span className="custom-checkbox"></span>
-                Литні форми і преформи
-              </label>
-              <label className="check">
-                <input
-                  type="checkbox"
-                  name="remember"
-                  className="real-checkbox"
-                />
-                <span className="custom-checkbox"></span>
-                Видувне устаткування
-              </label>
-
-              <label className="check">
-                <input
-                  type="checkbox"
-                  name="remember"
-                  className="real-checkbox"
-                />
-                <span className="custom-checkbox"></span>
-                Автозавантажувач і сушка для полімерів
-              </label>
-              <label className="check">
-                <input
-                  type="checkbox"
-                  name="remember"
-                  className="real-checkbox"
-                />
-                <span className="custom-checkbox"></span>
-                Екструдер
-              </label>
-              <label className="check">
-                <input
-                  type="checkbox"
-                  name="remember"
-                  className="real-checkbox"
-                />
-                <span className="custom-checkbox"></span>
-                Устаткування для виробництва пакетів
-              </label>
-              <label className="check">
-                <input
-                  type="checkbox"
-                  name="remember"
-                  className="real-checkbox"
-                />
-                <span className="custom-checkbox"></span>
-                Устаткування для виробництва одноразового посуду
-              </label>
-              <label className="check">
-                <input
-                  type="checkbox"
-                  name="remember"
-                  className="real-checkbox"
-                />
-                <span className="custom-checkbox"></span>
-                Устаткування для видува ПЕТ тари
-              </label>
-              <label className="check">
-                <input
-                  type="checkbox"
-                  name="remember"
-                  className="real-checkbox"
-                />
-                <span className="custom-checkbox"></span>
-                Машина для різання бобін
-              </label>
-              <label className="check">
-                <input
-                  type="checkbox"
-                  name="remember"
-                  className="real-checkbox"
-                />
-                <span className="custom-checkbox"></span>
-                Машина для флексадруку
-              </label>
-              <label className="check">
-                <input
-                  type="checkbox"
-                  name="remember"
-                  className="real-checkbox"
-                />
-                <span className="custom-checkbox"></span>
-                Інші машини
-              </label>
-              <label className="check">
-                <input
-                  type="checkbox"
-                  name="remember"
-                  className="real-checkbox"
-                />
-                <span className="custom-checkbox"></span>
-                Запасні частини та комплектуючі
-              </label>
-            </Spoiler>
-
-            <Spoiler className="item-filter" title="Послуги">
-              <label className="check">
-                <input
-                  type="checkbox"
-                  name="remember"
-                  className="real-checkbox"
-                />
-                <span className="custom-checkbox"></span>
-                Лиття на термопластавтоматах
-              </label>
-
-              <label className="check">
-                <input
-                  type="checkbox"
-                  name="remember"
-                  className="real-checkbox"
-                />
-                <span className="custom-checkbox"></span>
-                Друк на полімерній плівці
-              </label>
-              <label className="check">
-                <input
-                  type="checkbox"
-                  name="remember"
-                  className="real-checkbox"
-                />
-                <span className="custom-checkbox"></span>
-                Порізка полімерної плівки
-              </label>
-
-              <label className="check">
-                <input
-                  type="checkbox"
-                  name="remember"
-                  className="real-checkbox"
-                />
-                <span className="custom-checkbox"></span>
-                Миття, дроблення, агломерація, грануляція
-              </label>
-              <label className="check">
-                <input
-                  type="checkbox"
-                  name="remember"
-                  className="real-checkbox"
-                />
-                <span className="custom-checkbox"></span>
-                Виготовлення ливарних форм та преформ
-              </label>
-
-              <label className="check">
-                <input
-                  type="checkbox"
-                  name="remember"
-                  className="real-checkbox"
-                />
-                <span className="custom-checkbox"></span>
-                Виготовлення, налагодження та модернізація обладнання
-              </label>
-              <label className="check">
-                <input
-                  type="checkbox"
-                  name="remember"
-                  className="real-checkbox"
-                />
-                <span className="custom-checkbox"></span>
-                Ремонт та відновлення обладнання
-              </label>
-
-              <label className="check">
-                <input
-                  type="checkbox"
-                  name="remember"
-                  className="real-checkbox"
-                />
-                <span className="custom-checkbox"></span>
-                Інші послуги
-              </label>
-            </Spoiler> */}
             <Spoiler className="item-filter" title={'Категория'}>
-                   {categories.map((category) => (
-                    <label key={category.id} className="check">
-                    <input
-                      type="checkbox"
-                      name={category.name}
-                      className="real-checkbox"
-                    />
-                    <span className="custom-checkbox"></span>
-                     {category.name}
-                  </label>
-                    ))}
+              <RadioGroup value={selectedCategory} onValueChange={setSelectedCategory}>
+    
+                    {categories.map((category) => (
+                      
+                      <Radio classNames={{label: 'text-xl',}} value={category.id.toString()}>{category.name}</Radio>
+                      ))}
+              </RadioGroup>
             </Spoiler>
-          
-            {/* <div className="item-filter">
-              <div className="item-filter__title">
-                <label className="check">
-                  <input
-                    type="checkbox"
-                    name="remember"
-                    className="real-checkbox"
-                  />
-                  <span className="custom-checkbox"></span>
-                  Діючий бізнес
-                </label>
-              </div>
-            </div> */}
+
+            {selectedCategory && (
+
+            <Spoiler  className="item-filter" title="Тип оголошення">
+            {categories
+              .find(category => category.id.toString() === selectedCategory)
+              ?.categories.map(subCategory => (
+                <label key={subCategory.id} className="check">
+                <input
+                  type="checkbox"
+                  name="remember"
+                  className="real-checkbox"
+                  value={subCategory.id}
+                  checked={selectedSubCategories.includes(subCategory.id.toString())}
+                  onChange={() => handleCheckboxChange(subCategory.id.toString())}
+                />
+                <span className="custom-checkbox"></span>
+                {subCategory.name}
+              </label>
+              ))}
+            </Spoiler>
+            )}
           </div>
-          <button className="body-filters-trade__button button">
+          <button onClick={handleConfirm} className="body-filters-trade__button button">
             Застосувати фільтри
           </button>
         </div>

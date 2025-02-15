@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserInfoData, setUserInfoError } from "@/store/userInfoSlice";
 import { RootState } from "@/store/store";
+import { setFavorites } from "@/store/favoritesSlice";
 
 export default function UserProvider({
   children,
@@ -18,6 +19,8 @@ export default function UserProvider({
   const { data: userInfo, error } = useSelector(
     (state: RootState) => state.userInfo
   );
+  const favorites = useSelector((state: RootState) => state.favorites.items);
+
 
   console.log(session);
 
@@ -27,15 +30,15 @@ export default function UserProvider({
     dispatch(setUserInfoError(null));
 
     try {
-      const responseOrderStatus = await fetch(
+      const responseUserInfo = await fetch(
         `/api/users/get?token=${session?.user.access_token}&id=${session?.user.id}`
       );
 
-      if (!responseOrderStatus.ok) {
+      if (!responseUserInfo.ok) {
         throw new Error("Network response was not ok");
       }
 
-      const data = await responseOrderStatus.json();
+      const data = await responseUserInfo.json();
 
       if (data) {
         console.log(`User: ${JSON.stringify(data)} `);
@@ -49,11 +52,36 @@ export default function UserProvider({
     }
   };
 
+  const fetchFavorites = async () => {
+    if (!session) return;
+
+
+    try {
+      const responseFavorites = await fetch(
+        `/api/favorites/get?token=${session?.user.access_token}`
+      );
+
+      if (!responseFavorites.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      const data = await responseFavorites.json();
+
+      if (data) {
+        dispatch(setFavorites(data));
+      } 
+    } catch (error) {
+      console.error("Error fetching order status:", error);
+    }
+  };
+
   useEffect(() => {
     if (!userInfo) {
       fetchUserInfo();
     }
+    fetchFavorites()
   }, [session]);
+
 
   return <>{children}</>;
 }

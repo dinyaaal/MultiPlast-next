@@ -1,11 +1,11 @@
 'use client'
 import {Pagination, PaginationItem, PaginationCursor} from "@heroui/pagination";
-import Filters from "@/Components/Products/components/Filters";
 import { ProductCard } from "@/Components/Products/components/ProductCard";
 import { Category, Page, Product } from "@/types/types";
 import { Spinner } from "@heroui/react";
 import { useTranslations } from "next-intl";
 import React, { useEffect, useState } from "react";
+import { Filters } from "@/Components/Products/components/Filters";
 
 interface ProductsProps {
   categories: Category[];
@@ -19,13 +19,44 @@ export function ProductsBody({ categories }: ProductsProps) {
   const [links, setLinks] = useState<Page[]>([])
   const [lastPage, setLastPage] = useState<number>()
 
+    const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+    const [selectedSubCategories, setSelectedSubCategories] = useState<string[]>([]);
+    const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
+
+    const handleSelection = (category: string | null, subCategories: string[], options: string[]) => {
+
+      setSelectedCategory(category);
+      setSelectedSubCategories(subCategories);
+      setSelectedOptions(options);
+    };
+
+
+
   const fetchProducts = async () => {
 
     setIsLoading(true);
+    let queryParams: string[] = [];
+
+    if (selectedCategory) {
+      queryParams.push(`category_id=${selectedCategory}`);
+    }
+  
+    if (selectedSubCategories.length > 0) {
+      queryParams.push(`type_id=${selectedSubCategories.join(',')}`);
+    }
+  
+    if (selectedOptions.length > 0) {
+      queryParams.push(`type_of_product=${selectedOptions.join(',')}`);
+    }
+
+    queryParams.push(`page=${currentPage}`);
+    queryParams.push(`perPage=12`);
+
+    const queryString = queryParams.length > 0 ? `?${queryParams.join('&')}` : '';
 
     try {
       const res = await fetch(
-        `http://13.60.7.255/api/products?page=${currentPage}`
+        `http://13.60.7.255/api/products${queryString}`
       );
       if (!res.ok) {
         throw new Error("Network response was not ok");
@@ -48,7 +79,7 @@ export function ProductsBody({ categories }: ProductsProps) {
   useEffect(() => {
  
     fetchProducts();
-  }, [currentPage]);
+  }, [currentPage, selectedCategory, selectedSubCategories, selectedOptions]);
 
   return (
     <>
@@ -58,7 +89,7 @@ export function ProductsBody({ categories }: ProductsProps) {
                 <h2 className="trade__title title">{t("title")}</h2>
               </div>
               <div className="trade__body">
-            <Filters categories={categories} />
+            <Filters categories={categories} onSelectionConfirm={handleSelection} />
             <div className="trade__content content-trade">
               <div className="content-trade__items">
               {products.length > 0 ? (

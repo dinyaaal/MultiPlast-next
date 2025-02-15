@@ -3,11 +3,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 import userInfoReducer from "./userInfoSlice";
 import categoriesReducer from "./categoriesSlice";
+import favoritesReducer from "./favoritesSlice";
 
 const store = configureStore({
   reducer: {
     userInfo: userInfoReducer,
     categories: categoriesReducer,
+    favorites: favoritesReducer,
   },
 });
 
