@@ -11,13 +11,21 @@ import { Navigation, Thumbs } from "swiper/modules";
 // import Adverts from "@/Components/Products/Adverts";
 import ReadMore from "@/Components/ReadMore";
 import Breadcrumbs from "@/Components/Breadcrumbs";
-export default function Product() {
+
+export default function Product({ params }: {
+  params: {id: string}
+}) {
   const [thumbsSwiper, setThumbsSwiper] = useState<SwiperType | null>(null);
   const [isLiked, setIsLiked] = useState(false);
+
+  console.log(params.id)
 
   const handleLikeClick = () => {
     setIsLiked(!isLiked);
   };
+
+
+
   return (
     <>
       <Breadcrumbs position="РР (Поліпропілен)" />

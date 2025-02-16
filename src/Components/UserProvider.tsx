@@ -75,11 +75,13 @@ export default function UserProvider({
     }
   };
 
+  // fetchFavorites()
+
   useEffect(() => {
     if (!userInfo) {
       fetchUserInfo();
     }
-    fetchFavorites()
+
   }, [session]);
 
 

@@ -42,6 +42,15 @@ export const Filters: React.FC<FiltersProps> = ({ categories, onSelectionConfirm
     onSelectionConfirm(selectedCategory, selectedSubCategories, selectedOptions);
   };
 
+  const handleReset = () => {
+    setSelectedCategory(null)
+    setSelectedSubCategories([])
+    setSelectedOptions([])
+    onSelectionConfirm(null, [], []);
+  };
+
+  
+
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
@@ -160,9 +169,15 @@ export const Filters: React.FC<FiltersProps> = ({ categories, onSelectionConfirm
             </Spoiler>
             )}
           </div>
+          <div className="body-filters-trade__actions">
+
           <button onClick={handleConfirm} className="body-filters-trade__button button">
             Застосувати фільтри
           </button>
+          <button onClick={handleReset} className="body-filters-trade__button button button--secondary">
+            Сбросить фильтры
+          </button>
+          </div>
         </div>
       </div>
     </div>

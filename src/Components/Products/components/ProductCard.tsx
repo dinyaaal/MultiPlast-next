@@ -5,7 +5,7 @@ import { Product } from "@/types/types";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { toast } from "sonner";
 import { addFavorite, removeFavorite } from "@/store/favoritesSlice";
@@ -20,6 +20,11 @@ export const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
 
   const [isLiked, setIsLiked] = useState<boolean>(isFavorite);
 
+  useEffect(() => {
+    setIsLiked(isFavorite);
+  }, [isFavorite]);
+
+  console.log(isFavorite)
   const handleLikeClick = async () => {
     if (status==='unauthenticated') {
       toast.error('Сначала войдите в аккаунт')
