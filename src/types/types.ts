@@ -69,20 +69,26 @@ interface Contact {
   area: string;
 }
 
-export interface Product {
+export interface ProductType {
   id: number;
   title: string;
   text: string;
   type_price: string;
-  price: number | null;
+  price: number;
   type_of_product: string;
   user_id: number;
   created_at: string;
   updated_at: string;
   categories: ProductCategory[];
+  author: Author;
   photos: Photo[];
   files: any[];
-  contact: Contact;
+}
+
+export interface Author {
+  id: number;
+  first_name: string | null;
+  last_name: string | null;
 }
 
 export interface Page {

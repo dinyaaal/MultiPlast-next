@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Swiper as SwiperType } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
@@ -11,20 +11,57 @@ import { Navigation, Thumbs } from "swiper/modules";
 // import Adverts from "@/Components/Products/Adverts";
 import ReadMore from "@/Components/ReadMore";
 import Breadcrumbs from "@/Components/Breadcrumbs";
+import { ProductType } from "@/types/types";
+import { Spinner } from "@heroui/react";
 
 export default function Product({ params }: {
   params: {id: string}
 }) {
   const [thumbsSwiper, setThumbsSwiper] = useState<SwiperType | null>(null);
   const [isLiked, setIsLiked] = useState(false);
+  const [product, setProduct] = useState<ProductType | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  console.log(params.id)
 
   const handleLikeClick = () => {
     setIsLiked(!isLiked);
   };
 
+  const fetchProduct = async () => {
+    if (!params.id) return;
+    try {
+      const response = await fetch(`/api/products/product?id=${params.id}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+   
+      if (!response.ok) {
+        throw new Error(`Ошибка загрузки: ${response.status}`);
+      }
 
+      const data = await response.json();
+      setProduct(data);
+    } catch (err) {
+      setError("Ошибка при загрузке продукта");
+    } finally {
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
+    fetchProduct();
+  }, []);
+
+ 
+  if (!product) {
+    return (
+      <div className="flex w-full h-full min-h-screen flex-auto items-center justify-center">
+        <Spinner size="lg" />
+      </div>
+    );
+  }
 
   return (
     <>
@@ -35,7 +72,7 @@ export default function Product({ params }: {
             <div className="top-product__body">
               <div className="top-product__block">
                 <h2 className="top-product__title title">
-                  Продам Гранулу РР (Поліпропілен)
+                 {product.title}
                 </h2>
                 <div className="top-product__actions">
                   <button
@@ -76,7 +113,7 @@ export default function Product({ params }: {
                 </div>
               </div>
               <div className="top-product__price price-product">
-                <div className="price-product__text title">до 75 грн/кг</div>
+                <div className="price-product__text title">{product.price} грн</div>
                 <div className="price-product__sub-text">
                   від 3000 кг - 60 грн/кг
                 </div>
@@ -359,7 +396,7 @@ export default function Product({ params }: {
               <div className="top-product__body">
                 <div className="top-product__block">
                   <h2 className="top-product__title title">
-                    Продам Гранулу РР (Поліпропілен)
+                      {product.title}
                   </h2>
                   <div className="top-product__actions">
                     <button className="like">
@@ -395,7 +432,7 @@ export default function Product({ params }: {
                   </div>
                 </div>
                 <div className="top-product__price price-product">
-                  <div className="price-product__text title">до 75 грн/кг</div>
+                  <div className="price-product__text title">{product.price} грн</div>
                   <div className="price-product__sub-text">
                     від 3000 кг - 60 грн/кг
                   </div>
@@ -409,11 +446,7 @@ export default function Product({ params }: {
                   Опис товару:
                 </div>
                 <ReadMore>
-                  Поліпропілен (ПП) - це хімічна сполука, що відноситься до
-                  синтетичних полімерів. Він є продуктом полімеризації пропілену
-                  та належить до класу поліолефінів. Завдяки винятковій міцності
-                  та твердості вироби з поліпропілену використовуються в
-                  багатьох
+                    {product.text}
                 </ReadMore>
               </div>
             </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import { RootState } from "@/store/store";
-import { Product } from "@/types/types";
+
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
@@ -9,10 +9,11 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { toast } from "sonner";
 import { addFavorite, removeFavorite } from "@/store/favoritesSlice";
+import { ProductType } from "@/types/types";
 
 
 
-export const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
+export const ProductCard: React.FC<{ product: ProductType }> = ({ product }) => {
   
   const { data: session, status } = useSession();
   const favorites = useSelector((state: RootState) => state.favorites.items);

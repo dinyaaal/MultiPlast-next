@@ -1,10 +1,4 @@
-.page-product {
-  .top-product {
-    @media (max-width: $tablet) {
-      display: none;
-    }
-  }
-}
+
 
 .product {
   padding-top: toRem(50);
@@ -22,6 +16,10 @@
   }
 }
 .top-product {
+  @media (max-width: $tablet) {
+
+    display: none;
+  }
   &__body {
     display: flex;
     flex-wrap: wrap;
@@ -29,6 +27,7 @@
     justify-content: space-between;
     gap: toRem(20);
     @media (max-width: $tablet) {
+      
       flex-direction: column;
       text-align: center;
       align-items: center;
