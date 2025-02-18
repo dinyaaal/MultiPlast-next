@@ -1,6 +1,6 @@
 "use client";
 import { ProductCard } from "@/Components/Products/components/ProductCard";
-import { Product } from "@/types/types";
+import { ProductType } from "@/types/types";
 import { Spinner } from "@heroui/react";
 import { useSession } from "next-auth/react";
 import router from "next/router";
@@ -8,7 +8,7 @@ import React, { useEffect, useState } from "react";
 
 export default function page() {
   const { data: session, status } = useSession();
-  const [products, setProducts] = useState<Product[]>([]);
+  const [products, setProducts] = useState<ProductType[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const fetchProducts = async () => {

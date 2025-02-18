@@ -1,11 +1,14 @@
+import Product from "@/app/[locale]/(with-header)/products/[id]/page";
+import { Link } from "@/i18n/routing";
+import { ForumPost } from "@/types/types";
 import Image from "next/image";
 import React from "react";
 
 interface ForumCardProps {
+  post: ForumPost
   small?: boolean;
 }
-
-export default function ForumCard({ small = false }: ForumCardProps) {
+  export const ForumCard: React.FC<ForumCardProps> = ({ post, small = false }) => {
   return (
     <>
       {small ? (
@@ -13,14 +16,13 @@ export default function ForumCard({ small = false }: ForumCardProps) {
           <div className="item-forum__body">
             <div className="item-forum__block">
               <h4 className="item-forum__title">
-                Ключові властивості полікарбонату
+                {post.title}
               </h4>
               <p className="item-forum__text">
-                Ключовими властивостями полікарбонату є висока прозорість,
-                відносно мала вага та дуже висока ударна в'язкість...{" "}
+               {post.text}
               </p>
             </div>
-            <a href="#" className="item-forum__more">
+            <Link href={`/forum/${post.id}`} className="item-forum__more">
               <span>Детальніше</span>
               <svg
                 width="17"
@@ -34,7 +36,7 @@ export default function ForumCard({ small = false }: ForumCardProps) {
                   fill="#1858B8"
                 />
               </svg>
-            </a>
+            </Link>
           </div>
         </div>
       ) : (
@@ -45,16 +47,10 @@ export default function ForumCard({ small = false }: ForumCardProps) {
           <div className="item-forum__body">
             <div className="item-forum__block">
               <h4 className="item-forum__title">
-                Ключові властивості полікарбонату
+                {post.title}
               </h4>
               <p className="item-forum__text">
-                Ключовими властивостями полікарбонату є висока прозорість,
-                відносно мала вага та дуже висока ударна в'язкість
-                (удароміцність). Полікарбонат є полімерним пластиковим
-                матеріалом, який можна використовувати по-різному. Завдяки
-                фізичним властивостям полікарбонату цей матеріал широко
-                використовується у будівництві та архітектурі. Ми можемо
-                використовувати ...{" "}
+                {post.text}
               </p>
             </div>
             <div className="item-forum__block">
@@ -68,7 +64,7 @@ export default function ForumCard({ small = false }: ForumCardProps) {
                       height={100}
                     />
                   </div>
-                  <span className="info-item-forum__value">8</span>
+                  <span className="info-item-forum__value">{post.views_count}</span>
                 </div>
                 <div className="info-item-forum__item">
                   <div className="info-item-forum__icon">
@@ -79,10 +75,10 @@ export default function ForumCard({ small = false }: ForumCardProps) {
                       height={100}
                     />
                   </div>
-                  <span className="info-item-forum__value">4</span>
+                  <span className="info-item-forum__value">{post.comments_count}</span>
                 </div>
               </div>
-              <a href="#" className="item-forum__more">
+              <Link href={`/forum/${post.id}`} className="item-forum__more">
                 <span>Читати</span>
                 <svg
                   width="17"
@@ -96,7 +92,7 @@ export default function ForumCard({ small = false }: ForumCardProps) {
                     fill="#1858B8"
                   />
                 </svg>
-              </a>
+              </Link>
             </div>
           </div>
         </div>

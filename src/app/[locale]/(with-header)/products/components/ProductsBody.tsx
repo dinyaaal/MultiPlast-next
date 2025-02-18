@@ -1,7 +1,7 @@
 'use client'
 import {Pagination, PaginationItem, PaginationCursor} from "@heroui/pagination";
 import { ProductCard } from "@/Components/Products/components/ProductCard";
-import { Category, Page, Product } from "@/types/types";
+import { Category, Page, ProductType  } from "@/types/types";
 import { Spinner } from "@heroui/react";
 import { useTranslations } from "next-intl";
 import React, { useEffect, useState } from "react";
@@ -13,7 +13,7 @@ interface ProductsProps {
 
 export function ProductsBody({ categories }: ProductsProps) {
   const t = useTranslations("Products");
-  const [products, setProducts] = useState<Product[]>([]);
+  const [products, setProducts] = useState<ProductType[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState<number>(1)
   const [links, setLinks] = useState<Page[]>([])

@@ -466,6 +466,7 @@ export default function Product({ params }: {
                       Місцезнаходження:
                     </p>
                     <div className="location-info-body-product__place">
+
                       Одеса, Одеська область
                     </div>
                   </div>
@@ -486,7 +487,7 @@ export default function Product({ params }: {
                     Контактна особа:
                   </div>
                   <p className="contact-info-body-product__text">
-                    Дмитро Вишнивецький
+                    {`${product.author.first_name} ${product.author.last_name}`}
                   </p>
                 </div>
               </div>

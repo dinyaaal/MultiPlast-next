@@ -196,7 +196,10 @@
     justify-items: center;
     gap: toRem(20);
     @media (min-width: $mobile) {
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      grid-template-columns: repeat(2, 1fr);
+    }
+    @media (min-width: $pc) {
+      grid-template-columns: repeat(3, 1fr);
     }
   }
 }

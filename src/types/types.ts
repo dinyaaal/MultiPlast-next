@@ -96,3 +96,30 @@ export interface Page {
     label: string,
     active: boolean
 }
+
+export interface ForumCategory {
+  id: number;
+  title: string;
+  description: string;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
+  position: number;
+  pivot: {
+    forum_id: number;
+    forum_subject_id: number;
+  };
+}
+
+export interface ForumPost {
+  id: number;
+  author_id: number;
+  title: string;
+  text: string;
+  created_at: string;
+  updated_at: string;
+  comments_count: number;
+  views_count: number;
+  categories: ForumCategory[];
+  author: Author;
+}

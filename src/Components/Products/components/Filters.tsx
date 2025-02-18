@@ -20,8 +20,8 @@ export const Filters: React.FC<FiltersProps> = ({ categories, onSelectionConfirm
   const handleCheckboxChange = (subCategoryId: string) => {
     setSelectedSubCategories((prev) =>
       prev.includes(subCategoryId)
-        ? prev.filter((id) => id !== subCategoryId) // Убираем, если уже выбран
-        : [...prev, subCategoryId] // Добавляем, если не выбран
+        ? prev.filter((id) => id !== subCategoryId) 
+        : [...prev, subCategoryId] 
     );
   };
 

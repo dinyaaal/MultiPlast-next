@@ -1,25 +1,9 @@
+import { ProductType } from "@/types/types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-interface Product {
-  id: number;
-  title: string;
-  text: string;
-  user_id: number;
-  type_price: string;
-  type_of_product: string;
-  price: number;
-  created_at: string;
-  updated_at: string;
-  is_blocked: number;
-  block_reason: string | null;
-  deleted_at: string | null;
-  expiration_date: string | null;
-  volume: number | null;
-  price_per_volume: number | null;
-}
 
 interface FavoritesState {
-  items: Product[];
+  items: ProductType[];
 }
 
 const initialState: FavoritesState = {
@@ -30,7 +14,7 @@ const favoritesSlice = createSlice({
   name: "favorites",
   initialState,
   reducers: {
-    addFavorite: (state, action: PayloadAction<Product>) => {
+    addFavorite: (state, action: PayloadAction<ProductType>) => {
       if (!state.items.find((item) => item.id === action.payload.id)) {
         state.items.push(action.payload);
       }
@@ -38,7 +22,7 @@ const favoritesSlice = createSlice({
     removeFavorite: (state, action: PayloadAction<number>) => {
       state.items = state.items.filter((item) => item.id !== action.payload);
     },
-    setFavorites: (state, action: PayloadAction<Product[]>) => {
+    setFavorites: (state, action: PayloadAction<ProductType[]>) => {
       state.items = action.payload; 
     },
   },
