@@ -20,16 +20,22 @@ export default function Forum() {
   const [lastPage, setLastPage] = useState<number>();
 
   const fetchForum = async () => {
+    setIsLoading(true)
     let queryParams: string[] = [];
 
     queryParams.push(`page=${currentPage}`);
-    queryParams.push(`perPage=12`);
+    queryParams.push(`perPage=5`);
 
     const queryString =
       queryParams.length > 0 ? `?${queryParams.join("&")}` : "";
 
     try {
-      const res = await fetch(`http://13.60.7.255/api/forums${queryString}`);
+      const res = await fetch(`/api/forum/get${queryString}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
       if (!res.ok) {
         throw new Error("Network response was not ok");
       }

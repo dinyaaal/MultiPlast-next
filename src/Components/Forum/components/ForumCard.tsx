@@ -1,6 +1,8 @@
-import Product from "@/app/[locale]/(with-header)/products/[id]/page";
+'use client'
+
 import { Link } from "@/i18n/routing";
 import { ForumPost } from "@/types/types";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import React from "react";
 
@@ -9,6 +11,8 @@ interface ForumCardProps {
   small?: boolean;
 }
   export const ForumCard: React.FC<ForumCardProps> = ({ post, small = false }) => {
+  const { data: session, status } = useSession();
+    
   return (
     <>
       {small ? (
@@ -41,9 +45,12 @@ interface ForumCardProps {
         </div>
       ) : (
         <div className="body-forum__item item-forum">
-          <button className="item-forum__delete">
-            <Image src="/icons/bin.svg" alt="Icon" width={100} height={100} />
-          </button>
+          {session?.user.id === post.author_id && (
+            <button className="item-forum__delete">
+              <Image src="/icons/bin.svg" alt="Icon" width={100} height={100} />
+            </button>
+          )}
+         
           <div className="item-forum__body">
             <div className="item-forum__block">
               <h4 className="item-forum__title">

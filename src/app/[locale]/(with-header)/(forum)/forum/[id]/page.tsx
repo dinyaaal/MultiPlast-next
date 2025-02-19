@@ -1,7 +1,10 @@
+'use client'
 import ForumComments from "@/Components/Forum/components/ForumComments";
 import ModalContact from "@/Components/Modals/ModalContact";
+import { ForumPost } from "@/types/types";
+import { Spinner } from "@heroui/react";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 const comments = [
   {
@@ -29,14 +32,56 @@ const comments = [
   },
 ];
 
-export default function ForumTopic() {
+export default function ForumTopic({ params }: {
+  params: {id: string}
+}) {
+  const [post, setPost] = useState<ForumPost | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const fetchProduct = async () => {
+    if (!params.id) return;
+    try {
+      const response = await fetch(`/api/forum/post?id=${params.id}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+   
+      if (!response.ok) {
+        throw new Error(`Ошибка загрузки: ${response.status}`);
+      }
+
+      const data = await response.json();
+      setPost(data);
+    } catch (err) {
+      setError("Ошибка при загрузке продукта");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchProduct();
+  }, []);
+
+
+  if (!post) {
+    return (
+      <div className="flex w-full h-full min-h-screen flex-auto items-center justify-center">
+        <Spinner size="lg" />
+      </div>
+    );
+  }
+
   return (
     <section className="forum-topic">
       <div className="forum-topic__container">
         <div className="forum-topic__body body-forum-topic">
           <div className="body-forum-topic__top top-body-forum-topic">
             <h2 className="top-body-forum-topic__title title">
-              Ключові властивості полікарбонату
+                {post.title}
             </h2>
             <div className="top-product__actions actions-top">
               <a href="#" className="actions-top__item edit">

@@ -239,6 +239,11 @@
     text-overflow: ellipsis;
     height: 100%;
     line-height: 21px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      line-clamp: 3;
+      box-orient: vertical;
   }
   // .item-forum__info
   &__info {
