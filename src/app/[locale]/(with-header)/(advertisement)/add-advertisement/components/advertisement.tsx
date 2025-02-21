@@ -2,17 +2,18 @@
 
 import { AdvertismentSchema } from "@/lib/schema";
 import { RootState } from "@/store/store";
-import { Category, User } from "@/types/types";
+import { Category, ProductType, User } from "@/types/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Select, SelectItem, Spinner } from "@heroui/react";
 import { useSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
-import { useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { toast } from "sonner";
 import { z } from "zod";
+import { useRouter } from "@/i18n/routing";
 
 interface SellProps {
   categories: Category[];
@@ -25,6 +26,11 @@ const units = [
   { key: "for_kg", label: "За кілограм" },
 ];
 
+const advertTypes = [
+  { key: "sell", label: "Продажа" },
+  { key: "buy", label: "Покупка" },
+];
+
 interface typePrice {
   type: "by_arrangement" | "for_minute" | "for_hour" | "for_piece" | "for_kg";
 }
@@ -33,17 +39,28 @@ type Inputs = z.infer<typeof AdvertismentSchema>;
 
 export default function Advertisement({ categories }: SellProps) {
   const t = useTranslations("Sell");
-  const [categoryId, setCategoryId] = useState<number>(1);
-
-  const [arrangement, setArrangement] = useState<boolean>(false);
+  const searchParams = useSearchParams();
+  // const router = useRouter();
+  const editId = searchParams.get("edit");
   const { data: userInfo, error } = useSelector(
     (state: RootState) => state.userInfo
   );
   const { data: session, status } = useSession();
+  const [product, setProduct] = useState<ProductType | null>(null);
+  const [categoryId, setCategoryId] = useState<number>(
+    product?.categories.find((category) => category.position === 1)?.id || 1
+  );
+
+  const [advertType, setAdvertType] = useState<"sell" | "buy">(
+    product?.type_of_product || "sell"
+  );
+  const [arrangement, setArrangement] = useState<boolean>(false);
 
   const [photos, setPhotos] = useState<File[] | null>(null);
   const [files, setFiles] = useState<File[] | null>(null);
   const [typePrice, setTypePrice] = useState<typePrice>({ type: "for_kg" });
+  const [loading, setLoading] = useState(false);
+  const [productError, setProductError] = useState<string | null>(null);
 
   const {
     register,
@@ -58,6 +75,34 @@ export default function Advertisement({ categories }: SellProps) {
   } = useForm<Inputs>({
     resolver: zodResolver(AdvertismentSchema),
   });
+
+  const fetchProduct = async () => {
+    if (!editId) return;
+    setLoading(true);
+    try {
+      const response = await fetch(`/api/products/product?id=${editId}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`Ошибка загрузки: ${response.status}`);
+      }
+
+      const data = await response.json();
+      setProduct(data);
+    } catch (err) {
+      setProductError("Ошибка при загрузке продукта");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchProduct();
+  }, [editId]);
 
   useEffect(() => {
     if (userInfo) {
@@ -75,6 +120,14 @@ export default function Advertisement({ categories }: SellProps) {
       );
     }
   }, [userInfo]);
+
+  useEffect(() => {
+    if (product) {
+      setValue("title", product?.title);
+      setValue("text", product?.text);
+      setValue("address", product?.contact.address || "");
+    }
+  }, [product]);
 
   const handlePhotosChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
@@ -126,6 +179,9 @@ export default function Advertisement({ categories }: SellProps) {
         type: selectedUnit.key as typePrice["type"],
       });
     }
+  };
+  const handleChangeType = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setAdvertType(event.target.value as "sell" | "buy");
   };
 
   const processForm: SubmitHandler<Inputs> = async (data) => {
@@ -197,7 +253,8 @@ export default function Advertisement({ categories }: SellProps) {
     if (text) {
       formData.append("text", text);
     }
-    formData.append("type_of_product", "sell");
+
+    formData.append("type_of_product", advertType);
     if (arrangement) {
       formData.append("type_price", "by_arrangement");
     } else {
@@ -228,6 +285,14 @@ export default function Advertisement({ categories }: SellProps) {
     }
   };
 
+  if (editId && !product) {
+    return (
+      <div className="flex w-full h-full flex-auto items-center justify-center">
+        <Spinner size="lg" />
+      </div>
+    );
+  }
+
   return (
     <>
       <form
@@ -241,6 +306,46 @@ export default function Advertisement({ categories }: SellProps) {
           <div className="wrapper-advertisement__body body-advertisement">
             <div className="body-advertisement__wrapper">
               <div className="body-advertisement__block">
+                <div className="input-block">
+                  <p>{t("select-category")}</p>
+
+                  <Select
+                    placeholder={`Виберерите тип объявления`}
+                    disallowEmptySelection
+                    classNames={{
+                      trigger: `min-h-[45px] text-black px-[12px] bg-[#F8FBFF] rounded-[5px] outline-offset-0 outline-[1px]  ${
+                        errors.mainCategory
+                          ? "outline-[#FF0000] "
+                          : "outline-[#B0BFD7]"
+                      } `,
+
+                      popoverContent:
+                        "bg-[#F8FBFF] p-0 rounded-[5px] outline-offset-0 outline-[1px] outline-[#B0BFD7]",
+                      listbox: "p-0",
+                    }}
+                    listboxProps={{
+                      itemClasses: {
+                        base: [
+                          "min-h-[39px]",
+                          "px-[15px]",
+                          "py-[5px]",
+                          "rounded-none",
+                          "bg-transparent",
+                          "transition-colors",
+
+                          "data-[hover=true]:bg-[#c4dbff]",
+                          "data-[selectable=true]:focus:bg-[#c4dbff]",
+                        ],
+                      },
+                    }}
+                    selectedKeys={[advertType]}
+                    onChange={(selectedKey) => handleChangeType(selectedKey)}
+                  >
+                    {advertTypes.map((type) => (
+                      <SelectItem key={type.key}>{type.label}</SelectItem>
+                    ))}
+                  </Select>
+                </div>
                 <div className="input-block">
                   <p>{t("select-category")}</p>
 
@@ -273,7 +378,7 @@ export default function Advertisement({ categories }: SellProps) {
                         ],
                       },
                     }}
-                    defaultSelectedKeys={[categoryId.toString()]}
+                    selectedKeys={[categoryId.toString()]}
                     {...register("mainCategory")}
                     onChange={handleCategoryChange}
                   >
@@ -335,6 +440,7 @@ export default function Advertisement({ categories }: SellProps) {
                           ],
                         },
                       }}
+                      // selectedKeys={[watch("type")?.toString() || ""]}
                       {...register("type")}
                       // onChange={handleTypeChange}
                     >
@@ -535,6 +641,7 @@ export default function Advertisement({ categories }: SellProps) {
                       type="text"
                       placeholder={t("enter-ad-title")}
                       className={`input ${errors.title ? "input--error" : ""}`}
+                      value={watch("title")}
                       {...register("title")}
                     />
                     <div className="input-body__item">
@@ -589,7 +696,10 @@ export default function Advertisement({ categories }: SellProps) {
                 <p>{t("enter-description")}</p>
                 <textarea
                   placeholder="Написати..."
-                  className={`description__input input ${errors.text ? 'input--error' : ''}`}
+                  className={`description__input input ${
+                    errors.text ? "input--error" : ""
+                  }`}
+                  value={watch("text")}
                   {...register("text")}
                 ></textarea>
               </div>

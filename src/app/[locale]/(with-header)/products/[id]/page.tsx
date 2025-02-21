@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { Swiper as SwiperType } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -13,16 +12,17 @@ import ReadMore from "@/Components/ReadMore";
 import Breadcrumbs from "@/Components/Breadcrumbs";
 import { ProductType } from "@/types/types";
 import { Spinner } from "@heroui/react";
+import { useSession } from "next-auth/react";
+import { Session } from "inspector/promises";
+import { Link } from "@/i18n/routing";
 
-export default function Product({ params }: {
-  params: {id: string}
-}) {
+export default function Product({ params }: { params: { id: string } }) {
+  const { data: session, status } = useSession();
   const [thumbsSwiper, setThumbsSwiper] = useState<SwiperType | null>(null);
   const [isLiked, setIsLiked] = useState(false);
   const [product, setProduct] = useState<ProductType | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
 
   const handleLikeClick = () => {
     setIsLiked(!isLiked);
@@ -30,6 +30,9 @@ export default function Product({ params }: {
 
   const fetchProduct = async () => {
     if (!params.id) return;
+
+    setLoading(true);
+
     try {
       const response = await fetch(`/api/products/product?id=${params.id}`, {
         method: "GET",
@@ -37,7 +40,7 @@ export default function Product({ params }: {
           "Content-Type": "application/json",
         },
       });
-   
+
       if (!response.ok) {
         throw new Error(`Ошибка загрузки: ${response.status}`);
       }
@@ -54,7 +57,6 @@ export default function Product({ params }: {
     fetchProduct();
   }, []);
 
- 
   if (!product) {
     return (
       <div className="flex w-full h-full min-h-screen flex-auto items-center justify-center">
@@ -71,31 +73,50 @@ export default function Product({ params }: {
           <div className="product__top top-product">
             <div className="top-product__body">
               <div className="top-product__block">
-                <h2 className="top-product__title title">
-                 {product.title}
-                </h2>
+                <h2 className="top-product__title title">{product.title}</h2>
                 <div className="top-product__actions">
-                  <button
-                    className={` like ${isLiked ? "active" : ""}`}
-                    onClick={(e) => {
-                      handleLikeClick();
-                    }}
-                  >
-                    <svg
-                      width="33"
-                      height="30"
-                      viewBox="0 0 33 30"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
+                  {session?.user.id === product.author.id ? (
+                    <Link
+                      href={`/add-advertisement?edit=${product.id}`}
+                      className={` edit `}
                     >
-                      <path
-                        d="M15.0002 26.7323L14.998 26.7303C10.7549 22.8862 7.35391 19.7972 4.9962 16.9153C2.65494 14.0535 1.5 11.58 1.5 8.99183C1.5 4.77155 4.78535 1.5 9 1.5C11.3943 1.5 13.7168 2.62136 15.2258 4.37798L16.3636 5.70249L17.5015 4.37798C19.0105 2.62136 21.3329 1.5 23.7273 1.5C27.9419 1.5 31.2273 4.77155 31.2273 8.99183C31.2273 11.58 30.0723 14.0535 27.7311 16.9153C25.3734 19.7972 21.9724 22.8862 17.7293 26.7303L17.7271 26.7323L16.3636 27.9724L15.0002 26.7323Z"
-                        fill="white"
-                        stroke="#BA360C"
-                        stroke-width="3"
-                      />
-                    </svg>
-                  </button>
+                      <svg
+                        width="30"
+                        height="30"
+                        viewBox="0 0 30 30"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M26.0395 3.24608L26.7539 3.96054C27.309 4.51557 27.309 5.41308 26.7539 5.96221L25.0357 7.68637L22.3136 4.96433L24.0319 3.24608C24.5869 2.69104 25.4844 2.69104 26.0336 3.24608H26.0395ZM12.3879 14.8959L20.312 6.966L23.034 9.68804L15.1041 17.6121C14.9328 17.7833 14.7203 17.9073 14.49 17.9722L11.0358 18.9583L12.0218 15.5041C12.0868 15.2738 12.2108 15.0613 12.382 14.89L12.3879 14.8959ZM22.0302 1.2444L10.3804 12.8884C9.86665 13.4021 9.49466 14.0339 9.29981 14.7247L7.61108 20.6293C7.46937 21.1253 7.60518 21.6567 7.97126 22.0228C8.33735 22.3889 8.86877 22.5247 9.36476 22.383L15.2694 20.6943C15.9661 20.4935 16.5979 20.1215 17.1057 19.6137L28.7556 7.96979C30.4148 6.31058 30.4148 3.61807 28.7556 1.95886L28.0411 1.2444C26.3819 -0.414801 23.6894 -0.414801 22.0302 1.2444ZM5.19608 3.54721C2.32643 3.54721 0 5.87364 0 8.7433V24.8039C0 27.6736 2.32643 30 5.19608 30H21.2567C24.1264 30 26.4528 27.6736 26.4528 24.8039V18.1907C26.4528 17.4054 25.821 16.7736 25.0357 16.7736C24.2504 16.7736 23.6186 17.4054 23.6186 18.1907V24.8039C23.6186 26.1088 22.5616 27.1658 21.2567 27.1658H5.19608C3.89116 27.1658 2.83423 26.1088 2.83423 24.8039V8.7433C2.83423 7.43837 3.89116 6.38144 5.19608 6.38144H11.8093C12.5946 6.38144 13.2264 5.74964 13.2264 4.96433C13.2264 4.17901 12.5946 3.54721 11.8093 3.54721H5.19608Z"
+                          fill="#B0BFD7"
+                        />
+                      </svg>
+                    </Link>
+                  ) : (
+                    <button
+                      className={` like ${isLiked ? "active" : ""}`}
+                      onClick={(e) => {
+                        handleLikeClick();
+                      }}
+                    >
+                      <svg
+                        width="33"
+                        height="30"
+                        viewBox="0 0 33 30"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M15.0002 26.7323L14.998 26.7303C10.7549 22.8862 7.35391 19.7972 4.9962 16.9153C2.65494 14.0535 1.5 11.58 1.5 8.99183C1.5 4.77155 4.78535 1.5 9 1.5C11.3943 1.5 13.7168 2.62136 15.2258 4.37798L16.3636 5.70249L17.5015 4.37798C19.0105 2.62136 21.3329 1.5 23.7273 1.5C27.9419 1.5 31.2273 4.77155 31.2273 8.99183C31.2273 11.58 30.0723 14.0535 27.7311 16.9153C25.3734 19.7972 21.9724 22.8862 17.7293 26.7303L17.7271 26.7323L16.3636 27.9724L15.0002 26.7323Z"
+                          fill="white"
+                          stroke="#BA360C"
+                          stroke-width="3"
+                        />
+                      </svg>
+                    </button>
+                  )}
+
                   <a href="#" className="share">
                     <svg
                       width="27"
@@ -113,134 +134,29 @@ export default function Product({ params }: {
                 </div>
               </div>
               <div className="top-product__price price-product">
-                <div className="price-product__text title">{product.price} грн</div>
-                <div className="price-product__sub-text">
-                  від 3000 кг - 60 грн/кг
+                <div className="price-product__text title">
+                  {product.type_price === "by_arrangement" ? (
+                    <p>По договорённости</p>
+                  ) : (
+                    <>
+                      <p>{product.price} грн</p>
+                    </>
+                  )}
                 </div>
               </div>
             </div>
           </div>
           <div className="product__body body-product">
             <div className="body-product__content">
-              <div className="body-product__images">
-                <Swiper
-                  thumbs={{ swiper: thumbsSwiper }}
-                  modules={[Thumbs]}
-                  spaceBetween={20}
-                  slidesPerView={1}
-                  speed={800}
-                  className="body-product__slider"
-                >
-                  <SwiperSlide>
-                    <Image
-                      src="/product/01.jpg"
-                      alt="Image"
-                      width={1000}
-                      height={1000}
-                    />
-                  </SwiperSlide>
-                  <SwiperSlide>
-                    <Image
-                      src="/product/01.jpg"
-                      alt="Image"
-                      width={1000}
-                      height={1000}
-                    />
-                  </SwiperSlide>
-                  <SwiperSlide>
-                    <Image
-                      src="/product/01.jpg"
-                      alt="Image"
-                      width={1000}
-                      height={1000}
-                    />
-                  </SwiperSlide>
-                  <SwiperSlide>
-                    <Image
-                      src="/product/01.jpg"
-                      alt="Image"
-                      width={1000}
-                      height={1000}
-                    />
-                  </SwiperSlide>
-                  <SwiperSlide>
-                    <Image
-                      src="/product/01.jpg"
-                      alt="Image"
-                      width={1000}
-                      height={1000}
-                    />
-                  </SwiperSlide>
-                  <SwiperSlide>
-                    <Image
-                      src="/product/01.jpg"
-                      alt="Image"
-                      width={1000}
-                      height={1000}
-                    />
-                  </SwiperSlide>
-                  <SwiperSlide>
-                    <Image
-                      src="/product/01.jpg"
-                      alt="Image"
-                      width={1000}
-                      height={1000}
-                    />
-                  </SwiperSlide>
-                  <SwiperSlide>
-                    <Image
-                      src="/product/01.jpg"
-                      alt="Image"
-                      width={1000}
-                      height={1000}
-                    />
-                  </SwiperSlide>
-                  <SwiperSlide>
-                    <Image
-                      src="/product/01.jpg"
-                      alt="Image"
-                      width={1000}
-                      height={1000}
-                    />
-                  </SwiperSlide>
-                  <SwiperSlide>
-                    <Image
-                      src="/product/01.jpg"
-                      alt="Image"
-                      width={1000}
-                      height={1000}
-                    />
-                  </SwiperSlide>
-                  <SwiperSlide>
-                    <Image
-                      src="/product/01.jpg"
-                      alt="Image"
-                      width={1000}
-                      height={1000}
-                    />
-                  </SwiperSlide>
-                  <SwiperSlide>
-                    <Image
-                      src="/product/01.jpg"
-                      alt="Image"
-                      width={1000}
-                      height={1000}
-                    />
-                  </SwiperSlide>
-                </Swiper>
-
-                <div className="body-product__thumbs-slider-wrapper">
+              {product.photos.length > 0 && (
+                <div className="body-product__images">
                   <Swiper
-                    onSwiper={setThumbsSwiper}
-                    spaceBetween={10}
-                    slidesPerView="auto"
+                    thumbs={{ swiper: thumbsSwiper }}
+                    modules={[Thumbs]}
+                    spaceBetween={20}
+                    slidesPerView={1}
                     speed={800}
-                    navigation={{
-                      prevEl: ".thumbs-slider-body-product-button-prev",
-                      nextEl: ".thumbs-slider-body-product-button-next",
-                    }}
-                    modules={[Navigation]}
-                    className="body-product__thumbs-slider"
+                    className="body-product__slider"
                   >
                     <SwiperSlide>
                       <Image
@@ -339,65 +255,176 @@ export default function Product({ params }: {
                       />
                     </SwiperSlide>
                   </Swiper>
-                  <button
-                    type="button"
-                    className="swiper-button swiper-button-prev thumbs-slider-body-product-button-prev"
-                  >
-                    <svg
-                      width="41"
-                      height="41"
-                      viewBox="0 0 41 41"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
+
+                  <div className="body-product__thumbs-slider-wrapper">
+                    <Swiper
+                      onSwiper={setThumbsSwiper}
+                      spaceBetween={10}
+                      slidesPerView="auto"
+                      speed={800}
+                      navigation={{
+                        prevEl: ".thumbs-slider-body-product-button-prev",
+                        nextEl: ".thumbs-slider-body-product-button-next",
+                      }}
+                      modules={[Navigation]}
+                      className="body-product__thumbs-slider"
                     >
-                      <rect
-                        x="0.5"
-                        y="0.5"
-                        width="40"
-                        height="40"
-                        rx="3.5"
-                        fill="#1858B8"
-                        stroke="#1858B8"
-                      />
-                      <path
-                        d="M24.5303 21.5303C24.8232 21.2374 24.8232 20.7626 24.5303 20.4697L19.7574 15.6967C19.4645 15.4038 18.9896 15.4038 18.6967 15.6967C18.4038 15.9896 18.4038 16.4645 18.6967 16.7574L22.9393 21L18.6967 25.2426C18.4038 25.5355 18.4038 26.0104 18.6967 26.3033C18.9896 26.5962 19.4645 26.5962 19.7574 26.3033L24.5303 21.5303ZM24 20.25H23V21.75H24V20.25Z"
-                        fill="white"
-                      />
-                    </svg>
-                  </button>
-                  <button
-                    type="button"
-                    className="swiper-button swiper-button-next thumbs-slider-body-product-button-next"
-                  >
-                    <svg
-                      width="41"
-                      height="41"
-                      viewBox="0 0 41 41"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
+                      <SwiperSlide>
+                        <Image
+                          src="/product/01.jpg"
+                          alt="Image"
+                          width={1000}
+                          height={1000}
+                        />
+                      </SwiperSlide>
+                      <SwiperSlide>
+                        <Image
+                          src="/product/01.jpg"
+                          alt="Image"
+                          width={1000}
+                          height={1000}
+                        />
+                      </SwiperSlide>
+                      <SwiperSlide>
+                        <Image
+                          src="/product/01.jpg"
+                          alt="Image"
+                          width={1000}
+                          height={1000}
+                        />
+                      </SwiperSlide>
+                      <SwiperSlide>
+                        <Image
+                          src="/product/01.jpg"
+                          alt="Image"
+                          width={1000}
+                          height={1000}
+                        />
+                      </SwiperSlide>
+                      <SwiperSlide>
+                        <Image
+                          src="/product/01.jpg"
+                          alt="Image"
+                          width={1000}
+                          height={1000}
+                        />
+                      </SwiperSlide>
+                      <SwiperSlide>
+                        <Image
+                          src="/product/01.jpg"
+                          alt="Image"
+                          width={1000}
+                          height={1000}
+                        />
+                      </SwiperSlide>
+                      <SwiperSlide>
+                        <Image
+                          src="/product/01.jpg"
+                          alt="Image"
+                          width={1000}
+                          height={1000}
+                        />
+                      </SwiperSlide>
+                      <SwiperSlide>
+                        <Image
+                          src="/product/01.jpg"
+                          alt="Image"
+                          width={1000}
+                          height={1000}
+                        />
+                      </SwiperSlide>
+                      <SwiperSlide>
+                        <Image
+                          src="/product/01.jpg"
+                          alt="Image"
+                          width={1000}
+                          height={1000}
+                        />
+                      </SwiperSlide>
+                      <SwiperSlide>
+                        <Image
+                          src="/product/01.jpg"
+                          alt="Image"
+                          width={1000}
+                          height={1000}
+                        />
+                      </SwiperSlide>
+                      <SwiperSlide>
+                        <Image
+                          src="/product/01.jpg"
+                          alt="Image"
+                          width={1000}
+                          height={1000}
+                        />
+                      </SwiperSlide>
+                      <SwiperSlide>
+                        <Image
+                          src="/product/01.jpg"
+                          alt="Image"
+                          width={1000}
+                          height={1000}
+                        />
+                      </SwiperSlide>
+                    </Swiper>
+                    <button
+                      type="button"
+                      className="swiper-button swiper-button-prev thumbs-slider-body-product-button-prev"
                     >
-                      <rect
-                        x="0.5"
-                        y="0.5"
-                        width="40"
-                        height="40"
-                        rx="3.5"
-                        fill="#1858B8"
-                        stroke="#1858B8"
-                      />
-                      <path
-                        d="M24.5303 21.5303C24.8232 21.2374 24.8232 20.7626 24.5303 20.4697L19.7574 15.6967C19.4645 15.4038 18.9896 15.4038 18.6967 15.6967C18.4038 15.9896 18.4038 16.4645 18.6967 16.7574L22.9393 21L18.6967 25.2426C18.4038 25.5355 18.4038 26.0104 18.6967 26.3033C18.9896 26.5962 19.4645 26.5962 19.7574 26.3033L24.5303 21.5303ZM24 20.25H23V21.75H24V20.25Z"
-                        fill="white"
-                      />
-                    </svg>
-                  </button>
+                      <svg
+                        width="41"
+                        height="41"
+                        viewBox="0 0 41 41"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <rect
+                          x="0.5"
+                          y="0.5"
+                          width="40"
+                          height="40"
+                          rx="3.5"
+                          fill="#1858B8"
+                          stroke="#1858B8"
+                        />
+                        <path
+                          d="M24.5303 21.5303C24.8232 21.2374 24.8232 20.7626 24.5303 20.4697L19.7574 15.6967C19.4645 15.4038 18.9896 15.4038 18.6967 15.6967C18.4038 15.9896 18.4038 16.4645 18.6967 16.7574L22.9393 21L18.6967 25.2426C18.4038 25.5355 18.4038 26.0104 18.6967 26.3033C18.9896 26.5962 19.4645 26.5962 19.7574 26.3033L24.5303 21.5303ZM24 20.25H23V21.75H24V20.25Z"
+                          fill="white"
+                        />
+                      </svg>
+                    </button>
+                    <button
+                      type="button"
+                      className="swiper-button swiper-button-next thumbs-slider-body-product-button-next"
+                    >
+                      <svg
+                        width="41"
+                        height="41"
+                        viewBox="0 0 41 41"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <rect
+                          x="0.5"
+                          y="0.5"
+                          width="40"
+                          height="40"
+                          rx="3.5"
+                          fill="#1858B8"
+                          stroke="#1858B8"
+                        />
+                        <path
+                          d="M24.5303 21.5303C24.8232 21.2374 24.8232 20.7626 24.5303 20.4697L19.7574 15.6967C19.4645 15.4038 18.9896 15.4038 18.6967 15.6967C18.4038 15.9896 18.4038 16.4645 18.6967 16.7574L22.9393 21L18.6967 25.2426C18.4038 25.5355 18.4038 26.0104 18.6967 26.3033C18.9896 26.5962 19.4645 26.5962 19.7574 26.3033L24.5303 21.5303ZM24 20.25H23V21.75H24V20.25Z"
+                          fill="white"
+                        />
+                      </svg>
+                    </button>
+                  </div>
                 </div>
-              </div>
+              )}
+
               <div className="top-product__body">
                 <div className="top-product__block">
-                  <h2 className="top-product__title title">
-                      {product.title}
-                  </h2>
+                  <h2 className="top-product__title title">{product.title}</h2>
                   <div className="top-product__actions">
                     <button className="like">
                       <svg
@@ -432,7 +459,9 @@ export default function Product({ params }: {
                   </div>
                 </div>
                 <div className="top-product__price price-product">
-                  <div className="price-product__text title">{product.price} грн</div>
+                  <div className="price-product__text title">
+                    {product.price} грн
+                  </div>
                   <div className="price-product__sub-text">
                     від 3000 кг - 60 грн/кг
                   </div>
@@ -445,29 +474,31 @@ export default function Product({ params }: {
                 <div className="description-body-product__title">
                   Опис товару:
                 </div>
-                <ReadMore>
-                    {product.text}
-                </ReadMore>
+                <ReadMore>{product.text}</ReadMore>
               </div>
             </div>
             <div className="body-product__block">
               <div className="body-product__info info-body-product">
-                <h4 className="info-body-product__title">000 “Сузірʼя”</h4>
-                <p className="info-body-product__text">
+                {product.contact?.name_of_enterprise && (
+                  <h4 className="info-body-product__title">
+                    {product.contact.name_of_enterprise}
+                  </h4>
+                )}
+                {/* <p className="info-body-product__text">
                   Для більш детальної інформації перейдіть за посиланням на наш
                   сайт:{" "}
                 </p>
                 <a href="#" className="info-body-product__link">
                   www.polymer.com.ua
-                </a>
+                </a> */}
+
                 <div className="info-body-product__location location-info-body-product">
                   <div className="location-info-body-product__block">
                     <p className="location-info-body-product__text">
                       Місцезнаходження:
                     </p>
                     <div className="location-info-body-product__place">
-
-                      Одеса, Одеська область
+                      {`${product.contact.city}, ${product.contact.area} область`}
                     </div>
                   </div>
                   <div className="location-info-body-product__map">
@@ -493,7 +524,10 @@ export default function Product({ params }: {
               </div>
               <div className="body-product__actions actions-body-product">
                 <div className="actions-body-product__block">
-                  <a href="tel:" className="actions-body-product__call button">
+                  <a
+                    href={`tel:${product.contact.phone_number}`}
+                    className="actions-body-product__call button"
+                  >
                     Зателефонувати
                   </a>
                   <a href="#" className="actions-body-product__message button">

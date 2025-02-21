@@ -21,7 +21,6 @@ export default function UserProvider({
   );
   const favorites = useSelector((state: RootState) => state.favorites.items);
 
-
   console.log(session);
 
   const fetchUserInfo = async () => {
@@ -55,7 +54,6 @@ export default function UserProvider({
   const fetchFavorites = async () => {
     if (!session) return;
 
-
     try {
       const responseFavorites = await fetch(
         `/api/favorites/get?token=${session?.user.access_token}`
@@ -69,21 +67,22 @@ export default function UserProvider({
 
       if (data) {
         dispatch(setFavorites(data));
-      } 
+      }
     } catch (error) {
       console.error("Error fetching order status:", error);
     }
   };
 
-
+  useEffect(() => {
+    // fetchFavorites();
+  }, []);
 
   useEffect(() => {
     if (!userInfo) {
       fetchUserInfo();
     }
-    // fetchFavorites()
+    // fetchFavorites();
   }, [session]);
-
 
   return <>{children}</>;
 }

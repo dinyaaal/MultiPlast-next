@@ -24,10 +24,12 @@ const AdvertismentTab: FC<AdvertismentTabProps> = ({
 
   const categoryParam = params ? `?category=${params}` : "";
 
-  const targetPath = `${href}${categoryParam}`;
+  // const targetPath = `${href}${categoryParam}`;
+  const targetPath = `${href}`;
+
   const currentPath = query ? `${pathname}?${query}` : `${pathname}`;
 
-  const isActive = currentPath === targetPath;
+  const isActive = pathname === href;
 
   // const handleClick = () => {
   //   router.push(targetPath);

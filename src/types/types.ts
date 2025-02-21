@@ -58,32 +58,51 @@ interface ProductCategory {
   position: number | null;
 }
 
-interface Contact {
+
+export interface Contact {
   id: number;
   product_id: number;
-  name_of_enterprise: string;
+  name_of_enterprise: string | null;
   name: string;
   phone_number: string;
-  address: string;
+  address: string | null;
   city: string;
   area: string;
 }
-
 export interface ProductType {
   id: number;
   title: string;
   text: string;
-  type_price: string;
+  type_price: string; 
   price: number;
-  type_of_product: string;
+  type_of_product: 'sell' | 'buy'; 
   user_id: number;
   created_at: string;
   updated_at: string;
   categories: ProductCategory[];
   author: Author;
-  photos: Photo[];
-  files: any[];
+  photos: Photo[]; // Оставил массив, если структура фото изменится, лучше создать отдельный интерфейс
+  files: any[]; // Если файлы имеют структуру, лучше заменить `any[]` на интерфейс
+  contact: Contact; // Добавил контактные данные
 }
+
+
+
+// export interface ProductType {
+//   id: number;
+//   title: string;
+//   text: string;
+//   type_price: string;
+//   price: number;
+//   type_of_product: string;
+//   user_id: number;
+//   created_at: string;
+//   updated_at: string;
+//   categories: ProductCategory[];
+//   author: Author;
+//   photos: Photo[];
+//   files: any[];
+// }
 
 export interface Author {
   id: number;
