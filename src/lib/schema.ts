@@ -100,6 +100,7 @@ export const UserSecuritySchema = z
 
 export const AdvertismentSchema = z
   .object({
+    advertType: z.string(),
     mainCategory: z.string(),
     polymer: z.string().optional(),
     type: z.string().optional(),

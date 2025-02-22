@@ -105,7 +105,7 @@ export default function Advertisement({ categories }: SellProps) {
   }, [editId]);
 
   useEffect(() => {
-    if (userInfo) {
+    if (userInfo && !editId) {
       setValue("name", userInfo?.first_name ? userInfo?.first_name : "");
       setValue(
         "name_of_enterprise",
@@ -126,6 +126,32 @@ export default function Advertisement({ categories }: SellProps) {
       setValue("title", product?.title);
       setValue("text", product?.text);
       setValue("address", product?.contact.address || "");
+      setValue("name", product?.contact.name || "");
+      setValue("area", product?.contact.area || "");
+      setValue("city", product?.contact.city || "");
+      setValue("name_of_enterprise", product?.contact.name_of_enterprise || "");
+      setValue("phone_number", product?.contact.phone_number || "");
+      setValue(
+        "mainCategory",
+        product?.categories
+          .find((category) => category.parent_id === null)
+          ?.id?.toString() || ""
+      );
+      setValue("advertType", product?.type_of_product || "");
+      setValue(
+        "polymer",
+        product?.categories
+          .find((category) => category.type === "Полімер")
+          ?.id?.toString() || ""
+      );
+      setValue(
+        "type",
+        product?.categories
+          .find((category) => category.type === "Сировина")
+          ?.id?.toString() || ""
+      );
+
+      // setAdvertType(product?.type_of_product);
     }
   }, [product]);
 
@@ -314,7 +340,7 @@ export default function Advertisement({ categories }: SellProps) {
                     disallowEmptySelection
                     classNames={{
                       trigger: `min-h-[45px] text-black px-[12px] bg-[#F8FBFF] rounded-[5px] outline-offset-0 outline-[1px]  ${
-                        errors.mainCategory
+                        errors.advertType
                           ? "outline-[#FF0000] "
                           : "outline-[#B0BFD7]"
                       } `,
@@ -338,7 +364,8 @@ export default function Advertisement({ categories }: SellProps) {
                         ],
                       },
                     }}
-                    selectedKeys={[advertType]}
+                    // selectedKeys={[advertType]}
+                    {...register("advertType")}
                     onChange={(selectedKey) => handleChangeType(selectedKey)}
                   >
                     {advertTypes.map((type) => (
@@ -378,7 +405,7 @@ export default function Advertisement({ categories }: SellProps) {
                         ],
                       },
                     }}
-                    selectedKeys={[categoryId.toString()]}
+                    // defaultSelectedKeys={[categoryId.toString()]}
                     {...register("mainCategory")}
                     onChange={handleCategoryChange}
                   >
@@ -440,6 +467,11 @@ export default function Advertisement({ categories }: SellProps) {
                           ],
                         },
                       }}
+                      defaultSelectedKeys={[
+                        product?.categories
+                          .find((category) => category.type === "Сировина")
+                          ?.id?.toString() || "",
+                      ]}
                       // selectedKeys={[watch("type")?.toString() || ""]}
                       {...register("type")}
                       // onChange={handleTypeChange}
@@ -490,6 +522,11 @@ export default function Advertisement({ categories }: SellProps) {
                           ],
                         },
                       }}
+                      defaultSelectedKeys={[
+                        product?.categories
+                          .find((category) => category.type === "Полімер")
+                          ?.id?.toString() || "",
+                      ]}
                       {...register("polymer")}
                       // onChange={handlePolymerChange}
                     >
@@ -641,7 +678,7 @@ export default function Advertisement({ categories }: SellProps) {
                       type="text"
                       placeholder={t("enter-ad-title")}
                       className={`input ${errors.title ? "input--error" : ""}`}
-                      value={watch("title")}
+                      // value={watch("title")}
                       {...register("title")}
                     />
                     <div className="input-body__item">
@@ -699,7 +736,7 @@ export default function Advertisement({ categories }: SellProps) {
                   className={`description__input input ${
                     errors.text ? "input--error" : ""
                   }`}
-                  value={watch("text")}
+                  // value={watch("text")}
                   {...register("text")}
                 ></textarea>
               </div>
