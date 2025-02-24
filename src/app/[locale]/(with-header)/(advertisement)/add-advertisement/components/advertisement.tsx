@@ -42,6 +42,7 @@ export default function Advertisement({ categories }: SellProps) {
   const searchParams = useSearchParams();
   // const router = useRouter();
   const editId = searchParams.get("edit");
+
   const { data: userInfo, error } = useSelector(
     (state: RootState) => state.userInfo
   );
@@ -100,6 +101,34 @@ export default function Advertisement({ categories }: SellProps) {
     }
   };
 
+  const handleAdvertDelete = async () => {
+
+    if(!session?.user.access_token || !editId) {
+      return
+    }
+
+    try {
+      const deleteResponse = await fetch(`/api/products/delete`, {
+        method: "DELETE",
+        headers: {
+          token: session?.user.access_token,
+          id: editId,
+        },
+      });
+      if (deleteResponse.ok) {
+        toast.success("Удалено!");
+      } else {
+        throw new Error("Ошибка обновления информации пользователя");
+      }
+ 
+    } catch (error) {
+      console.error("Ошибка при отправке данных:", error);
+      toast.error("Ошибка удаления");
+    }
+  }
+
+ 
+
   useEffect(() => {
     fetchProduct();
   }, [editId]);
@@ -131,6 +160,8 @@ export default function Advertisement({ categories }: SellProps) {
       setValue("city", product?.contact.city || "");
       setValue("name_of_enterprise", product?.contact.name_of_enterprise || "");
       setValue("phone_number", product?.contact.phone_number || "");
+      setValue("price", product.price?.toString() || "");
+      setArrangement(product.type_price === "by_arrangement")
       setValue(
         "mainCategory",
         product?.categories
@@ -209,6 +240,10 @@ export default function Advertisement({ categories }: SellProps) {
   const handleChangeType = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setAdvertType(event.target.value as "sell" | "buy");
   };
+
+  
+
+ 
 
   const processForm: SubmitHandler<Inputs> = async (data) => {
     if (!session?.user.access_token && !session?.user.id) {
@@ -289,25 +324,47 @@ export default function Advertisement({ categories }: SellProps) {
     if (!arrangement && price) {
       formData.append("price", price);
     }
-
-    try {
-      const postResponse = await fetch(`/api/products/add`, {
-        method: "POST",
-        headers: {
-          token: token,
-        },
-        body: formData,
-      });
-      if (postResponse.ok) {
-        toast.success("Оголошення подано");
-      } else {
-        throw new Error("Ошибка обновления информации пользователя");
+    if(editId && product) {
+      try {
+        const postResponse = await fetch(`/api/products/edit`, {
+          method: "PATCH",
+          headers: {
+            token: token,
+            id: editId,
+          },
+          body: formData,
+        });
+        if (postResponse.ok) {
+          toast.success("Обновлено!");
+        } else {
+          throw new Error("Ошибка обновления информации пользователя");
+        }
+   
+      } catch (error) {
+        console.error("Ошибка при отправке данных:", error);
+        toast.error("Ошибка обновления товара");
       }
-      const editResult = await postResponse.json();
-      console.log(editResult);
-    } catch (error) {
-      console.error("Ошибка при отправке данных:", error);
-      toast.error("Ошибка создания товара");
+    } else {
+
+      try {
+        const postResponse = await fetch(`/api/products/add`, {
+          method: "POST",
+          headers: {
+            token: token,
+          },
+          body: formData,
+        });
+        if (postResponse.ok) {
+          toast.success("Оголошення подано");
+        } else {
+          throw new Error("Ошибка обновления информации пользователя");
+        }
+        const editResult = await postResponse.json();
+        console.log(editResult);
+      } catch (error) {
+        console.error("Ошибка при отправке данных:", error);
+        toast.error("Ошибка создания товара");
+      }
     }
   };
 
@@ -476,9 +533,10 @@ export default function Advertisement({ categories }: SellProps) {
                       {...register("type")}
                       // onChange={handleTypeChange}
                     >
-                      {categories
+                        {categories
                         .filter((category) => category.id === categoryId)
                         .flatMap((category) => category.categories)
+                        .filter((subCategory) => subCategory.type === "Сировина")
 
                         .map((subCategory) => (
                           <SelectItem key={subCategory.id}>
@@ -895,12 +953,15 @@ export default function Advertisement({ categories }: SellProps) {
           <button type="submit" className="actions-advertisement__save button">
             {t("save-publish")}
           </button>
-          {/* <button
+          {editId && product && (
+           <button
             type="button"
+            onClick={handleAdvertDelete}
             className="actions-advertisement__delete button button--secondary"
           >
             {t("delete-ad")}
-          </button> */}
+          </button> 
+          )}
         </div>
       </form>
     </>
