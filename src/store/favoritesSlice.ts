@@ -1,9 +1,7 @@
-import { ProductType } from "@/types/types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-
 interface FavoritesState {
-  items: ProductType[];
+  items: number[];
 }
 
 const initialState: FavoritesState = {
@@ -14,16 +12,16 @@ const favoritesSlice = createSlice({
   name: "favorites",
   initialState,
   reducers: {
-    addFavorite: (state, action: PayloadAction<ProductType>) => {
-      if (!state.items.find((item) => item.id === action.payload.id)) {
+    addFavorite: (state, action: PayloadAction<number>) => {
+      if (!state.items.includes(action.payload)) {
         state.items.push(action.payload);
       }
     },
     removeFavorite: (state, action: PayloadAction<number>) => {
-      state.items = state.items.filter((item) => item.id !== action.payload);
+      state.items = state.items.filter((id) => id !== action.payload);
     },
-    setFavorites: (state, action: PayloadAction<ProductType[]>) => {
-      state.items = action.payload; 
+    setFavorites: (state, action: PayloadAction<number[]>) => {
+      state.items = action.payload;
     },
   },
 });

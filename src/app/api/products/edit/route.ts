@@ -12,7 +12,7 @@ export async function PATCH(request: NextRequest) {
   }
 
   try {
-    const res = await fetch(`http://13.60.7.255/api/products/extend/${id}`, {
+    const res = await fetch(`http://13.60.7.255/api/products/:${id}`, {
       method: "PATCH",
       headers: {
         Authorization: `Bearer ${token}`,

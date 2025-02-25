@@ -10,7 +10,7 @@ const handler = NextAuth({
       clientSecret: process.env.GOOGLE_SECRET!,
       authorization: {
         params: {
-          scope: "openid profile email", // Это позволит вам получать нужные данные
+          scope: "openid profile email",
         },
       },
     }),
@@ -42,9 +42,7 @@ const handler = NextAuth({
               throw new Error(user.message || "Login failed");
             }
 
-            return {
-              ...user,
-            };
+            return { ...user };
           } catch (e) {
             console.error(e);
             return null;
@@ -56,18 +54,33 @@ const handler = NextAuth({
 
   callbacks: {
     async jwt({ token, account, user }) {
+      // Если авторизация через Google
+      if (account?.provider === "google" && account.access_token) {
+        token.google_id = account.providerAccountId; // Сохраняем Google ID
+        token.google_token = account.access_token;   // Сохраняем Google Token
+      }
+      // Если авторизация через Credentials
       if (user) {
         token.user = user;
       }
       return token;
     },
-    async session({ session, token, user }) {
+
+    async session({ session, token }) {
+      // Передаем данные из токена в сессию
       if (token?.user) {
         session.user = token.user as any;
+      }
+      if (token?.google_id) {
+        session.google_id = token.google_id;     // Добавляем Google ID в сессию
+      }
+      if (token?.google_token) {
+        session.google_token = token.google_token; // Добавляем Google Token в сессию
       }
       return session;
     },
   },
+
   pages: {
     signIn: "/login",
   },
