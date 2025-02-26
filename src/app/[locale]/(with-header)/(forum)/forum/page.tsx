@@ -14,13 +14,12 @@ export default function Forum() {
   const t = useTranslations("ForumLayout");
   const [forumPosts, setForumPosts] = useState<ForumPost[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [links, setLinks] = useState<Page[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
-
+  const [search, setSearch] = useState<string>("");
   const [lastPage, setLastPage] = useState<number>();
 
   const fetchForum = async () => {
-    setIsLoading(true)
+    setIsLoading(true);
     let queryParams: string[] = [];
 
     queryParams.push(`page=${currentPage}`);
@@ -44,7 +43,6 @@ export default function Forum() {
       if (data) {
         console.log(data.data);
         setForumPosts(data.data);
-        setLinks(data.links);
         setLastPage(data.last_page);
       }
     } catch (error) {
@@ -57,6 +55,10 @@ export default function Forum() {
   useEffect(() => {
     fetchForum();
   }, [currentPage]);
+
+  const filteredPosts = forumPosts.filter((post) =>
+    post.title.toLowerCase().includes(search.toLowerCase())
+  );
 
   return (
     <>
@@ -78,6 +80,7 @@ export default function Forum() {
                   autoComplete="off"
                   type="text"
                   placeholder={t("searchPlaceholder")}
+                  onChange={(e) => setSearch(e.target.value)}
                   className="search__input"
                 />
                 <button className="search__icon-body">

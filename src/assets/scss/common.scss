@@ -374,6 +374,7 @@
 
 .swiper-button {
   position: absolute;
+  z-index: 2;
   flex: 0 0 toRem(41);
   width: toRem(41);
   height: toRem(41);

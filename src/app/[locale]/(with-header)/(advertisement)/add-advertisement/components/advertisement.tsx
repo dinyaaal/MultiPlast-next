@@ -1,5 +1,7 @@
 "use client";
-
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation } from "swiper/modules";
+import "swiper/css";
 import { AdvertismentSchema } from "@/lib/schema";
 import { RootState } from "@/store/store";
 import { Category, ProductType, User } from "@/types/types";
@@ -14,6 +16,7 @@ import { useSelector } from "react-redux";
 import { toast } from "sonner";
 import { z } from "zod";
 import { useRouter } from "@/i18n/routing";
+import Image from "next/image";
 
 interface SellProps {
   categories: Category[];
@@ -57,7 +60,7 @@ export default function Advertisement({ categories }: SellProps) {
   );
   const [arrangement, setArrangement] = useState<boolean>(false);
 
-  const [photos, setPhotos] = useState<File[] | null>(null);
+  const [photos, setPhotos] = useState<File[]>([]);
   const [files, setFiles] = useState<File[] | null>(null);
   const [typePrice, setTypePrice] = useState<typePrice>({ type: "for_kg" });
   const [loading, setLoading] = useState(false);
@@ -102,9 +105,8 @@ export default function Advertisement({ categories }: SellProps) {
   };
 
   const handleAdvertDelete = async () => {
-
-    if(!session?.user.access_token || !editId) {
-      return
+    if (!session?.user.access_token || !editId) {
+      return;
     }
 
     try {
@@ -120,14 +122,11 @@ export default function Advertisement({ categories }: SellProps) {
       } else {
         throw new Error("Ошибка обновления информации пользователя");
       }
- 
     } catch (error) {
       console.error("Ошибка при отправке данных:", error);
       toast.error("Ошибка удаления");
     }
-  }
-
- 
+  };
 
   useEffect(() => {
     fetchProduct();
@@ -161,7 +160,7 @@ export default function Advertisement({ categories }: SellProps) {
       setValue("name_of_enterprise", product?.contact.name_of_enterprise || "");
       setValue("phone_number", product?.contact.phone_number || "");
       setValue("price", product.price?.toString() || "");
-      setArrangement(product.type_price === "by_arrangement")
+      setArrangement(product.type_price === "by_arrangement");
       setValue(
         "mainCategory",
         product?.categories
@@ -189,7 +188,7 @@ export default function Advertisement({ categories }: SellProps) {
   const handlePhotosChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
     if (files) {
-      setPhotos(Array.from(files));
+      setPhotos((prevPhotos) => [...prevPhotos, ...Array.from(files)]);
     }
   };
   const handleFilesChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -240,10 +239,6 @@ export default function Advertisement({ categories }: SellProps) {
   const handleChangeType = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setAdvertType(event.target.value as "sell" | "buy");
   };
-
-  
-
- 
 
   const processForm: SubmitHandler<Inputs> = async (data) => {
     if (!session?.user.access_token && !session?.user.id) {
@@ -324,7 +319,7 @@ export default function Advertisement({ categories }: SellProps) {
     if (!arrangement && price) {
       formData.append("price", price);
     }
-    if(editId && product) {
+    if (editId && product) {
       try {
         const postResponse = await fetch(`/api/products/edit`, {
           method: "PATCH",
@@ -339,13 +334,11 @@ export default function Advertisement({ categories }: SellProps) {
         } else {
           throw new Error("Ошибка обновления информации пользователя");
         }
-   
       } catch (error) {
         console.error("Ошибка при отправке данных:", error);
         toast.error("Ошибка обновления товара");
       }
     } else {
-
       try {
         const postResponse = await fetch(`/api/products/add`, {
           method: "POST",
@@ -533,10 +526,12 @@ export default function Advertisement({ categories }: SellProps) {
                       {...register("type")}
                       // onChange={handleTypeChange}
                     >
-                        {categories
+                      {categories
                         .filter((category) => category.id === categoryId)
                         .flatMap((category) => category.categories)
-                        .filter((subCategory) => subCategory.type === "Сировина")
+                        .filter(
+                          (subCategory) => subCategory.type === "Сировина"
+                        )
 
                         .map((subCategory) => (
                           <SelectItem key={subCategory.id}>
@@ -747,16 +742,147 @@ export default function Advertisement({ categories }: SellProps) {
                 <div className="input-block">
                   <p>{t("upload-photo")}</p>
                   <div className="input-body-file">
-                    <label className="input-body-file__input input">
-                      <input
-                        type="file"
-                        id="advertisement-photo"
-                        accept="image/jpeg, image/png"
-                        // {...register("photos")}
-                        onChange={handlePhotosChange}
-                        multiple
-                      />
-                    </label>
+                    <div className="input-body-file__input-wrapper">
+                      <label
+                        htmlFor="advertisement-photo"
+                        className="input-body-file__input input"
+                      >
+                        {/* <Swiper
+                          spaceBetween={20}
+                          slidesPerView={1}
+                          modules={[Navigation]}
+                          className="w-full h-full"
+                          // navigation={{
+                          //   nextEl: ".swiper-arrow-next",
+                          //   prevEl: ".swiper-arrow-prev",
+                          // }}
+                        >
+                          <SwiperSlide>
+                            <Image
+                              src={"/icons/image.svg"}
+                              className="ibg"
+                              alt="User image"
+                              width={600}
+                              height={600}
+                            />
+                          </SwiperSlide>
+                          <SwiperSlide>
+                            <Image
+                              src={"/icons/image.svg"}
+                              className="ibg"
+                              alt="User image"
+                              width={600}
+                              height={600}
+                            />
+                          </SwiperSlide>
+                          <SwiperSlide>
+                            <Image
+                              src={"/icons/image.svg"}
+                              className="ibg"
+                              alt="User image"
+                              width={600}
+                              height={600}
+                            />
+                          </SwiperSlide>
+                          <SwiperSlide>
+                            <Image
+                              src={"/icons/image.svg"}
+                              className="ibg"
+                              alt="User image"
+                              width={600}
+                              height={600}
+                            />
+                          </SwiperSlide>
+                        </Swiper> */}
+                        {photos && photos?.length > 0 && (
+                          <>
+                            <Swiper
+                              spaceBetween={20}
+                              slidesPerView={1}
+                              modules={[Navigation]}
+                              className="w-full h-full"
+                              navigation={{
+                                nextEl: ".swiper-button-next",
+                                prevEl: ".swiper-button-prev",
+                              }}
+                            >
+                              {photos.map((photo, index) => (
+                                <SwiperSlide key={index}>
+                                  <Image
+                                    src={URL.createObjectURL(photo)}
+                                    className="ibg"
+                                    alt={`Uploaded image ${index + 1}`}
+                                    width={600}
+                                    height={600}
+                                  />
+                                </SwiperSlide>
+                              ))}
+                            </Swiper>
+                            <button
+                              type="button"
+                              className="swiper-button swiper-button-prev "
+                            >
+                              <svg
+                                width="41"
+                                height="41"
+                                viewBox="0 0 41 41"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <rect
+                                  x="0.5"
+                                  y="0.5"
+                                  width="40"
+                                  height="40"
+                                  rx="3.5"
+                                  fill="#1858B8"
+                                  stroke="#1858B8"
+                                />
+                                <path
+                                  d="M24.5303 21.5303C24.8232 21.2374 24.8232 20.7626 24.5303 20.4697L19.7574 15.6967C19.4645 15.4038 18.9896 15.4038 18.6967 15.6967C18.4038 15.9896 18.4038 16.4645 18.6967 16.7574L22.9393 21L18.6967 25.2426C18.4038 25.5355 18.4038 26.0104 18.6967 26.3033C18.9896 26.5962 19.4645 26.5962 19.7574 26.3033L24.5303 21.5303ZM24 20.25H23V21.75H24V20.25Z"
+                                  fill="white"
+                                />
+                              </svg>
+                            </button>
+                            <button
+                              type="button"
+                              className="swiper-button swiper-button-next "
+                            >
+                              <svg
+                                width="41"
+                                height="41"
+                                viewBox="0 0 41 41"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <rect
+                                  x="0.5"
+                                  y="0.5"
+                                  width="40"
+                                  height="40"
+                                  rx="3.5"
+                                  fill="#1858B8"
+                                  stroke="#1858B8"
+                                />
+                                <path
+                                  d="M24.5303 21.5303C24.8232 21.2374 24.8232 20.7626 24.5303 20.4697L19.7574 15.6967C19.4645 15.4038 18.9896 15.4038 18.6967 15.6967C18.4038 15.9896 18.4038 16.4645 18.6967 16.7574L22.9393 21L18.6967 25.2426C18.4038 25.5355 18.4038 26.0104 18.6967 26.3033C18.9896 26.5962 19.4645 26.5962 19.7574 26.3033L24.5303 21.5303ZM24 20.25H23V21.75H24V20.25Z"
+                                  fill="white"
+                                />
+                              </svg>
+                            </button>
+                          </>
+                        )}
+
+                        <input
+                          type="file"
+                          id="advertisement-photo"
+                          accept="image/jpeg, image/png"
+                          // {...register("photos")}
+                          onChange={handlePhotosChange}
+                          multiple
+                        />
+                      </label>
+                    </div>
                     <div className="input-body-file__content">
                       <div className="input-body-file__downloads downloads-input-body-file">
                         <div className="downloads-input-body-file__image-box">
@@ -776,6 +902,7 @@ export default function Advertisement({ categories }: SellProps) {
                         </label>
                         <button
                           type="button"
+                          onClick={(e) => setPhotos([])}
                           className="input-body-file__delete"
                         >
                           {t("delete")}
@@ -954,13 +1081,13 @@ export default function Advertisement({ categories }: SellProps) {
             {t("save-publish")}
           </button>
           {editId && product && (
-           <button
-            type="button"
-            onClick={handleAdvertDelete}
-            className="actions-advertisement__delete button button--secondary"
-          >
-            {t("delete-ad")}
-          </button> 
+            <button
+              type="button"
+              onClick={handleAdvertDelete}
+              className="actions-advertisement__delete button button--secondary"
+            >
+              {t("delete-ad")}
+            </button>
           )}
         </div>
       </form>
