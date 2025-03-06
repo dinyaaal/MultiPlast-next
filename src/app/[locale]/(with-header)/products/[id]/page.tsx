@@ -524,23 +524,26 @@ export default function Product({ params }: { params: { id: string } }) {
               </div>
               <div className="body-product__actions actions-body-product">
                 <div className="actions-body-product__block">
-                  <a
+                  <Link
                     href={`tel:${product.contact.phone_number}`}
                     className="actions-body-product__call button"
                   >
                     Зателефонувати
-                  </a>
-                  <a href="#" className="actions-body-product__message button">
+                  </Link>
+                  <Link
+                    href={`/messages/${product.author.id}`}
+                    className="actions-body-product__message button"
+                  >
                     Написати повідомлення
-                  </a>
-                  <a
+                  </Link>
+                  <Link
                     href="#"
                     className="actions-body-product__download button button--secondary"
                   >
                     <p>
                       Завантажити прекріпленні файли: <span>2 шт.</span>
                     </p>
-                  </a>
+                  </Link>
                 </div>
                 <div className="actions-body-product__socials socials">
                   <p className="socials__text">Контакт у соц. мережах:</p>

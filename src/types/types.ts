@@ -34,7 +34,7 @@ export interface User {
   gender: string | null; // Пол (может быть null)
 }
 
-interface Photo {
+export interface Photo {
   id: number;
   name: string;
   path: string;
@@ -58,7 +58,6 @@ interface ProductCategory {
   position: number | null;
 }
 
-
 export interface Contact {
   id: number;
   product_id: number;
@@ -73,9 +72,9 @@ export interface ProductType {
   id: number;
   title: string;
   text: string;
-  type_price: string; 
+  type_price: string;
   price: number;
-  type_of_product: 'sell' | 'buy'; 
+  type_of_product: "sell" | "buy";
   user_id: number;
   created_at: string;
   updated_at: string;
@@ -85,8 +84,6 @@ export interface ProductType {
   files: any[]; // Если файлы имеют структуру, лучше заменить `any[]` на интерфейс
   contact: Contact; // Добавил контактные данные
 }
-
-
 
 // export interface ProductType {
 //   id: number;
@@ -111,9 +108,9 @@ export interface Author {
 }
 
 export interface Page {
-    url: string | null,
-    label: string,
-    active: boolean
+  url: string | null;
+  label: string;
+  active: boolean;
 }
 
 export interface ForumCategory {

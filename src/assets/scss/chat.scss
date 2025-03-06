@@ -189,18 +189,17 @@
 
   &:first-child {
     // background-color: #BA360C !important;
-    .body-actions-menu {
-      top: auto;
-      bottom: calc(100% + 2px);
-    }
+    // .body-actions-menu {
+    //   top: auto;
+    //   bottom: calc(100% + 2px);
+    // }
   }
   .body-actions-menu {
-    position: absolute;
+    // position: absolute;
     width: toRem(159);
     height: fit-content;
     // top: calc(100% + 2px);
     right: 0;
-    display: none;
     // .body-actions-menu__list
     &__list {
       position: relative;
@@ -211,6 +210,7 @@
     }
     // .body-actions-menu__item
     &__item {
+      width: 100%;
       display: flex;
       text-align: center;
       justify-content: center;
@@ -308,14 +308,15 @@
   }
 }
 .body-actions-menu {
-  position: absolute;
-  z-index: 99;
-  width: toRem(269);
+  // position: absolute;
+  // z-index: 99;
+  width: 100%;
+  max-width: 160px;
   height: fit-content;
-  top: calc(100% + 2px);
+  // top: calc(100% + 2px);
 
   right: 0;
-  display: none;
+  // display: none;
   // .body-actions-menu__list
   &__list {
     width: 100%;
@@ -327,11 +328,12 @@
   }
   // .body-actions-menu__item
   &__item {
+    width: 100%;
     display: flex;
     text-align: center;
     justify-content: center;
     align-items: center;
-    padding: toRem(20) toRem(5);
+    padding: toRem(10);
     font-size: toRem(15);
     &:not(:last-child) {
       border-bottom: 1px solid var(--border);
@@ -350,6 +352,8 @@
   height: 100%;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
 
   // .body-chat__content
   &__content {
@@ -410,6 +414,22 @@
     @media (min-width: $tablet) {
       display: none;
     }
+  }
+}
+
+.body-chat-empty {
+  display: flex;
+  gap: 8px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  &__image {
+    aspect-ratio: 1/1;
+    width: 140px;
+  }
+  &__text {
+    font-size: 18px;
+    color: #b0bfd7;
   }
 }
 
@@ -567,6 +587,7 @@
 }
 
 .bottom-body-chat {
+  width: 100%;
   margin-bottom: auto;
   border-top: 1px solid var(--border);
   padding: 0 toRem(25);

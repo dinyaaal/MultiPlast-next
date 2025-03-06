@@ -4,7 +4,7 @@ import { Navigation } from "swiper/modules";
 import "swiper/css";
 import { AdvertismentSchema } from "@/lib/schema";
 import { RootState } from "@/store/store";
-import { Category, ProductType, User } from "@/types/types";
+import { Category, Photo, ProductType, User } from "@/types/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Select, SelectItem, Spinner } from "@heroui/react";
 import { useSession } from "next-auth/react";
@@ -80,6 +80,12 @@ export default function Advertisement({ categories }: SellProps) {
     resolver: zodResolver(AdvertismentSchema),
   });
 
+  // async function convertApiResponseToFile(photoMeta: Photo): Promise<File> {
+  //   const response = await fetch(photoMeta.url);
+  //   const blob = await response.blob();
+  //   return new File([blob], photoMeta.name, { type: photoMeta.mime_type });
+  // }
+
   const fetchProduct = async () => {
     if (!editId) return;
     setLoading(true);
@@ -96,6 +102,11 @@ export default function Advertisement({ categories }: SellProps) {
       }
 
       const data = await response.json();
+      // const files = await Promise.all(
+      //   data.photos.map(convertApiResponseToFile)
+      // );
+      // setPhotos(data.photos[0]);
+      console.log(data.photos[0]);
       setProduct(data);
     } catch (err) {
       setProductError("Ошибка при загрузке продукта");
@@ -103,6 +114,8 @@ export default function Advertisement({ categories }: SellProps) {
       setLoading(false);
     }
   };
+
+  console.log(photos);
 
   const handleAdvertDelete = async () => {
     if (!session?.user.access_token || !editId) {
@@ -321,15 +334,19 @@ export default function Advertisement({ categories }: SellProps) {
     }
     if (editId && product) {
       try {
-        const postResponse = await fetch(`/api/products/edit`, {
+        const jsonObject: Record<string, any> = {};
+        formData.forEach((value, key) => {
+          jsonObject[key] = value;
+        });
+        const editResponse = await fetch(`/api/products/edit`, {
           method: "PATCH",
           headers: {
             token: token,
             id: editId,
           },
-          body: formData,
+          body: JSON.stringify(jsonObject),
         });
-        if (postResponse.ok) {
+        if (editResponse.ok) {
           toast.success("Обновлено!");
         } else {
           throw new Error("Ошибка обновления информации пользователя");

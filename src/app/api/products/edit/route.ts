@@ -2,7 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function PATCH(request: NextRequest) {
   // Получаем formData из запроса
-  const formData = await request.formData();
+  // const formData = await request.formData();
+  const jsonData = await request.json();
 
   const token = request.headers.get("token");
   const id = request.headers.get("id");
@@ -12,12 +13,12 @@ export async function PATCH(request: NextRequest) {
   }
 
   try {
-    const res = await fetch(`http://13.60.7.255/api/products/:${id}`, {
+    const res = await fetch(`http://13.60.7.255/api/products/${id}`, {
       method: "PATCH",
       headers: {
         Authorization: `Bearer ${token}`,
       },
-      body: formData,
+      body: JSON.stringify(jsonData),
     });
 
     if (!res.ok) {
