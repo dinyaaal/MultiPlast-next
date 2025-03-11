@@ -32,17 +32,11 @@ export const LoginFormSchema = z.object({
   remember: z.boolean().optional(),
 });
 
-
 export const ForumAddSchema = z.object({
-  title: z
-    .string()
-    .min(1, "Введите заголовок "),
-    text: z
-    .string()
-    .min(1, "Введите описание "),
-    keywords: z
-    .string()
-
+  title: z.string().min(1, "Введите заголовок "),
+  text: z.string().min(1, "Введите описание "),
+  // keywords: z
+  // .string()
 });
 
 export const UserInfoSchema = z

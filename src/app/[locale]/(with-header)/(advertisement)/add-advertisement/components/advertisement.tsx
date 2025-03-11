@@ -15,7 +15,6 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { toast } from "sonner";
 import { z } from "zod";
-import { useRouter } from "@/i18n/routing";
 import Image from "next/image";
 
 interface SellProps {

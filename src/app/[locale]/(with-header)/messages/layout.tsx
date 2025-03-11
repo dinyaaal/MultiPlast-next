@@ -27,7 +27,7 @@ export default function MessagesLayout({
                 </div>
               </div>
             </div>
-            <div className="chat__body body-chat">{children}</div>
+            {children}
           </div>
         </div>
       </section>

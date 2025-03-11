@@ -1,6 +1,5 @@
 "use client";
 
-import ForumLayout from "@/Components/Forum/components/ForumLayout";
 import ModalContact from "@/Components/Modals/ModalContact";
 import React from "react";
 import { useTranslations } from "next-intl";
@@ -43,9 +42,9 @@ export default function ForumAdd() {
 
     formData.append("title", data.title);
     formData.append("text", data.text);
-    if (data.keywords) {
-      formData.append("keywords", data.keywords);
-    }
+    // if (data.keywords) {
+    //   formData.append("keywords", data.keywords);
+    // }
 
     try {
       const editResponse = await fetch(`/api/forum/add`, {
@@ -132,7 +131,7 @@ export default function ForumAdd() {
                   ></textarea>
                 </div>
 
-                <div className="input-block input-block-title">
+                {/* <div className="input-block input-block-title">
                   <p>{t("enterKeywords")}</p>
                   <div className="input-body input-body--title">
                     <input
@@ -149,7 +148,7 @@ export default function ForumAdd() {
                       {t("charLimit", { count: 150 })}
                     </div>
                   </div>
-                </div>
+                </div> */}
 
                 <div className="add-forum__actions">
                   <button type="submit" className="add-forum__add button">

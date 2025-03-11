@@ -4,6 +4,8 @@ import React from "react";
 export default function Messages() {
   return (
     <>
+      {/* <div className="chat__body body-chat">
+      </div> */}
       <div className="body-chat-empty">
         <Image
           className="body-chat-empty__icon"
