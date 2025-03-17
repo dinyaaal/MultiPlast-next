@@ -1,30 +1,57 @@
-'use client'
+"use client";
 
 import { Link } from "@/i18n/routing";
 import { ForumPost } from "@/types/types";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import React from "react";
+import { toast } from "sonner";
 
 interface ForumCardProps {
-  post: ForumPost
+  post: ForumPost;
   small?: boolean;
+  onDelete: (id: number) => void;
 }
-  export const ForumCard: React.FC<ForumCardProps> = ({ post, small = false }) => {
+export const ForumCard: React.FC<ForumCardProps> = ({
+  post,
+  small = false,
+  onDelete,
+}) => {
   const { data: session, status } = useSession();
-    
+
+  const handleChatDelete = async () => {
+    if (!session?.user.access_token || !post.id) {
+      return;
+    }
+
+    try {
+      const deleteResponse = await fetch(`/api/forum/delete`, {
+        method: "DELETE",
+        headers: {
+          token: session?.user.access_token,
+          id: post.id.toString(),
+        },
+      });
+      if (deleteResponse.ok) {
+        toast.success("Пост удален!");
+        onDelete(post.id);
+      } else {
+        throw new Error("Ошибка обновления информации пользователя");
+      }
+    } catch (error) {
+      console.error("Ошибка при отправке данных:", error);
+      toast.error("Ошибка удаления");
+    }
+  };
+
   return (
     <>
       {small ? (
         <div className="home-forum__item item-forum">
           <div className="item-forum__body">
             <div className="item-forum__block">
-              <h4 className="item-forum__title">
-                {post.title}
-              </h4>
-              <p className="item-forum__text">
-               {post.text}
-              </p>
+              <h4 className="item-forum__title">{post.title}</h4>
+              <p className="item-forum__text">{post.text}</p>
             </div>
             <Link href={`/forum/${post.id}`} className="item-forum__more">
               <span>Детальніше</span>
@@ -46,19 +73,25 @@ interface ForumCardProps {
       ) : (
         <div className="body-forum__item item-forum">
           {session?.user.id === post.author_id && (
-            <button className="item-forum__delete">
+            <button
+              onClick={(e) => {
+                toast("Вы уверены что хотите удалить пост?", {
+                  action: {
+                    label: "Удалить",
+                    onClick: () => handleChatDelete(),
+                  },
+                });
+              }}
+              className="item-forum__delete"
+            >
               <Image src="/icons/bin.svg" alt="Icon" width={100} height={100} />
             </button>
           )}
-         
+
           <div className="item-forum__body">
             <div className="item-forum__block">
-              <h4 className="item-forum__title">
-                {post.title}
-              </h4>
-              <p className="item-forum__text">
-                {post.text}
-              </p>
+              <h4 className="item-forum__title">{post.title}</h4>
+              <p className="item-forum__text">{post.text}</p>
             </div>
             <div className="item-forum__block">
               <div className="item-forum__info info-item-forum">
@@ -71,7 +104,9 @@ interface ForumCardProps {
                       height={100}
                     />
                   </div>
-                  <span className="info-item-forum__value">{post.views_count}</span>
+                  <span className="info-item-forum__value">
+                    {post.views_count}
+                  </span>
                 </div>
                 <div className="info-item-forum__item">
                   <div className="info-item-forum__icon">
@@ -82,7 +117,9 @@ interface ForumCardProps {
                       height={100}
                     />
                   </div>
-                  <span className="info-item-forum__value">{post.comments_count}</span>
+                  <span className="info-item-forum__value">
+                    {post.comments_count}
+                  </span>
                 </div>
               </div>
               <Link href={`/forum/${post.id}`} className="item-forum__more">
@@ -106,4 +143,4 @@ interface ForumCardProps {
       )}
     </>
   );
-}
+};

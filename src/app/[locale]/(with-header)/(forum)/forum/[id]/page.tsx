@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import ForumComments from "@/Components/Forum/components/ForumComments";
 import ModalContact from "@/Components/Modals/ModalContact";
 import { ForumPost } from "@/types/types";
@@ -32,9 +32,7 @@ const comments = [
   },
 ];
 
-export default function ForumTopic({ params }: {
-  params: {id: string}
-}) {
+export default function ForumTopic({ params }: { params: { id: string } }) {
   const [post, setPost] = useState<ForumPost | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -48,7 +46,7 @@ export default function ForumTopic({ params }: {
           "Content-Type": "application/json",
         },
       });
-   
+
       if (!response.ok) {
         throw new Error(`Ошибка загрузки: ${response.status}`);
       }
@@ -66,7 +64,6 @@ export default function ForumTopic({ params }: {
     fetchProduct();
   }, []);
 
-
   if (!post) {
     return (
       <div className="flex w-full h-full min-h-screen flex-auto items-center justify-center">
@@ -80,9 +77,7 @@ export default function ForumTopic({ params }: {
       <div className="forum-topic__container">
         <div className="forum-topic__body body-forum-topic">
           <div className="body-forum-topic__top top-body-forum-topic">
-            <h2 className="top-body-forum-topic__title title">
-                {post.title}
-            </h2>
+            <h2 className="top-body-forum-topic__title title">{post.title}</h2>
             <div className="top-product__actions actions-top">
               <a href="#" className="actions-top__item edit">
                 <svg
@@ -114,6 +109,7 @@ export default function ForumTopic({ params }: {
               </a>
             </div>
           </div>
+          =
           <div className="body-forum-topic__image">
             <Image
               src="/product/01.jpg"
@@ -123,26 +119,7 @@ export default function ForumTopic({ params }: {
             />
           </div>
           <div className="body-forum-topic__description">
-            <p>
-              Ключовими властивостями полікарбонату є висока прозорість,
-              відносно мала вага та дуже висока ударна в'язкість
-              (удароміцність). Полікарбонат є полімерним пластиковим матеріалом,
-              який можна використовувати по-різному. Завдяки фізичним
-              властивостям полікарбонату цей матеріал широко використовується у
-              будівництві та архітектурі. Ми можемо використовувати монолітний
-              полікарбонат як у будівництві житлових будинків, так і у разі
-              різних типів будівель громадського призначення, спортивних та
-              комерційних об'єктів тощо. Завдяки фізичним, термічним та хімічним
-              властивостям полікарбонату цей матеріал знайшов безліч
-              застосувань. Полікарбонат у будівництві використовується скрізь,
-              де необхідний міцний, легкий та прозорий матеріал. Застосування
-              полікарбонату включає покрівлі сучасних промислових, комерційних
-              та спортивних об'єктів, світлові ліхтарі та різні типи дахів,
-              внутрішні та зовнішні огорожі, зимові сади, теплиці, а також
-              вітрини та акустичні екрани. Де, зазвичай, Ви використовуєте цей
-              матеріал, або розкажіть, в якому незвичному місті Ви його бачили у
-              використанні?
-            </p>
+            <p>{post.text}</p>
           </div>
           <div className="forum-comments">
             <div className="forum-comments__write write-forum-comments">
@@ -167,7 +144,7 @@ export default function ForumTopic({ params }: {
           </div>
         </div>
         <div className="forum-topic__block block-forum-topic">
-          <div className="forum-topic__topics topics-forum-topic">
+          {/* <div className="forum-topic__topics topics-forum-topic">
             <h3 className="topics-forum-topic__title title--small">
               Наступні теми:
             </h3>
@@ -233,8 +210,8 @@ export default function ForumTopic({ params }: {
                 </a>
               </div>
             </div>
-          </div>
-          <div className="forum-topic__words words-forum-topic">
+          </div> */}
+          {/* <div className="forum-topic__words words-forum-topic">
             <h3 className="words-forum-topic__title title--small">
               Ключові слова:
             </h3>
@@ -246,7 +223,7 @@ export default function ForumTopic({ params }: {
               <div className="words-forum-topic__item">властивості</div>
               <div className="words-forum-topic__item">сировина</div>
             </div>
-          </div>
+          </div> */}
           <div className="add-forum__info info-contact">
             <div className="info-contact__body">
               <p className="info-contact__text">
