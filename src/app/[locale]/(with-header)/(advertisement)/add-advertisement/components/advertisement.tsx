@@ -333,17 +333,17 @@ export default function Advertisement({ categories }: SellProps) {
     }
     if (editId && product) {
       try {
-        const jsonObject: Record<string, any> = {};
-        formData.forEach((value, key) => {
-          jsonObject[key] = value;
-        });
+        // const jsonObject: Record<string, any> = {};
+        // formData.forEach((value, key) => {
+        //   jsonObject[key] = value;
+        // });
         const editResponse = await fetch(`/api/products/edit`, {
-          method: "PATCH",
+          method: "POST",
           headers: {
             token: token,
             id: editId,
           },
-          body: JSON.stringify(jsonObject),
+          body: formData,
         });
         if (editResponse.ok) {
           toast.success("Обновлено!");

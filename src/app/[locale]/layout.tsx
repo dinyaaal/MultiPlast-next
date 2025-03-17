@@ -8,7 +8,7 @@ import { getMessages } from "next-intl/server";
 import { AuthProviders } from "@/Components/AuthProviders";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { ReduxProvider } from "@/store/provider";
-import { Toaster, toast } from "sonner";
+import { Toaster } from "sonner";
 
 const rubikFont = Rubik({
   subsets: ["latin"],

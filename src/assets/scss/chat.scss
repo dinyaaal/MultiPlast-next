@@ -158,6 +158,8 @@
   &__block {
     display: flex;
     align-items: center;
+    width: 100%;
+    justify-content: space-between;
     @include adaptiveValue("gap", 20, 5);
   }
   // .item-block-chat__name

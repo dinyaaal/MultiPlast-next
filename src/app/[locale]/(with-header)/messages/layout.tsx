@@ -1,36 +1,26 @@
-import ChatItem from "@/Components/Messages/ChatItem";
-import Image from "next/image";
+import ChatItems from "@/Components/Messages/ChatItems";
 import React from "react";
+
 export default function MessagesLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
-    <>
-      <section className="chat">
-        <div className="chat__container">
-          <div className="chat__wrapper">
-            <div className="chat__block block-chat">
-              <div className="block-chat__top chat-top">
-                <div className="block-chat__title">Повідомлення</div>
-              </div>
-              <div className="block-chat__content">
-                <div className="block-chat__items">
-                  <div className="block-chat__section">
-                    <div className="block-chat__section-title">Оголошення</div>
-                    <div className="block-chat__section-items">
-                      <ChatItem />
-                      <ChatItem />
-                    </div>
-                  </div>
-                </div>
-              </div>
+    <section className="chat">
+      <div className="chat__container">
+        <div className="chat__wrapper">
+          <div className="chat__block block-chat">
+            <div className="block-chat__top chat-top">
+              <div className="block-chat__title">Повідомлення</div>
             </div>
-            {children}
+            <div className="block-chat__content">
+              <ChatItems />
+            </div>
           </div>
+          {children}
         </div>
-      </section>
-    </>
+      </div>
+    </section>
   );
 }

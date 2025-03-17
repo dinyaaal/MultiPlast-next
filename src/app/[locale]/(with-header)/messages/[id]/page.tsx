@@ -5,7 +5,7 @@ import Image from "next/image";
 import React from "react";
 import { Tooltip } from "@heroui/tooltip";
 
-export default function ChatBody() {
+export default function ChatBody({ params }: { params: { id: string } }) {
   return (
     <>
       <div className="chat__body body-chat">

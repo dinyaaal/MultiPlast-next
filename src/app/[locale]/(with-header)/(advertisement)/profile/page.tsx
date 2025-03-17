@@ -1,5 +1,4 @@
 "use client";
-import PasswordInput from "@/Components/PasswordInput";
 import { UserInfoSchema } from "@/lib/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Select, SelectItem, Spinner } from "@heroui/react";
@@ -61,6 +60,8 @@ export default function Profile() {
 
   const handleGenderChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newGender = event.target.value;
+    console.log(newGender);
+    setValue("gender", newGender);
     setUserInformation((prev) =>
       prev ? { ...prev, gender: newGender } : null
     );
@@ -92,15 +93,18 @@ export default function Profile() {
 
     const formData = new FormData();
 
+    console.log(userData);
+
     if (photo) {
       formData.append("photo", photo);
     }
 
     Object.entries(userData).forEach(([key, value]) => {
-      if (value !== undefined && value !== null && value !== "") {
+      if (value !== undefined && value !== null) {
         formData.append(key, value);
       }
     });
+
     try {
       const editResponse = await fetch(`/api/users/edit`, {
         method: "POST",
@@ -150,7 +154,7 @@ export default function Profile() {
       </div>
     );
   }
-  console.log(userInfo);
+  // console.log(userInfo);
   return (
     <>
       <div className="advertisement__wrapper wrapper-advertisement advertisement-contacts">
@@ -285,8 +289,6 @@ export default function Profile() {
                             <input
                               className="real-radio"
                               type="radio"
-                              // name="sex"
-                              {...register("gender")}
                               value={"male"}
                               checked={userInformation?.gender === "male"}
                               onChange={handleGenderChange}
@@ -305,10 +307,8 @@ export default function Profile() {
                             <input
                               className="real-radio"
                               type="radio"
-                              // name="sex"
                               value={"female"}
                               checked={userInformation?.gender === "female"}
-                              {...register("gender")}
                               onChange={handleGenderChange}
                             />
                             <span

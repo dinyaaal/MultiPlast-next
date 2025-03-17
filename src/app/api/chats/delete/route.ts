@@ -1,22 +1,19 @@
 import { NextRequest, NextResponse } from "next/server";
 
-export async function POST(request: NextRequest) {
-  const formData = await request.formData();
-
+export async function DELETE(request: NextRequest) {
   const token = request.headers.get("token");
   const id = request.headers.get("id");
 
-  if (!token && !id) {
+  if (!token) {
     return NextResponse.json({ error: "Missing id or token" }, { status: 400 });
   }
 
   try {
-    const res = await fetch(`http://13.60.7.255/api/products/${id}`, {
-      method: "POST",
+    const res = await fetch(`http://13.60.7.255/api/chats/${id}`, {
+      method: "DELETE",
       headers: {
         Authorization: `Bearer ${token}`,
       },
-      body: formData,
     });
 
     if (!res.ok) {

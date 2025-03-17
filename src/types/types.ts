@@ -13,7 +13,7 @@ export interface Category {
 }
 
 export interface User {
-  id: number | null; // Уникальный идентификатор пользователя
+  id: number; // Уникальный идентификатор пользователя
   first_name: string; // Имя
   last_name: string; // Фамилия
   middle_name: string | null; // Отчество (может быть null)
@@ -138,4 +138,46 @@ export interface ForumPost {
   views_count: number;
   categories: ForumCategory[];
   author: Author;
+}
+
+interface ChatUser {
+  id: number;
+  name: string | null;
+  first_name: string;
+  last_name: string;
+  phone_number: string;
+  email: string;
+  city: string;
+  avatar: string;
+  verify_cookie: number;
+  email_verified_at: string | null;
+  created_at: string;
+  updated_at: string;
+  role_id: number;
+  name_of_enterprise: string | null;
+  address: string | null;
+  area: string | null;
+  web_site: string | null;
+  country: string | null;
+  ig_link: string | null;
+  fb_link: string | null;
+  yt_link: string | null;
+  tg_link: string | null;
+  gender: string | null;
+  birthday: string | null;
+  middle_name: string | null;
+}
+
+export interface ChatItemData {
+  id: number;
+  from_user_id: number;
+  to_user_id: number;
+  is_deleted: number;
+  blocked_by_user_id: number | null;
+  reported_by_user_id: number | null;
+  report_reason: string | null;
+  created_at: string;
+  updated_at: string;
+  from_user: ChatUser;
+  to_user: ChatUser;
 }

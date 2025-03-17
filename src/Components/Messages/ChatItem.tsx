@@ -1,13 +1,105 @@
 "use client";
 
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 import { Popover, PopoverTrigger, PopoverContent } from "@heroui/popover";
 import { Link } from "@/i18n/routing";
+import { ChatItemData } from "@/types/types";
+import { useSession } from "next-auth/react";
+import { toast } from "sonner";
 
-export default function ChatItem() {
+interface ChatItemProps {
+  chat: ChatItemData;
+  onDelete: (id: number) => void;
+}
+
+export const ChatItem: React.FC<ChatItemProps> = ({ chat, onDelete }) => {
+  const { data: session, status } = useSession();
+  const formattedDate = new Date(chat.updated_at).toLocaleDateString();
+  const [isBlocked, setIsBlocked] = useState<boolean>(
+    !!chat.blocked_by_user_id
+  );
+
+  const handleChatDelete = async () => {
+    if (!session?.user.access_token || !chat.id) {
+      return;
+    }
+
+    try {
+      const deleteResponse = await fetch(`/api/chats/delete`, {
+        method: "DELETE",
+        headers: {
+          token: session?.user.access_token,
+          id: chat.id.toString(),
+        },
+      });
+      if (deleteResponse.ok) {
+        toast.success("Чат удален!");
+        onDelete(chat.id);
+      } else {
+        throw new Error("Ошибка обновления информации пользователя");
+      }
+    } catch (error) {
+      console.error("Ошибка при отправке данных:", error);
+      toast.error("Ошибка удаления");
+    }
+  };
+
+  const handleChatBlock = async () => {
+    if (!session?.user.access_token || !chat.id) {
+      return;
+    }
+
+    try {
+      const blockResponse = await fetch(`/api/chats/block`, {
+        method: "POST",
+        headers: {
+          token: session?.user.access_token,
+          id: chat.id.toString(),
+        },
+      });
+      if (blockResponse.ok) {
+        toast.success("Пользователь заблокирован");
+        setIsBlocked(true);
+      } else {
+        throw new Error("Ошибка обновления информации пользователя");
+      }
+    } catch (error) {
+      console.error("Ошибка при отправке данных:", error);
+      toast.error("Не удалось заблокировать пользователя");
+    }
+  };
+
+  const handleChatUnblock = async () => {
+    if (!session?.user.access_token || !chat.id) {
+      return;
+    }
+
+    try {
+      const blockResponse = await fetch(`/api/chats/unblock`, {
+        method: "POST",
+        headers: {
+          token: session?.user.access_token,
+          id: chat.id.toString(),
+        },
+      });
+      if (blockResponse.ok) {
+        toast.success("Пользователь разблокирован");
+        setIsBlocked(false);
+      } else {
+        throw new Error("Ошибка обновления информации пользователя");
+      }
+    } catch (error) {
+      console.error("Ошибка при отправке данных:", error);
+      toast.error("Не удалось разблокировать пользователя");
+    }
+  };
+
   return (
-    <Link href="/messages/19" className="block-chat__item item-block-chat">
+    <Link
+      href={`/messages/${chat.id}`}
+      className="block-chat__item item-block-chat"
+    >
       {/* <div className="item-block-chat__topic topic-message">
         <div className="topic-message__block">
           <p className="topic-message__title">
@@ -34,8 +126,10 @@ export default function ChatItem() {
         <div className="item-block-chat__body">
           <div className="item-block-chat__info">
             <div className="item-block-chat__block">
-              <div className="item-block-chat__name">Дмитро В.</div>
-              <span className="item-block-chat__date">23.01.24</span>
+              <div className="item-block-chat__name">
+                {`${chat.to_user.first_name} ${chat.to_user.last_name}`}
+              </div>
+              <span className="item-block-chat__date">{formattedDate}</span>
             </div>
             <Popover
               placement="bottom-end"
@@ -71,15 +165,38 @@ export default function ChatItem() {
                     >
                       Поскаржитися
                     </button>
-                    <button
-                      onClick={(e) => e.preventDefault()}
-                      className="body-actions-menu__item"
-                    >
-                      Заблокувати
-                    </button>
+                    {isBlocked ? (
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handleChatUnblock();
+                        }}
+                        className="body-actions-menu__item"
+                      >
+                        Разблокувати
+                      </button>
+                    ) : (
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handleChatBlock();
+                        }}
+                        className="body-actions-menu__item"
+                      >
+                        Заблокувати
+                      </button>
+                    )}
 
                     <button
-                      onClick={(e) => e.preventDefault()}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        toast("Вы уверены что хотите удалить чат?", {
+                          action: {
+                            label: "Удалить",
+                            onClick: () => handleChatDelete(),
+                          },
+                        });
+                      }}
                       className="body-actions-menu__item body-actions-menu__item--red"
                     >
                       Видалити
@@ -130,4 +247,4 @@ export default function ChatItem() {
       </div>
     </Link>
   );
-}
+};
