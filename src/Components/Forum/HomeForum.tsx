@@ -1,7 +1,7 @@
 import Image from "next/image";
 import React from "react";
-import ForumCard from "./components/ForumCard";
 import { useTranslations } from "next-intl";
+import { ForumCard } from "./components/ForumCard";
 
 export default function HomeForum() {
   const t = useTranslations("HomeForum");
@@ -11,9 +11,9 @@ export default function HomeForum() {
       <div className="home-forum__container">
         <h2 className="home-forum__title title">{t("forum")}</h2>
         <div className="home-forum__items">
+          {/* <ForumCard small />
           <ForumCard small />
-          <ForumCard small />
-          <ForumCard small />
+          <ForumCard small /> */}
         </div>
         <div className="home-forum__body body-home-forum">
           <div className="body-home-forum__block">

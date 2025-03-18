@@ -57,7 +57,7 @@ const handler = NextAuth({
       // Если авторизация через Google
       if (account?.provider === "google" && account.access_token) {
         token.google_id = account.providerAccountId; // Сохраняем Google ID
-        token.google_token = account.access_token;   // Сохраняем Google Token
+        token.google_token = account.access_token; // Сохраняем Google Token
       }
       // Если авторизация через Credentials
       if (user) {
@@ -71,12 +71,12 @@ const handler = NextAuth({
       if (token?.user) {
         session.user = token.user as any;
       }
-      if (token?.google_id) {
-        session.google_id = token.google_id;     // Добавляем Google ID в сессию
-      }
-      if (token?.google_token) {
-        session.google_token = token.google_token; // Добавляем Google Token в сессию
-      }
+      // if (token?.google_id) {
+      //   session.google_id = token.google_id;     // Добавляем Google ID в сессию
+      // }
+      // if (token?.google_token) {
+      //   session.google_token = token.google_token; // Добавляем Google Token в сессию
+      // }
       return session;
     },
   },
