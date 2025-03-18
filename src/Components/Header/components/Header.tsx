@@ -161,10 +161,7 @@ export default function Header() {
               </Link>
             </li>
             <li className="menu__item">
-              <Link
-                href="/add-advertisement?category=sell"
-                className="menu__link"
-              >
+              <Link href="/add-advertisement" className="menu__link">
                 {t("postAd")}
                 <div className="main-menu__arrow menu__arrow">
                   <Image
@@ -178,7 +175,10 @@ export default function Header() {
 
               <ul className="sub-menu__list">
                 <li>
-                  <Link href="/sell" className="sub-menu__link menu__link">
+                  <Link
+                    href="/add-advertisement"
+                    className="sub-menu__link menu__link"
+                  >
                     {t("sell")}
                     <div className="sub-menu__arrow menu__arrow">
                       <Image
@@ -251,7 +251,10 @@ export default function Header() {
                   </ul>
                 </li>
                 <li>
-                  <Link href="/buy" className="sub-menu__link menu__link">
+                  <Link
+                    href="/add-advertisement"
+                    className="sub-menu__link menu__link"
+                  >
                     {t("buy")}
                     <div className="sub-menu__arrow menu__arrow">
                       <Image

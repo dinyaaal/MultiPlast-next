@@ -79,12 +79,6 @@ export default function Advertisement({ categories }: SellProps) {
     resolver: zodResolver(AdvertismentSchema),
   });
 
-  // async function convertApiResponseToFile(photoMeta: Photo): Promise<File> {
-  //   const response = await fetch(photoMeta.url);
-  //   const blob = await response.blob();
-  //   return new File([blob], photoMeta.name, { type: photoMeta.mime_type });
-  // }
-
   const fetchProduct = async () => {
     if (!editId) return;
     setLoading(true);
@@ -113,8 +107,6 @@ export default function Advertisement({ categories }: SellProps) {
       setLoading(false);
     }
   };
-
-  console.log(photos);
 
   const handleAdvertDelete = async () => {
     if (!session?.user.access_token || !editId) {
