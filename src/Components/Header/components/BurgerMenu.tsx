@@ -59,7 +59,11 @@ export default function BurgerMenu() {
               </Link>
             </li>
             <li className="menu__item">
-              <Link onClick={closeMenu} href="/sell" className="menu__link">
+              <Link
+                onClick={closeMenu}
+                href="/add-advertisement"
+                className="menu__link"
+              >
                 {t("postAd")}
               </Link>
             </li>

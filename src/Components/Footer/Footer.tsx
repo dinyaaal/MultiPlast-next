@@ -108,7 +108,7 @@ export default function Footer() {
                 <Link href="/messages">{t("myMessages")}</Link>
               </li>
               <li className="menu-footer__item">
-                <Link href="/sell">{t("postAd")}</Link>
+                <Link href="/add-advertisement">{t("postAd")}</Link>
               </li>
               <li className="menu-footer__item">
                 <Link href="#">{t("userAgreement")}</Link>
