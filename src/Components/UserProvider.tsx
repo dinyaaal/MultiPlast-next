@@ -73,8 +73,28 @@ export default function UserProvider({
     }
   };
 
+  // const fetchCategories = async () => {
+  //   try {
+  //     const res = await fetch(`/api/categories`, {
+  //       method: "GET",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //     });
+
+  //     if (!res.ok) throw new Error("Failed to fetch categories");
+
+  //     const data = await res.json();
+  //     dispatch(setCategories(data));
+  //   } catch (error) {
+  //     console.error("Ошибка загрузки категорий:", error);
+  //   }
+  // };
+
   useEffect(() => {
-    // fetchFavorites();
+    // if (categories.length === 0) {
+    //   fetchCategories();
+    // }
   }, []);
 
   useEffect(() => {

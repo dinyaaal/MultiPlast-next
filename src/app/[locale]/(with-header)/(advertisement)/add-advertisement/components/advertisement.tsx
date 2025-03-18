@@ -44,19 +44,17 @@ export default function Advertisement({ categories }: SellProps) {
   const searchParams = useSearchParams();
   // const router = useRouter();
   const editId = searchParams.get("edit");
+  const searchCategory = searchParams.get("category");
+  const searchType = searchParams.get("type");
+  const searchSubCategory = searchParams.get("subCategory");
 
   const { data: userInfo, error } = useSelector(
     (state: RootState) => state.userInfo
   );
   const { data: session, status } = useSession();
   const [product, setProduct] = useState<ProductType | null>(null);
-  const [categoryId, setCategoryId] = useState<number>(
-    product?.categories.find((category) => category.position === 1)?.id || 1
-  );
-
-  const [advertType, setAdvertType] = useState<"sell" | "buy">(
-    product?.type_of_product || "sell"
-  );
+  const [categoryId, setCategoryId] = useState<number>(1);
+  const [advertType, setAdvertType] = useState<"sell" | "buy">("sell");
   const [arrangement, setArrangement] = useState<boolean>(false);
 
   const [photos, setPhotos] = useState<File[]>([]);
@@ -155,6 +153,18 @@ export default function Advertisement({ categories }: SellProps) {
 
   useEffect(() => {
     if (product) {
+      // setCategoryId(
+      //   Number(
+      //     product?.categories.find((category) => category.parent_id === null)
+      //       ?.id
+      //   )
+      // );
+      setValue(
+        "mainCategory",
+        product?.categories
+          .find((category) => category.parent_id === null)
+          ?.id?.toString() || ""
+      );
       setValue("title", product?.title);
       setValue("text", product?.text);
       setValue("address", product?.contact.address || "");
@@ -165,12 +175,7 @@ export default function Advertisement({ categories }: SellProps) {
       setValue("phone_number", product?.contact.phone_number || "");
       setValue("price", product.price?.toString() || "");
       setArrangement(product.type_price === "by_arrangement");
-      setValue(
-        "mainCategory",
-        product?.categories
-          .find((category) => category.parent_id === null)
-          ?.id?.toString() || ""
-      );
+
       setValue("advertType", product?.type_of_product || "");
       setValue(
         "polymer",
@@ -184,10 +189,27 @@ export default function Advertisement({ categories }: SellProps) {
           .find((category) => category.type === "Сировина")
           ?.id?.toString() || ""
       );
-
-      // setAdvertType(product?.type_of_product);
     }
   }, [product]);
+
+  useEffect(() => {
+    reset();
+  }, [searchParams]);
+
+  useEffect(() => {
+    // reset();
+    const newCategoryId = searchCategory || "1";
+    // const newSubCategoryId = searchSubCategory || "1";
+
+    const typeParam = searchType;
+    const newAdvertType =
+      typeParam === "sell" || typeParam === "buy" ? typeParam : "sell";
+    setCategoryId(Number(newCategoryId));
+    setAdvertType(newAdvertType);
+    setValue("mainCategory", newCategoryId);
+    setValue("advertType", newAdvertType);
+    setValue("type", searchSubCategory || "");
+  }, [searchCategory, searchSubCategory, searchType]);
 
   const handlePhotosChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
@@ -214,6 +236,7 @@ export default function Advertisement({ categories }: SellProps) {
       }
     );
     setCategoryId(Number(e.target.value));
+    setValue("mainCategory", e.target.value);
     if (Number(e.target.value) === 1 || Number(e.target.value) === 2) {
       setTypePrice({
         type: "for_kg",
@@ -240,9 +263,9 @@ export default function Advertisement({ categories }: SellProps) {
       });
     }
   };
-  const handleChangeType = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setAdvertType(event.target.value as "sell" | "buy");
-  };
+  // const handleChangeType = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  //   setAdvertType(event.target.value as "sell" | "buy");
+  // };
 
   const processForm: SubmitHandler<Inputs> = async (data) => {
     if (!session?.user.access_token && !session?.user.id) {
@@ -314,7 +337,7 @@ export default function Advertisement({ categories }: SellProps) {
       formData.append("text", text);
     }
 
-    formData.append("type_of_product", advertType);
+    formData.append("type_of_product", data.advertType);
     if (arrangement) {
       formData.append("type_price", "by_arrangement");
     } else {
@@ -422,9 +445,10 @@ export default function Advertisement({ categories }: SellProps) {
                         ],
                       },
                     }}
-                    // selectedKeys={[advertType]}
+                    // defaultSelectedKeys={[advertType]}
+                    selectedKeys={[watch("advertType")?.toString() || ""]}
                     {...register("advertType")}
-                    onChange={(selectedKey) => handleChangeType(selectedKey)}
+                    // onChange={(selectedKey) => handleChangeType(selectedKey)}
                   >
                     {advertTypes.map((type) => (
                       <SelectItem key={type.key}>{type.label}</SelectItem>
@@ -464,7 +488,8 @@ export default function Advertisement({ categories }: SellProps) {
                       },
                     }}
                     // defaultSelectedKeys={[categoryId.toString()]}
-                    {...register("mainCategory")}
+                    selectedKeys={[watch("mainCategory")?.toString() || ""]}
+                    // {...register("mainCategory")}
                     onChange={handleCategoryChange}
                   >
                     {categories.map((category) => (
@@ -472,16 +497,16 @@ export default function Advertisement({ categories }: SellProps) {
                     ))}
                   </Select>
                 </div>
-                {categoryId !== 1 && (
+                {Number(watch("mainCategory")) !== 1 && (
                   <div className="input-block">
                     <p>
-                      {categoryId === 2
+                      {Number(watch("mainCategory")) === 2
                         ? t("select-type")
-                        : categoryId === 3
+                        : Number(watch("mainCategory")) === 3
                         ? "Виберіть тип устаткування:"
-                        : categoryId === 4
+                        : Number(watch("mainCategory")) === 4
                         ? "Виберіть послугу:"
-                        : categoryId === 5
+                        : Number(watch("mainCategory")) === 5
                         ? "Виберіть тип оголошення:"
                         : ""}
                     </p>
@@ -489,13 +514,13 @@ export default function Advertisement({ categories }: SellProps) {
                     <Select
                       disallowEmptySelection
                       placeholder={
-                        categoryId === 2
+                        Number(watch("mainCategory")) === 2
                           ? t("select-type")
-                          : categoryId === 3
+                          : Number(watch("mainCategory")) === 3
                           ? "Виберіть тип устаткування:"
-                          : categoryId === 4
+                          : Number(watch("mainCategory")) === 4
                           ? "Виберіть послугу:"
-                          : categoryId === 5
+                          : Number(watch("mainCategory")) === 5
                           ? "Виберіть тип оголошення:"
                           : ""
                       }
@@ -525,17 +550,20 @@ export default function Advertisement({ categories }: SellProps) {
                           ],
                         },
                       }}
-                      defaultSelectedKeys={[
-                        product?.categories
-                          .find((category) => category.type === "Сировина")
-                          ?.id?.toString() || "",
-                      ]}
-                      // selectedKeys={[watch("type")?.toString() || ""]}
+                      // defaultSelectedKeys={[
+                      //   product?.categories
+                      //     .find((category) => category.type === "Сировина")
+                      //     ?.id?.toString() || "",
+                      // ]}
+                      selectedKeys={[watch("type")?.toString() || ""]}
                       {...register("type")}
                       // onChange={handleTypeChange}
                     >
                       {categories
-                        .filter((category) => category.id === categoryId)
+                        .filter(
+                          (category) =>
+                            category.id === Number(watch("mainCategory"))
+                        )
                         .flatMap((category) => category.categories)
                         .filter(
                           (subCategory) => subCategory.type === "Сировина"
@@ -550,7 +578,8 @@ export default function Advertisement({ categories }: SellProps) {
                   </div>
                 )}
 
-                {(categoryId === 1 || categoryId === 2) && (
+                {(Number(watch("mainCategory")) === 1 ||
+                  Number(watch("mainCategory")) === 2) && (
                   <div className="input-block">
                     <p>{t("select-polymer")}</p>
 
@@ -583,16 +612,20 @@ export default function Advertisement({ categories }: SellProps) {
                           ],
                         },
                       }}
-                      defaultSelectedKeys={[
-                        product?.categories
-                          .find((category) => category.type === "Полімер")
-                          ?.id?.toString() || "",
-                      ]}
+                      // defaultSelectedKeys={[
+                      //   product?.categories
+                      //     .find((category) => category.type === "Полімер")
+                      //     ?.id?.toString() || "",
+                      // ]}
+                      selectedKeys={[watch("polymer")?.toString() || ""]}
                       {...register("polymer")}
                       // onChange={handlePolymerChange}
                     >
                       {categories
-                        .filter((category) => category.id === categoryId)
+                        .filter(
+                          (category) =>
+                            category.id === Number(watch("mainCategory"))
+                        )
                         .flatMap((category) => category.categories)
                         .filter((subCategory) => subCategory.type === "Полімер")
 
@@ -607,16 +640,19 @@ export default function Advertisement({ categories }: SellProps) {
 
                 <div className="input-block input-block--price">
                   <p>
-                    {categoryId === 1 || categoryId === 2
+                    {Number(watch("mainCategory")) === 1 ||
+                    Number(watch("mainCategory")) === 2
                       ? t("price-per-kg")
                       : t("enter-price")}
                   </p>
                   <div className="block-row block-row--nowrap">
                     <div className="input-block">
-                      {(categoryId === 1 ||
-                        categoryId === 2 ||
-                        categoryId === 3 ||
-                        categoryId === 5) && <p>{t("negotiated-price")}</p>}
+                      {(Number(watch("mainCategory")) === 1 ||
+                        Number(watch("mainCategory")) === 2 ||
+                        Number(watch("mainCategory")) === 3 ||
+                        Number(watch("mainCategory")) === 5) && (
+                        <p>{t("negotiated-price")}</p>
+                      )}
                       <div className="block-row__item">
                         <label className="check">
                           <input
@@ -630,7 +666,7 @@ export default function Advertisement({ categories }: SellProps) {
                           {t("negotiated-price")}
                         </label>
                       </div>
-                      {categoryId === 4 && (
+                      {Number(watch("mainCategory")) === 4 && (
                         <Select
                           isDisabled={arrangement}
                           disallowEmptySelection
@@ -692,7 +728,8 @@ export default function Advertisement({ categories }: SellProps) {
                   </div>
                 </div>
 
-                {(categoryId === 1 || categoryId === 2) && (
+                {(Number(watch("mainCategory")) === 1 ||
+                  Number(watch("mainCategory")) === 2) && (
                   <div className="block-row">
                     <div className="block-row__item">
                       <div className="input-block">

@@ -72,7 +72,7 @@ const handler = NextAuth({
         session.user = token.user as any;
       }
       // if (token?.google_id) {
-      //   session.google_id = token.google_id;     // Добавляем Google ID в сессию
+      //   session.google_id = token.google_id; // Добавляем Google ID в сессию
       // }
       // if (token?.google_token) {
       //   session.google_token = token.google_token; // Добавляем Google Token в сессию

@@ -94,8 +94,9 @@ export const UserSecuritySchema = z
 
 export const AdvertismentSchema = z
   .object({
-    advertType: z.string(),
-    mainCategory: z.string(),
+    advertType: z.enum(["sell", "buy"]),
+    // advertType: z.enum(["sell", "buy"]),
+    mainCategory: z.string().min(1),
     polymer: z.string().optional(),
     type: z.string().optional(),
     title: z

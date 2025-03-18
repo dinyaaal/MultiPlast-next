@@ -186,7 +186,9 @@ export default function Profile() {
                         />
                       ) : (
                         <Image
-                          src={userInformation.photo.url || "/icons/image.svg"}
+                          src={
+                            userInformation?.photo?.url || "/icons/image.svg"
+                          }
                           className="ibg"
                           alt="User image"
                           width={600}

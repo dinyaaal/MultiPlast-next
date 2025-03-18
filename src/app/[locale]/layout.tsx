@@ -3,12 +3,14 @@ import { Rubik } from "next/font/google";
 import "./globals.css";
 import "../../assets/scss/style.scss";
 import { HeroUIProvider } from "@heroui/system";
-import { NextIntlClientProvider } from "next-intl";
-import { getMessages } from "next-intl/server";
+import { getMessages, setRequestLocale } from "next-intl/server";
 import { AuthProviders } from "@/Components/AuthProviders";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { ReduxProvider } from "@/store/provider";
 import { Toaster } from "sonner";
+import { NextIntlClientProvider, Locale, hasLocale } from "next-intl";
+import { notFound } from "next/navigation";
+import { routing } from "@/i18n/routing";
 
 const rubikFont = Rubik({
   subsets: ["latin"],
@@ -23,18 +25,22 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({
   children,
-  params: { locale },
+  params,
 }: Readonly<{
   children: React.ReactNode;
-  params: { locale: string };
+  params: Promise<{ locale: string }>;
 }>) {
-  const messages = await getMessages();
+  const { locale } = await params;
+  if (!hasLocale(routing.locales, locale)) {
+    notFound();
+  }
+  setRequestLocale(locale);
   return (
     <html lang={locale}>
       <body className={`${rubikFont.className} `}>
         <ReduxProvider>
           <AuthProviders>
-            <NextIntlClientProvider messages={messages}>
+            <NextIntlClientProvider>
               <NuqsAdapter>
                 <HeroUIProvider className=" w-full h-full">
                   {children}
