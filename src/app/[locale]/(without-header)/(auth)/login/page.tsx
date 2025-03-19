@@ -83,15 +83,15 @@ export default function Login() {
             <button
               type="button"
               className="socials-auth__item item-socials-auth"
-              onClick={() => signIn("google")}
+              onClick={() => signIn("google", { callbackUrl: "/" })}
             >
               <div className="item-socials-auth__image">
-                {/* <Image
-                      src="/socials/google.png"
-                      alt="Icon"
-                      width={100}
-                      height={100}
-                    /> */}
+                <Image
+                  src="/socials/google.png"
+                  alt="Icon"
+                  width={100}
+                  height={100}
+                />
               </div>
               <div className="item-socials-auth__name">Google</div>
             </button>
@@ -100,12 +100,12 @@ export default function Login() {
               className="socials-auth__item item-socials-auth"
             >
               <div className="item-socials-auth__image">
-                {/* <Image
+                <Image
                   src="/socials/facebook.svg"
                   alt="Icon"
                   width={100}
                   height={100}
-                /> */}
+                />
               </div>
               <div className="item-socials-auth__name">Facebook</div>
             </button>

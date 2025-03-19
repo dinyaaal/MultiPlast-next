@@ -1,7 +1,17 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
-import { signOut } from "next-auth/react";
+
+interface User {
+  id: number;
+  access_token: string;
+  email: string;
+  first_name: string;
+  city: string;
+  phone_number: string;
+  avatar: string;
+  last_name: string;
+}
 
 const verifyGoogleToken = async (idToken: string, email: string) => {
   console.log("Sending Google token verification request...");
@@ -167,7 +177,7 @@ const handler = NextAuth({
 
     async session({ session, token }) {
       if (token?.user) {
-        session.user = token.user as any;
+        session.user = token.user as User;
       }
       return session;
     },
