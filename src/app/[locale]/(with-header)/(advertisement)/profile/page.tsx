@@ -100,7 +100,7 @@ export default function Profile() {
     }
 
     Object.entries(userData).forEach(([key, value]) => {
-      if (value !== undefined && value !== null) {
+      if (value !== undefined && value !== null && value !== "") {
         formData.append(key, value);
       }
     });

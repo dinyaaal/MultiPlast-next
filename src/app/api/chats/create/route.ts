@@ -9,7 +9,7 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const res = await fetch(`http://13.60.7.255/api/chats`, {
+    const res = await fetch(`https://multiplast.web-hub.online/api/chats`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,

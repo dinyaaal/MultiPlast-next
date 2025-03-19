@@ -24,13 +24,16 @@ export async function POST(request: Request) {
   });
 
   try {
-    const res = await fetch("http://13.60.7.255/api/auth/register", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body,
-    });
+    const res = await fetch(
+      "https://multiplast.web-hub.online/api/auth/register",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body,
+      }
+    );
 
     if (!res.ok) {
       throw new Error("Network response was not ok");

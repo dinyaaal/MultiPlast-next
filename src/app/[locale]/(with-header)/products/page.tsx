@@ -1,15 +1,14 @@
-
 import React from "react";
 import { ProductsBody } from "./components/ProductsBody";
-
+import { getTranslations } from "next-intl/server";
 
 const fetchCategories = async () => {
-  const res = await fetch(`http://13.60.7.255/api/categories`, {
+  const res = await fetch(`https://multiplast.web-hub.online/api/categories`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
     },
-    next: { revalidate: 86400 },
+    cache: "force-cache",
   });
 
   if (!res.ok) {
@@ -19,18 +18,19 @@ const fetchCategories = async () => {
   return res.json();
 };
 
-
-
 export default async function Products() {
-
   const categories = await fetchCategories();
-
-
-
-
+  const t = await getTranslations("Products");
   return (
     <>
-      <ProductsBody categories={categories}/>
+      <section className="trade">
+        <div className="trade__container">
+          <div className="trade__top">
+            <h1 className="trade__title title">{t("title")}</h1>
+          </div>
+          <ProductsBody categories={categories} />
+        </div>
+      </section>
 
       {/* <Adverts /> */}
     </>

@@ -5,16 +5,22 @@ export async function POST(request: NextRequest) {
     const { id, token } = await request.json();
 
     if (!id || !token) {
-      return NextResponse.json({ error: "Missing id or token" }, { status: 400 });
+      return NextResponse.json(
+        { error: "Missing id or token" },
+        { status: 400 }
+      );
     }
 
-    const res = await fetch(`http://13.60.7.255/api/favorites/remove/${id}`, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-    });
+    const res = await fetch(
+      `https://multiplast.web-hub.online/api/favorites/remove/${id}`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
     if (!res.ok) {
       throw new Error("Network response was not ok");
@@ -24,6 +30,9 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(data);
   } catch (error) {
     console.error("Error fetching data:", error);
-    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    );
   }
 }

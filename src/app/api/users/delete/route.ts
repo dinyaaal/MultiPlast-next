@@ -1,17 +1,20 @@
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(request: NextRequest) {
-  const url = new URL(request.url);
+export async function DELETE(request: NextRequest) {
+  const token = request.headers.get("token");
+  //   const id = request.headers.get("id");
 
-  const id = url.searchParams.get("id");
+  if (!token) {
+    return NextResponse.json({ error: "Missing id or token" }, { status: 400 });
+  }
 
   try {
     const res = await fetch(
-      `https://multiplast.web-hub.online/api/forums/${id}`,
+      `https://multiplast.web-hub.online/api/auth/delete-account`,
       {
-        method: "GET",
+        method: "DELETE",
         headers: {
-          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
       }
     );

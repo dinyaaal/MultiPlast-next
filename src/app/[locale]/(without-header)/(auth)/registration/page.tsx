@@ -22,8 +22,8 @@ type Inputs = z.infer<typeof RegistrationFormSchema>;
 export default function Registration() {
   const t = useTranslations("Auth");
   const router = useRouter();
-  const searchParams  = useSearchParams()
-  const callbackUrl = searchParams.get('callbackUrl') || "./"
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get("callbackUrl") || "./";
   const {
     register,
     handleSubmit,
@@ -50,12 +50,15 @@ export default function Registration() {
 
   const googleAuth = async () => {
     try {
-      const response = await fetch("http://13.60.7.255/auth/google", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetch(
+        "https://multiplast.web-hub.online/auth/google",
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       if (!response.ok) {
         throw new Error("Failed to register");
@@ -69,8 +72,6 @@ export default function Registration() {
   };
 
   const processForm: SubmitHandler<Inputs> = async (data) => {
-
-
     try {
       const response = await fetch("/api/auth/registration", {
         method: "POST",
@@ -123,7 +124,7 @@ export default function Registration() {
           <div className="socials-auth__body">
             <button
               type="button"
-              onClick={() => signIn('google',{callbackUrl})}
+              onClick={() => signIn("google", { callbackUrl })}
               className="socials-auth__item item-socials-auth"
             >
               <div className="item-socials-auth__image">

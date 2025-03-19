@@ -2,7 +2,7 @@ import React from "react";
 import Advertisement from "./components/advertisement";
 
 const fetchCategories = async () => {
-  const res = await fetch(`http://13.60.7.255/api/categories`, {
+  const res = await fetch(`https://multiplast.web-hub.online/api/categories`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",

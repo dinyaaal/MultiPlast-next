@@ -5,7 +5,7 @@ export async function GET(request: NextRequest) {
   const token = url.searchParams.get("token");
 
   try {
-    const res = await fetch(`http://13.60.7.255/api/chats`, {
+    const res = await fetch(`https://multiplast.web-hub.online/api/chats`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

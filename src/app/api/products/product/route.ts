@@ -7,7 +7,7 @@ export async function GET(request: NextRequest) {
 
   try {
     const res = await fetch(
-      `http://13.60.7.255/api/products/${id}`,
+      `https://multiplast.web-hub.online/api/products/${id}`,
       {
         method: "GET",
         headers: {

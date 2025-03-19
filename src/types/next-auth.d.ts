@@ -13,4 +13,16 @@ declare module "next-auth" {
       last_name: string;
     };
   }
+  interface Token {
+    user?: {
+      id: number;
+      access_token: string;
+      email: string;
+      first_name: string;
+      last_name: string;
+      city: string;
+      phone_number: string;
+      avatar: string;
+    };
+  }
 }

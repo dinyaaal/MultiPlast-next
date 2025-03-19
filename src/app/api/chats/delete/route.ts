@@ -9,12 +9,15 @@ export async function DELETE(request: NextRequest) {
   }
 
   try {
-    const res = await fetch(`http://13.60.7.255/api/chats/${id}`, {
-      method: "DELETE",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const res = await fetch(
+      `https://multiplast.web-hub.online/api/chats/${id}`,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
 
     if (!res.ok) {
       throw new Error("Network response was not ok");

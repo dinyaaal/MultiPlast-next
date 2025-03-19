@@ -12,21 +12,21 @@ import { addFavorite, removeFavorite } from "@/store/favoritesSlice";
 import { ProductType } from "@/types/types";
 import { useRouter } from "@/i18n/routing";
 
-export const ProductCard: React.FC<{ product: ProductType }> = ({
-  product,
-}) => {
+export const ProductCard: React.FC<{
+  product: ProductType;
+  liked?: boolean;
+  onUnlike?: (id: number) => void;
+}> = ({ product, liked = false, onUnlike }) => {
   const { data: session, status } = useSession();
   const router = useRouter();
-  const favorites = useSelector((state: RootState) => state.favorites.items);
-  // const isFavorite = favorites.some((item) => item.id === product.id);
-  const dispatch = useDispatch();
+  // const favorites = useSelector((state: RootState) => state.favorites.items);
+  // const dispatch = useDispatch();
   const [isLiked, setIsLiked] = useState<boolean>(false);
 
-  // useEffect(() => {
-  //   setIsLiked(isFavorite);
-  // }, [isFavorite]);
+  useEffect(() => {
+    setIsLiked(liked);
+  }, [liked]);
 
-  // console.log(isFavorite)
   const handleLikeClick = async () => {
     if (status === "unauthenticated") {
       toast.error("Сначала войдите в аккаунт");
@@ -53,7 +53,7 @@ export const ProductCard: React.FC<{ product: ProductType }> = ({
         console.log("Favorite added:", data);
         setIsLiked(true);
         toast.success("Товар добавлен в избранное");
-        dispatch(addFavorite(product.id));
+        // dispatch(addFavorite(product.id));
       } catch (error) {
         console.error("Error adding to favorites:", error);
         toast.error("Error adding to favorites");
@@ -78,10 +78,10 @@ export const ProductCard: React.FC<{ product: ProductType }> = ({
         const data = await response.json();
         // console.log("Favorite added:", data);
         setIsLiked(false);
+        onUnlike?.(product.id);
         toast.success("Товар убран из избранного");
-        dispatch(removeFavorite(product.id));
+        // dispatch(removeFavorite(product.id));
       } catch (error) {
-        // console.error("Error adding to favorites:", error);
         toast.error("Failed to remove from favorites");
       }
       setIsLiked(false);
@@ -94,7 +94,6 @@ export const ProductCard: React.FC<{ product: ProductType }> = ({
       className="adverts__item item-advert"
     >
       <div className="item-advert__image">
-        {/* <Image src="/advert/01.jpg" alt="Image" width={1000} height={1000} /> */}
         <Image
           src={
             product.photos.length > 0 ? product.photos[0].url : "/advert/01.jpg"
@@ -162,28 +161,6 @@ export const ProductCard: React.FC<{ product: ProductType }> = ({
               </svg>
             </button>
           )}
-          {/* <button
-            type="button"
-            className={`item-advert__like like ${isLiked ? "active" : ""}`}
-            onClick={(e) => {
-              e.preventDefault();
-              handleLikeClick();
-            }}
-          >
-            <svg
-              width="24"
-              height="22"
-              viewBox="0 0 24 22"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M10.5964 20.0475L10.5957 20.0469C7.49587 17.2385 4.96312 14.9402 3.19949 12.7845C1.44134 10.6355 0.5 8.68942 0.5 6.59401C0.5 3.16654 3.17912 0.5 6.6 0.5C8.53702 0.5 10.4043 1.40349 11.6207 2.81954L12 3.26105L12.3793 2.81954C13.5957 1.40349 15.463 0.5 17.4 0.5C20.8209 0.5 23.5 3.16654 23.5 6.59401C23.5 8.68942 22.5587 10.6355 20.8005 12.7845C19.0369 14.9402 16.5041 17.2385 13.4043 20.0469L13.4036 20.0475L12 21.3241L10.5964 20.0475Z"
-                fill="white"
-                stroke="#BA360C"
-              />
-            </svg>
-          </button> */}
         </div>
       </div>
     </Link>

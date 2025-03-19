@@ -193,7 +193,15 @@ export default function Advertisement({ categories }: SellProps) {
   }, [product]);
 
   useEffect(() => {
-    reset();
+    reset(
+      {
+        type: "",
+        polymer: "",
+      },
+      {
+        keepErrors: false, // ошибки тоже будут сброшены
+      }
+    );
   }, [searchParams]);
 
   useEffect(() => {

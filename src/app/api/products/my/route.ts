@@ -14,7 +14,7 @@ export async function GET(request: NextRequest) {
   console.log(queryParams.toString());
   try {
     const res = await fetch(
-      `http://13.60.7.255/api/products/my?${queryParams.toString()}`,
+      `https://multiplast.web-hub.online/api/products/my?${queryParams.toString()}`,
       {
         method: "GET",
         headers: {

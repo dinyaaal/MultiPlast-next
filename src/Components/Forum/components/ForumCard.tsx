@@ -47,13 +47,16 @@ export const ForumCard: React.FC<ForumCardProps> = ({
   return (
     <>
       {small ? (
-        <div className="home-forum__item item-forum">
+        <Link
+          href={`/forum/${post.id}`}
+          className="home-forum__item item-forum"
+        >
           <div className="item-forum__body">
             <div className="item-forum__block">
               <h4 className="item-forum__title">{post.title}</h4>
               <p className="item-forum__text">{post.text}</p>
             </div>
-            <Link href={`/forum/${post.id}`} className="item-forum__more">
+            <button className="item-forum__more">
               <span>Детальніше</span>
               <svg
                 width="17"
@@ -67,15 +70,18 @@ export const ForumCard: React.FC<ForumCardProps> = ({
                   fill="#1858B8"
                 />
               </svg>
-            </Link>
+            </button>
           </div>
-        </div>
+        </Link>
       ) : (
         <div className="body-forum__item item-forum">
           {session?.user.id === post.author_id && (
             <button
               onClick={(e) => {
                 toast("Вы уверены что хотите удалить пост?", {
+                  classNames: {
+                    actionButton: "!bg-red-600 !p-4",
+                  },
                   action: {
                     label: "Удалить",
                     onClick: () => handleChatDelete(),
@@ -88,7 +94,7 @@ export const ForumCard: React.FC<ForumCardProps> = ({
             </button>
           )}
 
-          <div className="item-forum__body">
+          <Link href={`/forum/${post.id}`} className="item-forum__body">
             <div className="item-forum__block">
               <h4 className="item-forum__title">{post.title}</h4>
               <p className="item-forum__text">{post.text}</p>
@@ -122,7 +128,7 @@ export const ForumCard: React.FC<ForumCardProps> = ({
                   </span>
                 </div>
               </div>
-              <Link href={`/forum/${post.id}`} className="item-forum__more">
+              <button className="item-forum__more">
                 <span>Читати</span>
                 <svg
                   width="17"
@@ -136,9 +142,9 @@ export const ForumCard: React.FC<ForumCardProps> = ({
                     fill="#1858B8"
                   />
                 </svg>
-              </Link>
+              </button>
             </div>
-          </div>
+          </Link>
         </div>
       )}
     </>

@@ -10,13 +10,16 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const res = await fetch(`http://13.60.7.255/api/chats/block/${id}`, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      // body: JSON.stringify(bodyData),
-    });
+    const res = await fetch(
+      `https://multiplast.web-hub.online/api/chats/block/${id}`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        // body: JSON.stringify(bodyData),
+      }
+    );
 
     if (!res.ok) {
       throw new Error("Network response was not ok");

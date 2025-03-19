@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
   const url = new URL(request.url);
-  const typeOfProduct = url.searchParams.get("type_of_product"); 
+  const typeOfProduct = url.searchParams.get("type_of_product");
   const categoriesParam = url.searchParams.get("categories");
   const perPage = url.searchParams.get("perPage");
   const page = url.searchParams.get("page");
@@ -18,7 +18,7 @@ export async function GET(request: NextRequest) {
 
   try {
     const res = await fetch(
-      `http://13.60.7.255/api/products?${queryParams.toString()}`,
+      `https://multiplast.web-hub.online/api/products?${queryParams.toString()}`,
       {
         method: "GET",
         headers: {
