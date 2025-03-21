@@ -16,7 +16,7 @@ import { useSession } from "next-auth/react";
 type Inputs = z.infer<typeof ForumAddSchema>;
 
 export default function ForumAdd() {
-  const t = useTranslations("ForumLayout");
+  const t = useTranslations("Forum");
   const { data: session, status } = useSession();
 
   const {

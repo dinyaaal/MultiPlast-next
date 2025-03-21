@@ -5,12 +5,15 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import { Navigation, Pagination } from "swiper/modules";
 import Section from "./Section";
+import { useTranslations } from "next-intl";
 
 export default function Sections() {
+  const t = useTranslations("Forum");
+
   return (
     <>
       <div className="forum__sections sections-forum">
-        <p className="sections-forum__text">Виберіть розділ форуму:</p>
+        <p className="sections-forum__text">{t("selectSection")}</p>
         <div className="sections-forum__body">
           <Swiper
             spaceBetween={20}

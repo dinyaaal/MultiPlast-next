@@ -1,6 +1,6 @@
 {
   "Hero": {
-    "text": "спільнота професіоналів полімерного ринку України",
+    "text": "Спільнота професіоналів полімерного ринку України",
     "button": "Про проект"
   },
   "Header": {
@@ -72,15 +72,15 @@
   "Products": {
     "title": "Торгівельний майданчик"
   },
-  "ForumLayout": {
+
+  "Forum": {
     "breadcrumbsPosition": "Форум",
     "forumTitle": "Форум",
     "forumTab": "Форум",
     "addTopicTab": "Додати тему",
-    "searchPlaceholder": "Пошук по форуму"
-  },
-  "Forum": {
-    "selectTopic": "Виберіть тему форуму"
+    "searchPlaceholder": "Пошук по форуму",
+    "selectTopic": "Виберіть тему форуму",
+    "selectSection": "Виберіть розділ форуму:"
   },
   "ForumAdd": {
     "enterTitle": "Введіть заголовок для вашої теми форуму",

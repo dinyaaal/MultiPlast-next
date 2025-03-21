@@ -11,7 +11,7 @@ import { ForumCard } from "@/Components/Forum/components/ForumCard";
 import ForumItems from "./components/ForumItems";
 
 export default function Forum() {
-  const t = useTranslations("ForumLayout");
+  const t = useTranslations("Forum");
 
   const [search, setSearch] = useState<string>("");
 
