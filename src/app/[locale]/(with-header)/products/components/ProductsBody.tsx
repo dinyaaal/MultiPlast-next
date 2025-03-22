@@ -97,7 +97,7 @@ export function ProductsBody({ categories }: ProductsProps) {
           <div className="content-trade__items">
             {products.length > 0 ? (
               products.map((product, index) => (
-                <ProductCard key={index} product={product} />
+                <ProductCard key={product.id} product={product} />
               ))
             ) : (
               <p>Нет товаров</p>

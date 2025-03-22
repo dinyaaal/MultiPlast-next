@@ -16,7 +16,7 @@ import { useSession } from "next-auth/react";
 type Inputs = z.infer<typeof ForumAddSchema>;
 
 export default function ForumAdd() {
-  const t = useTranslations("Forum");
+  const t = useTranslations("ForumAdd");
   const { data: session, status } = useSession();
 
   const {
@@ -149,7 +149,15 @@ export default function ForumAdd() {
                     </div>
                   </div>
                 </div> */}
-
+                <label className="check">
+                  <input
+                    type="checkbox"
+                    name="incognito"
+                    className="real-checkbox"
+                  />
+                  <span className="custom-checkbox"></span>
+                  incognito
+                </label>
                 <div className="add-forum__actions">
                   <button type="submit" className="add-forum__add button">
                     {t("publish")}

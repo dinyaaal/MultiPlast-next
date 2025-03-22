@@ -77,7 +77,7 @@ export default function ForumItems() {
           </div>
         ) : forumPosts.length > 0 ? (
           forumPosts.map((post, index) => (
-            <ForumCard onDelete={handleDeleteForum} key={index} post={post} />
+            <ForumCard onDelete={handleDeleteForum} key={post.id} post={post} />
           ))
         ) : (
           <p>Нету тем</p>

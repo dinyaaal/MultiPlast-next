@@ -993,7 +993,11 @@ export default function Advertisement({ categories }: SellProps) {
                         />
                         {t("upload")}
                       </label>
-                      <button type="button" className="input-body-file__delete">
+                      <button
+                        type="button"
+                        onClick={(e) => setFiles([])}
+                        className="input-body-file__delete"
+                      >
                         {t("delete")}
                       </button>
                     </div>

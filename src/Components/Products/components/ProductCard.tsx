@@ -77,7 +77,7 @@ export const ProductCard: React.FC<{
 
         const data = await response.json();
         // console.log("Favorite added:", data);
-        setIsLiked(false);
+        // setIsLiked(false);
         onUnlike?.(product.id);
         toast.success("Товар убран из избранного");
         // dispatch(removeFavorite(product.id));

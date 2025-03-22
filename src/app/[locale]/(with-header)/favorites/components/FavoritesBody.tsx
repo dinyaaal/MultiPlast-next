@@ -69,7 +69,7 @@ export default function FavoritesBody() {
         <div className="favorite__items">
           {products.map((product, index) => (
             <ProductCard
-              key={index}
+              key={product.id}
               product={product}
               liked={true}
               onUnlike={() => handleUnlike(product.id)}
