@@ -5,7 +5,7 @@ import "../../assets/scss/style.scss";
 import { HeroUIProvider } from "@heroui/system";
 import { getMessages, setRequestLocale } from "next-intl/server";
 import { AuthProviders } from "@/Components/AuthProviders";
-import { NuqsAdapter } from "nuqs/adapters/next/app";
+
 import { ReduxProvider } from "@/store/provider";
 import { Toaster } from "sonner";
 import { NextIntlClientProvider, Locale, hasLocale } from "next-intl";
@@ -41,17 +41,15 @@ export default async function RootLayout({
         <ReduxProvider>
           <AuthProviders>
             <NextIntlClientProvider>
-              <NuqsAdapter>
-                <HeroUIProvider className=" w-full h-full">
-                  {children}
-                  <Toaster
-                    position="top-right"
-                    closeButton
-                    richColors
-                    duration={5000}
-                  />
-                </HeroUIProvider>
-              </NuqsAdapter>
+              <HeroUIProvider className=" w-full h-full">
+                {children}
+                <Toaster
+                  position="top-right"
+                  closeButton
+                  richColors
+                  duration={5000}
+                />
+              </HeroUIProvider>
             </NextIntlClientProvider>
           </AuthProviders>
         </ReduxProvider>

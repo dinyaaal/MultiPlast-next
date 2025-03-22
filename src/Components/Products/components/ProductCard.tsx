@@ -1,14 +1,10 @@
 "use client";
 
-import { RootState } from "@/store/store";
-
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { toast } from "sonner";
-import { addFavorite, removeFavorite } from "@/store/favoritesSlice";
 import { ProductType } from "@/types/types";
 import { useRouter } from "@/i18n/routing";
 
@@ -28,63 +24,90 @@ export const ProductCard: React.FC<{
   }, [liked]);
 
   const handleLikeClick = async () => {
-    if (status === "unauthenticated") {
-      toast.error("Сначала войдите в аккаунт");
-      return;
-    }
-    if (!isLiked) {
-      try {
-        const response = await fetch("/api/favorites/add", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            id: product.id,
-            token: session?.user.access_token,
-          }),
-        });
+    const handleFavoriteInCookies = (action: "add" | "remove") => {
+      const cookies = document.cookie
+        .split("; ")
+        .find((row) => row.startsWith("favorites="));
 
-        if (!response.ok) {
-          throw new Error("Failed to add to favorites");
+      let favorites = cookies
+        ? JSON.parse(decodeURIComponent(cookies.split("=")[1]))
+        : [];
+
+      if (action === "add") {
+        if (!favorites.some((item: any) => item.id === product.id)) {
+          favorites.push(product);
+          document.cookie = `favorites=${encodeURIComponent(
+            JSON.stringify(favorites)
+          )}; path=/; max-age=${365 * 24 * 60 * 60}`;
+          toast.success("Товар добавлен в избранное");
+          setIsLiked(!isLiked);
         }
-
-        const data = await response.json();
-        console.log("Favorite added:", data);
-        setIsLiked(true);
-        toast.success("Товар добавлен в избранное");
-        // dispatch(addFavorite(product.id));
-      } catch (error) {
-        console.error("Error adding to favorites:", error);
-        toast.error("Error adding to favorites");
-      }
-    } else {
-      try {
-        const response = await fetch("/api/favorites/delete", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            id: product.id,
-            token: session?.user.access_token,
-          }),
-        });
-
-        if (!response.ok) {
-          throw new Error("Failed to remove from favorites");
-        }
-
-        const data = await response.json();
-        // console.log("Favorite added:", data);
-        // setIsLiked(false);
-        onUnlike?.(product.id);
+      } else {
+        favorites = favorites.filter((item: any) => item.id !== product.id);
+        document.cookie = `favorites=${encodeURIComponent(
+          JSON.stringify(favorites)
+        )}; path=/; max-age=${365 * 24 * 60 * 60}`;
         toast.success("Товар убран из избранного");
-        // dispatch(removeFavorite(product.id));
-      } catch (error) {
-        toast.error("Failed to remove from favorites");
+        setIsLiked(!isLiked);
       }
-      setIsLiked(false);
+    };
+
+    if (status === "authenticated") {
+      if (!isLiked) {
+        try {
+          const response = await fetch("/api/favorites/add", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              id: product.id,
+              token: session?.user.access_token,
+            }),
+          });
+
+          if (!response.ok) {
+            throw new Error("Failed to add to favorites");
+          }
+
+          const data = await response.json();
+          console.log("Favorite added:", data);
+          setIsLiked(true);
+          toast.success("Товар добавлен в избранное");
+          setIsLiked(!isLiked);
+          // dispatch(addFavorite(product.id));
+        } catch (error) {
+          console.error("Error adding to favorites:", error);
+          toast.error("Error adding to favorites");
+        }
+      } else {
+        try {
+          const response = await fetch("/api/favorites/delete", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              id: product.id,
+              token: session?.user.access_token,
+            }),
+          });
+
+          if (!response.ok) {
+            throw new Error("Failed to remove from favorites");
+          }
+
+          const data = await response.json();
+          setIsLiked(!isLiked);
+          onUnlike?.(product.id);
+          toast.success("Товар убран из избранного");
+        } catch (error) {
+          toast.error("Failed to remove from favorites");
+        }
+        setIsLiked(false);
+      }
+    } else if (status === "unauthenticated") {
+      handleFavoriteInCookies(isLiked ? "remove" : "add");
     }
   };
 
