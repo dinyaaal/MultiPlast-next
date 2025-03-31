@@ -3,7 +3,6 @@ import { UserInfoSchema } from "@/lib/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Select, SelectItem, Spinner } from "@heroui/react";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
@@ -14,6 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "sonner";
 import Image from "next/image";
 import { setUserInfoData, setUserInfoError } from "@/store/userInfoSlice";
+import { useRouter } from "@/i18n/routing";
 
 type Inputs = z.infer<typeof UserInfoSchema>;
 
@@ -131,16 +131,28 @@ export default function Profile() {
       toast.error("Ошибка обновления информации пользователя");
     }
   };
-  const handleDeleteAccount = () => {
-    toast("Вы уверены, что хотите удалить свой аккаунт?", {
-      classNames: {
-        actionButton: "!bg-red-600 !p-4",
-      },
-      action: {
-        label: "Удалить",
-        onClick: () => console.log("Удалить"),
-      },
-    });
+  const handleDeleteAccount = async () => {
+    if (!session?.user.access_token) {
+      return;
+    }
+
+    try {
+      const deleteResponse = await fetch(`/api/users/delete`, {
+        method: "DELETE",
+        headers: {
+          token: session?.user.access_token,
+        },
+      });
+      if (deleteResponse.ok) {
+        toast.success("Удалено!");
+        router.push("./");
+      } else {
+        throw new Error("Ошибка удаление акаунта");
+      }
+    } catch (error) {
+      console.error("Ошибка при отправке данных:", error);
+      toast.error("Ошибка удаления");
+    }
   };
 
   if (status === "unauthenticated") {
@@ -763,7 +775,17 @@ export default function Profile() {
                 </button>
                 <button
                   type="button"
-                  onClick={handleDeleteAccount}
+                  onClick={(e) => {
+                    toast("Вы уверены что хотите удалить пост?", {
+                      classNames: {
+                        actionButton: "!bg-red-600 !p-4",
+                      },
+                      action: {
+                        label: "Удалить",
+                        onClick: () => handleDeleteAccount(),
+                      },
+                    });
+                  }}
                   className="advertisement-contacts__delete button button--secondary"
                 >
                   Видалити акаунт
