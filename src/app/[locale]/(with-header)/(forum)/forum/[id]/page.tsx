@@ -1,11 +1,10 @@
-"use client";
+import notFound from "@/app/[locale]/not-found";
 import ForumComments from "@/Components/Forum/components/ForumComments";
 import ModalContact from "@/Components/Modals/ModalContact";
+// import ModalContact from "@/Components/Modals/ModalContact";
 import { ForumPost } from "@/types/types";
-import { Spinner } from "@heroui/react";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
-
+import React from "react";
 const comments = [
   {
     id: 1,
@@ -32,44 +31,42 @@ const comments = [
   },
 ];
 
-export default function ForumTopic({ params }: { params: { id: string } }) {
-  const [post, setPost] = useState<ForumPost | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  const fetchProduct = async () => {
-    if (!params.id) return;
-    try {
-      const response = await fetch(`/api/forum/post?id=${params.id}`, {
+async function getPost(id: string): Promise<ForumPost | null> {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/forum/post?id=${id}`,
+      {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
         },
-      });
-
-      if (!response.ok) {
-        throw new Error(`Ошибка загрузки: ${response.status}`);
+        cache: "force-cache",
       }
+    );
 
-      const data = await response.json();
-      setPost(data);
-    } catch (err) {
-      setError("Ошибка при загрузке продукта");
-    } finally {
-      setLoading(false);
+    if (!res.ok) return null;
+
+    const data = await res.json();
+
+    if (!data || Object.keys(data).length === 0) {
+      return null;
     }
-  };
 
-  useEffect(() => {
-    fetchProduct();
-  }, []);
+    return data as ForumPost;
+  } catch {
+    return null;
+  }
+}
+
+export default async function ForumTopicPage({
+  params,
+}: {
+  params: { id: string };
+}) {
+  const post = await getPost(params.id);
 
   if (!post) {
-    return (
-      <div className="flex w-full h-full min-h-screen flex-auto items-center justify-center">
-        <Spinner size="lg" />
-      </div>
-    );
+    return notFound();
   }
 
   return (
@@ -145,85 +142,85 @@ export default function ForumTopic({ params }: { params: { id: string } }) {
         </div>
         <div className="forum-topic__block block-forum-topic">
           {/* <div className="forum-topic__topics topics-forum-topic">
-            <h3 className="topics-forum-topic__title title--small">
-              Наступні теми:
-            </h3>
-            <div className="topics-forum-topic__items">
-              <div className="topics-forum-topic__item item-topic">
-                <p className="item-topic__title">
-                  Яке обладнання більш підходить для обробки гранули?
-                </p>
-                <a href="#" className="item-forum__more">
-                  <span>Детальніше</span>
-                  <svg
-                    width="17"
-                    height="18"
-                    viewBox="0 0 17 18"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M0.46967 16.0263C0.176777 16.3192 0.176777 16.7941 0.46967 17.087C0.762563 17.3799 1.23744 17.3799 1.53033 17.087L0.46967 16.0263ZM16.75 1.55664C16.75 1.14243 16.4142 0.806641 16 0.806641L9.25 0.806641C8.83579 0.806641 8.5 1.14243 8.5 1.55664C8.5 1.97085 8.83579 2.30664 9.25 2.30664L15.25 2.30664L15.25 8.30664C15.25 8.72085 15.5858 9.05664 16 9.05664C16.4142 9.05664 16.75 8.72085 16.75 8.30664L16.75 1.55664ZM1.53033 17.087L16.5303 2.08697L15.4697 1.02631L0.46967 16.0263L1.53033 17.087Z"
-                      fill="#1858B8"
-                    ></path>
-                  </svg>
-                </a>
-              </div>
-              <div className="topics-forum-topic__item item-topic">
-                <p className="item-topic__title">
-                  Яке обладнання більш підходить для обробки гранули?
-                </p>
-                <a href="#" className="item-forum__more">
-                  <span>Детальніше</span>
-                  <svg
-                    width="17"
-                    height="18"
-                    viewBox="0 0 17 18"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M0.46967 16.0263C0.176777 16.3192 0.176777 16.7941 0.46967 17.087C0.762563 17.3799 1.23744 17.3799 1.53033 17.087L0.46967 16.0263ZM16.75 1.55664C16.75 1.14243 16.4142 0.806641 16 0.806641L9.25 0.806641C8.83579 0.806641 8.5 1.14243 8.5 1.55664C8.5 1.97085 8.83579 2.30664 9.25 2.30664L15.25 2.30664L15.25 8.30664C15.25 8.72085 15.5858 9.05664 16 9.05664C16.4142 9.05664 16.75 8.72085 16.75 8.30664L16.75 1.55664ZM1.53033 17.087L16.5303 2.08697L15.4697 1.02631L0.46967 16.0263L1.53033 17.087Z"
-                      fill="#1858B8"
-                    ></path>
-                  </svg>
-                </a>
-              </div>
-              <div className="topics-forum-topic__item item-topic">
-                <p className="item-topic__title">
-                  Яке обладнання більш підходить для обробки гранули?
-                </p>
-                <a href="#" className="item-forum__more">
-                  <span>Детальніше</span>
-                  <svg
-                    width="17"
-                    height="18"
-                    viewBox="0 0 17 18"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M0.46967 16.0263C0.176777 16.3192 0.176777 16.7941 0.46967 17.087C0.762563 17.3799 1.23744 17.3799 1.53033 17.087L0.46967 16.0263ZM16.75 1.55664C16.75 1.14243 16.4142 0.806641 16 0.806641L9.25 0.806641C8.83579 0.806641 8.5 1.14243 8.5 1.55664C8.5 1.97085 8.83579 2.30664 9.25 2.30664L15.25 2.30664L15.25 8.30664C15.25 8.72085 15.5858 9.05664 16 9.05664C16.4142 9.05664 16.75 8.72085 16.75 8.30664L16.75 1.55664ZM1.53033 17.087L16.5303 2.08697L15.4697 1.02631L0.46967 16.0263L1.53033 17.087Z"
-                      fill="#1858B8"
-                    ></path>
-                  </svg>
-                </a>
-              </div>
+          <h3 className="topics-forum-topic__title title--small">
+            Наступні теми:
+          </h3>
+          <div className="topics-forum-topic__items">
+            <div className="topics-forum-topic__item item-topic">
+              <p className="item-topic__title">
+                Яке обладнання більш підходить для обробки гранули?
+              </p>
+              <a href="#" className="item-forum__more">
+                <span>Детальніше</span>
+                <svg
+                  width="17"
+                  height="18"
+                  viewBox="0 0 17 18"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M0.46967 16.0263C0.176777 16.3192 0.176777 16.7941 0.46967 17.087C0.762563 17.3799 1.23744 17.3799 1.53033 17.087L0.46967 16.0263ZM16.75 1.55664C16.75 1.14243 16.4142 0.806641 16 0.806641L9.25 0.806641C8.83579 0.806641 8.5 1.14243 8.5 1.55664C8.5 1.97085 8.83579 2.30664 9.25 2.30664L15.25 2.30664L15.25 8.30664C15.25 8.72085 15.5858 9.05664 16 9.05664C16.4142 9.05664 16.75 8.72085 16.75 8.30664L16.75 1.55664ZM1.53033 17.087L16.5303 2.08697L15.4697 1.02631L0.46967 16.0263L1.53033 17.087Z"
+                    fill="#1858B8"
+                  ></path>
+                </svg>
+              </a>
             </div>
-          </div> */}
+            <div className="topics-forum-topic__item item-topic">
+              <p className="item-topic__title">
+                Яке обладнання більш підходить для обробки гранули?
+              </p>
+              <a href="#" className="item-forum__more">
+                <span>Детальніше</span>
+                <svg
+                  width="17"
+                  height="18"
+                  viewBox="0 0 17 18"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M0.46967 16.0263C0.176777 16.3192 0.176777 16.7941 0.46967 17.087C0.762563 17.3799 1.23744 17.3799 1.53033 17.087L0.46967 16.0263ZM16.75 1.55664C16.75 1.14243 16.4142 0.806641 16 0.806641L9.25 0.806641C8.83579 0.806641 8.5 1.14243 8.5 1.55664C8.5 1.97085 8.83579 2.30664 9.25 2.30664L15.25 2.30664L15.25 8.30664C15.25 8.72085 15.5858 9.05664 16 9.05664C16.4142 9.05664 16.75 8.72085 16.75 8.30664L16.75 1.55664ZM1.53033 17.087L16.5303 2.08697L15.4697 1.02631L0.46967 16.0263L1.53033 17.087Z"
+                    fill="#1858B8"
+                  ></path>
+                </svg>
+              </a>
+            </div>
+            <div className="topics-forum-topic__item item-topic">
+              <p className="item-topic__title">
+                Яке обладнання більш підходить для обробки гранули?
+              </p>
+              <a href="#" className="item-forum__more">
+                <span>Детальніше</span>
+                <svg
+                  width="17"
+                  height="18"
+                  viewBox="0 0 17 18"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M0.46967 16.0263C0.176777 16.3192 0.176777 16.7941 0.46967 17.087C0.762563 17.3799 1.23744 17.3799 1.53033 17.087L0.46967 16.0263ZM16.75 1.55664C16.75 1.14243 16.4142 0.806641 16 0.806641L9.25 0.806641C8.83579 0.806641 8.5 1.14243 8.5 1.55664C8.5 1.97085 8.83579 2.30664 9.25 2.30664L15.25 2.30664L15.25 8.30664C15.25 8.72085 15.5858 9.05664 16 9.05664C16.4142 9.05664 16.75 8.72085 16.75 8.30664L16.75 1.55664ZM1.53033 17.087L16.5303 2.08697L15.4697 1.02631L0.46967 16.0263L1.53033 17.087Z"
+                    fill="#1858B8"
+                  ></path>
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div> */}
           {/* <div className="forum-topic__words words-forum-topic">
-            <h3 className="words-forum-topic__title title--small">
-              Ключові слова:
-            </h3>
-            <div className="words-forum-topic__items">
-              <div className="words-forum-topic__item">властивості</div>
-              <div className="words-forum-topic__item">сировина</div>
-              <div className="words-forum-topic__item">властивості</div>
-              <div className="words-forum-topic__item">сировина</div>
-              <div className="words-forum-topic__item">властивості</div>
-              <div className="words-forum-topic__item">сировина</div>
-            </div>
-          </div> */}
+          <h3 className="words-forum-topic__title title--small">
+            Ключові слова:
+          </h3>
+          <div className="words-forum-topic__items">
+            <div className="words-forum-topic__item">властивості</div>
+            <div className="words-forum-topic__item">сировина</div>
+            <div className="words-forum-topic__item">властивості</div>
+            <div className="words-forum-topic__item">сировина</div>
+            <div className="words-forum-topic__item">властивості</div>
+            <div className="words-forum-topic__item">сировина</div>
+          </div>
+        </div> */}
           <div className="add-forum__info info-contact">
             <div className="info-contact__body">
               <p className="info-contact__text">
