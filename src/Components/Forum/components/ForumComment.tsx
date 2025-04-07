@@ -1,23 +1,24 @@
 "use client";
 
+import { CommentType } from "@/types/types";
 import Image from "next/image";
 import React, { useState } from "react";
 
-interface Comment {
-  id: number;
-  author: string;
-  text: string;
-  date: string;
-  likes: number;
-  replies?: Comment[];
-}
-
 interface ForumCommentProps {
-  comment: Comment;
+  comment: CommentType;
 }
 
 export default function ForumComment({ comment }: ForumCommentProps) {
   const [isAnswersOpen, setIsAnswersOpen] = useState<boolean>(false);
+
+  const formattedDate = new Date(comment.created_at).toLocaleDateString(
+    "uk-UA",
+    {
+      day: "2-digit",
+      month: "2-digit",
+      year: "2-digit",
+    }
+  );
 
   const toggleAnswers = () => {
     setIsAnswersOpen(!isAnswersOpen);
@@ -27,7 +28,7 @@ export default function ForumComment({ comment }: ForumCommentProps) {
     <div className="forum-comments__comment comment comment-main">
       <div className="comment__user user-chat">
         <div className="user-chat__image item-block-chat__image"></div>
-        <div className="user-chat__name">{comment.author}</div>
+        <div className="user-chat__name">{`${comment.author.first_name} ${comment.author.last_name}`}</div>
       </div>
       <div className="comment__block">
         <div className="comment__body body-comment">
@@ -96,22 +97,20 @@ export default function ForumComment({ comment }: ForumCommentProps) {
                       </svg>
                     </button>
                   </div>
-                  <span className="info-item-forum__value">
-                    {comment.likes}
-                  </span>
+                  <span className="info-item-forum__value">{comment.like}</span>
                 </div>
               </div>
-              <span className="bottom-body-comment__date">{comment.date}</span>
+              <span className="bottom-body-comment__date">{formattedDate}</span>
             </div>
           </div>
         </div>
-        {isAnswersOpen && comment.replies && (
+        {/* {isAnswersOpen && comment.replies && (
           <div className="comment__answers answers-comment">
             {comment.replies.map((reply) => (
               <ForumComment key={reply.id} comment={reply} />
             ))}
           </div>
-        )}
+        )} */}
       </div>
     </div>
   );

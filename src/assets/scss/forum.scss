@@ -241,9 +241,9 @@
     line-height: 21px;
     display: -webkit-box;
     -webkit-line-clamp: 3;
-      -webkit-box-orient: vertical;
-      line-clamp: 3;
-      box-orient: vertical;
+    -webkit-box-orient: vertical;
+    line-clamp: 3;
+    box-orient: vertical;
   }
   // .item-forum__info
   &__info {
@@ -442,6 +442,7 @@
   display: flex;
   flex-direction: column;
   gap: toRem(30);
+  width: 100%;
   // .body-forum-topic__top
   &__top {
   }

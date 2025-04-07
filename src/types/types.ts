@@ -105,6 +105,7 @@ export interface Author {
   id: number;
   first_name: string | null;
   last_name: string | null;
+  avatar?: string;
 }
 
 export interface Page {
@@ -180,4 +181,19 @@ export interface ChatItemData {
   updated_at: string;
   from_user: ChatUser;
   to_user: ChatUser;
+}
+
+export interface CommentType {
+  id: number;
+  forum_id: number;
+  user_id: number;
+  text: string;
+  like: number;
+  created_at: string;
+  updated_at: string;
+  comments_count: number;
+  is_liked: boolean;
+  author: Author;
+  photos: string[];
+  replies?: Comment[];
 }
