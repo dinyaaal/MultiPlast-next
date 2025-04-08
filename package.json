@@ -15,6 +15,7 @@
     "@heroui/system": "2.4.7",
     "@heroui/theme": "2.4.6",
     "@hookform/resolvers": "^3.9.0",
+    "@mdxeditor/editor": "^3.29.2",
     "@reduxjs/toolkit": "^2.5.0",
     "framer-motion": "^11.5.4",
     "lightgallery": "^2.8.3",

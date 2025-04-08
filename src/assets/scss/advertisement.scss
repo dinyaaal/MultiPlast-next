@@ -241,25 +241,25 @@
 }
 
 .input-body-file {
-    max-width: 100%;
-      display: flex;
+  max-width: 100%;
+  display: flex;
   flex-direction: column;
   gap: toRem(20);
   // .input-body-file__input
-  &__input-wrapper{
+  &__input-wrapper {
     max-width: 100%;
     position: relative;
     display: grid;
   }
-  .swiper-button{
+  .swiper-button {
     display: block;
   }
-  .swiper-button-prev{
+  .swiper-button-prev {
     left: 20px;
   }
-    .swiper-button-next {
-      right: 20px;
-    }
+  .swiper-button-next {
+    right: 20px;
+  }
   &__input {
     // padding: 0;
     display: grid;
@@ -377,7 +377,6 @@
   }
   // .description__input
   &__input {
-    height: toRem(115);
   }
 }
 

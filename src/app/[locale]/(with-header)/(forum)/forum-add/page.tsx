@@ -1,7 +1,7 @@
 "use client";
 
 import ModalContact from "@/Components/Modals/ModalContact";
-import React from "react";
+import React, { useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import Breadcrumbs from "@/Components/Breadcrumbs";
 import SelectTabs from "@/Components/Select/SelectTabs";
@@ -12,12 +12,16 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { toast } from "sonner";
 import { useSession } from "next-auth/react";
+import { MDXEditorMethods } from "@mdxeditor/editor";
+import { ForwardRefEditor } from "@/Components/ForwardRefEditor";
 
 type Inputs = z.infer<typeof ForumAddSchema>;
 
 export default function ForumAdd() {
   const t = useTranslations("ForumAdd");
   const { data: session, status } = useSession();
+  const editorRef = useRef<MDXEditorMethods>(null);
+  const [content, setContent] = useState<string>("");
 
   const {
     register,
@@ -121,34 +125,25 @@ export default function ForumAdd() {
                 </div>
 
                 <div className="input-block editor">
-                  <textarea
+                  <ForwardRefEditor
+                    markdown={content}
+                    onChange={setContent}
+                    ref={editorRef}
+                    placeholder={t("descriptionPlaceholder")}
+                  />
+                  <button type="button" onClick={(e) => console.log(content)}>
+                    otpravit
+                  </button>
+                  {/* <textarea
                     id="editor"
                     placeholder={t("descriptionPlaceholder")}
                     className={`description__input input ${
                       errors.text ? "input--error" : ""
                     }`}
                     {...register("text")}
-                  ></textarea>
+                  ></textarea> */}
                 </div>
 
-                {/* <div className="input-block input-block-title">
-                  <p>{t("enterKeywords")}</p>
-                  <div className="input-body input-body--title">
-                    <input
-                      maxLength={150}
-                      autoComplete="off"
-                      type="text"
-                      placeholder={t("keywordsPlaceholder")}
-                      className={` input ${
-                        errors.keywords ? "input--error" : ""
-                      }`}
-                      {...register("keywords")}
-                    />
-                    <div className="input-body__item">
-                      {t("charLimit", { count: 150 })}
-                    </div>
-                  </div>
-                </div> */}
                 <label className="check">
                   <input
                     type="checkbox"

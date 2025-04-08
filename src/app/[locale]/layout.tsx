@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Rubik } from "next/font/google";
-import "./globals.css";
+// import "./globals.css";
 import "../../assets/scss/style.scss";
 import { HeroUIProvider } from "@heroui/system";
 import { getMessages, setRequestLocale } from "next-intl/server";
@@ -11,6 +11,7 @@ import { Toaster } from "sonner";
 import { NextIntlClientProvider, Locale, hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
+import "@mdxeditor/editor/style.css";
 
 const rubikFont = Rubik({
   subsets: ["latin"],
