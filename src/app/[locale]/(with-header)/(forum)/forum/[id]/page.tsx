@@ -1,11 +1,11 @@
 import notFound from "@/app/[locale]/not-found";
-import ForumComments from "@/Components/Forum/components/ForumComments";
 import ModalContact from "@/Components/Modals/ModalContact";
 import { ForumPost } from "@/types/types";
 import Image from "next/image";
 import React from "react";
 import ForumCommentInput from "../components/ForumCommentInput";
 import Gallery from "@/Components/Gallery";
+import ForumComments from "../components/ForumComments";
 const comments = [
   {
     id: 1,
@@ -120,10 +120,11 @@ export default async function ForumTopicPage({
           <div className="body-forum-topic__description">
             <p>{post.text}</p>
           </div>
-          <div className="forum-comments">
+          <ForumComments postId={post.id} />
+          {/* <div className="forum-comments">
             <ForumCommentInput postId={post.id} />
             <ForumComments postId={post.id} />
-          </div>
+          </div> */}
         </div>
         <div className="forum-topic__block block-forum-topic">
           <div className="add-forum__info info-contact">

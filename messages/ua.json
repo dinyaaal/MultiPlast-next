@@ -80,9 +80,7 @@
     "addTopicTab": "Додати тему",
     "searchPlaceholder": "Пошук по форуму",
     "selectTopic": "Виберіть тему форуму",
-    "selectSection": "Виберіть розділ форуму:"
-  },
-  "ForumAdd": {
+    "selectSection": "Виберіть розділ форуму:",
     "enterTitle": "Введіть заголовок для вашої теми форуму",
     "titlePlaceholder": "Заголовок",
     "descriptionPlaceholder": "Написати...",
@@ -93,6 +91,7 @@
     "delete": "Видалити тему",
     "contactAdmin": "За всіма питаннями і пропозиціями, які у вас виникли, зв'яжіться з адміністрацією форуму"
   },
+  "ForumAdd": {},
   "Modals": {
     "support": "Написати нам"
   },

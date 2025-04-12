@@ -31,7 +31,7 @@ export default function Tabs() {
 
           <div className="tabs-advertisement__items">
             <AdvertismentTab
-              href="/add-advertisement"
+              href="/dashboard/add-advertisement"
               text="Подати оголошення"
               // params="sell"
             />
@@ -46,8 +46,14 @@ export default function Tabs() {
           <div className="tabs-advertisement__title">Мої оголошення</div>
 
           <div className="tabs-advertisement__items">
-            <AdvertismentTab href="/my-sell" text="Мої оголошення про продаж" />
-            <AdvertismentTab href="/my-buy" text="Мої оголошення про купівлю" />
+            <AdvertismentTab
+              href="/dashboard/my-sell"
+              text="Мої оголошення про продаж"
+            />
+            <AdvertismentTab
+              href="/dashboard/my-buy"
+              text="Мої оголошення про купівлю"
+            />
           </div>
         </SwiperSlide>
         <SwiperSlide>
@@ -55,12 +61,12 @@ export default function Tabs() {
 
           <div className="tabs-advertisement__items">
             <AdvertismentTab
-              href="/profile"
+              href="/dashboard/profile"
               text="Редагувати контактні данні"
               className="tabs-advertisement__item--mobile"
             />
             <AdvertismentTab
-              href="/security"
+              href="/dashboard/security"
               text="Конфіденційність"
               className="tabs-advertisement__item--mobile"
             />

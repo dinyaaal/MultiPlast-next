@@ -18,7 +18,7 @@ import { ForwardRefEditor } from "@/Components/ForwardRefEditor";
 type Inputs = z.infer<typeof ForumAddSchema>;
 
 export default function ForumAdd() {
-  const t = useTranslations("ForumAdd");
+  const t = useTranslations("Forum");
   const { data: session, status } = useSession();
   const editorRef = useRef<MDXEditorMethods>(null);
   const [content, setContent] = useState<string>("");
@@ -45,21 +45,23 @@ export default function ForumAdd() {
     const formData = new FormData();
 
     formData.append("title", data.title);
-    formData.append("text", data.text);
+    if (content) {
+      formData.append("text", content);
+    }
     // if (data.keywords) {
     //   formData.append("keywords", data.keywords);
     // }
 
     try {
-      const editResponse = await fetch(`/api/forum/add`, {
+      const forumAddResponse = await fetch(`/api/forum/add`, {
         method: "POST",
         headers: {
           token: token,
         },
         body: formData,
       });
-      if (editResponse.ok) {
-        const editResult = await editResponse.json();
+      if (forumAddResponse.ok) {
+        const editResult = await forumAddResponse.json();
         toast.success("Тема добавлена");
       } else {
         throw new Error("Ошибка обновления информации пользователя");

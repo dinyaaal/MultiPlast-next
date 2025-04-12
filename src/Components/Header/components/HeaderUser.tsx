@@ -18,7 +18,7 @@ export default function HeaderUser() {
       {status === "authenticated" ? (
         <div className="user__body body-user">
           <Link
-            href="/profile"
+            href="/dashboard/profile"
             className="body-user__account account-body-user"
           >
             <div className="account-body-user__icon-body">

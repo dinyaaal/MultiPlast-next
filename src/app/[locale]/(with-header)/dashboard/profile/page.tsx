@@ -155,9 +155,9 @@ export default function Profile() {
     }
   };
 
-  if (status === "unauthenticated") {
-    router.push("/");
-  }
+  // if (status === "unauthenticated") {
+  //   router.push("/");
+  // }
 
   if (!userInformation) {
     return (

@@ -1,5 +1,5 @@
 import Image from "next/image";
-import React, { use } from "react";
+import React from "react";
 import HeaderMenu from "./HeaderMenu";
 import Notifications from "./Notifications";
 import BurgerMenu from "./BurgerMenu";
@@ -11,6 +11,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 // import { useTranslations } from "next-intl";
 import HeaderUser from "./HeaderUser";
 import { Category } from "@/types/types";
+import { getSession } from "next-auth/react";
 
 // interface SellProps {
 //   categories: Category[];
@@ -79,7 +80,6 @@ export default async function Header() {
       <div className="header__bottom bottom-header">
         <div className="bottom-header__container">
           <HeaderMenu />
-
           <ul className="bottom-header__list menu__list">
             <li className="menu__item">
               <Link href="/products" className="menu__link">
@@ -87,7 +87,7 @@ export default async function Header() {
               </Link>
             </li>
             <li className="menu__item">
-              <Link href="/add-advertisement" className="menu__link">
+              <Link href="/dashboard/add-advertisement" className="menu__link">
                 {t("postAd")}
                 {categories.length > 0 && (
                   <div className="main-menu__arrow menu__arrow">
@@ -104,7 +104,7 @@ export default async function Header() {
                 <ul className="sub-menu__list">
                   <li>
                     <Link
-                      href="/add-advertisement?type=sell"
+                      href="/dashboard/add-advertisement?type=sell"
                       className="sub-menu__link menu__link"
                     >
                       {t("sell")}
@@ -127,7 +127,7 @@ export default async function Header() {
                           ).length > 0 ? (
                             <>
                               <Link
-                                href={`/add-advertisement?type=sell&category=${category.id}`}
+                                href={`/dashboard/add-advertisement?type=sell&category=${category.id}`}
                                 className="sub-menu__link menu__link"
                               >
                                 {category.name}
@@ -149,7 +149,7 @@ export default async function Header() {
                                   .map((subCategory) => (
                                     <li key={subCategory.id}>
                                       <Link
-                                        href={`/add-advertisement?type=sell&category=${subCategory.parent_id}&subCategory=${subCategory.id}`}
+                                        href={`/dashboard/add-advertisement?type=sell&category=${subCategory.parent_id}&subCategory=${subCategory.id}`}
                                         className="sub-menu__link"
                                       >
                                         {subCategory.name}
@@ -160,7 +160,7 @@ export default async function Header() {
                             </>
                           ) : (
                             <Link
-                              href={`/add-advertisement?type=sell&category=${category.id}`}
+                              href={`/dashboard/add-advertisement?type=sell&category=${category.id}`}
                               className="sub-menu__link"
                             >
                               {category.name}
@@ -172,7 +172,7 @@ export default async function Header() {
                   </li>
                   <li>
                     <Link
-                      href="/add-advertisement?type=buy"
+                      href="/dashboard/add-advertisement?type=buy"
                       className="sub-menu__link menu__link"
                     >
                       {t("buy")}
@@ -195,7 +195,7 @@ export default async function Header() {
                           ).length > 0 ? (
                             <>
                               <Link
-                                href={`/add-advertisement?type=buy&category=${category.id}`}
+                                href={`/dashboard/add-advertisement?type=buy&category=${category.id}`}
                                 className="sub-menu__link menu__link"
                               >
                                 {category.name}
@@ -217,7 +217,7 @@ export default async function Header() {
                                   .map((subCategory) => (
                                     <li key={subCategory.id}>
                                       <Link
-                                        href={`/add-advertisement?type=buy&category=${subCategory.parent_id}&subCategory=${subCategory.id}`}
+                                        href={`/dashboard/add-advertisement?type=buy&category=${subCategory.parent_id}&subCategory=${subCategory.id}`}
                                         className="sub-menu__link"
                                       >
                                         {subCategory.name}
@@ -228,7 +228,7 @@ export default async function Header() {
                             </>
                           ) : (
                             <Link
-                              href={`/add-advertisement?type=buy&category=${category.id}`}
+                              href={`/dashboard/add-advertisement?type=buy&category=${category.id}`}
                               className="sub-menu__link"
                             >
                               {category.name}

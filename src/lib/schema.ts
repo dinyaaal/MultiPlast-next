@@ -34,7 +34,7 @@ export const LoginFormSchema = z.object({
 
 export const ForumAddSchema = z.object({
   title: z.string().min(1, "Введите заголовок "),
-  text: z.string().min(1, "Введите описание "),
+  // text: z.string().min(1, "Введите описание "),
   // keywords: z
   // .string()
 });

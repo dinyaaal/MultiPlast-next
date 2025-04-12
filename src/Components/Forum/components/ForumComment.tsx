@@ -6,9 +6,13 @@ import React, { useState } from "react";
 
 interface ForumCommentProps {
   comment: CommentType;
+  onReply: (name: string, text: string) => void;
 }
 
-export default function ForumComment({ comment }: ForumCommentProps) {
+export const ForumComment: React.FC<ForumCommentProps> = ({
+  comment,
+  onReply,
+}) => {
   const [isAnswersOpen, setIsAnswersOpen] = useState<boolean>(false);
 
   const formattedDate = new Date(comment.created_at).toLocaleDateString(
@@ -22,6 +26,13 @@ export default function ForumComment({ comment }: ForumCommentProps) {
 
   const toggleAnswers = () => {
     setIsAnswersOpen(!isAnswersOpen);
+  };
+
+  const handleReplyClick = () => {
+    onReply(
+      comment.author.first_name + " " + comment.author.last_name,
+      comment.text
+    );
   };
 
   return (
@@ -38,8 +49,13 @@ export default function ForumComment({ comment }: ForumCommentProps) {
           <div className="body-comment__bottom bottom-body-comment">
             <div className="bottom-body-comment__actions">
               <div className="bottom-body-comment__answer-button answer-button">
-                <span className="answer-button__text">Відповісти</span>
-                <div
+                <button
+                  onClick={handleReplyClick}
+                  className="answer-button__text"
+                >
+                  Відповісти
+                </button>
+                <button
                   onClick={toggleAnswers}
                   className={`answer-button__arrow ${
                     isAnswersOpen ? "active" : ""
@@ -57,7 +73,7 @@ export default function ForumComment({ comment }: ForumCommentProps) {
                       fill="#0E274D"
                     />
                   </svg>
-                </div>
+                </button>
               </div>
               <a href="#" className="bottom-body-comment__write">
                 Написати особисте повідомлення
@@ -114,4 +130,4 @@ export default function ForumComment({ comment }: ForumCommentProps) {
       </div>
     </div>
   );
-}
+};
