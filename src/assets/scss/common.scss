@@ -576,7 +576,14 @@
   outline: 1px solid #b0bfd7;
   background-color: #f8fbff;
 }
+.chat-input__input-wrapper {
+  display: flex;
+  gap: 10px;
+  align-items: start;
+  justify-content: space-between;
+}
 .chat-input_input {
+  width: 100%;
   background-color: transparent;
   outline: none;
   display: block;

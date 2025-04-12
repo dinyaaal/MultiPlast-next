@@ -6,7 +6,7 @@ import React, { useState } from "react";
 
 interface ForumCommentProps {
   comment: CommentType;
-  onReply: (name: string, text: string) => void;
+  onReply: (replyData: { id: number; name: string; text: string }) => void;
 }
 
 export const ForumComment: React.FC<ForumCommentProps> = ({
@@ -29,10 +29,12 @@ export const ForumComment: React.FC<ForumCommentProps> = ({
   };
 
   const handleReplyClick = () => {
-    onReply(
-      comment.author.first_name + " " + comment.author.last_name,
-      comment.text
-    );
+    const replyData = {
+      id: comment.id,
+      name: `${comment.author.first_name} ${comment.author.last_name}`,
+      text: comment.text,
+    };
+    onReply(replyData);
   };
 
   return (
