@@ -197,3 +197,9 @@ export interface CommentType {
   photos: string[];
   replies?: Comment[];
 }
+
+export interface MessageType {
+  message_content: string;
+  from_user: User;
+  chat_id: number;
+}
