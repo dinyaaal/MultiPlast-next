@@ -143,7 +143,7 @@ export const ProductCard: React.FC<{
             <button
               onClick={(e) => {
                 e.preventDefault();
-                router.push(`/add-advertisement?edit=${product.id}`);
+                router.push(`/dashboard/add-advertisement?edit=${product.id}`);
               }}
               className={` edit `}
             >

@@ -77,7 +77,7 @@ export default function Product({ params }: { params: { id: string } }) {
                 <div className="top-product__actions">
                   {session?.user.id === product.author.id ? (
                     <Link
-                      href={`/add-advertisement?edit=${product.id}`}
+                      href={`/dashboard/add-advertisement?edit=${product.id}`}
                       className={` edit `}
                     >
                       <svg
