@@ -30,7 +30,14 @@ export default function UserProvider({
 
     try {
       const responseUserInfo = await fetch(
-        `/api/users/get?token=${session?.user.access_token}&id=${session?.user.id}`
+        `/api/users/get?id=${session?.user.id}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${session?.user.access_token}`,
+          },
+        }
       );
 
       if (!responseUserInfo.ok) {

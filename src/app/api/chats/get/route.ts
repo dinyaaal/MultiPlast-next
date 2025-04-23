@@ -1,9 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
-  const url = new URL(request.url);
-  const token = url.searchParams.get("token");
-
+  // Получаем заголовок Authorization
+  const authHeader = request.headers.get("authorization");
+  const token = authHeader?.startsWith("Bearer ")
+    ? authHeader.split(" ")[1]
+    : null;
   try {
     const res = await fetch(`https://multiplast.web-hub.online/api/chats`, {
       method: "GET",

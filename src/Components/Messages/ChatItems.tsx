@@ -15,9 +15,13 @@ export default function ChatItems() {
   async function fetchChats() {
     if (!session?.user.access_token) return;
     try {
-      const res = await fetch(
-        `/api/chats/get?token=${session?.user.access_token}`
-      );
+      const res = await fetch(`/api/chats/get`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${session?.user.access_token}`,
+        },
+      });
       if (!res.ok) {
         throw new Error("Ошибка загрузки чатов");
       }

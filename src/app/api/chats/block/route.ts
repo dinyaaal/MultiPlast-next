@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
-  // const bodyData = await request.json();
   const token = request.headers.get("token");
   const id = request.headers.get("id");
 
