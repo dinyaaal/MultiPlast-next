@@ -41,7 +41,7 @@ async function getPost(id: string): Promise<ForumPost | null> {
         headers: {
           "Content-Type": "application/json",
         },
-        cache: "force-cache",
+        // cache: "force-cache",
       }
     );
 
