@@ -414,7 +414,7 @@ export default function Advertisement({ categories }: SellProps) {
         className="advertisement__form"
         onSubmit={handleSubmit(processForm)}
       >
-        <div className="advertisement__wrapper wrapper-advertisement">
+        <div className=" wrapper-advertisement">
           <h2 className="wrapper-advertisement__title title title--small">
             {t("fill-ad-title")}
           </h2>
