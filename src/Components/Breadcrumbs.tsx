@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
 
@@ -24,8 +25,11 @@ export default function Breadcrumbs({ position }: BreadcrumbsProps) {
             />
           </button>
           <div className="breadcrumbs__content">
+            <Link href="/" className="breadcrumbs__prev">
+              Головна
+            </Link>
             <span className="breadcrumbs__current">
-              Головна {">"} {position}
+              {position}
             </span>
           </div>
         </div>

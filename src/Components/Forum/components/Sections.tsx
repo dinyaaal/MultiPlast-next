@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import { Navigation, Pagination } from "swiper/modules";
@@ -9,6 +9,25 @@ import { useTranslations } from "next-intl";
 
 export default function Sections() {
   const t = useTranslations("Forum");
+
+  // -=-=-=-=-=-=-=-=-=- Список разделов форума + активный раздел -=-=-=-=-=-=-=-=-=-
+
+  const [forumSectionsList, setForumSectionsList] = useState([
+    {
+      id: 1,
+      title: "Полікарбонат",
+      text: "Обговорюємо полікарбонат та його види",
+    },
+    {
+      id: 2,
+      title: "Полікарбонат 2",
+      text: "Обговорюємо полікарбонат та його види 2",
+    },
+  ]);
+
+  const [activeSection, setActiveSection] = useState(forumSectionsList[0].id);
+
+  // -=-=-=-=-=-=-=-=-=- Список разделов форума + активный раздел -=-=-=-=-=-=-=-=-=-
 
   return (
     <>
@@ -26,42 +45,17 @@ export default function Sections() {
             }}
             pagination={{ clickable: true }}
           >
-            <SwiperSlide>
-              <Section
-                title="Полікарбонат"
-                text="Обговорюємо полікарбонат та його види"
-              />
-            </SwiperSlide>
-            <SwiperSlide>
-              <Section
-                title="Полікарбонат"
-                text="Обговорюємо полікарбонат та його види"
-              />
-            </SwiperSlide>
-            <SwiperSlide>
-              <Section
-                title="Полікарбонат"
-                text="Обговорюємо полікарбонат та його види"
-              />
-            </SwiperSlide>
-            <SwiperSlide>
-              <Section
-                title="Полікарбонат"
-                text="Обговорюємо полікарбонат та його види"
-              />
-            </SwiperSlide>
-            <SwiperSlide>
-              <Section
-                title="Полікарбонат"
-                text="Обговорюємо полікарбонат та його види"
-              />
-            </SwiperSlide>
-            <SwiperSlide>
-              <Section
-                title="Полікарбонат"
-                text="Обговорюємо полікарбонат та його види"
-              />
-            </SwiperSlide>
+            {!!forumSectionsList.length &&
+              forumSectionsList.map((item) => (
+                <SwiperSlide key={item.id}>
+                  <Section
+                    title={item.title}
+                    text={item.text}
+                    isActive={item.id === activeSection}
+                    onClick={(_) => setActiveSection(item.id)}
+                  />
+                </SwiperSlide>
+              ))}
           </Swiper>
           <button
             type="button"

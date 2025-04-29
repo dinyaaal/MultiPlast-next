@@ -1,33 +1,44 @@
 "use client";
-import {RadioGroup, Radio} from "@heroui/radio";
+import { RadioGroup, Radio } from "@heroui/radio";
 import Spoiler from "@/Components/Spoiler";
 import { Category } from "@/types/types";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
-
+import { useRouter, useSearchParams } from "next/navigation";
 
 interface FiltersProps {
   categories: Category[];
-  onSelectionConfirm: (category: string | null, subCategories: string[], options: string[]) => void;
+  onSelectionConfirm: (
+    category: string | null,
+    subCategories: string[],
+    options: string[]
+  ) => void;
 }
 
-export const Filters: React.FC<FiltersProps> = ({ categories, onSelectionConfirm }) => {
+export const Filters: React.FC<FiltersProps> = ({
+  categories,
+  onSelectionConfirm,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [selectedSubCategories, setSelectedSubCategories] = useState<string[]>([]);
+  const [selectedSubCategories, setSelectedSubCategories] = useState<string[]>(
+    []
+  );
   const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
 
   const handleCheckboxChange = (subCategoryId: string) => {
     setSelectedSubCategories((prev) =>
       prev.includes(subCategoryId)
-        ? prev.filter((id) => id !== subCategoryId) 
-        : [...prev, subCategoryId] 
+        ? prev.filter((id) => id !== subCategoryId)
+        : [...prev, subCategoryId]
     );
   };
 
   const handleOptionChange = (value: string) => {
     setSelectedOptions((prev) =>
-      prev.includes(value) ? prev.filter((id) => id !== value) : [...prev, value]
+      prev.includes(value)
+        ? prev.filter((id) => id !== value)
+        : [...prev, value]
     );
   };
 
@@ -35,21 +46,88 @@ export const Filters: React.FC<FiltersProps> = ({ categories, onSelectionConfirm
     setSelectedSubCategories([]);
   }, [selectedCategory]);
 
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const updateSearchParams = (params: Record<string, string>) => {
+    const urlParams = new URLSearchParams(searchParams.toString());
+
+    // Добавление нескольких параметров
+    Object.keys(params).forEach((key) => {
+      const value = params[key];
+      if (value) {
+        urlParams.set(key, value); // Установить параметр
+      } else {
+        urlParams.delete(key); // Удалить параметр, если значение пустое
+      }
+    });
+
+    router.replace(`?${urlParams.toString()}`, { scroll: false });
+  };
+
   const handleConfirm = () => {
     console.log("Выбранная категория:", selectedCategory);
     console.log("Выбранные подкатегории:", selectedSubCategories);
     console.log("Выбранные опции:", selectedOptions);
-    onSelectionConfirm(selectedCategory, selectedSubCategories, selectedOptions);
+    onSelectionConfirm(
+      selectedCategory,
+      selectedSubCategories,
+      selectedOptions
+    );
+
+    updateUrl();
   };
 
   const handleReset = () => {
-    setSelectedCategory(null)
-    setSelectedSubCategories([])
-    setSelectedOptions([])
+    setSelectedCategory(null);
+    setSelectedSubCategories([]);
+    setSelectedOptions([]);
     onSelectionConfirm(null, [], []);
+
+    updateUrl(true);
   };
 
+  // -=-=-=-=-=-=-=-=- Добавление фильтров в строку поиска -=-=-=-=-=-=-=-=-
+
+  function updateUrl(isClear?: boolean) {
+    if (isClear) {
+      // Очистить все параметры в URL
+      const params = new URLSearchParams();
+      router.replace(`?${params.toString()}`, { scroll: false });
+      return;
+    }
+
+    updateSearchParams({
+      cat: selectedCategory || "",
+      subcat: selectedSubCategories.join(","),
+      opt: selectedOptions.join(","),
+    });
+  }
   
+  // -=-=-=-=-=-=-=-=- Добавление фильтров в строку поиска -=-=-=-=-=-=-=-=-
+
+
+
+
+  // -=-=-=-=-=-=-=-=- Фильтрация после перезагрузки страницы с выбранными фильтрами -=-=-=-=-=-=-=-=-
+
+  useEffect(() => {
+    const option = searchParams.get('opt')
+    const category = searchParams.get('cat')
+    const subcategory = searchParams.get('subcat')
+    
+    setSelectedCategory(category);
+    setSelectedOptions(option?.split(',') ?? []);
+
+    if(category){
+      setTimeout(() => {
+        setSelectedSubCategories(subcategory?.split(',') ?? []);
+      }, 100)
+    }
+    
+  }, [])
+
+  // -=-=-=-=-=-=-=-=- Фильтрация после перезагрузки страницы с выбранными фильтрами -=-=-=-=-=-=-=-=-
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -111,75 +189,91 @@ export const Filters: React.FC<FiltersProps> = ({ categories, onSelectionConfirm
             <span>Фільтри</span>
           </button>
           <div className="body-filters-trade__items spollers">
-            <Spoiler className="item-filter" title="Тип оголошення">
-            <label className="check">
-              <input
-                type="checkbox"
-                className="real-checkbox"
-                value="sell"
-                checked={selectedOptions.includes("sell")}
-                onChange={() => handleOptionChange("sell")}
-              />
-              <span className="custom-checkbox"></span>
-              Продажа
-            </label>
+            <Spoiler isOpen className="item-filter" title="Тип оголошення">
+              <label className="check">
+                <input
+                  type="checkbox"
+                  className="real-checkbox"
+                  value="sell"
+                  checked={selectedOptions.includes("sell")}
+                  onChange={() => handleOptionChange("sell")}
+                />
+                <span className="custom-checkbox"></span>
+                Продажа
+              </label>
 
-            <label className="check">
-              <input
-                type="checkbox"
-                className="real-checkbox"
-                value="buy"
-                checked={selectedOptions.includes("buy")}
-                onChange={() => handleOptionChange("buy")}
-              />
-              <span className="custom-checkbox"></span>
-              Покупка
-            </label>
+              <label className="check">
+                <input
+                  type="checkbox"
+                  className="real-checkbox"
+                  value="buy"
+                  checked={selectedOptions.includes("buy")}
+                  onChange={() => handleOptionChange("buy")}
+                />
+                <span className="custom-checkbox"></span>
+                Покупка
+              </label>
             </Spoiler>
 
-            <Spoiler className="item-filter" title={'Категория'}>
-              <RadioGroup value={selectedCategory} onValueChange={setSelectedCategory}>
-    
-                    {categories.map((category) => (
-                      
-                      <Radio classNames={{label: 'text-xl',}} value={category.id.toString()}>{category.name}</Radio>
-                      ))}
+            <Spoiler className="item-filter" title={"Категория"}>
+              <RadioGroup
+                value={selectedCategory}
+                onValueChange={setSelectedCategory}
+              >
+                {categories.map((category) => (
+                  <Radio
+                    classNames={{ label: "text-xl" }}
+                    value={category.id.toString()}
+                  >
+                    {category.name}
+                  </Radio>
+                ))}
               </RadioGroup>
             </Spoiler>
 
             {selectedCategory && (
-
-            <Spoiler  className="item-filter" title="Тип оголошення">
-            {categories
-              .find(category => category.id.toString() === selectedCategory)
-              ?.categories.map(subCategory => (
-                <label key={subCategory.id} className="check">
-                <input
-                  type="checkbox"
-                  name="remember"
-                  className="real-checkbox"
-                  value={subCategory.id}
-                  checked={selectedSubCategories.includes(subCategory.id.toString())}
-                  onChange={() => handleCheckboxChange(subCategory.id.toString())}
-                />
-                <span className="custom-checkbox"></span>
-                {subCategory.name}
-              </label>
-              ))}
-            </Spoiler>
+              <Spoiler className="item-filter" title="Тип оголошення">
+                {categories
+                  .find(
+                    (category) => category.id.toString() === selectedCategory
+                  )
+                  ?.categories.map((subCategory) => (
+                    <label key={subCategory.id} className="check">
+                      <input
+                        type="checkbox"
+                        name="remember"
+                        className="real-checkbox"
+                        value={subCategory.id}
+                        checked={selectedSubCategories.includes(
+                          subCategory.id.toString()
+                        )}
+                        onChange={() =>
+                          handleCheckboxChange(subCategory.id.toString())
+                        }
+                      />
+                      <span className="custom-checkbox"></span>
+                      {subCategory.name}
+                    </label>
+                  ))}
+              </Spoiler>
             )}
           </div>
           <div className="body-filters-trade__actions">
-
-          <button onClick={handleConfirm} className="body-filters-trade__button button">
-            Застосувати фільтри
-          </button>
-          <button onClick={handleReset} className="body-filters-trade__button button button--secondary">
-            Сбросить фильтры
-          </button>
+            <button
+              onClick={handleConfirm}
+              className="body-filters-trade__button button"
+            >
+              Застосувати фільтри
+            </button>
+            <button
+              onClick={handleReset}
+              className="body-filters-trade__button button button--secondary"
+            >
+              Сбросить фильтры
+            </button>
           </div>
         </div>
       </div>
     </div>
   );
-}
+};

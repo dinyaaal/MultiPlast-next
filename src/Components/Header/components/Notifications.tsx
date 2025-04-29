@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useClickOutside } from "@/hooks/ClickOutside";
 
 export default function Notifications() {
@@ -9,6 +9,8 @@ export default function Notifications() {
     setIsOpen(!isOpen);
   };
   const { rootEl } = useClickOutside(setIsOpen);
+
+  const [notificationsCount, setNotificationsCount] = useState(0)
 
   return (
     <button
@@ -21,9 +23,11 @@ export default function Notifications() {
       <div className="header-icon__image">
         <Image src="/icons/bell.svg" alt="Icon" width={100} height={100} />
       </div>
-      <div className="notification-value">
-        <span className="notification-value__number">99</span>
-      </div>
+      {!!notificationsCount && <div className="notification-value">
+        <span className="notification-value__number">
+          {notificationsCount}
+        </span>
+      </div>}
       <div className="notifications__body body-notifications">
         <div className="body-notifications__items">
           <div className="body-notifications__item item-body-notifications">
