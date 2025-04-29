@@ -12,6 +12,8 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import HeaderUser from "./HeaderUser";
 import { Category } from "@/types/types";
 import { getSession } from "next-auth/react";
+import { NotificationsCount } from "./NotificationsCount";
+import { HeaderSearch } from "./HeaderSearch";
 
 // interface SellProps {
 //   categories: Category[];
@@ -44,26 +46,10 @@ export default async function Header() {
         <div className="body-header__container">
           <div className="body-header__block">
             <Link href="/" className="body-header__logo logo">
-              л<span>ого</span>
+              <span>M</span>ulti<span>P</span>last
             </Link>
-            <div className="body-header__search search">
-              <input
-                type="text"
-                placeholder={t("searchPlaceholder")}
-                className="search__input"
-              />
-              <button className="search__icon-body">
-                <div className="search__icon">
-                  <Image
-                    src="/icons/search.svg"
-                    alt="Icon"
-                    width={100}
-                    height={100}
-                  />
-                  {/* <img src="img/icons/search.svg" alt="Icon"> */}
-                </div>
-              </button>
-            </div>
+            
+            <HeaderSearch placeholder={t("searchPlaceholder")}/>
           </div>
           <div className="body-header__block body-header__block--actions">
             <div className="body-header__actions actions-body-header">
@@ -250,9 +236,10 @@ export default async function Header() {
               <Link href="/forum" className="menu__link">
                 {t("forum")}
               </Link>
-              <div className="notification-value">
+              {/* <div className="notification-value">
                 <span className="notification-value__number">99</span>
-              </div>
+              </div> */}
+              <NotificationsCount nCount={0} />
             </li>
           </ul>
 

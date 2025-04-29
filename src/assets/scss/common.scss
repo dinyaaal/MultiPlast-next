@@ -329,6 +329,13 @@
 .breadcrumbs {
   padding: toRem(15) 0;
   border-bottom: 1px solid var(--border);
+  // .breadcrumbs__prev
+  &__prev {
+   &:after {
+    content: ">";
+    margin: 0 7px;
+   } 
+  }
   // .breadcrumbs__container
   &__container {
   }

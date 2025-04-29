@@ -133,6 +133,7 @@
     .swiper-slide {
       width: 100% !important;
       height: 100% !important;
+      max-height: 500px;
       border-radius: toRem(10) !important;
       overflow: hidden !important;
       img {

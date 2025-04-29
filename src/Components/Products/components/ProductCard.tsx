@@ -136,7 +136,7 @@ export const ProductCard: React.FC<{
             <p>По договорённости</p>
           ) : (
             <div className="item-advert__price">
-              <span>${product.price} грн</span>
+              <span>{product.price} грн</span>
             </div>
           )}
           {session?.user.id === product.author.id ? (

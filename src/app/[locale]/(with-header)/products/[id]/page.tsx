@@ -28,6 +28,27 @@ export default function Product({ params }: { params: { id: string } }) {
     setIsLiked(!isLiked);
   };
 
+  function isEmpty(string: string | null | undefined) {
+    return string ?? "";
+  }
+
+
+  
+  // -=-=-=-=-=-=-=-=-=-=- Проверяем на наличие пользователя -=-=-=-=-=-=-=-=-=-=-
+
+  const [isHasUser, setIsHasUser] = useState(
+    product?.author && product?.author?.first_name && product?.author?.last_name
+  );
+
+  // Проверяем тогда, когда продукт прогрузился
+  useEffect(() => {
+    setIsHasUser(product?.author && product?.author?.first_name && product?.author?.last_name)
+  }, [product?.author])
+
+  // -=-=-=-=-=-=-=-=-=-=- Проверяем на наличие пользователя -=-=-=-=-=-=-=-=-=-=-
+
+
+
   const fetchProduct = async () => {
     if (!params.id) return;
 
@@ -67,7 +88,7 @@ export default function Product({ params }: { params: { id: string } }) {
 
   return (
     <>
-      <Breadcrumbs position="РР (Поліпропілен)" />
+      <Breadcrumbs position={product.title} />
       <section className="product">
         <div className="product__container">
           <div className="product__top top-product">
@@ -117,7 +138,7 @@ export default function Product({ params }: { params: { id: string } }) {
                     </button>
                   )}
 
-                  <a href="#" className="share">
+                  {/* <a href="#" className="share">
                     <svg
                       width="27"
                       height="30"
@@ -130,7 +151,7 @@ export default function Product({ params }: { params: { id: string } }) {
                         fill="#1858B8"
                       />
                     </svg>
-                  </a>
+                  </a> */}
                 </div>
               </div>
               <div className="top-product__price price-product">
@@ -148,7 +169,7 @@ export default function Product({ params }: { params: { id: string } }) {
           </div>
           <div className="product__body body-product">
             <div className="body-product__content">
-              {product.photos.length > 0 && (
+              {!!product.photos.length && (
                 <div className="body-product__images">
                   <Swiper
                     thumbs={{ swiper: thumbsSwiper }}
@@ -158,105 +179,22 @@ export default function Product({ params }: { params: { id: string } }) {
                     speed={800}
                     className="body-product__slider"
                   >
+
+                {
+                  product.photos.map(item => (
                     <SwiperSlide>
                       <Image
-                        src="/product/01.jpg"
-                        alt="Image"
-                        width={1000}
-                        height={1000}
+                        src={item.url}
+                        alt={product.title + " | Photo"}
+                        width={500}
+                        height={500}
                       />
                     </SwiperSlide>
-                    <SwiperSlide>
-                      <Image
-                        src="/product/01.jpg"
-                        alt="Image"
-                        width={1000}
-                        height={1000}
-                      />
-                    </SwiperSlide>
-                    <SwiperSlide>
-                      <Image
-                        src="/product/01.jpg"
-                        alt="Image"
-                        width={1000}
-                        height={1000}
-                      />
-                    </SwiperSlide>
-                    <SwiperSlide>
-                      <Image
-                        src="/product/01.jpg"
-                        alt="Image"
-                        width={1000}
-                        height={1000}
-                      />
-                    </SwiperSlide>
-                    <SwiperSlide>
-                      <Image
-                        src="/product/01.jpg"
-                        alt="Image"
-                        width={1000}
-                        height={1000}
-                      />
-                    </SwiperSlide>
-                    <SwiperSlide>
-                      <Image
-                        src="/product/01.jpg"
-                        alt="Image"
-                        width={1000}
-                        height={1000}
-                      />
-                    </SwiperSlide>
-                    <SwiperSlide>
-                      <Image
-                        src="/product/01.jpg"
-                        alt="Image"
-                        width={1000}
-                        height={1000}
-                      />
-                    </SwiperSlide>
-                    <SwiperSlide>
-                      <Image
-                        src="/product/01.jpg"
-                        alt="Image"
-                        width={1000}
-                        height={1000}
-                      />
-                    </SwiperSlide>
-                    <SwiperSlide>
-                      <Image
-                        src="/product/01.jpg"
-                        alt="Image"
-                        width={1000}
-                        height={1000}
-                      />
-                    </SwiperSlide>
-                    <SwiperSlide>
-                      <Image
-                        src="/product/01.jpg"
-                        alt="Image"
-                        width={1000}
-                        height={1000}
-                      />
-                    </SwiperSlide>
-                    <SwiperSlide>
-                      <Image
-                        src="/product/01.jpg"
-                        alt="Image"
-                        width={1000}
-                        height={1000}
-                      />
-                    </SwiperSlide>
-                    <SwiperSlide>
-                      <Image
-                        src="/product/01.jpg"
-                        alt="Image"
-                        width={1000}
-                        height={1000}
-                      />
-                    </SwiperSlide>
+                  ))
+                }
                   </Swiper>
 
-                  <div className="body-product__thumbs-slider-wrapper">
+                  {!!product?.photos?.length && <div className="body-product__thumbs-slider-wrapper">
                     <Swiper
                       onSwiper={setThumbsSwiper}
                       spaceBetween={10}
@@ -269,102 +207,18 @@ export default function Product({ params }: { params: { id: string } }) {
                       modules={[Navigation]}
                       className="body-product__thumbs-slider"
                     >
-                      <SwiperSlide>
-                        <Image
-                          src="/product/01.jpg"
-                          alt="Image"
-                          width={1000}
-                          height={1000}
-                        />
-                      </SwiperSlide>
-                      <SwiperSlide>
-                        <Image
-                          src="/product/01.jpg"
-                          alt="Image"
-                          width={1000}
-                          height={1000}
-                        />
-                      </SwiperSlide>
-                      <SwiperSlide>
-                        <Image
-                          src="/product/01.jpg"
-                          alt="Image"
-                          width={1000}
-                          height={1000}
-                        />
-                      </SwiperSlide>
-                      <SwiperSlide>
-                        <Image
-                          src="/product/01.jpg"
-                          alt="Image"
-                          width={1000}
-                          height={1000}
-                        />
-                      </SwiperSlide>
-                      <SwiperSlide>
-                        <Image
-                          src="/product/01.jpg"
-                          alt="Image"
-                          width={1000}
-                          height={1000}
-                        />
-                      </SwiperSlide>
-                      <SwiperSlide>
-                        <Image
-                          src="/product/01.jpg"
-                          alt="Image"
-                          width={1000}
-                          height={1000}
-                        />
-                      </SwiperSlide>
-                      <SwiperSlide>
-                        <Image
-                          src="/product/01.jpg"
-                          alt="Image"
-                          width={1000}
-                          height={1000}
-                        />
-                      </SwiperSlide>
-                      <SwiperSlide>
-                        <Image
-                          src="/product/01.jpg"
-                          alt="Image"
-                          width={1000}
-                          height={1000}
-                        />
-                      </SwiperSlide>
-                      <SwiperSlide>
-                        <Image
-                          src="/product/01.jpg"
-                          alt="Image"
-                          width={1000}
-                          height={1000}
-                        />
-                      </SwiperSlide>
-                      <SwiperSlide>
-                        <Image
-                          src="/product/01.jpg"
-                          alt="Image"
-                          width={1000}
-                          height={1000}
-                        />
-                      </SwiperSlide>
-                      <SwiperSlide>
-                        <Image
-                          src="/product/01.jpg"
-                          alt="Image"
-                          width={1000}
-                          height={1000}
-                        />
-                      </SwiperSlide>
-                      <SwiperSlide>
-                        <Image
-                          src="/product/01.jpg"
-                          alt="Image"
-                          width={1000}
-                          height={1000}
-                        />
-                      </SwiperSlide>
+                      {
+                       product.photos.map(item => (
+                        <SwiperSlide>
+                          <Image
+                            src={item.url}
+                            alt={product.title + " | Photo"}
+                            width={1000}
+                            height={1000}
+                          />
+                        </SwiperSlide>
+                      ))
+                    }
                     </Swiper>
                     <button
                       type="button"
@@ -418,7 +272,7 @@ export default function Product({ params }: { params: { id: string } }) {
                         />
                       </svg>
                     </button>
-                  </div>
+                  </div>}
                 </div>
               )}
 
@@ -442,7 +296,7 @@ export default function Product({ params }: { params: { id: string } }) {
                         />
                       </svg>
                     </button>
-                    <a href="#" className="share">
+                    {/* <a href="#" className="share">
                       <svg
                         width="27"
                         height="30"
@@ -455,7 +309,7 @@ export default function Product({ params }: { params: { id: string } }) {
                           fill="#1858B8"
                         />
                       </svg>
-                    </a>
+                    </a> */}
                   </div>
                 </div>
                 <div className="top-product__price price-product">
@@ -498,7 +352,9 @@ export default function Product({ params }: { params: { id: string } }) {
                         Місцезнаходження:
                       </p>
                       <div className="location-info-body-product__place">
-                        {`${product.contact.city}, ${product.contact.area} область`}
+                        {`${isEmpty(product?.contact?.city)}, ${isEmpty(
+                          product?.contact?.area
+                        )} область`}
                       </div>
                     </div>
                     <div className="location-info-body-product__map">
@@ -515,13 +371,15 @@ export default function Product({ params }: { params: { id: string } }) {
                   </div>
                 )}
 
-                {product.author && (
+                {isHasUser && (
                   <div className="info-body-product__contact contact-info-body-product">
                     <div className="contact-info-body-product__title">
                       Контактна особа:
                     </div>
                     <p className="contact-info-body-product__text">
-                      {`${product.author.first_name} ${product.author.last_name}`}
+                      {`${isEmpty(product?.author?.first_name)} ${isEmpty(
+                        product?.author?.last_name
+                      )}`}
                     </p>
                   </div>
                 )}

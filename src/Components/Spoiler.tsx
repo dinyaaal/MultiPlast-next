@@ -4,10 +4,11 @@ interface SpoilerProps {
   className?: string;
   title: string;
   children: React.ReactNode;
+  isOpen?: boolean
 }
 
-const Spoiler: React.FC<SpoilerProps> = ({ className, title, children }) => {
-  const [isActive, setIsActive] = useState<boolean>(false);
+const Spoiler: React.FC<SpoilerProps> = ({ className, title, children, isOpen = false }) => {
+  const [isActive, setIsActive] = useState<boolean>(isOpen);
   const [height, setHeight] = useState<string>("0px");
   const contentRef = useRef<HTMLDivElement>(null);
 
