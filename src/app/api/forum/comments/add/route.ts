@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 export async function POST(request: NextRequest) {
   // Получаем formData из запроса
   const formData = await request.formData();
-  const token = request.headers.get("Authorization")?.split(" ")[1];
+  const token = request.headers.get("token");
 
   if (!token) {
     return NextResponse.json({ error: "Missing id or token" }, { status: 400 });

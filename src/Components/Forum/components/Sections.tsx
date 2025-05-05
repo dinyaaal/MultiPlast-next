@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import { Navigation, Pagination } from "swiper/modules";
@@ -9,23 +9,55 @@ import { useTranslations } from "next-intl";
 
 export default function Sections() {
   const t = useTranslations("Forum");
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   // -=-=-=-=-=-=-=-=-=- Список разделов форума + активный раздел -=-=-=-=-=-=-=-=-=-
 
-  const [forumSectionsList, setForumSectionsList] = useState([
-    {
-      id: 1,
-      title: "Полікарбонат",
-      text: "Обговорюємо полікарбонат та його види",
-    },
-    {
-      id: 2,
-      title: "Полікарбонат 2",
-      text: "Обговорюємо полікарбонат та його види 2",
-    },
-  ]);
+  const fetchForumCategories = async () => {
+    setIsLoading(true);
 
-  const [activeSection, setActiveSection] = useState(forumSectionsList[0].id);
+    try {
+      const res = await fetch(`/api/forum/categories`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (!res.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      const data = await res.json();
+      if (data) {
+        console.log(data.data);
+        // setForumPosts(data.data);
+        // setLastPage(data.last_page);
+      }
+    } catch (error) {
+      console.error("Error fetching order status:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchForumCategories();
+  }, []);
+
+  // const [forumSectionsList, setForumSectionsList] = useState([
+  //   {
+  //     id: 1,
+  //     title: "Полікарбонат",
+  //     text: "Обговорюємо полікарбонат та його види",
+  //   },
+  //   {
+  //     id: 2,
+  //     title: "Полікарбонат 2",
+  //     text: "Обговорюємо полікарбонат та його види 2",
+  //   },
+  // ]);
+
+  // const [activeSection, setActiveSection] = useState(forumSectionsList[0].id);
 
   // -=-=-=-=-=-=-=-=-=- Список разделов форума + активный раздел -=-=-=-=-=-=-=-=-=-
 
@@ -45,7 +77,7 @@ export default function Sections() {
             }}
             pagination={{ clickable: true }}
           >
-            {!!forumSectionsList.length &&
+            {/* {!!forumSectionsList.length &&
               forumSectionsList.map((item) => (
                 <SwiperSlide key={item.id}>
                   <Section
@@ -55,7 +87,7 @@ export default function Sections() {
                     onClick={(_) => setActiveSection(item.id)}
                   />
                 </SwiperSlide>
-              ))}
+              ))} */}
           </Swiper>
           <button
             type="button"

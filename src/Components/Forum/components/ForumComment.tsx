@@ -2,18 +2,24 @@
 
 import { CommentType } from "@/types/types";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 interface ForumCommentProps {
   comment: CommentType;
+  postId: number;
+  isAnswer?: true;
   onReply: (replyData: { id: number; name: string; text: string }) => void;
 }
 
 export const ForumComment: React.FC<ForumCommentProps> = ({
   comment,
+  postId,
+  isAnswer,
   onReply,
 }) => {
   const [isAnswersOpen, setIsAnswersOpen] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [replies, setReplies] = useState<CommentType[]>([]);
 
   const formattedDate = new Date(comment.created_at).toLocaleDateString(
     "uk-UA",
@@ -37,6 +43,54 @@ export const ForumComment: React.FC<ForumCommentProps> = ({
     onReply(replyData);
   };
 
+  const fetchComments = async () => {
+    setIsLoading(true);
+    let queryParams: string[] = [];
+
+    // queryParams.push(`page=${currentPage}`);
+    queryParams.push(`forum_id=${postId}`);
+    queryParams.push(`comment_id=${comment.id}`);
+    // queryParams.push(`perPage=5`);
+    const queryString =
+      queryParams.length > 0 ? `?${queryParams.join("&")}` : "";
+
+    try {
+      const res = await fetch(`/api/forum/comments/get${queryString}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (!res.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      const data = await res.json();
+      if (data) {
+        setReplies(data.data);
+        // setLastPage(data.last_page);
+      }
+    } catch (error) {
+      console.error("Error fetching order status:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchComments();
+  }, []);
+
+  const getReplyWord = (count: number): string => {
+    const mod10 = count % 10;
+    const mod100 = count % 100;
+
+    if (mod10 === 1 && mod100 !== 11) return "ответ";
+    if (mod10 >= 2 && mod10 <= 4 && (mod100 < 10 || mod100 >= 20))
+      return "ответа";
+    return "ответов";
+  };
+
   return (
     <div className="forum-comments__comment comment comment-main">
       <div className="comment__user user-chat">
@@ -57,25 +111,6 @@ export const ForumComment: React.FC<ForumCommentProps> = ({
                 >
                   Відповісти
                 </button>
-                <button
-                  onClick={toggleAnswers}
-                  className={`answer-button__arrow ${
-                    isAnswersOpen ? "active" : ""
-                  }`}
-                >
-                  <svg
-                    width="12"
-                    height="7"
-                    viewBox="0 0 12 7"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M5.46967 6.53033C5.76256 6.82322 6.23744 6.82322 6.53033 6.53033L11.3033 1.75736C11.5962 1.46447 11.5962 0.989592 11.3033 0.696699C11.0104 0.403806 10.5355 0.403806 10.2426 0.696699L6 4.93934L1.75736 0.696699C1.46447 0.403806 0.989592 0.403806 0.696699 0.696699C0.403806 0.989593 0.403806 1.46447 0.696699 1.75736L5.46967 6.53033ZM5.25 5L5.25 6L6.75 6L6.75 5L5.25 5Z"
-                      fill="#0E274D"
-                    />
-                  </svg>
-                </button>
               </div>
               <a href="#" className="bottom-body-comment__write">
                 Написати особисте повідомлення
@@ -93,7 +128,7 @@ export const ForumComment: React.FC<ForumCommentProps> = ({
                     />
                   </div>
                   <span className="info-item-forum__value">
-                    {comment.replies?.length || 0}
+                    {comment.comments_count || 0}
                   </span>
                 </div>
                 <div className="info-item-forum__item">
@@ -122,13 +157,49 @@ export const ForumComment: React.FC<ForumCommentProps> = ({
             </div>
           </div>
         </div>
-        {/* {isAnswersOpen && comment.replies && (
-          <div className="comment__answers answers-comment">
-            {comment.replies.map((reply) => (
-              <ForumComment key={reply.id} comment={reply} />
-            ))}
-          </div>
-        )} */}
+        {!isAnswer && (
+          <>
+            {replies.length > 0 && (
+              <button
+                onClick={toggleAnswers}
+                className={`comment-show-replies ${
+                  isAnswersOpen ? "active" : ""
+                }`}
+              >
+                <svg
+                  className="comment-show-replies__arrow"
+                  width="12"
+                  height="7"
+                  viewBox="0 0 12 7"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M5.46967 6.53033C5.76256 6.82322 6.23744 6.82322 6.53033 6.53033L11.3033 1.75736C11.5962 1.46447 11.5962 0.989592 11.3033 0.696699C11.0104 0.403806 10.5355 0.403806 10.2426 0.696699L6 4.93934L1.75736 0.696699C1.46447 0.403806 0.989592 0.403806 0.696699 0.696699C0.403806 0.989593 0.403806 1.46447 0.696699 1.75736L5.46967 6.53033ZM5.25 5L5.25 6L6.75 6L6.75 5L5.25 5Z"
+                    fill="#0E274D"
+                  />
+                </svg>
+                <span>
+                  {comment.comments_count}{" "}
+                  {getReplyWord(comment.comments_count)}
+                </span>
+              </button>
+            )}
+            {isAnswersOpen && replies && (
+              <div className="comment__answers answers-comment">
+                {replies.map((reply) => (
+                  <ForumComment
+                    isAnswer={true}
+                    key={reply.id}
+                    postId={postId}
+                    comment={reply}
+                    onReply={onReply}
+                  />
+                ))}
+              </div>
+            )}
+          </>
+        )}
       </div>
     </div>
   );

@@ -111,6 +111,7 @@ export default function ForumComments({ postId }: ForumCommentInputProps) {
     formData.append("forum_id", String(postId));
     if (replyData) {
       formData.append("to_comment_id", String(replyData.id));
+      formData.append("comment_id", String(replyData.id));
     }
     images.forEach((image) => {
       formData.append("photos[]", image);
@@ -120,7 +121,7 @@ export default function ForumComments({ postId }: ForumCommentInputProps) {
       const response = await fetch(`/api/forum/comments/add`, {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${session?.user.access_token}`,
+          token: `${session?.user.access_token}`,
         },
         body: formData,
       });
@@ -131,6 +132,7 @@ export default function ForumComments({ postId }: ForumCommentInputProps) {
 
       setText("");
       setImages([]);
+      fetchComments();
     } catch (error) {
       console.error("Ошибка при отправке:", error);
     }
@@ -220,19 +222,22 @@ export default function ForumComments({ postId }: ForumCommentInputProps) {
         <div className="forum-comments__content">
           {comments.slice(0, visibleComments).map((comment) => (
             <ForumComment
+              postId={postId}
               key={comment.id}
               comment={comment}
               onReply={handleReply}
             />
           ))}
         </div>
-        <button
-          type="button"
-          className="forum-comments__more block__more button"
-          onClick={toggleComments}
-        >
-          <span>{showAll ? "Сховати" : "Дивитися ще"}</span>
-        </button>
+        {comments.length > 1 && (
+          <button
+            type="button"
+            className="forum-comments__more block__more button"
+            onClick={toggleComments}
+          >
+            <span>{showAll ? "Сховати" : "Дивитися ще"}</span>
+          </button>
+        )}
       </div>
     </div>
   );

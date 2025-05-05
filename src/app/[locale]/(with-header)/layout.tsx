@@ -1,5 +1,5 @@
 import Footer from "@/Components/Footer/Footer";
-import Header from "@/Components/Header/components/Header";
+import Header from "@/Components/Header/Header";
 import UserProvider from "@/Components/UserProvider";
 
 import React from "react";

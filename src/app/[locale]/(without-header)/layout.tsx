@@ -1,5 +1,5 @@
 import Footer from "@/Components/Footer/Footer";
-import Header from "@/Components/Header/components/Header";
+import Header from "@/Components/Header/Header";
 import React from "react";
 
 export default function Layout({

@@ -133,9 +133,9 @@ export default function ForumAdd() {
                     ref={editorRef}
                     placeholder={t("descriptionPlaceholder")}
                   />
-                  <button type="button" onClick={(e) => console.log(content)}>
+                  {/* <button type="button" onClick={(e) => console.log(content)}>
                     otpravit
-                  </button>
+                  </button> */}
                   {/* <textarea
                     id="editor"
                     placeholder={t("descriptionPlaceholder")}
@@ -153,7 +153,7 @@ export default function ForumAdd() {
                     className="real-checkbox"
                   />
                   <span className="custom-checkbox"></span>
-                  incognito
+                  Інкогніто
                 </label>
                 <div className="add-forum__actions">
                   <button type="submit" className="add-forum__add button">

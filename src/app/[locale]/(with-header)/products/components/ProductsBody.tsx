@@ -6,6 +6,7 @@ import { Category, Page, ProductType } from "@/types/types";
 import React, { useEffect, useState } from "react";
 import { Filters } from "@/Components/Products/components/Filters";
 import { ContentTrade } from "./ProductsContent";
+import { useSearchParams } from "next/navigation";
 
 interface ProductsProps {
   categories: Category[];
@@ -18,7 +19,8 @@ export function ProductsBody({ categories }: ProductsProps) {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [links, setLinks] = useState<Page[]>([]);
   const [lastPage, setLastPage] = useState<number>();
-
+  const searchParams = useSearchParams();
+  const search = searchParams.get("search");
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedSubCategories, setSelectedSubCategories] = useState<string[]>(
     []
@@ -53,6 +55,9 @@ export function ProductsBody({ categories }: ProductsProps) {
 
     queryParams.push(`page=${currentPage}`);
     queryParams.push(`perPage=12`);
+    if (search) {
+      queryParams.push(`search=${search}`);
+    }
 
     const queryString =
       queryParams.length > 0 ? `?${queryParams.join("&")}` : "";
@@ -81,7 +86,13 @@ export function ProductsBody({ categories }: ProductsProps) {
 
   useEffect(() => {
     fetchProducts();
-  }, [currentPage, selectedCategory, selectedSubCategories, selectedOptions]);
+  }, [
+    currentPage,
+    selectedCategory,
+    selectedSubCategories,
+    selectedOptions,
+    search,
+  ]);
 
   return (
     <>
