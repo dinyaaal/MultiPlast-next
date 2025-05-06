@@ -72,7 +72,7 @@
 .price-product {
   display: flex;
   flex-direction: column;
-  align-items: end;
+  align-items: center;
   gap: toRem(5);
   // .price-product__text
   &__text {

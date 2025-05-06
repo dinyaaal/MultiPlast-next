@@ -14,7 +14,7 @@ export default function HeaderUser() {
     (state: RootState) => state.userInfo
   );
   return (
-    <div className="body-header__user user  user--desktop">
+    <>
       {status === "authenticated" ? (
         <div className="user__body body-user">
           <Link
@@ -97,6 +97,6 @@ export default function HeaderUser() {
           </Link>
         </div>
       )}
-    </div>
+    </>
   );
 }

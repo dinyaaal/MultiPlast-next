@@ -106,7 +106,7 @@ export const AdvertismentSchema = z
     text: z
       .string()
       .min(1, { message: "Описание обязательно" })
-      .max(150, { message: "Максимальная длина 150 символов" }),
+      .max(1000, { message: "Максимальная длина 1000 символов" }),
 
     name_of_enterprise: z.string(),
     city: z.string().min(1, "Введите ваш город"),

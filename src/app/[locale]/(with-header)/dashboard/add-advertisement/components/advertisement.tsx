@@ -9,7 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Select, SelectItem, Spinner } from "@heroui/react";
 import { useSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
-import { useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
@@ -47,7 +47,8 @@ export default function Advertisement({ categories }: SellProps) {
   const searchCategory = searchParams.get("category");
   const searchType = searchParams.get("type");
   const searchSubCategory = searchParams.get("subCategory");
-
+  const router = useRouter();
+  const pathname = usePathname();
   const { data: userInfo, error } = useSelector(
     (state: RootState) => state.userInfo
   );
@@ -60,7 +61,8 @@ export default function Advertisement({ categories }: SellProps) {
   const [photos, setPhotos] = useState<File[]>([]);
   const [files, setFiles] = useState<File[] | null>(null);
   const [typePrice, setTypePrice] = useState<typePrice>({ type: "for_kg" });
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingRequest, setIsLoadingRequest] = useState(false);
   const [productError, setProductError] = useState<string | null>(null);
 
   const {
@@ -79,7 +81,7 @@ export default function Advertisement({ categories }: SellProps) {
 
   const fetchProduct = async () => {
     if (!editId) return;
-    setLoading(true);
+    setIsLoading(true);
     try {
       const response = await fetch(`/api/products/product?id=${editId}`, {
         method: "GET",
@@ -102,7 +104,7 @@ export default function Advertisement({ categories }: SellProps) {
     } catch (err) {
       setProductError("Ошибка при загрузке продукта");
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
@@ -280,6 +282,8 @@ export default function Advertisement({ categories }: SellProps) {
       return;
     }
 
+    setIsLoadingRequest(true);
+
     const token = session.user.access_token;
 
     const formData = new FormData();
@@ -356,10 +360,6 @@ export default function Advertisement({ categories }: SellProps) {
     }
     if (editId && product) {
       try {
-        // const jsonObject: Record<string, any> = {};
-        // formData.forEach((value, key) => {
-        //   jsonObject[key] = value;
-        // });
         const editResponse = await fetch(`/api/products/edit`, {
           method: "POST",
           headers: {
@@ -376,6 +376,8 @@ export default function Advertisement({ categories }: SellProps) {
       } catch (error) {
         console.error("Ошибка при отправке данных:", error);
         toast.error("Ошибка обновления товара");
+      } finally {
+        setIsLoadingRequest(false);
       }
     } else {
       try {
@@ -396,11 +398,13 @@ export default function Advertisement({ categories }: SellProps) {
       } catch (error) {
         console.error("Ошибка при отправке данных:", error);
         toast.error("Ошибка создания товара");
+      } finally {
+        setIsLoadingRequest(false);
       }
     }
   };
 
-  if (editId && !product) {
+  if (isLoading) {
     return (
       <div className="flex w-full h-full flex-auto items-center justify-center">
         <Spinner size="lg" />
@@ -971,7 +975,7 @@ export default function Advertisement({ categories }: SellProps) {
                 <p>{t("enter-description")}</p>
                 <textarea
                   placeholder="Написати..."
-                  className={`description__input input ${
+                  className={`description__input input  ${
                     errors.text ? "input--error" : ""
                   }`}
                   // value={watch("text")}
@@ -1136,6 +1140,7 @@ export default function Advertisement({ categories }: SellProps) {
         <div className="advertisement__actions actions-advertisement">
           <button type="submit" className="actions-advertisement__save button">
             {t("save-publish")}
+            {isLoadingRequest && <Spinner color="current" size="sm" />}
           </button>
           {editId && product && (
             <button

@@ -7,13 +7,11 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/thumbs";
 import { Navigation, Thumbs } from "swiper/modules";
-// import Adverts from "@/Components/Products/Adverts";
 import ReadMore from "@/Components/ReadMore";
 import Breadcrumbs from "@/Components/Breadcrumbs";
 import { ProductType } from "@/types/types";
 import { Spinner } from "@heroui/react";
 import { useSession } from "next-auth/react";
-import { Session } from "inspector/promises";
 import { Link } from "@/i18n/routing";
 
 export default function Product({ params }: { params: { id: string } }) {
@@ -277,22 +275,47 @@ export default function Product({ params }: { params: { id: string } }) {
                 <div className="top-product__block">
                   <h2 className="top-product__title title">{product.title}</h2>
                   <div className="top-product__actions">
-                    <button className="like">
-                      <svg
-                        width="33"
-                        height="30"
-                        viewBox="0 0 33 30"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
+                    {session?.user.id === product.author.id ? (
+                      <Link
+                        href={`/dashboard/add-advertisement?edit=${product.id}`}
+                        className={` edit `}
                       >
-                        <path
-                          d="M15.0002 26.7323L14.998 26.7303C10.7549 22.8862 7.35391 19.7972 4.9962 16.9153C2.65494 14.0535 1.5 11.58 1.5 8.99183C1.5 4.77155 4.78535 1.5 9 1.5C11.3943 1.5 13.7168 2.62136 15.2258 4.37798L16.3636 5.70249L17.5015 4.37798C19.0105 2.62136 21.3329 1.5 23.7273 1.5C27.9419 1.5 31.2273 4.77155 31.2273 8.99183C31.2273 11.58 30.0723 14.0535 27.7311 16.9153C25.3734 19.7972 21.9724 22.8862 17.7293 26.7303L17.7271 26.7323L16.3636 27.9724L15.0002 26.7323Z"
-                          fill="white"
-                          stroke="#BA360C"
-                          stroke-width="3"
-                        />
-                      </svg>
-                    </button>
+                        <svg
+                          width="30"
+                          height="30"
+                          viewBox="0 0 30 30"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M26.0395 3.24608L26.7539 3.96054C27.309 4.51557 27.309 5.41308 26.7539 5.96221L25.0357 7.68637L22.3136 4.96433L24.0319 3.24608C24.5869 2.69104 25.4844 2.69104 26.0336 3.24608H26.0395ZM12.3879 14.8959L20.312 6.966L23.034 9.68804L15.1041 17.6121C14.9328 17.7833 14.7203 17.9073 14.49 17.9722L11.0358 18.9583L12.0218 15.5041C12.0868 15.2738 12.2108 15.0613 12.382 14.89L12.3879 14.8959ZM22.0302 1.2444L10.3804 12.8884C9.86665 13.4021 9.49466 14.0339 9.29981 14.7247L7.61108 20.6293C7.46937 21.1253 7.60518 21.6567 7.97126 22.0228C8.33735 22.3889 8.86877 22.5247 9.36476 22.383L15.2694 20.6943C15.9661 20.4935 16.5979 20.1215 17.1057 19.6137L28.7556 7.96979C30.4148 6.31058 30.4148 3.61807 28.7556 1.95886L28.0411 1.2444C26.3819 -0.414801 23.6894 -0.414801 22.0302 1.2444ZM5.19608 3.54721C2.32643 3.54721 0 5.87364 0 8.7433V24.8039C0 27.6736 2.32643 30 5.19608 30H21.2567C24.1264 30 26.4528 27.6736 26.4528 24.8039V18.1907C26.4528 17.4054 25.821 16.7736 25.0357 16.7736C24.2504 16.7736 23.6186 17.4054 23.6186 18.1907V24.8039C23.6186 26.1088 22.5616 27.1658 21.2567 27.1658H5.19608C3.89116 27.1658 2.83423 26.1088 2.83423 24.8039V8.7433C2.83423 7.43837 3.89116 6.38144 5.19608 6.38144H11.8093C12.5946 6.38144 13.2264 5.74964 13.2264 4.96433C13.2264 4.17901 12.5946 3.54721 11.8093 3.54721H5.19608Z"
+                            fill="#B0BFD7"
+                          />
+                        </svg>
+                      </Link>
+                    ) : (
+                      <button
+                        className={` like ${isLiked ? "active" : ""}`}
+                        onClick={(e) => {
+                          handleLikeClick();
+                        }}
+                      >
+                        <svg
+                          width="33"
+                          height="30"
+                          viewBox="0 0 33 30"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M15.0002 26.7323L14.998 26.7303C10.7549 22.8862 7.35391 19.7972 4.9962 16.9153C2.65494 14.0535 1.5 11.58 1.5 8.99183C1.5 4.77155 4.78535 1.5 9 1.5C11.3943 1.5 13.7168 2.62136 15.2258 4.37798L16.3636 5.70249L17.5015 4.37798C19.0105 2.62136 21.3329 1.5 23.7273 1.5C27.9419 1.5 31.2273 4.77155 31.2273 8.99183C31.2273 11.58 30.0723 14.0535 27.7311 16.9153C25.3734 19.7972 21.9724 22.8862 17.7293 26.7303L17.7271 26.7323L16.3636 27.9724L15.0002 26.7323Z"
+                            fill="white"
+                            stroke="#BA360C"
+                            stroke-width="3"
+                          />
+                        </svg>
+                      </button>
+                    )}
                     {/* <a href="#" className="share">
                       <svg
                         width="27"
@@ -313,9 +336,9 @@ export default function Product({ params }: { params: { id: string } }) {
                   <div className="price-product__text title">
                     {product.price} грн
                   </div>
-                  <div className="price-product__sub-text">
+                  {/* <div className="price-product__sub-text">
                     від 3000 кг - 60 грн/кг
-                  </div>
+                  </div> */}
                 </div>
               </div>
               <div
@@ -397,19 +420,22 @@ export default function Product({ params }: { params: { id: string } }) {
                   >
                     Написати повідомлення
                   </Link>
-                  <Link
-                    href="#"
-                    className="actions-body-product__download button button--secondary"
-                  >
-                    <p>
-                      Завантажити прекріпленні файли: <span>2 шт.</span>
-                    </p>
-                  </Link>
+                  {product.files && product.files.length > 0 && (
+                    <Link
+                      href="#"
+                      className="actions-body-product__download button button--secondary"
+                    >
+                      <p>
+                        Завантажити прекріпленні файли:{" "}
+                        <span>{product.files.length}</span>
+                      </p>
+                    </Link>
+                  )}
                 </div>
                 <div className="actions-body-product__socials socials">
                   <p className="socials__text">Контакт у соц. мережах:</p>
                   <div className="socials__items">
-                    <a href="#" className="socials__item">
+                    <Link href="#" className="socials__item">
                       <svg
                         width="35"
                         height="35"
@@ -426,8 +452,8 @@ export default function Product({ params }: { params: { id: string } }) {
                           ></path>
                         </g>
                       </svg>
-                    </a>
-                    <a href="#" className="socials__item">
+                    </Link>
+                    <Link href="#" className="socials__item">
                       <svg
                         width="35"
                         height="35"
@@ -446,8 +472,8 @@ export default function Product({ params }: { params: { id: string } }) {
                           fill="#0E274D"
                         ></path>
                       </svg>
-                    </a>
-                    <a href="#" className="socials__item">
+                    </Link>
+                    <Link href="#" className="socials__item">
                       <svg
                         width="35"
                         height="35"
@@ -466,8 +492,8 @@ export default function Product({ params }: { params: { id: string } }) {
                           fill="#0E274D"
                         ></path>
                       </svg>
-                    </a>
-                    <a href="#" className="socials__item">
+                    </Link>
+                    <Link href="#" className="socials__item">
                       <svg
                         width="35"
                         height="35"
@@ -486,7 +512,7 @@ export default function Product({ params }: { params: { id: string } }) {
                           stroke="#0E274D"
                         ></circle>
                       </svg>
-                    </a>
+                    </Link>
                   </div>
                 </div>
               </div>

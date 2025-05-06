@@ -61,7 +61,9 @@ export default async function Header() {
             </div>
 
             <Language className="language--desktop" />
-            <HeaderUser />
+            <div className="body-header__user user  user--desktop">
+              <HeaderUser />
+            </div>
           </div>
         </div>
       </div>

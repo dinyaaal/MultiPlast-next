@@ -496,6 +496,7 @@
   }
   &.active {
     .read-more__text {
+      -webkit-line-clamp: unset;
     }
     .read-more__button {
       &::after {
@@ -504,7 +505,11 @@
     }
   }
   &__text {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
     overflow: hidden;
+    word-break: break-word;
     transition: max-height 0.3s ease;
   }
   &__button {
@@ -581,7 +586,7 @@
   display: block;
   padding: toRem(14);
   font-size: toRem(14);
-  outline: 1px solid #b0bfd7 !important;
+  // outline: 1px solid #b0bfd7 !important;
   ul {
     list-style-type: disc;
     padding-left: toRem(20);
