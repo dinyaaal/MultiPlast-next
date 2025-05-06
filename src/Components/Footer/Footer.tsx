@@ -1,9 +1,12 @@
 import { Link } from "@/i18n/routing";
 import ModalContact from "../Modals/ModalContact";
-import { useTranslations } from "next-intl";
+import { getServerSession } from "next-auth";
+import { getTranslations } from "next-intl/server";
 
-export default function Footer() {
-  const t = useTranslations("Footer");
+export default async function Footer() {
+  const t = await getTranslations("Footer");
+
+  const session = await getServerSession();
 
   return (
     <footer className="footer">
@@ -88,16 +91,17 @@ export default function Footer() {
             <div className="menu-footer__title">{t("informationPages")}</div>
             <ul className="menu-footer__items">
               <li className="menu-footer__item">
-                <Link href="/">{t("home")}</Link>
-              </li>
-              <li className="menu-footer__item">
-                <Link href="/products">{t("marketplace")}</Link>
-              </li>
-              <li className="menu-footer__item">
-                <Link href="/forum">{t("forum")}</Link>
-              </li>
-              <li className="menu-footer__item">
                 <Link href="/about">{t("aboutProject")}</Link>
+              </li>
+              <li className="menu-footer__item">
+                <Link href="#">{t("userAgreement")}</Link>
+              </li>
+
+              <li className="menu-footer__item">
+                <Link href="#">{t("howToSellBuy")}</Link>
+              </li>
+              <li className="menu-footer__item">
+                <Link href="#">{t("privacyPolicy")}</Link>
               </li>
             </ul>
           </div>
@@ -105,20 +109,26 @@ export default function Footer() {
             <div className="menu-footer__title">{t("forClients")}</div>
             <ul className="menu-footer__items">
               <li className="menu-footer__item">
-                <Link href="/messages">{t("myMessages")}</Link>
+                <Link href="/">{t("home")}</Link>
               </li>
               <li className="menu-footer__item">
-                <Link href="/dashboard/add-advertisement">{t("postAd")}</Link>
+                <Link href="/forum">{t("forum")}</Link>
               </li>
               <li className="menu-footer__item">
-                <Link href="#">{t("userAgreement")}</Link>
+                <Link href="/products">{t("marketplace")}</Link>
               </li>
-              <li className="menu-footer__item">
-                <Link href="#">{t("privacyPolicy")}</Link>
-              </li>
-              <li className="menu-footer__item">
-                <Link href="#">{t("howToSellBuy")}</Link>
-              </li>
+              {session && (
+                <>
+                  <li className="menu-footer__item">
+                    <Link href="/messages">{t("myMessages")}</Link>
+                  </li>
+                  <li className="menu-footer__item">
+                    <Link href="/dashboard/add-advertisement">
+                      {t("postAd")}
+                    </Link>
+                  </li>
+                </>
+              )}
             </ul>
           </div>
           <div className="footer__support support-footer">

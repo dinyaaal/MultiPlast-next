@@ -3,12 +3,23 @@
 import { useClickOutside } from "@/hooks/ClickOutside";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
-import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import React, { FormEvent, useState } from "react";
 
 export default function SearchMobile() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const toggleMenu = () => {
     setIsOpen(!isOpen);
+  };
+
+  const router = useRouter();
+
+  const [searchValue, setSearchValue] = useState<string>("");
+
+  const handleSearch = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    router.push(`/products?search=${searchValue}`);
   };
 
   const t = useTranslations("Header");
@@ -53,21 +64,25 @@ export default function SearchMobile() {
             />
           </svg>
         </button>
-        <div className="body-search-mobile__field">
+        <form onSubmit={handleSearch} className="body-search-mobile__field">
           <input
             type="text"
             placeholder={t("searchPlaceholder")}
             className="search__input"
+            onChange={(e) => setSearchValue(e.target.value)}
+            value={searchValue}
           />
-          <div className="search__icon">
-            <Image
-              src="/icons/search-blue.svg"
-              alt="Icon"
-              width={100}
-              height={100}
-            />
-          </div>
-        </div>
+          <button>
+            <div className="search__icon">
+              <Image
+                src="/icons/search-blue.svg"
+                alt="Icon"
+                width={100}
+                height={100}
+              />
+            </div>
+          </button>
+        </form>
       </div>
     </div>
   );

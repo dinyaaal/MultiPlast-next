@@ -11,7 +11,6 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 // import { useTranslations } from "next-intl";
 import HeaderUser from "./components/HeaderUser";
 import { Category } from "@/types/types";
-import { getSession } from "next-auth/react";
 import { getServerSession } from "next-auth";
 import { NotificationsCount } from "./components/NotificationsCount";
 import { HeaderSearch } from "./components/HeaderSearch";

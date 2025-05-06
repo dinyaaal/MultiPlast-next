@@ -124,8 +124,8 @@ export default function Registration() {
           <div className="socials-auth__body">
             <button
               type="button"
-              onClick={() => signIn("google", { callbackUrl })}
               className="socials-auth__item item-socials-auth"
+              onClick={() => signIn("google", { callbackUrl: "/" })}
             >
               <div className="item-socials-auth__image">
                 <Image

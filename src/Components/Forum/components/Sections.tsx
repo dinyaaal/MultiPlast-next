@@ -44,20 +44,20 @@ export default function Sections() {
     fetchForumCategories();
   }, []);
 
-  // const [forumSectionsList, setForumSectionsList] = useState([
-  //   {
-  //     id: 1,
-  //     title: "Полікарбонат",
-  //     text: "Обговорюємо полікарбонат та його види",
-  //   },
-  //   {
-  //     id: 2,
-  //     title: "Полікарбонат 2",
-  //     text: "Обговорюємо полікарбонат та його види 2",
-  //   },
-  // ]);
+  const [forumSectionsList, setForumSectionsList] = useState([
+    {
+      id: 1,
+      title: "Полікарбонат",
+      text: "Обговорюємо полікарбонат та його види",
+    },
+    {
+      id: 2,
+      title: "Полікарбонат 2",
+      text: "Обговорюємо полікарбонат та його види 2",
+    },
+  ]);
 
-  // const [activeSection, setActiveSection] = useState(forumSectionsList[0].id);
+  const [activeSection, setActiveSection] = useState(forumSectionsList[0].id);
 
   // -=-=-=-=-=-=-=-=-=- Список разделов форума + активный раздел -=-=-=-=-=-=-=-=-=-
 
@@ -77,7 +77,7 @@ export default function Sections() {
             }}
             pagination={{ clickable: true }}
           >
-            {/* {!!forumSectionsList.length &&
+            {!!forumSectionsList.length &&
               forumSectionsList.map((item) => (
                 <SwiperSlide key={item.id}>
                   <Section
@@ -87,7 +87,7 @@ export default function Sections() {
                     onClick={(_) => setActiveSection(item.id)}
                   />
                 </SwiperSlide>
-              ))} */}
+              ))}
           </Swiper>
           <button
             type="button"
