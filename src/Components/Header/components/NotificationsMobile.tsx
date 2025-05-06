@@ -15,9 +15,9 @@ export default function NotificationsMobile() {
       <div ref={rootEl} className="">
         <button
           onClick={toggleMenu}
-          className="header-icon header-icon--notify notifications notifications--mobile"
+          className="btn-icon btn-icon--notify notifications notifications--mobile"
         >
-          <div className="header-icon__image">
+          <div className="btn-icon__image">
             <Image src="/icons/bell.svg" alt="Icon" width={100} height={100} />
           </div>
           <div className="notification-value">

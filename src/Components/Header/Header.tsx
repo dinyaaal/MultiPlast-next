@@ -255,11 +255,8 @@ export default async function Header() {
           </ul>
 
           <div className="bottom-header__actions">
-            <Link
-              href="/favorites"
-              className="header-icon header-icon--favorites"
-            >
-              <div className="header-icon__image">
+            <Link href="/favorites" className="btn-icon btn-icon--favorites">
+              <div className="btn-icon__image">
                 <Image
                   src="/icons/heart.svg"
                   alt="Icon"

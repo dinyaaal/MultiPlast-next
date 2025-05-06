@@ -28,9 +28,9 @@ export default function SearchMobile() {
     <div>
       <button
         onClick={toggleMenu}
-        className="search-mobile__button header-icon header-icon--search"
+        className="search-mobile__button btn-icon btn-icon--search"
       >
-        <div className="header-icon__image">
+        <div className="btn-icon__image">
           <Image
             src="/icons/search-blue.svg"
             alt="Icon"

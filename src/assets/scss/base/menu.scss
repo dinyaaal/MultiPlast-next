@@ -1,173 +1,183 @@
 .menu {
-	// position: absolute;width: fit-content;height: fit-content;top: 100%;left: 0;
-	z-index: 99;
+  // position: absolute;width: fit-content;height: fit-content;top: 100%;left: 0;
+  z-index: 99;
 
-	// .menu__icon
-	&__icon {
-	}
-	&__top{
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		gap: toRem(20);
-		width: 100%;
-		padding: toRem(15) toRem(15);
+  // .menu__icon
+  &__icon {
+  }
+  &__top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: toRem(20);
+    width: 100%;
+    padding: toRem(15) toRem(15);
 
-		border-top: 1px solid var(--border);
+    border-top: 1px solid var(--border);
 
-		.header-icon--favorites{
-			@media (min-width:$mobileSmall){
-				 display: none; 
-			}
-		}
-		.language{
-			margin: 0 0 0 auto;
-		}
-	}
-	&__wrapper{
-		width: 100%;
-		height: 100%;
-		background-color: #ffffff;
-		margin-top: toRem(70);
-		overflow: auto;
-		pointer-events: all;
-		
-	}
-	.user{
-		width: 100%;
-		border-top: 1px solid var(--border);
+    .header-icon--favorites {
+      @media (min-width: $mobileSmall) {
+        display: none;
+      }
+    }
+    .language {
+      margin: 0 0 0 auto;
+    }
+  }
+  &__wrapper {
+    width: 100%;
+    height: 100%;
+    background-color: #ffffff;
+    margin-top: toRem(70);
+    overflow: auto;
+    pointer-events: all;
+  }
+  .user {
+    width: 100%;
+    border-top: 1px solid var(--border);
 
-		padding: toRem(25) toRem(15);
-		.body-user{
-			width: 100%;
-		}
-	}
+    padding: toRem(25) toRem(15);
+    .body-user {
+      width: 100%;
+    }
+  }
 
-	// .menu__body
-	&__body {
-		display: none;
-		.language{
-			width: toRem(233);
-		}
-		@media (max-width: $tablet) {
-			display: flex;
-			flex-direction: column;
-			position: absolute;
-			width: 100%;
-			height: 100vh;
-			top: 0;
-			right: -100%;
-			// padding-top: 70px;
-			transition: right 0.3s;
-			pointer-events: none;
-			.menu-open & {
-				right: 0;
-			
-			}
-		}
-	}
-	// .menu__list
-	&__list {
-		color: #000;
-		position: relative;
-		
-		display: none;
+  // .menu__body
+  &__body {
+    display: none;
+    .language {
+      width: toRem(233);
+    }
+    @media (max-width: $tablet) {
+      display: flex;
+      flex-direction: column;
+      position: absolute;
+      width: 100%;
+      height: 100vh;
+      top: 0;
+      right: -100%;
+      // padding-top: 70px;
+      transition: right 0.3s;
+      pointer-events: none;
+      .menu-open & {
+        right: 0;
+      }
+    }
+  }
+  // .menu__list
+  &__list {
+    color: #000;
+    position: relative;
 
-		@media (max-width: $tablet) {
-			display: flex;
-			flex-direction: column;
-			align-items: center;
-			text-align: center;
-			justify-content: center;
-		}
-		
-	}
-	// .menu__item
-	&__item {
-		display: flex;
-		align-items: center;
-		gap: toRem(10);
-		@media (max-width:$tablet){
-			border-top: 1px solid var(--border);
+    display: none;
+    a {
+      transition: 0.3s ease-in-out;
+      @media (any-hover: hover) {
+        &:hover {
+          color: var(--blueColor);
+        }
+      }
+    }
 
-			padding: toRem(25) toRem(15);
-			width: 100%;
-		}
-	}
-	
-	// .menu__link
-	&__link {
-		position: relative;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		gap: toRem(5);
-		
-		@media (max-width: $tablet) {
-		}
-	}
-	&__arrow{
-		width: toRem(12);
-		height: toRem(7);
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		transition: all .3s ease;
-		img{
-			width: 100%;
-			height: 100%;
-		}
-	}
+    @media (max-width: $tablet) {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      justify-content: center;
+    }
+  }
+  // .menu__item
+  &__item {
+    display: flex;
+    align-items: center;
+    gap: toRem(10);
+    @media (max-width: $tablet) {
+      border-top: 1px solid var(--border);
+
+      padding: toRem(25) toRem(15);
+      width: 100%;
+    }
+  }
+
+  // .menu__link
+  &__link {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: toRem(5);
+    transition: all 0.3s ease-in-out;
+    @media (any-hover: hover) {
+      &:hover {
+        color: var(--blueColor);
+      }
+    }
+
+    @media (max-width: $tablet) {
+    }
+  }
+  &__arrow {
+    width: toRem(12);
+    height: toRem(7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  }
 }
 
 //Burger Icon
 .icon-menu {
-    display: block;
-    position: relative;
-    width: toRem(30);
-    height: toRem(18);
-    z-index: 5;
-    @media (any-hover: none) {
-        cursor: default;
+  display: block;
+  position: relative;
+  width: toRem(30);
+  height: toRem(18);
+  z-index: 5;
+  @media (any-hover: none) {
+    cursor: default;
+  }
+  span,
+  &::before,
+  &::after {
+    content: "";
+    transition: all 0.3s ease 0s;
+    left: 0;
+    position: absolute;
+    width: 100%;
+    height: toRem(2);
+    background-color: #ffffff;
+  }
+  span {
+    width: 80%;
+  }
+  &::before {
+    top: 0;
+  }
+  &::after {
+    bottom: 0;
+  }
+  span {
+    top: calc(50% - toRem(1));
+  }
+  .menu-open & {
+    span {
+      width: 0;
     }
-    span,
     &::before,
     &::after {
-        content: "";
-        transition: all 0.3s ease 0s;
-        left: 0;
-        position: absolute;
-        width: 100%;
-        height: toRem(2);
-        background-color: #ffffff;
-    }
-    span{
-        width: 80%;
     }
     &::before {
-        top: 0;
+      top: calc(50% - toRem(1));
+      transform: rotate(-45deg);
     }
     &::after {
-        bottom: 0;
+      bottom: calc(50% - toRem(1));
+      transform: rotate(45deg);
     }
-    span {
-        top: calc(50% - toRem(1));
-    }
-    .menu-open & {
-        span {
-            width: 0;
-        }
-        &::before,
-        &::after {
-        }
-        &::before {
-            top: calc(50% - toRem(1));
-            transform: rotate(-45deg);
-        }
-        &::after {
-            bottom: calc(50% - toRem(1));
-            transform: rotate(45deg);
-        }
-    }
-
+  }
 }

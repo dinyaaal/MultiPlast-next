@@ -31,7 +31,7 @@ export default function BurgerMenu() {
 
   return (
     <div className={`header__menu menu ${isOpen ? "menu-open" : ""} `}>
-      <button onClick={toggleMenu} className="header-icon header-icon--menu">
+      <button onClick={toggleMenu} className="btn-icon btn-icon--menu">
         <div className="menu__icon icon-menu">
           <span></span>
         </div>
@@ -42,9 +42,9 @@ export default function BurgerMenu() {
             <Link
               onClick={closeMenu}
               href="/favorites"
-              className="header-icon header-icon--favorites"
+              className="btn-icon btn-icon--favorites"
             >
-              <div className="header-icon__image">
+              <div className="btn-icon__image">
                 <Image
                   src="/icons/heart.svg"
                   alt="Icon"

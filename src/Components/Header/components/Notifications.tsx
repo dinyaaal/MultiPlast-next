@@ -10,24 +10,26 @@ export default function Notifications() {
   };
   const { rootEl } = useClickOutside(setIsOpen);
 
-  const [notificationsCount, setNotificationsCount] = useState(0)
+  const [notificationsCount, setNotificationsCount] = useState(0);
 
   return (
     <button
       ref={rootEl}
       onClick={toggleMenu}
-      className={`header-icon header-icon--notify notifications notifications--desktop ${
+      className={`btn-icon btn-icon--notify notifications notifications--desktop ${
         isOpen ? "active" : ""
       }`}
     >
-      <div className="header-icon__image">
+      <div className="btn-icon__image">
         <Image src="/icons/bell.svg" alt="Icon" width={100} height={100} />
       </div>
-      {!!notificationsCount && <div className="notification-value">
-        <span className="notification-value__number">
-          {notificationsCount}
-        </span>
-      </div>}
+      {!!notificationsCount && (
+        <div className="notification-value">
+          <span className="notification-value__number">
+            {notificationsCount}
+          </span>
+        </div>
+      )}
       <div className="notifications__body body-notifications">
         <div className="body-notifications__items">
           <div className="body-notifications__item item-body-notifications">
