@@ -1,3 +1,5 @@
+
+
 import { Link } from "@/i18n/routing";
 import ModalContact from "../Modals/ModalContact";
 import { getServerSession } from "next-auth";
@@ -8,13 +10,21 @@ export default async function Footer() {
 
   const session = await getServerSession();
 
+  // TODO Надо вывести инфу с запроса
+  // async function getStaticData() {
+  //   const res = await fetch("https://multiplast.web-hub.online/api/static-data").then((res) => {
+  //     console.log(res);
+  //   });
+  // }
+
+  // getStaticData()
   return (
     <footer className="footer">
       <div className="footer__container">
         <div className="footer__body">
           <div className="footer__block">
             <Link href="/" className="footer__logo logo">
-              Л<span>ого</span>
+              <span>M</span>ulti<span>P</span>last
             </Link>
             <div className="footer__socials socials">
               <p className="socials__text">{t("socialsText")}</p>
