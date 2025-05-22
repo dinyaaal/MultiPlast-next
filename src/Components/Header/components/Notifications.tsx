@@ -98,15 +98,15 @@ export default function Notifications() {
 
   async function getNotifications() {
     // TODO запрос на получение всех уведомлений
-    // const res = await fetch(
-    //   "https://multiplast.web-hub.online/api/notifications",
-    //   {
-    //     method: "GET",
-    //     headers: {
-    //       Authorization: `Bearer ${session?.user.access_token}`,
-    //     },
-    //   }
-    // );
+    const res = await fetch(
+      "https://multiplast.web-hub.online/api/notifications",
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${session?.user.access_token}`,
+        },
+      }
+    );
   }
 
   useEffect(() => {
