@@ -19,12 +19,16 @@ export async function middleware(request: NextRequest) {
   const protectedRoutes = ["/dashboard"];
   const isProtected = protectedRoutes.some((route) => pathname.includes(route));
 
-  if (isProtected && !token) {
-    const locale = request.nextUrl.pathname.split("/")[1];
-    const loginUrl = new URL(`/${locale}/login`, request.url);
-    loginUrl.searchParams.set("callbackUrl", request.url);
-    return NextResponse.redirect(loginUrl);
-  }
+  // debug тут не пропускает пользователя на дашборд когда тот авторизован уже
+
+  console.log(isProtected, token);
+  
+  // if (isProtected && !token) {
+  //   const locale = request.nextUrl.pathname.split("/")[1];
+  //   const loginUrl = new URL(`/${locale}/login`, request.url);
+  //   loginUrl.searchParams.set("callbackUrl", request.url);
+  //   return NextResponse.redirect(loginUrl);
+  // }
 
   return response;
 }

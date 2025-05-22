@@ -55,12 +55,12 @@ export default function SearchMobile() {
             <path
               d="M8.83984 8.83789L26.5175 26.5156"
               stroke="#0E274D"
-              stroke-linecap="round"
+              strokeLinecap="round"
             />
             <path
               d="M9.19141 26.8691L26.8691 9.19147"
               stroke="#0E274D"
-              stroke-linecap="round"
+              strokeLinecap="round"
             />
           </svg>
         </button>

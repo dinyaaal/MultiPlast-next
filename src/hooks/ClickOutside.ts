@@ -9,6 +9,7 @@ export const useClickOutside = (
 
   useEffect(() => {
     const onClick = (e: any) => {
+      
       if (
         !rootEl.current?.contains(e.target) &&
         (exceptions?.length

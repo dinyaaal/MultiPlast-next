@@ -13,6 +13,8 @@ export default function HeaderUser() {
   const { data: userInfo, error } = useSelector(
     (state: RootState) => state.userInfo
   );
+  
+
   return (
     <>
       {status === "authenticated" ? (

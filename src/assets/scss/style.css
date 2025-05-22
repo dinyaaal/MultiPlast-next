@@ -1988,7 +1988,7 @@ input::-webkit-inner-spin-button {
 .notifications.active {
   background-color: var(--border);
 }
-.notifications.active .body-notifications__items {
+.body-notifications__items.active {
   transform: translateY(0) !important;
 }
 .body-notifications {

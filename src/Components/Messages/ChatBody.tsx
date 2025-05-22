@@ -250,9 +250,9 @@ export default function ChatBody() {
               <path
                 fill="none"
                 stroke="#fff"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
                 d="M29 3L3 15l12 2.5M29 3L19 29l-4-11.5M29 3L15 17.5"
               />
             </svg>

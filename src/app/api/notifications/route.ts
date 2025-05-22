@@ -4,19 +4,22 @@ export async function GET(request: NextRequest) {
   const url = new URL(request.url);
   const token = url.searchParams.get("token");
 
+  console.log('tokentokentoken', token);
+  
+
   try {
     const res = await fetch(
       `https://multiplast.web-hub.online/api/notifications`,
       {
         method: "GET",
         headers: {
+          "Accept": "application/json",
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
         next: { revalidate: 86400 },
       }
     );
-    
 
     if (!res.ok) {
       throw new Error("Network response was not ok");
