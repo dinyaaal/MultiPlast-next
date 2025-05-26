@@ -129,7 +129,7 @@ export default function ForumComments({ postId }: ForumCommentInputProps) {
       if (!response.ok) {
         throw new Error("Не вдалося надіслати коментар");
       }
-
+      setReplyData(null);
       setText("");
       setImages([]);
       fetchComments();

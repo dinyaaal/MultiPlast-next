@@ -1,8 +1,10 @@
 "use client";
 
 import { CommentType } from "@/types/types";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 interface ForumCommentProps {
   comment: CommentType;
@@ -20,6 +22,8 @@ export const ForumComment: React.FC<ForumCommentProps> = ({
   const [isAnswersOpen, setIsAnswersOpen] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [replies, setReplies] = useState<CommentType[]>([]);
+  const [isLiked, setIsLiked] = useState<boolean>(comment.is_liked);
+  const { data: session, status } = useSession();
 
   const formattedDate = new Date(comment.created_at).toLocaleDateString(
     "uk-UA",
@@ -78,8 +82,10 @@ export const ForumComment: React.FC<ForumCommentProps> = ({
   };
 
   useEffect(() => {
-    fetchComments();
-  }, []);
+    if (isAnswersOpen) {
+      fetchComments();
+    }
+  }, [isAnswersOpen]);
 
   const getReplyWord = (count: number): string => {
     const mod10 = count % 10;
@@ -89,6 +95,36 @@ export const ForumComment: React.FC<ForumCommentProps> = ({
     if (mod10 >= 2 && mod10 <= 4 && (mod100 < 10 || mod100 >= 20))
       return "ответа";
     return "ответов";
+  };
+
+  const handleLikeClick = async () => {
+    if (status === "authenticated") {
+      try {
+        const response = await fetch("/api/forum/comments/like", {
+          method: "POST",
+          headers: {
+            token: `${session?.user.access_token}`,
+          },
+          body: JSON.stringify({
+            forum_id: postId,
+            comment_id: comment.id,
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to like comment");
+        }
+
+        const data = await response.json();
+        // console.log("Favorite added:", data);
+        setIsLiked(!isLiked);
+      } catch (error) {
+        console.error("Failed to like comment", error);
+        toast.error("Failed to like comment");
+      }
+    } else if (status === "unauthenticated") {
+      toast.info("Что бы проголосовать за данный ответ - авторизируйтесь");
+    }
   };
 
   return (
@@ -133,7 +169,11 @@ export const ForumComment: React.FC<ForumCommentProps> = ({
                 </div>
                 <div className="info-item-forum__item">
                   <div className="info-item-forum__icon">
-                    <button className="like active">
+                    <button
+                      onClick={(e) => handleLikeClick()}
+                      // disabled={!session}
+                      className={`like ${isLiked ? "active" : ""}`}
+                    >
                       <svg
                         width="33"
                         height="30"
@@ -157,7 +197,51 @@ export const ForumComment: React.FC<ForumCommentProps> = ({
             </div>
           </div>
         </div>
-        {!isAnswer && (
+        {comment.comments_count > 0 && (
+          <>
+            <button
+              onClick={toggleAnswers}
+              className={`comment-show-replies ${
+                isAnswersOpen ? "active" : ""
+              }`}
+            >
+              <svg
+                className="comment-show-replies__arrow"
+                width="12"
+                height="7"
+                viewBox="0 0 12 7"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M5.46967 6.53033C5.76256 6.82322 6.23744 6.82322 6.53033 6.53033L11.3033 1.75736C11.5962 1.46447 11.5962 0.989592 11.3033 0.696699C11.0104 0.403806 10.5355 0.403806 10.2426 0.696699L6 4.93934L1.75736 0.696699C1.46447 0.403806 0.989592 0.403806 0.696699 0.696699C0.403806 0.989593 0.403806 1.46447 0.696699 1.75736L5.46967 6.53033ZM5.25 5L5.25 6L6.75 6L6.75 5L5.25 5Z"
+                  fill="#0E274D"
+                />
+              </svg>
+              <span>
+                {comment.comments_count} {getReplyWord(comment.comments_count)}
+              </span>
+            </button>
+            {isAnswersOpen && replies && (
+              <div
+                className={`comment__answers answers-comment ${
+                  !isAnswer ? "answers-comment--main" : ""
+                }`}
+              >
+                {replies.map((reply) => (
+                  <ForumComment
+                    isAnswer={true}
+                    key={reply.id}
+                    postId={postId}
+                    comment={reply}
+                    onReply={onReply}
+                  />
+                ))}
+              </div>
+            )}
+          </>
+        )}
+        {/* {!isAnswer && (
           <>
             {replies.length > 0 && (
               <button
@@ -199,7 +283,7 @@ export const ForumComment: React.FC<ForumCommentProps> = ({
               </div>
             )}
           </>
-        )}
+        )} */}
       </div>
     </div>
   );

@@ -89,6 +89,7 @@
     flex-direction: column !important;
     gap: toRem(20) !important;
     .swiper-slide {
+      display: grid;
       width: fit-content;
     }
     .swiper-pagination {
@@ -101,9 +102,12 @@
         display: none;
       }
     }
-  }
-  // .sections-forum__wrapper
-  &__wrapper {
+    .swiper-wrapper {
+    }
+    .swiper-slide {
+      align-self: stretch;
+      height: auto;
+    }
   }
   // .sections-forum__slide
   &__slide {
@@ -124,11 +128,13 @@
 }
 
 .item-sections-forum {
+  display: flex;
   padding: toRem(23);
   border-radius: toRem(5);
   background-color: var(--bg-lite);
   max-width: toRem(264);
   width: 100%;
+  min-height: 100%;
   height: 100%;
   text-align: center;
   display: flex;
@@ -554,28 +560,37 @@
   &__body {
   }
   &__answers {
-    flex-direction: column;
-    gap: toRem(15);
-    display: flex;
-    @media (max-width: $mobile) {
-      .user-chat {
-        justify-content: end;
-        flex-direction: row-reverse;
-      }
-    }
-    @media (min-width: $mobile) {
-      margin-left: 51px;
-    }
-    .body-comment {
-      background-color: var(--bg-lite);
-      @media (max-width: $mobile) {
-        margin-left: 0 !important;
-        margin-right: 51px;
-      }
-    }
   }
   &__block {
     margin-left: 51px;
+  }
+}
+
+.answers-comment {
+  flex-direction: column;
+  gap: toRem(15);
+  display: flex;
+  @media (max-width: $mobile) {
+    .user-chat {
+      justify-content: end;
+      flex-direction: row-reverse;
+    }
+  }
+
+  .body-comment {
+    background-color: var(--bg-lite);
+    @media (max-width: $mobile) {
+      margin-left: 0 !important;
+      margin-right: 51px;
+    }
+  }
+  &--main {
+    @media (min-width: $mobile) {
+      margin-left: 51px;
+    }
+  }
+  .comment__block {
+    margin: 0px;
   }
 }
 

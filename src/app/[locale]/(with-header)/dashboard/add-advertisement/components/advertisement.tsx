@@ -191,8 +191,11 @@ export default function Advertisement({ categories }: SellProps) {
           .find((category) => category.type === "Сировина")
           ?.id?.toString() || ""
       );
+      // setPhotos(product.photos);
     }
   }, [product]);
+
+  // console.log(photos)
 
   useEffect(() => {
     reset(
@@ -933,7 +936,7 @@ export default function Advertisement({ categories }: SellProps) {
                         <input
                           type="file"
                           id="advertisement-photo"
-                          accept="image/jpeg, image/png"
+                          accept="image/jpeg, image/png, image/webp"
                           // {...register("photos")}
                           onChange={handlePhotosChange}
                           multiple

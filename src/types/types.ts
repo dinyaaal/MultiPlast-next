@@ -203,3 +203,13 @@ export interface MessageType {
   from_user: User;
   chat_id: number;
 }
+
+export interface ForumCategory {
+  id: number;
+  title: string;
+  description: string;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
+  position: number;
+}

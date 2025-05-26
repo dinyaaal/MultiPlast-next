@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Swiper as SwiperType } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
@@ -14,6 +14,11 @@ import { Spinner } from "@heroui/react";
 import { useSession } from "next-auth/react";
 import { Link } from "@/i18n/routing";
 import { SocialsNetwork } from "./components/SocialsNetworks";
+import LightGallery from "lightgallery/react";
+import lgZoom from "lightgallery/plugins/zoom";
+import "lightgallery/css/lightgallery.css";
+import "lightgallery/css/lg-zoom.css";
+import { toast } from "sonner";
 
 export default function Product({ params }: { params: { id: string } }) {
   const { data: session, status } = useSession();
@@ -22,10 +27,7 @@ export default function Product({ params }: { params: { id: string } }) {
   const [product, setProduct] = useState<ProductType | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
-  const handleLikeClick = () => {
-    setIsLiked(!isLiked);
-  };
+  const galleryRef = useRef<any>(null);
 
   function isEmpty(string: string | null | undefined) {
     return string ?? "";
@@ -76,6 +78,98 @@ export default function Product({ params }: { params: { id: string } }) {
   useEffect(() => {
     fetchProduct();
   }, []);
+
+  const handleLikeClick = async () => {
+    if (!product) {
+      return;
+    }
+
+    const handleFavoriteInCookies = (action: "add" | "remove") => {
+      const cookies = document.cookie
+        .split("; ")
+        .find((row) => row.startsWith("favorites="));
+
+      let favorites = cookies
+        ? JSON.parse(decodeURIComponent(cookies.split("=")[1]))
+        : [];
+
+      if (action === "add") {
+        if (!favorites.some((item: any) => item.id === product.id)) {
+          favorites.push(product);
+          document.cookie = `favorites=${encodeURIComponent(
+            JSON.stringify(favorites)
+          )}; path=/; max-age=${365 * 24 * 60 * 60}`;
+          toast.success("Товар добавлен в избранное");
+          setIsLiked(!isLiked);
+        }
+      } else {
+        favorites = favorites.filter((item: any) => item.id !== product.id);
+        document.cookie = `favorites=${encodeURIComponent(
+          JSON.stringify(favorites)
+        )}; path=/; max-age=${365 * 24 * 60 * 60}`;
+        toast.success("Товар убран из избранного");
+        setIsLiked(!isLiked);
+      }
+    };
+
+    if (status === "authenticated") {
+      if (!isLiked) {
+        try {
+          const response = await fetch("/api/favorites/add", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              id: product.id,
+              token: session?.user.access_token,
+            }),
+          });
+
+          if (!response.ok) {
+            throw new Error("Failed to add to favorites");
+          }
+
+          const data = await response.json();
+          console.log("Favorite added:", data);
+          setIsLiked(true);
+          toast.success("Товар добавлен в избранное");
+          setIsLiked(!isLiked);
+          // dispatch(addFavorite(product.id));
+        } catch (error) {
+          console.error("Error adding to favorites:", error);
+          toast.error("Error adding to favorites");
+        }
+      } else {
+        try {
+          const response = await fetch("/api/favorites/delete", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              id: product.id,
+              token: session?.user.access_token,
+            }),
+          });
+
+          if (!response.ok) {
+            throw new Error("Failed to remove from favorites");
+          }
+
+          const data = await response.json();
+          setIsLiked(!isLiked);
+          // onUnlike?.(product.id);
+          toast.success("Товар убран из избранного");
+        } catch (error) {
+          toast.error("Failed to remove from favorites");
+        }
+        setIsLiked(false);
+      }
+    } else if (status === "unauthenticated") {
+      handleFavoriteInCookies(isLiked ? "remove" : "add");
+    }
+  };
 
   if (!product) {
     return (
@@ -167,157 +261,174 @@ export default function Product({ params }: { params: { id: string } }) {
             </div>
           </div>
           <div className="product__body body-product">
-            <div className="body-product__content">
-              {!!product.photos.length && (
-                <div className="body-product__images">
-                  <Swiper
-                    thumbs={{ swiper: thumbsSwiper }}
-                    modules={[Thumbs, Navigation]}
-                    spaceBetween={20}
-                    slidesPerView={1}
-                    speed={800}
-                    className="body-product__slider"
-                    navigation={{
-                      prevEl: ".thumbs-slider-body-product-button-prev",
-                      nextEl: ".thumbs-slider-body-product-button-next",
-                    }}
-                  >
-                    {product.photos.map((item) => (
-                      <SwiperSlide>
-                        <Image
-                          src={item.url}
-                          alt={product.title + " | Photo"}
-                          width={500}
-                          height={500}
-                        />
-                      </SwiperSlide>
-                    ))}
-                  </Swiper>
+            <div>
+              <LightGallery
+                onInit={(ref) => (galleryRef.current = ref.instance)}
+                dynamic
+                plugins={[lgZoom]}
+                dynamicEl={product.photos.map((item) => ({
+                  src: item.url,
+                  thumb: item.url,
+                  subHtml: `<h4>${product.title}</h4>`,
+                }))}
+              />
+              <div className="body-product__content">
+                {!!product.photos.length && (
+                  <div className="body-product__images">
+                    <Swiper
+                      thumbs={{ swiper: thumbsSwiper }}
+                      modules={[Thumbs, Navigation]}
+                      spaceBetween={20}
+                      slidesPerView={1}
+                      speed={800}
+                      className="body-product__slider"
+                      navigation={{
+                        prevEl: ".thumbs-slider-body-product-button-prev",
+                        nextEl: ".thumbs-slider-body-product-button-next",
+                      }}
+                    >
+                      {product.photos.map((item, index) => (
+                        <SwiperSlide key={index}>
+                          <Image
+                            src={item.url}
+                            alt={`${product.title} | Photo ${index + 1}`}
+                            width={500}
+                            height={500}
+                            className="cursor-zoom-in"
+                            onClick={() =>
+                              galleryRef.current.openGallery(index)
+                            } // 👈 открываем по клику
+                          />
+                        </SwiperSlide>
+                      ))}
+                    </Swiper>
 
-                  {!!product?.photos?.length && (
-                    <div className="body-product__thumbs-slider-wrapper">
-                      <Swiper
-                        onSwiper={setThumbsSwiper}
-                        spaceBetween={10}
-                        slidesPerView="auto"
-                        speed={800}
-                        modules={[Navigation]}
-                        className="body-product__thumbs-slider"
-                      >
-                        {product.photos.map((item) => (
-                          <SwiperSlide>
-                            <Image
-                              src={item.url}
-                              alt={product.title + " | Photo"}
-                              width={1000}
-                              height={1000}
+                    {!!product?.photos?.length && (
+                      <div className="body-product__thumbs-slider-wrapper">
+                        <Swiper
+                          onSwiper={setThumbsSwiper}
+                          spaceBetween={10}
+                          slidesPerView="auto"
+                          speed={800}
+                          modules={[Navigation]}
+                          className="body-product__thumbs-slider"
+                        >
+                          {product.photos.map((item) => (
+                            <SwiperSlide>
+                              <Image
+                                src={item.url}
+                                alt={product.title + " | Photo"}
+                                width={1000}
+                                height={1000}
+                              />
+                            </SwiperSlide>
+                          ))}
+                        </Swiper>
+                        <button
+                          type="button"
+                          className="swiper-button swiper-button-prev thumbs-slider-body-product-button-prev"
+                        >
+                          <svg
+                            width="41"
+                            height="41"
+                            viewBox="0 0 41 41"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <rect
+                              x="0.5"
+                              y="0.5"
+                              width="40"
+                              height="40"
+                              rx="3.5"
+                              fill="#1858B8"
+                              stroke="#1858B8"
                             />
-                          </SwiperSlide>
-                        ))}
-                      </Swiper>
-                      <button
-                        type="button"
-                        className="swiper-button swiper-button-prev thumbs-slider-body-product-button-prev"
-                      >
-                        <svg
-                          width="41"
-                          height="41"
-                          viewBox="0 0 41 41"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
+                            <path
+                              d="M24.5303 21.5303C24.8232 21.2374 24.8232 20.7626 24.5303 20.4697L19.7574 15.6967C19.4645 15.4038 18.9896 15.4038 18.6967 15.6967C18.4038 15.9896 18.4038 16.4645 18.6967 16.7574L22.9393 21L18.6967 25.2426C18.4038 25.5355 18.4038 26.0104 18.6967 26.3033C18.9896 26.5962 19.4645 26.5962 19.7574 26.3033L24.5303 21.5303ZM24 20.25H23V21.75H24V20.25Z"
+                              fill="white"
+                            />
+                          </svg>
+                        </button>
+                        <button
+                          type="button"
+                          className="swiper-button swiper-button-next thumbs-slider-body-product-button-next"
                         >
-                          <rect
-                            x="0.5"
-                            y="0.5"
-                            width="40"
-                            height="40"
-                            rx="3.5"
-                            fill="#1858B8"
-                            stroke="#1858B8"
-                          />
-                          <path
-                            d="M24.5303 21.5303C24.8232 21.2374 24.8232 20.7626 24.5303 20.4697L19.7574 15.6967C19.4645 15.4038 18.9896 15.4038 18.6967 15.6967C18.4038 15.9896 18.4038 16.4645 18.6967 16.7574L22.9393 21L18.6967 25.2426C18.4038 25.5355 18.4038 26.0104 18.6967 26.3033C18.9896 26.5962 19.4645 26.5962 19.7574 26.3033L24.5303 21.5303ZM24 20.25H23V21.75H24V20.25Z"
-                            fill="white"
-                          />
-                        </svg>
-                      </button>
-                      <button
-                        type="button"
-                        className="swiper-button swiper-button-next thumbs-slider-body-product-button-next"
-                      >
-                        <svg
-                          width="41"
-                          height="41"
-                          viewBox="0 0 41 41"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <rect
-                            x="0.5"
-                            y="0.5"
-                            width="40"
-                            height="40"
-                            rx="3.5"
-                            fill="#1858B8"
-                            stroke="#1858B8"
-                          />
-                          <path
-                            d="M24.5303 21.5303C24.8232 21.2374 24.8232 20.7626 24.5303 20.4697L19.7574 15.6967C19.4645 15.4038 18.9896 15.4038 18.6967 15.6967C18.4038 15.9896 18.4038 16.4645 18.6967 16.7574L22.9393 21L18.6967 25.2426C18.4038 25.5355 18.4038 26.0104 18.6967 26.3033C18.9896 26.5962 19.4645 26.5962 19.7574 26.3033L24.5303 21.5303ZM24 20.25H23V21.75H24V20.25Z"
-                            fill="white"
-                          />
-                        </svg>
-                      </button>
-                    </div>
-                  )}
-                </div>
-              )}
-
-              <div className="top-product__body">
-                <div className="top-product__block">
-                  <h2 className="top-product__title title">{product.title}</h2>
-                  <div className="top-product__actions">
-                    {session?.user.id === product.author.id ? (
-                      <Link
-                        href={`/dashboard/add-advertisement?edit=${product.id}`}
-                        className={` edit `}
-                      >
-                        <svg
-                          width="30"
-                          height="30"
-                          viewBox="0 0 30 30"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M26.0395 3.24608L26.7539 3.96054C27.309 4.51557 27.309 5.41308 26.7539 5.96221L25.0357 7.68637L22.3136 4.96433L24.0319 3.24608C24.5869 2.69104 25.4844 2.69104 26.0336 3.24608H26.0395ZM12.3879 14.8959L20.312 6.966L23.034 9.68804L15.1041 17.6121C14.9328 17.7833 14.7203 17.9073 14.49 17.9722L11.0358 18.9583L12.0218 15.5041C12.0868 15.2738 12.2108 15.0613 12.382 14.89L12.3879 14.8959ZM22.0302 1.2444L10.3804 12.8884C9.86665 13.4021 9.49466 14.0339 9.29981 14.7247L7.61108 20.6293C7.46937 21.1253 7.60518 21.6567 7.97126 22.0228C8.33735 22.3889 8.86877 22.5247 9.36476 22.383L15.2694 20.6943C15.9661 20.4935 16.5979 20.1215 17.1057 19.6137L28.7556 7.96979C30.4148 6.31058 30.4148 3.61807 28.7556 1.95886L28.0411 1.2444C26.3819 -0.414801 23.6894 -0.414801 22.0302 1.2444ZM5.19608 3.54721C2.32643 3.54721 0 5.87364 0 8.7433V24.8039C0 27.6736 2.32643 30 5.19608 30H21.2567C24.1264 30 26.4528 27.6736 26.4528 24.8039V18.1907C26.4528 17.4054 25.821 16.7736 25.0357 16.7736C24.2504 16.7736 23.6186 17.4054 23.6186 18.1907V24.8039C23.6186 26.1088 22.5616 27.1658 21.2567 27.1658H5.19608C3.89116 27.1658 2.83423 26.1088 2.83423 24.8039V8.7433C2.83423 7.43837 3.89116 6.38144 5.19608 6.38144H11.8093C12.5946 6.38144 13.2264 5.74964 13.2264 4.96433C13.2264 4.17901 12.5946 3.54721 11.8093 3.54721H5.19608Z"
-                            fill="#B0BFD7"
-                          />
-                        </svg>
-                      </Link>
-                    ) : (
-                      <button
-                        className={` like ${isLiked ? "active" : ""}`}
-                        onClick={(e) => {
-                          handleLikeClick();
-                        }}
-                      >
-                        <svg
-                          width="33"
-                          height="30"
-                          viewBox="0 0 33 30"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M15.0002 26.7323L14.998 26.7303C10.7549 22.8862 7.35391 19.7972 4.9962 16.9153C2.65494 14.0535 1.5 11.58 1.5 8.99183C1.5 4.77155 4.78535 1.5 9 1.5C11.3943 1.5 13.7168 2.62136 15.2258 4.37798L16.3636 5.70249L17.5015 4.37798C19.0105 2.62136 21.3329 1.5 23.7273 1.5C27.9419 1.5 31.2273 4.77155 31.2273 8.99183C31.2273 11.58 30.0723 14.0535 27.7311 16.9153C25.3734 19.7972 21.9724 22.8862 17.7293 26.7303L17.7271 26.7323L16.3636 27.9724L15.0002 26.7323Z"
-                            fill="white"
-                            stroke="#BA360C"
-                            stroke-width="3"
-                          />
-                        </svg>
-                      </button>
+                          <svg
+                            width="41"
+                            height="41"
+                            viewBox="0 0 41 41"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <rect
+                              x="0.5"
+                              y="0.5"
+                              width="40"
+                              height="40"
+                              rx="3.5"
+                              fill="#1858B8"
+                              stroke="#1858B8"
+                            />
+                            <path
+                              d="M24.5303 21.5303C24.8232 21.2374 24.8232 20.7626 24.5303 20.4697L19.7574 15.6967C19.4645 15.4038 18.9896 15.4038 18.6967 15.6967C18.4038 15.9896 18.4038 16.4645 18.6967 16.7574L22.9393 21L18.6967 25.2426C18.4038 25.5355 18.4038 26.0104 18.6967 26.3033C18.9896 26.5962 19.4645 26.5962 19.7574 26.3033L24.5303 21.5303ZM24 20.25H23V21.75H24V20.25Z"
+                              fill="white"
+                            />
+                          </svg>
+                        </button>
+                      </div>
                     )}
-                    {/* <a href="#" className="share">
+                  </div>
+                )}
+
+                <div className="top-product__body">
+                  <div className="top-product__block">
+                    <h2 className="top-product__title title">
+                      {product.title}
+                    </h2>
+                    <div className="top-product__actions">
+                      {session?.user.id === product.author.id ? (
+                        <Link
+                          href={`/dashboard/add-advertisement?edit=${product.id}`}
+                          className={` edit `}
+                        >
+                          <svg
+                            width="30"
+                            height="30"
+                            viewBox="0 0 30 30"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M26.0395 3.24608L26.7539 3.96054C27.309 4.51557 27.309 5.41308 26.7539 5.96221L25.0357 7.68637L22.3136 4.96433L24.0319 3.24608C24.5869 2.69104 25.4844 2.69104 26.0336 3.24608H26.0395ZM12.3879 14.8959L20.312 6.966L23.034 9.68804L15.1041 17.6121C14.9328 17.7833 14.7203 17.9073 14.49 17.9722L11.0358 18.9583L12.0218 15.5041C12.0868 15.2738 12.2108 15.0613 12.382 14.89L12.3879 14.8959ZM22.0302 1.2444L10.3804 12.8884C9.86665 13.4021 9.49466 14.0339 9.29981 14.7247L7.61108 20.6293C7.46937 21.1253 7.60518 21.6567 7.97126 22.0228C8.33735 22.3889 8.86877 22.5247 9.36476 22.383L15.2694 20.6943C15.9661 20.4935 16.5979 20.1215 17.1057 19.6137L28.7556 7.96979C30.4148 6.31058 30.4148 3.61807 28.7556 1.95886L28.0411 1.2444C26.3819 -0.414801 23.6894 -0.414801 22.0302 1.2444ZM5.19608 3.54721C2.32643 3.54721 0 5.87364 0 8.7433V24.8039C0 27.6736 2.32643 30 5.19608 30H21.2567C24.1264 30 26.4528 27.6736 26.4528 24.8039V18.1907C26.4528 17.4054 25.821 16.7736 25.0357 16.7736C24.2504 16.7736 23.6186 17.4054 23.6186 18.1907V24.8039C23.6186 26.1088 22.5616 27.1658 21.2567 27.1658H5.19608C3.89116 27.1658 2.83423 26.1088 2.83423 24.8039V8.7433C2.83423 7.43837 3.89116 6.38144 5.19608 6.38144H11.8093C12.5946 6.38144 13.2264 5.74964 13.2264 4.96433C13.2264 4.17901 12.5946 3.54721 11.8093 3.54721H5.19608Z"
+                              fill="#B0BFD7"
+                            />
+                          </svg>
+                        </Link>
+                      ) : (
+                        <button
+                          className={` like ${isLiked ? "active" : ""}`}
+                          onClick={(e) => {
+                            handleLikeClick();
+                          }}
+                        >
+                          <svg
+                            width="33"
+                            height="30"
+                            viewBox="0 0 33 30"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M15.0002 26.7323L14.998 26.7303C10.7549 22.8862 7.35391 19.7972 4.9962 16.9153C2.65494 14.0535 1.5 11.58 1.5 8.99183C1.5 4.77155 4.78535 1.5 9 1.5C11.3943 1.5 13.7168 2.62136 15.2258 4.37798L16.3636 5.70249L17.5015 4.37798C19.0105 2.62136 21.3329 1.5 23.7273 1.5C27.9419 1.5 31.2273 4.77155 31.2273 8.99183C31.2273 11.58 30.0723 14.0535 27.7311 16.9153C25.3734 19.7972 21.9724 22.8862 17.7293 26.7303L17.7271 26.7323L16.3636 27.9724L15.0002 26.7323Z"
+                              fill="white"
+                              stroke="#BA360C"
+                              stroke-width="3"
+                            />
+                          </svg>
+                        </button>
+                      )}
+                      {/* <a href="#" className="share">
                       <svg
                         width="27"
                         height="30"
@@ -331,25 +442,26 @@ export default function Product({ params }: { params: { id: string } }) {
                         />
                       </svg>
                     </a> */}
+                    </div>
                   </div>
-                </div>
-                <div className="top-product__price price-product">
-                  <div className="price-product__text title">
-                    {product.price} грн
-                  </div>
-                  {/* <div className="price-product__sub-text">
+                  <div className="top-product__price price-product">
+                    <div className="price-product__text title">
+                      {product.price} грн
+                    </div>
+                    {/* <div className="price-product__sub-text">
                     від 3000 кг - 60 грн/кг
                   </div> */}
+                  </div>
                 </div>
-              </div>
-              <div
-                data-showmore="size"
-                className="body-product__description description-body-product"
-              >
-                <div className="description-body-product__title">
-                  Опис товару:
+                <div
+                  data-showmore="size"
+                  className="body-product__description description-body-product"
+                >
+                  <div className="description-body-product__title">
+                    Опис товару:
+                  </div>
+                  <ReadMore>{product.text}</ReadMore>
                 </div>
-                <ReadMore>{product.text}</ReadMore>
               </div>
             </div>
             <div className="body-product__block">
@@ -433,7 +545,7 @@ export default function Product({ params }: { params: { id: string } }) {
                     </Link>
                   )}
                 </div>
-                
+
                 <SocialsNetwork />
               </div>
             </div>
