@@ -1,15 +1,15 @@
-.advertisement__navigation {
+.dashboard__navigation {
   display: flex;
 }
-.advertisement__title {
+.dashboard__title {
   border: 1px solid #eee;
   padding: toRem(10) toRem(15);
   border-radius: toRem(5);
 }
-.advertisement__title._tab-active {
+.dashboard__title._tab-active {
   border: 1px solid #000;
 }
-.advertisement__content {
+.dashboard__content {
   border: 1px solid #eee;
   padding: toRem(10) toRem(15);
-}/*# sourceMappingURL=tabs.css.map */
+} /*# sourceMappingURL=tabs.css.map */

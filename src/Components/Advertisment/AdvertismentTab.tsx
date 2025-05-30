@@ -39,7 +39,7 @@ const AdvertismentTab: FC<AdvertismentTabProps> = ({
     <Link
       href={targetPath}
       // onClick={handleClick}
-      className={`tabs-advertisement__item ${
+      className={`tabs-dashboard__item ${
         isActive ? "active" : ""
       } ${className}`}
     >

@@ -97,18 +97,18 @@ export default function Profile() {
 
   return (
     <>
-      <div className="advertisement__wrapper wrapper-advertisement advertisement-contacts">
-        <div className="wrapper-advertisement__body body-advertisement">
+      <div className="dashboard__wrapper wrapper-dashboard dashboard-contacts">
+        <div className="wrapper-dashboard__body body-dashboard">
           <form
             onSubmit={handleSubmit(processForm)}
-            className="body-advertisement__wrapper"
+            className="body-dashboard__wrapper"
           >
-            <div className="advertisement-contacts__user-block">
-              <div className="advertisement-contacts__password password-advertisement-contacts">
-                <div className="password-advertisement-contacts__title">
+            <div className="dashboard-contacts__user-block">
+              <div className="dashboard-contacts__password password-dashboard-contacts">
+                <div className="password-dashboard-contacts__title">
                   Зміна пароля
                 </div>
-                <div className="password-advertisement-contacts__body">
+                <div className="password-dashboard-contacts__body">
                   <div className="input-block">
                     <p>Старий пароль</p>
                     <div
@@ -237,14 +237,14 @@ export default function Profile() {
                   </div>
                   <p>Мінімальна довжина паролю - 6 символів</p>
                 </div>
-                <div className="password-advertisement-contacts__actions">
+                <div className="password-dashboard-contacts__actions">
                   <button
                     type="submit"
-                    className="password-advertisement-contacts__save button"
+                    className="password-dashboard-contacts__save button"
                   >
                     Зберегти
                   </button>
-                  {/* <button className="password-advertisement-contacts__cancel">
+                  {/* <button className="password-dashboard-contacts__cancel">
                       Відміна
                     </button> */}
                 </div>

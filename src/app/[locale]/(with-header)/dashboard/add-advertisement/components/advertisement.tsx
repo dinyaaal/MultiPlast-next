@@ -168,6 +168,7 @@ export default function Advertisement({ categories }: SellProps) {
           ?.id?.toString() || ""
       );
       setValue("title", product?.title);
+
       setValue("text", product?.text);
       setValue("address", product?.contact.address || "");
       setValue("name", product?.contact.name || "");
@@ -177,6 +178,8 @@ export default function Advertisement({ categories }: SellProps) {
       setValue("phone_number", product?.contact.phone_number || "");
       setValue("price", product.price?.toString() || "");
       setArrangement(product.type_price === "by_arrangement");
+      // setValue("volume", product?.);
+      setValue("title", product?.title);
 
       setValue("advertType", product?.type_of_product || "");
       setValue(
@@ -269,7 +272,7 @@ export default function Advertisement({ categories }: SellProps) {
     clearErrors();
     reset(
       {
-        type: "",
+        // type: "",
         polymer: "",
       },
       {
@@ -387,6 +390,11 @@ export default function Advertisement({ categories }: SellProps) {
     if (!arrangement && price) {
       formData.append("price", price);
     }
+    if (data.volume && data.volume_price) {
+      formData.append("volume", data.volume);
+      formData.append("price_per_volume", data.volume_price);
+    }
+
     if (editId && product) {
       try {
         const editResponse = await fetch(`/api/products/edit`, {
@@ -443,17 +451,14 @@ export default function Advertisement({ categories }: SellProps) {
 
   return (
     <>
-      <form
-        className="advertisement__form"
-        onSubmit={handleSubmit(processForm)}
-      >
-        <div className=" wrapper-advertisement">
-          <h2 className="wrapper-advertisement__title title title--small">
+      <form className="dashboard__form" onSubmit={handleSubmit(processForm)}>
+        <div className=" wrapper-dashboard">
+          <h2 className="wrapper-dashboard__title title title--small">
             {t("fill-ad-title")}
           </h2>
-          <div className="wrapper-advertisement__body body-advertisement">
-            <div className="body-advertisement__wrapper">
-              <div className="body-advertisement__block">
+          <div className="wrapper-dashboard__body body-dashboard">
+            <div className="body-dashboard__wrapper">
+              <div className="body-dashboard__block">
                 <div className="input-block">
                   <p>{t("select-category")}</p>
 
@@ -808,7 +813,7 @@ export default function Advertisement({ categories }: SellProps) {
                   </div>
                 )}
               </div>
-              <div className="body-advertisement__block">
+              <div className="body-dashboard__block">
                 <div className="input-block input-block-title">
                   <p>{t("enter-ad-title")}</p>
                   <div className="input-body input-body--title">
@@ -830,104 +835,104 @@ export default function Advertisement({ categories }: SellProps) {
                   <div className="input-body-file">
                     <div className="input-body-file__input-wrapper">
                       <label
-                        htmlFor="advertisement-photo"
+                        htmlFor="dashboard-photo"
                         className="input-body-file__input input"
                       >
-                        {(photos && photos?.length > 0) ||
-                          (product?.photos && product?.photos.length > 0 && (
-                            <>
-                              <Swiper
-                                spaceBetween={20}
-                                slidesPerView={1}
-                                modules={[Navigation]}
-                                className="w-full h-full"
-                                navigation={{
-                                  nextEl: ".swiper-button-next",
-                                  prevEl: ".swiper-button-prev",
-                                }}
+                        {(photos.length > 0 ||
+                          (product?.photos && product?.photos?.length > 0)) && (
+                          <>
+                            <Swiper
+                              spaceBetween={20}
+                              slidesPerView={1}
+                              modules={[Navigation]}
+                              className="w-full h-full"
+                              navigation={{
+                                nextEl: ".swiper-button-next",
+                                prevEl: ".swiper-button-prev",
+                              }}
+                            >
+                              {product?.photos?.map((photo, index) => (
+                                <SwiperSlide key={`product-${index}`}>
+                                  <Image
+                                    src={photo.url}
+                                    className="ibg"
+                                    alt={`Uploaded image ${index + 1}`}
+                                    width={600}
+                                    height={600}
+                                  />
+                                </SwiperSlide>
+                              ))}
+                              {photos.map((photo, index) => (
+                                <SwiperSlide key={`uploaded-${index}`}>
+                                  <Image
+                                    src={URL.createObjectURL(photo)}
+                                    className="ibg"
+                                    alt={`Uploaded image ${index + 1}`}
+                                    width={600}
+                                    height={600}
+                                  />
+                                </SwiperSlide>
+                              ))}
+                            </Swiper>
+
+                            <button
+                              type="button"
+                              className="swiper-button swiper-button-prev"
+                            >
+                              <svg
+                                width="41"
+                                height="41"
+                                viewBox="0 0 41 41"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
                               >
-                                {product?.photos &&
-                                  product.photos.map((photo, index) => (
-                                    <SwiperSlide key={index}>
-                                      <Image
-                                        src={photo.url}
-                                        className="ibg"
-                                        alt={`Uploaded image ${index + 1}`}
-                                        width={600}
-                                        height={600}
-                                      />
-                                    </SwiperSlide>
-                                  ))}
-                                {photos.map((photo, index) => (
-                                  <SwiperSlide key={index}>
-                                    <Image
-                                      src={URL.createObjectURL(photo)}
-                                      className="ibg"
-                                      alt={`Uploaded image ${index + 1}`}
-                                      width={600}
-                                      height={600}
-                                    />
-                                  </SwiperSlide>
-                                ))}
-                              </Swiper>
-                              <button
-                                type="button"
-                                className="swiper-button swiper-button-prev "
+                                <rect
+                                  x="0.5"
+                                  y="0.5"
+                                  width="40"
+                                  height="40"
+                                  rx="3.5"
+                                  fill="#1858B8"
+                                  stroke="#1858B8"
+                                />
+                                <path
+                                  d="M24.5303 21.5303C24.8232 21.2374 24.8232 20.7626 24.5303 20.4697L19.7574 15.6967C19.4645 15.4038 18.9896 15.4038 18.6967 15.6967C18.4038 15.9896 18.4038 16.4645 18.6967 16.7574L22.9393 21L18.6967 25.2426C18.4038 25.5355 18.4038 26.0104 18.6967 26.3033C18.9896 26.5962 19.4645 26.5962 19.7574 26.3033L24.5303 21.5303ZM24 20.25H23V21.75H24V20.25Z"
+                                  fill="white"
+                                />
+                              </svg>
+                            </button>
+                            <button
+                              type="button"
+                              className="swiper-button swiper-button-next"
+                            >
+                              <svg
+                                width="41"
+                                height="41"
+                                viewBox="0 0 41 41"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
                               >
-                                <svg
-                                  width="41"
-                                  height="41"
-                                  viewBox="0 0 41 41"
-                                  fill="none"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                >
-                                  <rect
-                                    x="0.5"
-                                    y="0.5"
-                                    width="40"
-                                    height="40"
-                                    rx="3.5"
-                                    fill="#1858B8"
-                                    stroke="#1858B8"
-                                  />
-                                  <path
-                                    d="M24.5303 21.5303C24.8232 21.2374 24.8232 20.7626 24.5303 20.4697L19.7574 15.6967C19.4645 15.4038 18.9896 15.4038 18.6967 15.6967C18.4038 15.9896 18.4038 16.4645 18.6967 16.7574L22.9393 21L18.6967 25.2426C18.4038 25.5355 18.4038 26.0104 18.6967 26.3033C18.9896 26.5962 19.4645 26.5962 19.7574 26.3033L24.5303 21.5303ZM24 20.25H23V21.75H24V20.25Z"
-                                    fill="white"
-                                  />
-                                </svg>
-                              </button>
-                              <button
-                                type="button"
-                                className="swiper-button swiper-button-next "
-                              >
-                                <svg
-                                  width="41"
-                                  height="41"
-                                  viewBox="0 0 41 41"
-                                  fill="none"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                >
-                                  <rect
-                                    x="0.5"
-                                    y="0.5"
-                                    width="40"
-                                    height="40"
-                                    rx="3.5"
-                                    fill="#1858B8"
-                                    stroke="#1858B8"
-                                  />
-                                  <path
-                                    d="M24.5303 21.5303C24.8232 21.2374 24.8232 20.7626 24.5303 20.4697L19.7574 15.6967C19.4645 15.4038 18.9896 15.4038 18.6967 15.6967C18.4038 15.9896 18.4038 16.4645 18.6967 16.7574L22.9393 21L18.6967 25.2426C18.4038 25.5355 18.4038 26.0104 18.6967 26.3033C18.9896 26.5962 19.4645 26.5962 19.7574 26.3033L24.5303 21.5303ZM24 20.25H23V21.75H24V20.25Z"
-                                    fill="white"
-                                  />
-                                </svg>
-                              </button>
-                            </>
-                          ))}
+                                <rect
+                                  x="0.5"
+                                  y="0.5"
+                                  width="40"
+                                  height="40"
+                                  rx="3.5"
+                                  fill="#1858B8"
+                                  stroke="#1858B8"
+                                />
+                                <path
+                                  d="M24.5303 21.5303C24.8232 21.2374 24.8232 20.7626 24.5303 20.4697L19.7574 15.6967C19.4645 15.4038 18.9896 15.4038 18.6967 15.6967C18.4038 15.9896 18.4038 16.4645 18.6967 16.7574L22.9393 21L18.6967 25.2426C18.4038 25.5355 18.4038 26.0104 18.6967 26.3033C18.9896 26.5962 19.4645 26.5962 19.7574 26.3033L24.5303 21.5303ZM24 20.25H23V21.75H24V20.25Z"
+                                  fill="white"
+                                />
+                              </svg>
+                            </button>
+                          </>
+                        )}
 
                         <input
                           type="file"
-                          id="advertisement-photo"
+                          id="dashboard-photo"
                           accept="image/jpeg, image/png, image/webp"
                           // {...register("photos")}
                           onChange={handlePhotosChange}
@@ -935,6 +940,7 @@ export default function Advertisement({ categories }: SellProps) {
                         />
                       </label>
                     </div>
+                    <p>Первая загруженная фотография будет главной</p>
                     <div className="input-body-file__content">
                       <div className="input-body-file__downloads downloads-input-body-file">
                         <div className="downloads-input-body-file__image-box">
@@ -950,7 +956,7 @@ export default function Advertisement({ categories }: SellProps) {
                       </div>
                       <div className="input-body-file__actions">
                         <label
-                          htmlFor="advertisement-photo"
+                          htmlFor="dashboard-photo"
                           className="input-body-file__button button"
                         >
                           {t("upload")}
@@ -968,7 +974,7 @@ export default function Advertisement({ categories }: SellProps) {
                 </div>
               </div>
             </div>
-            <div className="body-advertisement__block">
+            <div className="body-dashboard__block">
               <div className="description input-block">
                 <p>{t("enter-description")}</p>
                 <textarea
@@ -982,14 +988,14 @@ export default function Advertisement({ categories }: SellProps) {
               </div>
               <div className="input-block">
                 <div className="input-body-file">
-                  <div className="input-body-file__content advertisement-files">
+                  <div className="input-body-file__content dashboard-files">
                     <p>{t("upload-files")}</p>
                     <div className="input-body-file__actions">
                       <label className="input-body-file__button button">
                         <input
-                          id="advertisement-files"
+                          id="dashboard-files"
                           type="file"
-                          className="advertisement-files__input"
+                          className="dashboard-files__input"
                           onChange={handleFilesChange}
                           multiple
                         />
@@ -1009,12 +1015,12 @@ export default function Advertisement({ categories }: SellProps) {
             </div>
           </div>
         </div>
-        <div className="advertisement__contact contact-advertisement">
-          <h2 className="contact-advertisement__title title title--small">
+        <div className="dashboard__contact contact-dashboard">
+          <h2 className="contact-dashboard__title title title--small">
             {t("contact-details")}
           </h2>
-          <div className="contact-advertisement__body">
-            <div className="contact-advertisement__content">
+          <div className="contact-dashboard__body">
+            <div className="contact-dashboard__content">
               <div className="input-block">
                 <p>{t("company-name")}</p>
                 <input
@@ -1132,11 +1138,11 @@ export default function Advertisement({ categories }: SellProps) {
                 />
               </div>
             </div>
-            <p className="contact-advertisement__text">{t("default-info")}</p>
+            <p className="contact-dashboard__text">{t("default-info")}</p>
           </div>
         </div>
-        <div className="advertisement__actions actions-advertisement">
-          <button type="submit" className="actions-advertisement__save button">
+        <div className="dashboard__actions actions-dashboard">
+          <button type="submit" className="actions-dashboard__save button">
             {t("save-publish")}
             {isLoadingRequest && <Spinner color="current" size="sm" />}
           </button>
@@ -1144,7 +1150,7 @@ export default function Advertisement({ categories }: SellProps) {
             <button
               type="button"
               onClick={handleAdvertDelete}
-              className="actions-advertisement__delete button button--secondary"
+              className="actions-dashboard__delete button button--secondary"
             >
               {t("delete-ad")}
             </button>

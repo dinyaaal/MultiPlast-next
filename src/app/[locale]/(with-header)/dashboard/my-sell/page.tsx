@@ -51,11 +51,11 @@ export default function page() {
   }, [status]);
 
   if (status === "unauthenticated") {
-    <div className="advertisement__block my-advertisement__block">
-      <h2 className="my-advertisement__title title title--small">
+    <div className="dashboard__block my-dashboard__block">
+      <h2 className="my-dashboard__title title title--small">
         Мої оголошення про продаж
       </h2>
-      <div className="my-advertisement__content"></div>
+      <div className="my-dashboard__content"></div>
     </div>;
   }
 
@@ -68,12 +68,12 @@ export default function page() {
   }
 
   return (
-    <div className="advertisement__block my-advertisement__block">
-      <h2 className="my-advertisement__title title title--small">
+    <div className="dashboard__block my-dashboard__block">
+      <h2 className="my-dashboard__title title title--small">
         Мої оголошення про купівлю
       </h2>
 
-      <div className="my-advertisement__content">
+      <div className="my-dashboard__content">
         {products.length > 0 ? (
           <div className="content-trade__items">
             {products.map((product) => (

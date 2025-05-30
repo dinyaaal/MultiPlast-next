@@ -9,7 +9,7 @@ import AdvertismentTab from "@/Components/Advertisment/AdvertismentTab";
 
 export default function Tabs() {
   return (
-    <div className="tabs-advertisement">
+    <div className="tabs-dashboard">
       <Swiper
         spaceBetween={20}
         slidesPerView={1}
@@ -27,25 +27,25 @@ export default function Tabs() {
         }}
       >
         <SwiperSlide>
-          <div className="tabs-advertisement__title">Оголошення</div>
+          <div className="tabs-dashboard__title">Оголошення</div>
 
-          <div className="tabs-advertisement__items">
+          <div className="tabs-dashboard__items">
             <AdvertismentTab
               href="/dashboard/add-advertisement"
               text="Подати оголошення"
               // params="sell"
             />
             {/* <AdvertismentTab
-              href="/add-advertisement"
+              href="/add-dashboard"
               text="Про купівлю"
               params="buy"
             /> */}
           </div>
         </SwiperSlide>
         <SwiperSlide>
-          <div className="tabs-advertisement__title">Мої оголошення</div>
+          <div className="tabs-dashboard__title">Мої оголошення</div>
 
-          <div className="tabs-advertisement__items">
+          <div className="tabs-dashboard__items">
             <AdvertismentTab
               href="/dashboard/my-sell"
               text="Мої оголошення про продаж"
@@ -57,18 +57,18 @@ export default function Tabs() {
           </div>
         </SwiperSlide>
         <SwiperSlide>
-          <div className="tabs-advertisement__title">Особистий кабінет</div>
+          <div className="tabs-dashboard__title">Особистий кабінет</div>
 
-          <div className="tabs-advertisement__items">
+          <div className="tabs-dashboard__items">
             <AdvertismentTab
               href="/dashboard/profile"
               text="Редагувати контактні данні"
-              className="tabs-advertisement__item--mobile"
+              className="tabs-dashboard__item--mobile"
             />
             <AdvertismentTab
               href="/dashboard/security"
               text="Конфіденційність"
-              className="tabs-advertisement__item--mobile"
+              className="tabs-dashboard__item--mobile"
             />
           </div>
         </SwiperSlide>

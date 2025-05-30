@@ -169,25 +169,25 @@ export default function Profile() {
   // console.log(userInfo);
   return (
     <>
-      <div className="advertisement__wrapper wrapper-advertisement advertisement-contacts">
-        <div className="wrapper-advertisement__body body-advertisement">
+      <div className="dashboard__wrapper wrapper-dashboard dashboard-contacts">
+        <div className="wrapper-dashboard__body body-dashboard">
           <form
             onSubmit={handleSubmit(processForm)}
-            className="body-advertisement__wrapper"
+            className="body-dashboard__wrapper"
           >
-            <div className="body-advertisement__block advertisement-contacts__block">
-              <div className="advertisement-contacts__user-block">
-                <div className="advertisement-contacts__user user-advertisement-contacts">
-                  <div className="user-advertisement-contacts__block">
-                    <p className="user-advertisement-contacts__name">
+            <div className="body-dashboard__block dashboard-contacts__block">
+              <div className="dashboard-contacts__user-block">
+                <div className="dashboard-contacts__user user-dashboard-contacts">
+                  <div className="user-dashboard-contacts__block">
+                    <p className="user-dashboard-contacts__name">
                       {userInfo?.first_name}
                     </p>
-                    <p className="user-advertisement-contacts__surname">
+                    <p className="user-dashboard-contacts__surname">
                       {userInfo?.last_name}
                     </p>
                   </div>
-                  <div className="advertisement-contacts__photo photo-advertisement-contacts">
-                    <div className="photo-advertisement-contacts__image">
+                  <div className="dashboard-contacts__photo photo-dashboard-contacts">
+                    <div className="photo-dashboard-contacts__image">
                       {photo ? (
                         <Image
                           src={URL.createObjectURL(photo)}
@@ -208,7 +208,7 @@ export default function Profile() {
                         />
                       )}
                     </div>
-                    <label className="photo-advertisement-contacts__save button">
+                    <label className="photo-dashboard-contacts__save button">
                       Завантажити фото
                       <input
                         type="file"
@@ -221,9 +221,9 @@ export default function Profile() {
               </div>
             </div>
 
-            <div className="advertisement-contacts__data data-advertisement-contacts">
-              <div className="data-advertisement-contacts__body body-advertisement__block">
-                <h2 className="body-advertisement__title title title--small">
+            <div className="dashboard-contacts__data data-dashboard-contacts">
+              <div className="data-dashboard-contacts__body body-dashboard__block">
+                <h2 className="body-dashboard__title title title--small">
                   Контактні дані
                 </h2>
                 <div className="block-row">
@@ -762,14 +762,14 @@ export default function Profile() {
                     </div>
                   </div>
                 </div>
-                <p className="data-advertisement-contacts__text">
+                <p className="data-dashboard-contacts__text">
                   Поля, що відмічені *, обовʼязкові для заповнення
                 </p>
               </div>
               <div className="block-row">
                 <button
                   type="submit"
-                  className="data-advertisement-contacts__save button"
+                  className="data-dashboard-contacts__save button"
                 >
                   Зберегти
                 </button>
@@ -786,7 +786,7 @@ export default function Profile() {
                       },
                     });
                   }}
-                  className="advertisement-contacts__delete button button--secondary"
+                  className="dashboard-contacts__delete button button--secondary"
                 >
                   Видалити акаунт
                 </button>

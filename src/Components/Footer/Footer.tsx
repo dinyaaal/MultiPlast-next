@@ -1,5 +1,3 @@
-
-
 import { Link } from "@/i18n/routing";
 import ModalContact from "../Modals/ModalContact";
 import { getServerSession } from "next-auth";
