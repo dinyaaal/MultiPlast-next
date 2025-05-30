@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
-  const url = new URL(request.url);
-  const token = url.searchParams.get("token");
+  const token = request.headers.get("token");
 
-  console.log('tokentokentoken', token);
-  
+  if (!token) {
+    return NextResponse.json({ error: "Missing id or token" }, { status: 400 });
+  }
 
   try {
     const res = await fetch(
@@ -13,11 +13,8 @@ export async function GET(request: NextRequest) {
       {
         method: "GET",
         headers: {
-          "Accept": "application/json",
-          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        next: { revalidate: 86400 },
       }
     );
 

@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Spinner } from "@heroui/react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import React from "react";
+import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { Toaster, toast } from "sonner";
@@ -17,9 +17,10 @@ export default function Profile() {
   const { data: session, status } = useSession();
   const router = useRouter();
 
-  const [isVisibleOld, setIsVisibleOld] = React.useState(false);
-  const [isVisibleNew, setIsVisibleNew] = React.useState(false);
-  const [isVisibleRepeat, setIsVisibleRepeat] = React.useState(false);
+  const [isVisibleOld, setIsVisibleOld] = useState(false);
+  const [isVisibleNew, setIsVisibleNew] = useState(false);
+  const [isVisibleRepeat, setIsVisibleRepeat] = useState(false);
+  const [isLoadingRequest, setIsLoadingRequest] = useState(false);
 
   const toggleVisibilityOld = () => setIsVisibleOld(!isVisibleOld);
   const toggleVisibilityNew = () => setIsVisibleNew(!isVisibleNew);
@@ -41,6 +42,8 @@ export default function Profile() {
     if (!session?.user.access_token && !session?.user.id) {
       return;
     }
+
+    setIsLoadingRequest(true);
 
     const token = session.user.access_token;
     const id = session.user.id;
@@ -81,6 +84,8 @@ export default function Profile() {
     } catch (error) {
       console.error("Ошибка при отправке данных:", error);
       toast.error("Ошибка обновления информации пользователя");
+    } finally {
+      setIsLoadingRequest(false);
     }
   };
 
@@ -243,6 +248,7 @@ export default function Profile() {
                     className="password-dashboard-contacts__save button"
                   >
                     Зберегти
+                    {isLoadingRequest && <Spinner color="current" size="sm" />}
                   </button>
                   {/* <button className="password-dashboard-contacts__cancel">
                       Відміна

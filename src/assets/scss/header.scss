@@ -702,9 +702,9 @@
     // max-height: toRem(200);
     overflow: auto;
     pointer-events: all;
-    height: calc(100vh - 200px);
+    // height: calc(100vh - 200px);
     max-height: toRem(500);
-    min-height: toRem(200);
+    // min-height: toRem(200);
   }
   // .body-notifications__item
   &__item {
@@ -712,7 +712,8 @@
 }
 .item-body-notifications {
   display: flex;
-  transition: all .3s ease;
+  justify-content: space-between;
+  transition: all 0.3s ease;
   gap: toRem(15);
   padding: toRem(7);
   // .item-body-notifications__text

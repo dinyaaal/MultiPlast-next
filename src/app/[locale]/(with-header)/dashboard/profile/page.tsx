@@ -39,6 +39,7 @@ export default function Profile() {
   const [photo, setPhoto] = useState<File | null>(null);
   const [userInformation, setUserInformation] = useState<User | null>(null);
   // const [error, setError] = useState<string | null>(null);
+  const [isLoadingRequest, setIsLoadingRequest] = useState(false);
 
   useEffect(() => {
     if (!userInformation) {
@@ -78,6 +79,7 @@ export default function Profile() {
       return;
     }
 
+    setIsLoadingRequest(true);
     const token = session.user.access_token;
     const id = session.user.id;
 
@@ -129,6 +131,8 @@ export default function Profile() {
     } catch (error) {
       console.error("Ошибка при отправке данных:", error);
       toast.error("Ошибка обновления информации пользователя");
+    } finally {
+      setIsLoadingRequest(false);
     }
   };
   const handleDeleteAccount = async () => {
@@ -772,6 +776,7 @@ export default function Profile() {
                   className="data-dashboard-contacts__save button"
                 >
                   Зберегти
+                  {isLoadingRequest && <Spinner color="current" size="sm" />}
                 </button>
                 <button
                   type="button"

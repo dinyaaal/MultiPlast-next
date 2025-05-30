@@ -178,7 +178,8 @@ export default function Advertisement({ categories }: SellProps) {
       setValue("phone_number", product?.contact.phone_number || "");
       setValue("price", product.price?.toString() || "");
       setArrangement(product.type_price === "by_arrangement");
-      // setValue("volume", product?.);
+      setValue("volume", product?.volume);
+      setValue("volume_price", product?.price_per_volume);
       setValue("title", product?.title);
 
       setValue("advertType", product?.type_of_product || "");

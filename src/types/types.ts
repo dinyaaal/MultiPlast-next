@@ -75,6 +75,8 @@ export interface ProductType {
   type_price: string;
   price: number;
   type_of_product: "sell" | "buy";
+  volume: string;
+  price_per_volume: string;
   user_id: number;
   created_at: string;
   updated_at: string;
@@ -213,3 +215,17 @@ export interface ForumCategory {
   updated_at: string;
   position: number;
 }
+
+export type NotificationType = {
+  id: number;
+  title: string;
+  content: string;
+  to_user_id: number;
+  is_read: 0 | 1; // <-- важно!
+  type: number;
+  read_at: string | null;
+  root_id: number | null;
+  created_at: string;
+  updated_at: string;
+  should_be_shown_in: string;
+};
