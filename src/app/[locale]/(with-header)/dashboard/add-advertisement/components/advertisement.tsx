@@ -64,6 +64,7 @@ export default function Advertisement({ categories }: SellProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingRequest, setIsLoadingRequest] = useState(false);
   const [productError, setProductError] = useState<string | null>(null);
+  const [activePhotoIndex, setActivePhotoIndex] = useState(0);
 
   const {
     register,
@@ -234,31 +235,93 @@ export default function Advertisement({ categories }: SellProps) {
       setPhotos((prevPhotos) => [...prevPhotos, ...Array.from(files)]);
     }
   };
-  const handleDeletePhotos = async () => {
-    setPhotos([]);
-    if (product && session?.user.access_token) {
+  // const handleDeletePhotos = async () => {
+  //   setPhotos([]);
+  //   if (product && session?.user.access_token) {
+  //     try {
+  //       const res = await fetch("/api/products/photos/delete", {
+  //         method: "DELETE",
+  //         headers: {
+  //           token: session?.user.access_token,
+  //           id: String(product.id),
+  //         },
+  //       });
+
+  //       if (!res.ok) {
+  //         const errData = await res.json();
+  //         throw new Error("Ошибка при удалении фото");
+  //       }
+
+  //       setProduct({
+  //         ...product,
+  //         photos: [],
+  //       });
+  //     } catch (err) {
+  //       console.error("Ошибка при удалении:", err);
+  //       toast.error("Ошибка при удалении фото");
+  //     }
+  //   }
+  // };
+
+  const handleDeleteActivePhoto = async () => {
+    if (!product || !session?.user.access_token) {
+      // просто удаляем локально из photos если product нет или токена нет
+      const totalProductPhotos = product?.photos?.length || 0;
+      const totalUploadedPhotos = photos.length;
+      if (activePhotoIndex >= totalProductPhotos) {
+        const uploadedIndex = activePhotoIndex - totalProductPhotos;
+        const newPhotos = [...photos];
+        newPhotos.splice(uploadedIndex, 1);
+        setPhotos(newPhotos);
+        setActivePhotoIndex((prev) => Math.max(prev - 1, 0));
+      }
+      return;
+    }
+
+    const totalProductPhotos = product.photos.length;
+
+    if (activePhotoIndex < totalProductPhotos) {
+      // фото из product.photos — нужно вызвать API удаления
+      const photoToDelete = product.photos[activePhotoIndex];
+
       try {
         const res = await fetch("/api/products/photos/delete", {
           method: "DELETE",
           headers: {
-            token: session?.user.access_token,
-            id: String(product.id),
+            token: session.user.access_token,
+            id: String(photoToDelete.id),
           },
         });
 
         if (!res.ok) {
           const errData = await res.json();
-          throw new Error("Ошибка при удалении фото");
+          throw new Error(errData.message || "Ошибка при удалении фото");
         }
 
-        setProduct({
-          ...product,
-          photos: [],
-        });
+        // Если успешно, обновляем локально
+        const newProductPhotos = [...product.photos];
+        newProductPhotos.splice(activePhotoIndex, 1);
+
+        setProduct((prev) => ({
+          ...prev!,
+          photos: newProductPhotos,
+        }));
+
+        // Обновляем индекс активного слайда
+        setActivePhotoIndex((prev) => Math.max(prev - 1, 0));
+
+        toast.success("Фото успешно удалено");
       } catch (err) {
         console.error("Ошибка при удалении:", err);
         toast.error("Ошибка при удалении фото");
       }
+    } else {
+      // фото из локальных загруженных photos
+      const uploadedIndex = activePhotoIndex - totalProductPhotos;
+      const newPhotos = [...photos];
+      newPhotos.splice(uploadedIndex, 1);
+      setPhotos(newPhotos);
+      setActivePhotoIndex((prev) => Math.max(prev - 1, 0));
     }
   };
 
@@ -851,6 +914,9 @@ export default function Advertisement({ categories }: SellProps) {
                                 nextEl: ".swiper-button-next",
                                 prevEl: ".swiper-button-prev",
                               }}
+                              onSlideChange={(swiper) =>
+                                setActivePhotoIndex(swiper.activeIndex)
+                              }
                             >
                               {product?.photos?.map((photo, index) => (
                                 <SwiperSlide key={`product-${index}`}>
@@ -964,7 +1030,7 @@ export default function Advertisement({ categories }: SellProps) {
                         </label>
                         <button
                           type="button"
-                          onClick={handleDeletePhotos}
+                          onClick={handleDeleteActivePhoto}
                           className="input-body-file__delete"
                         >
                           {t("delete")}
