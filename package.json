@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@heroui/breadcrumbs": "^2.2.16",
     "@heroui/modal": "2.2.8",
     "@heroui/react": "2.6.14",
     "@heroui/select": "2.4.10",
@@ -22,8 +23,8 @@
     "next": "14.2.8",
     "next-auth": "^4.24.8",
     "next-intl": "^4.0.2",
-    "react": "^18",
-    "react-dom": "^18",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
     "react-hook-form": "^7.53.1",
     "react-redux": "^9.2.0",
     "socket.io-client": "^4.8.1",

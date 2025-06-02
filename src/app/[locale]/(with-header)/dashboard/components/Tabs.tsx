@@ -67,7 +67,7 @@ export default function Tabs() {
             />
             <AdvertismentTab
               href="/dashboard/security"
-              text="Конфіденційність"
+              text="Смена пароля"
               className="tabs-dashboard__item--mobile"
             />
           </div>

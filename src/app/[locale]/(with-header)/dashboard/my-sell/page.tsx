@@ -14,20 +14,29 @@ export default function page() {
   const [lastPage, setLastPage] = useState<number>();
 
   const fetchProducts = async () => {
+    const token = session?.user.access_token;
+    if (!token) {
+      return;
+    }
+
     setIsLoading(true);
-    let queryParams: string[] = [];
 
-    queryParams.push(`page=${currentPage}`);
-    queryParams.push(`token=${session?.user.access_token}`);
+    const queryParams = new URLSearchParams();
 
-    queryParams.push(`perPage=12`);
-    queryParams.push(`status=0`);
+    queryParams.append("page", currentPage.toString());
+    queryParams.append("perPage", "12");
+    queryParams.append("status", "0");
 
-    const queryString =
-      queryParams.length > 0 ? `?${queryParams.join("&")}` : "";
+    const queryString = queryParams.toString()
+      ? `?${queryParams.toString()}`
+      : "";
 
     try {
-      const res = await fetch(`/api/products/my${queryString}`);
+      const res = await fetch(`/api/products/my${queryString}`, {
+        headers: {
+          token: token,
+        },
+      });
       if (!res.ok) {
         throw new Error("Network response was not ok");
       }

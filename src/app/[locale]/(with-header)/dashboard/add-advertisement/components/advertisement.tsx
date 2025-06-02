@@ -4,18 +4,19 @@ import { Navigation } from "swiper/modules";
 import "swiper/css";
 import { AdvertismentSchema } from "@/lib/schema";
 import { RootState } from "@/store/store";
-import { Category, Photo, ProductType, User } from "@/types/types";
+import { Category, ProductType } from "@/types/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Select, SelectItem, Spinner } from "@heroui/react";
 import { useSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { toast } from "sonner";
 import { z } from "zod";
 import Image from "next/image";
+import { useRouter } from "@/i18n/routing";
 
 interface SellProps {
   categories: Category[];
@@ -471,6 +472,8 @@ export default function Advertisement({ categories }: SellProps) {
         });
         if (editResponse.ok) {
           toast.success("Обновлено!");
+          const result = await editResponse.json();
+          router.push(`/products/${product.id}`);
         } else {
           throw new Error("Ошибка обновления информации пользователя");
         }
@@ -491,6 +494,8 @@ export default function Advertisement({ categories }: SellProps) {
         });
         if (postResponse.ok) {
           toast.success("Оголошення подано");
+          const result = await postResponse.json();
+          router.push(`/products/${result.id}`);
         } else {
           throw new Error("Ошибка обновления информации пользователя");
         }
@@ -524,7 +529,7 @@ export default function Advertisement({ categories }: SellProps) {
             <div className="body-dashboard__wrapper">
               <div className="body-dashboard__block">
                 <div className="input-block">
-                  <p>{t("select-category")}</p>
+                  <p>{t("select-category")}*</p>
 
                   <Select
                     placeholder={`Виберерите тип объявления`}
@@ -566,7 +571,7 @@ export default function Advertisement({ categories }: SellProps) {
                   </Select>
                 </div>
                 <div className="input-block">
-                  <p>{t("select-category")}</p>
+                  <p>{t("select-category")}*</p>
 
                   <Select
                     placeholder={t("select-category")}
@@ -613,11 +618,11 @@ export default function Advertisement({ categories }: SellProps) {
                       {Number(watch("mainCategory")) === 2
                         ? t("select-type")
                         : Number(watch("mainCategory")) === 3
-                        ? "Виберіть тип устаткування:"
+                        ? "Виберіть тип устаткування:*"
                         : Number(watch("mainCategory")) === 4
-                        ? "Виберіть послугу:"
+                        ? "Виберіть послугу:*"
                         : Number(watch("mainCategory")) === 5
-                        ? "Виберіть тип оголошення:"
+                        ? "Виберіть тип оголошення:*"
                         : ""}
                     </p>
 
@@ -691,7 +696,7 @@ export default function Advertisement({ categories }: SellProps) {
                 {(Number(watch("mainCategory")) === 1 ||
                   Number(watch("mainCategory")) === 2) && (
                   <div className="input-block">
-                    <p>{t("select-polymer")}</p>
+                    <p>{t("select-polymer")}*</p>
 
                     <Select
                       disallowEmptySelection
@@ -879,7 +884,7 @@ export default function Advertisement({ categories }: SellProps) {
               </div>
               <div className="body-dashboard__block">
                 <div className="input-block input-block-title">
-                  <p>{t("enter-ad-title")}</p>
+                  <p>{t("enter-ad-title")}*</p>
                   <div className="input-body input-body--title">
                     <input
                       maxLength={150}
@@ -902,14 +907,14 @@ export default function Advertisement({ categories }: SellProps) {
                         htmlFor="dashboard-photo"
                         className="input-body-file__input input"
                       >
-                        {(photos.length > 0 ||
-                          (product?.photos && product?.photos?.length > 0)) && (
+                        {photos.length > 0 ||
+                        (product?.photos && product?.photos?.length > 0) ? (
                           <>
                             <Swiper
                               spaceBetween={20}
                               slidesPerView={1}
                               modules={[Navigation]}
-                              className="w-full h-full"
+                              className="w-full "
                               navigation={{
                                 nextEl: ".swiper-button-next",
                                 prevEl: ".swiper-button-prev",
@@ -995,6 +1000,14 @@ export default function Advertisement({ categories }: SellProps) {
                               </svg>
                             </button>
                           </>
+                        ) : (
+                          <Image
+                            src="/icons/image.svg"
+                            alt="no-image"
+                            width={150}
+                            height={150}
+                            className="w-full h-full max-w-[150px] aspect-square"
+                          />
                         )}
 
                         <input
@@ -1028,13 +1041,19 @@ export default function Advertisement({ categories }: SellProps) {
                         >
                           {t("upload")}
                         </label>
-                        <button
-                          type="button"
-                          onClick={handleDeleteActivePhoto}
-                          className="input-body-file__delete"
-                        >
-                          {t("delete")}
-                        </button>
+
+                        {(photos.length > 0 ||
+                          (product?.photos && product?.photos?.length > 0)) && (
+                          <>
+                            <button
+                              type="button"
+                              onClick={handleDeleteActivePhoto}
+                              className="input-body-file__delete"
+                            >
+                              {t("delete")}
+                            </button>
+                          </>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -1043,7 +1062,7 @@ export default function Advertisement({ categories }: SellProps) {
             </div>
             <div className="body-dashboard__block">
               <div className="description input-block">
-                <p>{t("enter-description")}</p>
+                <p>{t("enter-description")}*</p>
                 <textarea
                   placeholder="Написати..."
                   className={`description__input input  ${
@@ -1113,7 +1132,7 @@ export default function Advertisement({ categories }: SellProps) {
                 />
               </div>
               <div className="input-block">
-                <p>{t("name")}</p>
+                <p>{t("name")}*</p>
                 <input
                   autoComplete="off"
                   type="text"
@@ -1133,7 +1152,7 @@ export default function Advertisement({ categories }: SellProps) {
                 />
               </div>
               <div className="input-block">
-                <p>{t("phone")}</p>
+                <p>{t("phone")}*</p>
                 <input
                   autoComplete="off"
                   type="number"
@@ -1173,7 +1192,7 @@ export default function Advertisement({ categories }: SellProps) {
                 />
               </div>
               <div className="input-block">
-                <p>{t("city")}</p>
+                <p>{t("city")}*</p>
                 <input
                   autoComplete="off"
                   type="text"
@@ -1189,7 +1208,7 @@ export default function Advertisement({ categories }: SellProps) {
                 />
               </div>
               <div className="input-block">
-                <p>{t("region")}</p>
+                <p>{t("region")}*</p>
                 <input
                   autoComplete="off"
                   type="text"

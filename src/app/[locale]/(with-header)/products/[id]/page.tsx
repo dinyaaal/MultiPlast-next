@@ -261,7 +261,7 @@ export default function Product({ params }: { params: { id: string } }) {
             </div>
           </div>
           <div className="product__body body-product">
-            <div>
+            <div className="w-full">
               <LightGallery
                 onInit={(ref) => (galleryRef.current = ref.instance)}
                 dynamic

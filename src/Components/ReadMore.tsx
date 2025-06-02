@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 interface ReadMoreProps {
   children: React.ReactNode;
@@ -8,30 +8,35 @@ interface ReadMoreProps {
 }
 
 const ReadMore: React.FC<ReadMoreProps> = ({ children, className }) => {
-  const [isActive, setIsActive] = useState(false);
-  const [isLongText, setIsLongText] = useState(false);
-  const [descriptionLenght] = useState(50);
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [showButton, setShowButton] = useState(false);
+  const textRef = useRef<HTMLParagraphElement>(null);
 
   useEffect(() => {
-    if (!children?.toString()?.length) return;
+    if (!textRef.current) return;
 
-    setIsLongText(children?.toString()?.length >= descriptionLenght);
-  }, []);
+    const el = textRef.current;
+    const lineHeight = parseFloat(getComputedStyle(el).lineHeight);
+    const maxHeight = lineHeight * 2; // высота 2 строк
 
-  const text = children
-    ?.toString()
-    .slice(0, !isActive ? descriptionLenght : -1);
-
+    // Если высота текста больше чем высота двух строк — показываем кнопку
+    setShowButton(el.scrollHeight > maxHeight);
+  }, [children]);
   return (
-    <div className={`read-more ${isActive ? "active" : ""} ${className ?? ""}`}>
-      <p className="read-more__text">{text}</p>
-      {isLongText && (
+    <div
+      className={`read-more ${isExpanded ? "active" : ""}  ${className ?? ""}`}
+    >
+      {/* <p className="read-more__text">{text}</p> */}
+      <p ref={textRef} className={`read-more__text`}>
+        {children}
+      </p>
+      {showButton && (
         <button
-          onClick={(_) => setIsActive(!isActive)}
+          onClick={() => setIsExpanded(!isExpanded)}
           type="button"
           className="read-more__button"
         >
-          {isActive ? "Сховати" : "Розгорнути повністю"}
+          {isExpanded ? "Сховати" : "Розгорнути повністю"}
         </button>
       )}
     </div>
