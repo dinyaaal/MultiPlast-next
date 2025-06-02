@@ -111,6 +111,19 @@ export const ProductCard: React.FC<{
     }
   };
 
+  function formatPrice(value: number): string {
+    if (value >= 1_000_000_000) {
+      return (value / 1_000_000_000).toFixed(1).replace(/\.0$/, "") + "B";
+    }
+    if (value >= 1_000_000) {
+      return (value / 1_000_000).toFixed(1).replace(/\.0$/, "") + "M";
+    }
+    if (value >= 1_000) {
+      return (value / 1_000).toFixed(1).replace(/\.0$/, "") + "K";
+    }
+    return value.toString();
+  }
+
   return (
     <Link
       href={`./products/${product.id}`}
@@ -136,7 +149,7 @@ export const ProductCard: React.FC<{
             <p>По договорённости</p>
           ) : (
             <div className="item-advert__price">
-              <span>{product.price} грн</span>
+              <span>{formatPrice(product.price)} грн</span>
             </div>
           )}
           {session?.user.id === product.author.id ? (
@@ -179,7 +192,7 @@ export const ProductCard: React.FC<{
                   d="M15.0002 26.7323L14.998 26.7303C10.7549 22.8862 7.35391 19.7972 4.9962 16.9153C2.65494 14.0535 1.5 11.58 1.5 8.99183C1.5 4.77155 4.78535 1.5 9 1.5C11.3943 1.5 13.7168 2.62136 15.2258 4.37798L16.3636 5.70249L17.5015 4.37798C19.0105 2.62136 21.3329 1.5 23.7273 1.5C27.9419 1.5 31.2273 4.77155 31.2273 8.99183C31.2273 11.58 30.0723 14.0535 27.7311 16.9153C25.3734 19.7972 21.9724 22.8862 17.7293 26.7303L17.7271 26.7323L16.3636 27.9724L15.0002 26.7323Z"
                   fill="white"
                   stroke="#BA360C"
-                  stroke-width="3"
+                  strokeWidth="3"
                 />
               </svg>
             </button>

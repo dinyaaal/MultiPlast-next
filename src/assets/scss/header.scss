@@ -691,7 +691,11 @@
   // .body-notifications__items
   &__items {
     display: flex;
+    min-height: 100px;
+
     flex-direction: column;
+    align-items: center;
+    justify-content: center;
     gap: toRem(6);
     transition: all 0.3s ease;
     transform: translateY(-200%);

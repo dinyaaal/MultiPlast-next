@@ -93,11 +93,14 @@
   @media (min-width: $tablet) {
     flex-direction: row;
   }
-  // .body-product__content
-  &__content {
+  &__content-wrapper {
     @media (min-width: $tablet) {
       max-width: toRem(847);
     }
+    width: 100%;
+  }
+  // .body-product__content
+  &__content {
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -128,6 +131,7 @@
   }
   // .body-product__slider
   &__slider {
+    width: 100%;
     display: flex !important;
     .swiper-slide {
       width: 100% !important;
@@ -148,6 +152,8 @@
   // .body-product__slide
   &__slide {
     // max-width: toRem(847);
+  }
+  &__image {
   }
   .body-product__thumbs-slider-wrapper {
     position: relative;

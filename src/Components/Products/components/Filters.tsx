@@ -103,29 +103,25 @@ export const Filters: React.FC<FiltersProps> = ({
       opt: selectedOptions.join(","),
     });
   }
-  
+
   // -=-=-=-=-=-=-=-=- Добавление фильтров в строку поиска -=-=-=-=-=-=-=-=-
-
-
-
 
   // -=-=-=-=-=-=-=-=- Фильтрация после перезагрузки страницы с выбранными фильтрами -=-=-=-=-=-=-=-=-
 
   useEffect(() => {
-    const option = searchParams.get('opt')
-    const category = searchParams.get('cat')
-    const subcategory = searchParams.get('subcat')
-    
-    setSelectedCategory(category);
-    setSelectedOptions(option?.split(',') ?? []);
+    const option = searchParams.get("opt");
+    const category = searchParams.get("cat");
+    const subcategory = searchParams.get("subcat");
 
-    if(category){
+    setSelectedCategory(category);
+    setSelectedOptions(option?.split(",") ?? []);
+
+    if (category) {
       setTimeout(() => {
-        setSelectedSubCategories(subcategory?.split(',') ?? []);
-      }, 100)
+        setSelectedSubCategories(subcategory?.split(",") ?? []);
+      }, 100);
     }
-    
-  }, [])
+  }, []);
 
   // -=-=-=-=-=-=-=-=- Фильтрация после перезагрузки страницы с выбранными фильтрами -=-=-=-=-=-=-=-=-
 
@@ -222,6 +218,7 @@ export const Filters: React.FC<FiltersProps> = ({
               >
                 {categories.map((category) => (
                   <Radio
+                    key={category.id}
                     classNames={{ label: "text-xl" }}
                     value={category.id.toString()}
                   >

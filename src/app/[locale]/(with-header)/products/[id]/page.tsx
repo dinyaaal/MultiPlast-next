@@ -8,7 +8,7 @@ import "swiper/css";
 import "swiper/css/thumbs";
 import { Navigation, Thumbs } from "swiper/modules";
 import ReadMore from "@/Components/ReadMore";
-import Breadcrumbs from "@/Components/Breadcrumbs";
+import { Breadcrumbs, BreadcrumbItem } from "@heroui/breadcrumbs";
 import { ProductType } from "@/types/types";
 import { Spinner } from "@heroui/react";
 import { useSession } from "next-auth/react";
@@ -20,7 +20,13 @@ import "lightgallery/css/lightgallery.css";
 import "lightgallery/css/lg-zoom.css";
 import { toast } from "sonner";
 
-export default function Product({ params }: { params: { id: string } }) {
+export default function Product({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const unwrappedParams = React.use(params);
+  const id = unwrappedParams.id;
   const { data: session, status } = useSession();
   const [thumbsSwiper, setThumbsSwiper] = useState<SwiperType | null>(null);
   const [isLiked, setIsLiked] = useState(false);
@@ -51,12 +57,12 @@ export default function Product({ params }: { params: { id: string } }) {
   // -=-=-=-=-=-=-=-=-=-=- Проверяем на наличие пользователя -=-=-=-=-=-=-=-=-=-=-
 
   const fetchProduct = async () => {
-    if (!params.id) return;
+    if (!id) return;
 
     setLoading(true);
 
     try {
-      const response = await fetch(`/api/products/product?id=${params.id}`, {
+      const response = await fetch(`/api/products/product?id=${id}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -181,7 +187,18 @@ export default function Product({ params }: { params: { id: string } }) {
 
   return (
     <>
-      <Breadcrumbs position={product.title} />
+      {/* <Breadcrumbs position={product.title} /> */}
+      <div className="breadcrumbs">
+        <Breadcrumbs className=" breadcrumbs__container">
+          <BreadcrumbItem>
+            <Link href="/">Головна</Link>
+          </BreadcrumbItem>
+          <BreadcrumbItem>
+            <Link href="/products">Торгівельний майданчик</Link>
+          </BreadcrumbItem>
+          <BreadcrumbItem>{product.title}</BreadcrumbItem>
+        </Breadcrumbs>
+      </div>
       <section className="product">
         <div className="product__container">
           <div className="product__top top-product">
@@ -225,7 +242,7 @@ export default function Product({ params }: { params: { id: string } }) {
                           d="M15.0002 26.7323L14.998 26.7303C10.7549 22.8862 7.35391 19.7972 4.9962 16.9153C2.65494 14.0535 1.5 11.58 1.5 8.99183C1.5 4.77155 4.78535 1.5 9 1.5C11.3943 1.5 13.7168 2.62136 15.2258 4.37798L16.3636 5.70249L17.5015 4.37798C19.0105 2.62136 21.3329 1.5 23.7273 1.5C27.9419 1.5 31.2273 4.77155 31.2273 8.99183C31.2273 11.58 30.0723 14.0535 27.7311 16.9153C25.3734 19.7972 21.9724 22.8862 17.7293 26.7303L17.7271 26.7323L16.3636 27.9724L15.0002 26.7323Z"
                           fill="white"
                           stroke="#BA360C"
-                          stroke-width="3"
+                          strokeWidth="3"
                         />
                       </svg>
                     </button>
@@ -261,7 +278,7 @@ export default function Product({ params }: { params: { id: string } }) {
             </div>
           </div>
           <div className="product__body body-product">
-            <div className="w-full">
+            <div className="body-product__content-wrapper">
               <LightGallery
                 onInit={(ref) => (galleryRef.current = ref.instance)}
                 dynamic
@@ -294,7 +311,7 @@ export default function Product({ params }: { params: { id: string } }) {
                             alt={`${product.title} | Photo ${index + 1}`}
                             width={500}
                             height={500}
-                            className="cursor-zoom-in"
+                            className="body-product__image cursor-zoom-in"
                             onClick={() =>
                               galleryRef.current.openGallery(index)
                             } // 👈 открываем по клику
@@ -423,7 +440,7 @@ export default function Product({ params }: { params: { id: string } }) {
                               d="M15.0002 26.7323L14.998 26.7303C10.7549 22.8862 7.35391 19.7972 4.9962 16.9153C2.65494 14.0535 1.5 11.58 1.5 8.99183C1.5 4.77155 4.78535 1.5 9 1.5C11.3943 1.5 13.7168 2.62136 15.2258 4.37798L16.3636 5.70249L17.5015 4.37798C19.0105 2.62136 21.3329 1.5 23.7273 1.5C27.9419 1.5 31.2273 4.77155 31.2273 8.99183C31.2273 11.58 30.0723 14.0535 27.7311 16.9153C25.3734 19.7972 21.9724 22.8862 17.7293 26.7303L17.7271 26.7323L16.3636 27.9724L15.0002 26.7323Z"
                               fill="white"
                               stroke="#BA360C"
-                              stroke-width="3"
+                              strokeWidth="3"
                             />
                           </svg>
                         </button>
