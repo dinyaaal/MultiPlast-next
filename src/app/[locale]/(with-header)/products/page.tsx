@@ -2,6 +2,8 @@ import React from "react";
 import { ProductsBody } from "./components/ProductsBody";
 import { getTranslations } from "next-intl/server";
 
+type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
+
 const fetchCategories = async () => {
   const res = await fetch(`https://multiplast.web-hub.online/api/categories`, {
     method: "GET",
@@ -22,7 +24,8 @@ interface ProductsPageProps {
   searchParams: { search?: string };
 }
 
-export default async function Products({ searchParams }: ProductsPageProps) {
+export default async function Products(props: { searchParams: SearchParams }) {
+  const searchParams = await props.searchParams;
   const categories = await fetchCategories();
   const t = await getTranslations("Products");
 

@@ -13,7 +13,7 @@ interface Message {
   chat_id: number;
 }
 
-export default function Messages({ params }: { params: { id: string } }) {
+export default function Messages() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
 
