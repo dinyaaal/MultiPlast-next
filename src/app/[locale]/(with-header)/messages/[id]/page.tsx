@@ -5,7 +5,13 @@ import Image from "next/image";
 import React from "react";
 import { Tooltip } from "@heroui/tooltip";
 
-export default function ChatBody({ params }: { params: { id: string } }) {
+export default function ChatBody({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const unwrappedParams = React.use(params);
+  const id = unwrappedParams.id;
   return (
     <>
       <div className="chat__body body-chat">

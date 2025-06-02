@@ -1,36 +1,11 @@
 import notFound from "@/app/[locale]/not-found";
 import ModalContact from "@/Components/Modals/ModalContact";
 import { ForumPost } from "@/types/types";
-import Image from "next/image";
 import React from "react";
-import ForumCommentInput from "../components/ForumCommentInput";
 import Gallery from "@/Components/Gallery";
 import ForumComments from "../components/ForumComments";
-const comments = [
-  {
-    id: 1,
-    author: "John Doe",
-    text: "Это первый комментарий",
-    date: "2024-09-10",
-    likes: 5,
-    replies: [
-      {
-        id: 2,
-        author: "Jane Doe",
-        text: "Ответ на первый комментарий",
-        date: "2024-09-10",
-        likes: 2,
-      },
-    ],
-  },
-  {
-    id: 3,
-    author: "Alice",
-    text: "Это второй комментарий",
-    date: "2024-09-09",
-    likes: 3,
-  },
-];
+
+type Params = Promise<{ id: string }>;
 
 async function getPost(id: string): Promise<ForumPost | null> {
   try {
@@ -59,11 +34,8 @@ async function getPost(id: string): Promise<ForumPost | null> {
   }
 }
 
-export default async function ForumTopicPage({
-  params,
-}: {
-  params: { id: string };
-}) {
+export default async function ForumTopicPage(props: { params: Params }) {
+  const params = await props.params;
   const post = await getPost(params.id);
 
   if (!post) {
