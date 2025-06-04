@@ -236,33 +236,6 @@ export default function Advertisement({ categories }: SellProps) {
       setPhotos((prevPhotos) => [...prevPhotos, ...Array.from(files)]);
     }
   };
-  // const handleDeletePhotos = async () => {
-  //   setPhotos([]);
-  //   if (product && session?.user.access_token) {
-  //     try {
-  //       const res = await fetch("/api/products/photos/delete", {
-  //         method: "DELETE",
-  //         headers: {
-  //           token: session?.user.access_token,
-  //           id: String(product.id),
-  //         },
-  //       });
-
-  //       if (!res.ok) {
-  //         const errData = await res.json();
-  //         throw new Error("Ошибка при удалении фото");
-  //       }
-
-  //       setProduct({
-  //         ...product,
-  //         photos: [],
-  //       });
-  //     } catch (err) {
-  //       console.error("Ошибка при удалении:", err);
-  //       toast.error("Ошибка при удалении фото");
-  //     }
-  //   }
-  // };
 
   const handleDeleteActivePhoto = async () => {
     if (!product || !session?.user.access_token) {
@@ -372,9 +345,6 @@ export default function Advertisement({ categories }: SellProps) {
       });
     }
   };
-  // const handleChangeType = (event: React.ChangeEvent<HTMLSelectElement>) => {
-  //   setAdvertType(event.target.value as "sell" | "buy");
-  // };
 
   const processForm: SubmitHandler<Inputs> = async (data) => {
     if (!session?.user.access_token && !session?.user.id) {
@@ -492,12 +462,12 @@ export default function Advertisement({ categories }: SellProps) {
           },
           body: formData,
         });
+        const result = await postResponse.json();
         if (postResponse.ok) {
           toast.success("Оголошення подано");
-          const result = await postResponse.json();
-          router.push(`/products/${result.id}`);
+          router.push(`./products/${result.id}`);
         } else {
-          throw new Error("Ошибка обновления информации пользователя");
+          throw new Error("Ошибка создания товара");
         }
         const editResult = await postResponse.json();
         console.log(editResult);
