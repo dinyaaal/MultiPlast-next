@@ -125,6 +125,7 @@ export default function Advertisement({ categories }: SellProps) {
       });
       if (deleteResponse.ok) {
         toast.success("Удалено!");
+        router.push("./products");
       } else {
         throw new Error("Ошибка обновления информации пользователя");
       }
@@ -308,15 +309,16 @@ export default function Advertisement({ categories }: SellProps) {
 
   const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     clearErrors();
-    reset(
-      {
-        // type: "",
-        polymer: "",
-      },
-      {
-        keepErrors: false, // ошибки тоже будут сброшены
-      }
-    );
+    // reset(
+    //   {
+    //     // type: "",
+    //     polymer: "",
+    //   },
+    //   {
+    //     keepErrors: false, // ошибки тоже будут сброшены
+    //   }
+    // );
+    setValue("polymer", "");
     setCategoryId(Number(e.target.value));
     setValue("mainCategory", e.target.value);
     if (Number(e.target.value) === 1 || Number(e.target.value) === 2) {
@@ -498,8 +500,24 @@ export default function Advertisement({ categories }: SellProps) {
           <div className="wrapper-dashboard__body body-dashboard">
             <div className="body-dashboard__wrapper">
               <div className="body-dashboard__block">
+                <div className="input-block input-block-title">
+                  <p>{t("enter-ad-title")}*</p>
+                  <div className="input-body input-body--title">
+                    <input
+                      maxLength={150}
+                      type="text"
+                      placeholder={t("enter-ad-title")}
+                      className={`input ${errors.title ? "input--error" : ""}`}
+                      // value={watch("title")}
+                      {...register("title")}
+                    />
+                    <div className="input-body__item">
+                      {t("max-characters")}
+                    </div>
+                  </div>
+                </div>
                 <div className="input-block">
-                  <p>{t("select-category")}*</p>
+                  <p>{t("select-ad-type")}*</p>
 
                   <Select
                     placeholder={`Виберерите тип объявления`}
@@ -853,22 +871,6 @@ export default function Advertisement({ categories }: SellProps) {
                 )}
               </div>
               <div className="body-dashboard__block">
-                <div className="input-block input-block-title">
-                  <p>{t("enter-ad-title")}*</p>
-                  <div className="input-body input-body--title">
-                    <input
-                      maxLength={150}
-                      type="text"
-                      placeholder={t("enter-ad-title")}
-                      className={`input ${errors.title ? "input--error" : ""}`}
-                      // value={watch("title")}
-                      {...register("title")}
-                    />
-                    <div className="input-body__item">
-                      {t("max-characters")}
-                    </div>
-                  </div>
-                </div>
                 <div className="input-block">
                   <p>{t("upload-photo")}</p>
                   <div className="input-body-file">

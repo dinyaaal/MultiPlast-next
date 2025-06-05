@@ -44,7 +44,7 @@ export default function ModalContact() {
       if (response.ok) {
         const result = await response.json();
         toast.success("Мы скоро с вами свяжемся");
-        console.log(result);
+        reset();
       } else {
         throw new Error("Ошибка обновления информации пользователя");
       }
