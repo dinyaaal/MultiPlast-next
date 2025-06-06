@@ -467,7 +467,7 @@ export default function Advertisement({ categories }: SellProps) {
         const result = await postResponse.json();
         if (postResponse.ok) {
           toast.success("Оголошення подано");
-          router.push(`./products/${result.id}`);
+          router.push(`/products/${result.id}`);
         } else {
           throw new Error("Ошибка создания товара");
         }

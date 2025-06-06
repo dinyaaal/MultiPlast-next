@@ -10,39 +10,39 @@ export default function ChatItems() {
   const [chats, setChats] = useState<ChatItemData[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const token = session?.user.access_token;
 
-  // Функция для получения чатов
-  async function fetchChats() {
-    if (!session?.user.access_token) return;
-    try {
-      const res = await fetch(`/api/chats/get`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${session?.user.access_token}`,
-        },
-      });
-      if (!res.ok) {
-        throw new Error("Ошибка загрузки чатов");
+  useEffect(() => {
+    async function fetchChats() {
+      if (!token) return;
+      setLoading(true);
+      try {
+        const res = await fetch("/api/chats/get", {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (!res.ok) {
+          throw new Error("Ошибка при загрузке чатов");
+        }
+
+        const data = await res.json();
+        setChats(data.data);
+      } catch (error) {
+        console.error("Ошибка:", error);
+      } finally {
+        setLoading(false);
       }
-      const data = await res.json();
-      setChats(data.data);
-    } catch (err) {
-      setError("Не удалось загрузить чаты");
-    } finally {
-      setLoading(false);
     }
-  }
+
+    fetchChats();
+  }, [token]);
 
   const handleDeleteChat = (id: number) => {
     setChats((prevChats) => prevChats.filter((chat) => chat.id !== id));
   };
-
-  useEffect(() => {
-    if (session?.user.access_token) {
-      fetchChats();
-    }
-  }, [session?.user.access_token]);
 
   if (loading) {
     return (

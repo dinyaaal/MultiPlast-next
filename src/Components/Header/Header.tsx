@@ -235,11 +235,11 @@ export default async function Header() {
                     </ul>
                   )}
                 </li>
-                {/* <li className="menu__item">
+                <li className="menu__item">
                   <Link href="/messages" className="menu__link">
                     {t("messages")}
                   </Link>
-                </li> */}
+                </li>
               </>
             )}
 

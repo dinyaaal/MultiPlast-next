@@ -1,6 +1,8 @@
 "use client";
 
 import { socket } from "@/lib/socket";
+import { ChatItemData } from "@/types/types";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 
@@ -16,6 +18,9 @@ interface Message {
 export default function Messages() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
+  const { data: session, status } = useSession();
+  const token = session?.user.access_token;
+  const [chats, setChats] = useState<ChatItemData[]>([]);
 
   const chatId = 7;
 
@@ -25,34 +30,34 @@ export default function Messages() {
     name: "User1",
   };
 
-  useEffect(() => {
-    const eventName = "App\\Events\\Message";
+  // useEffect(() => {
+  //   const eventName = "App\\Events\\Message";
 
-    const handleMessage = (message: Message) => {
-      if (message.chat_id === chatId) {
-        setMessages((prev) => [...prev, message]);
-      }
-    };
+  //   const handleMessage = (message: Message) => {
+  //     if (message.chat_id === chatId) {
+  //       setMessages((prev) => [...prev, message]);
+  //     }
+  //   };
 
-    socket.on(eventName, handleMessage);
+  //   socket.on(eventName, handleMessage);
 
-    return () => {
-      socket.off(eventName, handleMessage);
-    };
-  }, [chatId]);
+  //   return () => {
+  //     socket.off(eventName, handleMessage);
+  //   };
+  // }, [chatId]);
 
-  const sendMessage = () => {
-    if (!input.trim()) return;
+  // const sendMessage = () => {
+  //   if (!input.trim()) return;
 
-    const message: Message = {
-      message_content: input,
-      from_user: currentUser,
-      chat_id: chatId,
-    };
+  //   const message: Message = {
+  //     message_content: input,
+  //     from_user: currentUser,
+  //     chat_id: chatId,
+  //   };
 
-    socket.emit("App\\Events\\Message", message);
-    setInput("");
-  };
+  //   socket.emit("App\\Events\\Message", message);
+  //   setInput("");
+  // };
 
   return (
     <div className="chat__body body-chat">
@@ -84,7 +89,7 @@ export default function Messages() {
           onChange={(e) => setInput(e.target.value)}
           placeholder="Введите сообщение..."
         />
-        <button onClick={sendMessage}>Отправить</button>
+        <button>Отправить</button>
       </div>
     </div>
   );
