@@ -1,10 +1,10 @@
 import Breadcrumbs from "@/Components/Breadcrumbs";
 import SelectTabs from "@/Components/Select/SelectTabs";
-import Image from "next/image";
 import React from "react";
 import { useTranslations } from "next-intl";
+import { ForumSearch } from "@/Components/Forum/components/ForumSearch";
 
-export default function ForumLayout({
+export default function Layout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -26,26 +26,7 @@ export default function ForumLayout({
                 ]}
               />
 
-              {/* <div className="top-forum__search search">
-                <input
-                  autoComplete="off"
-                  type="text"
-                  placeholder={t("searchPlaceholder")}
-                  onChange={(e) => setSearchValue(e.target.value)}
-                  value={searchValue}
-                  className="search__input"
-                />
-                <button className="search__icon-body">
-                  <div className="search__icon">
-                    <Image
-                      src="/icons/search.svg"
-                      alt="Icon"
-                      width={100}
-                      height={100}
-                    />
-                  </div>
-                </button>
-              </div> */}
+              <ForumSearch />
             </div>
           </div>
         </div>

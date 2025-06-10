@@ -5,26 +5,41 @@ import React, { useEffect, useState } from "react";
 import { Pagination, Spinner } from "@heroui/react";
 
 import { ForumCard } from "@/Components/Forum/components/ForumCard";
+import { useSearchParams } from "next/navigation";
 
-export default function ForumItems() {
+interface ForumItemsProps {
+  activeSectionId: number | null;
+}
+
+export default function ForumItems({ activeSectionId }: ForumItemsProps) {
   const { data: session } = useSession();
 
   const [error, setError] = useState<string | null>(null);
   const [forumPosts, setForumPosts] = useState<ForumPost[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [search, setSearch] = useState<string>("");
   const [lastPage, setLastPage] = useState<number>();
+  const searchParams = useSearchParams();
+  const search = searchParams.get("search");
 
   const fetchForum = async () => {
     setIsLoading(true);
-    let queryParams: string[] = [];
+    const queryParams = new URLSearchParams();
 
-    queryParams.push(`page=${currentPage}`);
-    queryParams.push(`perPage=5`);
+    queryParams.append("page", currentPage.toString());
+    queryParams.append("perPage", "5");
 
-    const queryString =
-      queryParams.length > 0 ? `?${queryParams.join("&")}` : "";
+    if (search) {
+      queryParams.append("search", search);
+    }
+
+    if (activeSectionId) {
+      queryParams.append("subject_id", `${activeSectionId}`);
+    }
+
+    const queryString = queryParams.toString()
+      ? `?${queryParams.toString()}`
+      : "";
 
     try {
       const res = await fetch(`/api/forum/get${queryString}`, {
@@ -58,7 +73,7 @@ export default function ForumItems() {
 
   useEffect(() => {
     fetchForum();
-  }, [currentPage]);
+  }, [currentPage, search, activeSectionId]);
 
   if (isLoading) {
     return (

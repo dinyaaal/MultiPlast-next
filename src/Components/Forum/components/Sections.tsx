@@ -8,12 +8,18 @@ import Section from "./Section";
 import { useTranslations } from "next-intl";
 import { ForumCategory } from "@/types/types";
 
-export default function Sections() {
+interface SectionsProps {
+  onChangeSectionId?: (id: number | null) => void;
+}
+
+export default function Sections({ onChangeSectionId }: SectionsProps) {
   const t = useTranslations("Forum");
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [forumPosts, setForumPosts] = useState<ForumCategory[]>([]);
+  const [forumSectionsList, setForumSectionsList] = useState<ForumCategory[]>(
+    []
+  );
 
-  // -=-=-=-=-=-=-=-=-=- Список разделов форума + активный раздел -=-=-=-=-=-=-=-=-=-
+  const [activeSection, setActiveSection] = useState<number | null>(null);
 
   const fetchForumCategories = async () => {
     setIsLoading(true);
@@ -32,7 +38,7 @@ export default function Sections() {
       const data = await res.json();
       if (data) {
         console.log(data.data);
-        setForumPosts(data.data);
+        setForumSectionsList(data.data);
         // setLastPage(data.last_page);
       }
     } catch (error) {
@@ -46,28 +52,24 @@ export default function Sections() {
     fetchForumCategories();
   }, []);
 
-  const [forumSectionsList, setForumSectionsList] = useState([
-    {
-      id: 1,
-      title: "Полікарбонат",
-      text: "Обговорюємо полікарбонат та його види",
-    },
-    {
-      id: 2,
-      title: "Полікарбонат 2",
-      text: "Обговорюємо полікарбонат та його види 2",
-    },
-  ]);
+  useEffect(() => {
+    if (forumSectionsList.length > 0) {
+      const firstId = forumSectionsList[0].id;
+      setActiveSection(firstId);
+      onChangeSectionId?.(firstId);
+    }
+  }, [forumSectionsList]);
 
-  const [activeSection, setActiveSection] = useState(forumSectionsList[0].id);
-
-  // -=-=-=-=-=-=-=-=-=- Список разделов форума + активный раздел -=-=-=-=-=-=-=-=-=-
+  const handleSectionClick = (id: number) => {
+    setActiveSection(id);
+    onChangeSectionId?.(id);
+  };
 
   return (
     <>
       <div className="forum__sections sections-forum">
         <p className="sections-forum__text">{t("selectSection")}</p>
-        {!!forumPosts.length && (
+        {!!forumSectionsList.length && (
           <div className="sections-forum__body">
             <Swiper
               spaceBetween={20}
@@ -81,13 +83,24 @@ export default function Sections() {
               }}
               pagination={{ clickable: true }}
             >
-              {forumPosts.map((item) => (
+              <SwiperSlide>
+                <Section
+                  title={"Все"}
+                  text={"Показати всі статті"}
+                  isActive={!activeSection}
+                  onClick={() => {
+                    setActiveSection(null);
+                    onChangeSectionId?.(null);
+                  }}
+                />
+              </SwiperSlide>
+              {forumSectionsList.map((item) => (
                 <SwiperSlide key={item.id}>
                   <Section
                     title={item.title}
                     text={item.description}
                     isActive={item.id === activeSection}
-                    onClick={(_) => setActiveSection(item.id)}
+                    onClick={() => handleSectionClick(item.id)}
                   />
                 </SwiperSlide>
               ))}

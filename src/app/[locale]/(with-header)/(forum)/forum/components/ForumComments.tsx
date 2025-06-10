@@ -46,13 +46,15 @@ export default function ForumComments({ postId }: ForumCommentInputProps) {
 
   const fetchComments = async () => {
     setIsLoading(true);
-    let queryParams: string[] = [];
 
-    queryParams.push(`page=${currentPage}`);
-    queryParams.push(`forum_id=${postId}`);
-    // queryParams.push(`perPage=5`);
-    const queryString =
-      queryParams.length > 0 ? `?${queryParams.join("&")}` : "";
+    const queryParams = new URLSearchParams();
+
+    queryParams.append("page", currentPage.toString());
+    queryParams.append("forum_id", "5");
+
+    const queryString = queryParams.toString()
+      ? `?${queryParams.toString()}`
+      : "";
 
     try {
       const res = await fetch(`/api/forum/comments/get${queryString}`, {

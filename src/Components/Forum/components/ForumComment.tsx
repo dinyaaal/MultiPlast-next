@@ -49,14 +49,18 @@ export const ForumComment: React.FC<ForumCommentProps> = ({
 
   const fetchComments = async () => {
     setIsLoading(true);
-    let queryParams: string[] = [];
+    // let queryParams: string[] = [];
+    const queryParams = new URLSearchParams();
 
     // queryParams.push(`page=${currentPage}`);
-    queryParams.push(`forum_id=${postId}`);
-    queryParams.push(`comment_id=${comment.id}`);
+
+    queryParams.append("forum_id", `${postId}`);
+    queryParams.append("comment_id", `${comment.id}`);
+
     // queryParams.push(`perPage=5`);
-    const queryString =
-      queryParams.length > 0 ? `?${queryParams.join("&")}` : "";
+    const queryString = queryParams.toString()
+      ? `?${queryParams.toString()}`
+      : "";
 
     try {
       const res = await fetch(`/api/forum/comments/get${queryString}`, {

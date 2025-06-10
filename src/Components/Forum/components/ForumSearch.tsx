@@ -1,15 +1,13 @@
 "use client";
 
-import Image from "next/image";
 import { useRouter } from "@/i18n/routing";
-
+import { useTranslations } from "next-intl";
+import Image from "next/image";
 import React, { FormEvent, ReactEventHandler, useState } from "react";
 
-interface IHeaderSearchProps {
-  placeholder: string;
-}
+export const ForumSearch: React.FC = () => {
+  const t = useTranslations("Forum");
 
-export const HeaderSearch: React.FC<IHeaderSearchProps> = ({ placeholder }) => {
   const router = useRouter();
 
   const [searchValue, setSearchValue] = useState<string>("");
@@ -17,17 +15,18 @@ export const HeaderSearch: React.FC<IHeaderSearchProps> = ({ placeholder }) => {
   const handleSearch = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    router.push(`/products?search=${searchValue}`);
+    router.push(`/forum?search=${searchValue}`);
   };
 
   return (
-    <form onSubmit={handleSearch} className="body-header__search search">
+    <form onSubmit={handleSearch} className="top-forum__search search">
       <input
+        autoComplete="off"
         type="text"
-        placeholder={placeholder}
-        className="search__input"
+        placeholder={t("searchPlaceholder")}
         onChange={(e) => setSearchValue(e.target.value)}
         value={searchValue}
+        className="search__input"
       />
       <button className="search__icon-body">
         <div className="search__icon">

@@ -74,7 +74,7 @@ export default function ForumAdd() {
 
   return (
     <>
-      <Breadcrumbs position={t("breadcrumbsPosition")} />
+      {/* <Breadcrumbs position={t("breadcrumbsPosition")} />
       <section className="forum">
         <div className="forum__top top-forum">
           <div className="top-forum__container">
@@ -109,34 +109,36 @@ export default function ForumAdd() {
           </div>
         </div>
         <div className="forum__body body-forum">
-          <div className="add-forum">
-            <div className="add-forum__container">
-              <form
-                onSubmit={handleSubmit(processForm)}
-                className="add-forum__block"
-              >
-                <div className="input-block">
-                  <p>{t("enterTitle")}</p>
-                  <input
-                    autoComplete="off"
-                    type="text"
-                    placeholder={t("titlePlaceholder")}
-                    className={` input ${errors.title ? "input--error" : ""}`}
-                    {...register("title")}
-                  />
-                </div>
+        </div>
+      </section> */}
+      <div className="add-forum">
+        <div className="add-forum__container">
+          <form
+            onSubmit={handleSubmit(processForm)}
+            className="add-forum__block"
+          >
+            <div className="input-block">
+              <p>{t("enterTitle")}</p>
+              <input
+                autoComplete="off"
+                type="text"
+                placeholder={t("titlePlaceholder")}
+                className={` input ${errors.title ? "input--error" : ""}`}
+                {...register("title")}
+              />
+            </div>
 
-                <div className="input-block editor">
-                  <ForwardRefEditor
-                    markdown={content}
-                    onChange={setContent}
-                    ref={editorRef}
-                    placeholder={t("descriptionPlaceholder")}
-                  />
-                  {/* <button type="button" onClick={(e) => console.log(content)}>
+            <div className="input-block editor">
+              <ForwardRefEditor
+                markdown={content}
+                onChange={setContent}
+                ref={editorRef}
+                placeholder={t("descriptionPlaceholder")}
+              />
+              {/* <button type="button" onClick={(e) => console.log(content)}>
                     otpravit
                   </button> */}
-                  {/* <textarea
+              {/* <textarea
                     id="editor"
                     placeholder={t("descriptionPlaceholder")}
                     className={`description__input input ${
@@ -144,36 +146,34 @@ export default function ForumAdd() {
                     }`}
                     {...register("text")}
                   ></textarea> */}
-                </div>
+            </div>
 
-                <label className="check">
-                  <input
-                    type="checkbox"
-                    name="incognito"
-                    className="real-checkbox"
-                  />
-                  <span className="custom-checkbox"></span>
-                  Інкогніто
-                </label>
-                <div className="add-forum__actions">
-                  <button type="submit" className="add-forum__add button">
-                    {t("publish")}
-                  </button>
-                  {/* <button className="add-forum__delete button button--secondary">
+            <label className="check">
+              <input
+                type="checkbox"
+                name="incognito"
+                className="real-checkbox"
+              />
+              <span className="custom-checkbox"></span>
+              Інкогніто
+            </label>
+            <div className="add-forum__actions">
+              <button type="submit" className="add-forum__add button">
+                {t("publish")}
+              </button>
+              {/* <button className="add-forum__delete button button--secondary">
                   {t("delete")}
                 </button> */}
-                </div>
-              </form>
-              <div className="add-forum__info info-contact">
-                <div className="info-contact__body">
-                  <p className="info-contact__text">{t("contactAdmin")}</p>
-                  <ModalContact />
-                </div>
-              </div>
+            </div>
+          </form>
+          <div className="add-forum__info info-contact">
+            <div className="info-contact__body">
+              <p className="info-contact__text">{t("contactAdmin")}</p>
+              <ModalContact />
             </div>
           </div>
         </div>
-      </section>
+      </div>
     </>
   );
 }

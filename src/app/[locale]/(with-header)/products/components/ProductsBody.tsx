@@ -39,28 +39,31 @@ export function ProductsBody({ categories }: ProductsProps) {
 
   const fetchProducts = async () => {
     setIsLoading(true);
-    let queryParams: string[] = [];
+    const queryParams = new URLSearchParams();
 
     if (selectedCategory) {
-      queryParams.push(`category_id=${selectedCategory}`);
+      queryParams.append("category_id", selectedCategory);
     }
 
     if (selectedSubCategories.length > 0) {
-      queryParams.push(`type_id=${selectedSubCategories.join(",")}`);
+      queryParams.append("type_id", selectedSubCategories.join(","));
     }
 
     if (selectedOptions.length > 0) {
-      queryParams.push(`type_of_product=${selectedOptions.join(",")}`);
+      queryParams.append("type_of_product", selectedOptions.join(","));
     }
 
-    queryParams.push(`page=${currentPage}`);
-    queryParams.push(`perPage=12`);
+    queryParams.append("page", "currentPage");
+
+    queryParams.append("perPage", "12");
+
     if (search) {
-      queryParams.push(`search=${search}`);
+      queryParams.append("search", search);
     }
 
-    const queryString =
-      queryParams.length > 0 ? `?${queryParams.join("&")}` : "";
+    const queryString = queryParams.toString()
+      ? `?${queryParams.toString()}`
+      : "";
 
     try {
       const res = await fetch(

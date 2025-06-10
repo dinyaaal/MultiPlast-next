@@ -2,8 +2,10 @@
 
 import { Link } from "@/i18n/routing";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect } from "react";
 import { Tooltip } from "@heroui/tooltip";
+import { useSession } from "next-auth/react";
+import { io } from "socket.io-client";
 
 export default function ChatBody({
   params,
@@ -12,6 +14,35 @@ export default function ChatBody({
 }) {
   const unwrappedParams = React.use(params);
   const id = unwrappedParams.id;
+  const { data: session, status } = useSession();
+  const token = session?.user.access_token;
+
+  // useEffect(() => {
+  //   const socket = io("wss://multiplast.web-hub.online", {
+  //     path: "/chat",
+  //     transports: ["websocket"],
+  //     extraHeaders: {
+  //       Authorization: `Bearer ${token}`,
+  //     },
+  //   });
+
+  //   socket.on("connect", () => {
+  //     console.log("✅ Подключен к сокету:", socket.id);
+  //   });
+
+  //   socket.on(`chat.${id}:App\\Events\\Message`, (data) => {
+  //     console.log("📩 Новое сообщение:", data);
+  //   });
+
+  //   socket.on("connect_error", (err) => {
+  //     console.log("❌ Ошибка подключения:", err.message);
+  //   });
+
+  //   return () => {
+  //     socket.disconnect();
+  //   };
+  // }, [id, token]);
+
   return (
     <>
       <div className="chat__body body-chat">

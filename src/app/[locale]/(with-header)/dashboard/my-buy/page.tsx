@@ -15,16 +15,16 @@ export default function page() {
 
   const fetchProducts = async () => {
     setIsLoading(true);
-    let queryParams: string[] = [];
+    const queryParams = new URLSearchParams();
 
-    queryParams.push(`page=${currentPage}`);
-    queryParams.push(`token=${session?.user.access_token}`);
+    queryParams.append("page", currentPage.toString());
+    queryParams.append("token", session?.user.access_token || "");
+    queryParams.append("perPage", "12");
+    queryParams.append("status", "1");
 
-    queryParams.push(`perPage=12`);
-    queryParams.push(`status=1`);
-
-    const queryString =
-      queryParams.length > 0 ? `?${queryParams.join("&")}` : "";
+    const queryString = queryParams.toString()
+      ? `?${queryParams.toString()}`
+      : "";
 
     try {
       const res = await fetch(`/api/products/my${queryString}`);

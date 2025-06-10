@@ -1047,7 +1047,15 @@ export default function Advertisement({ categories }: SellProps) {
               <div className="input-block">
                 <div className="input-body-file">
                   <div className="input-body-file__content dashboard-files">
-                    <p>{t("upload-files")}</p>
+                    <div className="flex flex-col gap-1">
+                      <p>{t("upload-files")}</p>
+
+                      {files && files.length > 0 && (
+                        <p className="input-body-file__item">
+                          Кількість завантажених файлів: {files.length}
+                        </p>
+                      )}
+                    </div>
                     <div className="input-body-file__actions">
                       <label className="input-body-file__button button">
                         <input
@@ -1055,7 +1063,6 @@ export default function Advertisement({ categories }: SellProps) {
                           type="file"
                           className="dashboard-files__input"
                           onChange={handleFilesChange}
-                          multiple
                         />
                         {t("upload")}
                       </label>

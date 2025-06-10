@@ -14,15 +14,14 @@ export default function FavoritesBody() {
 
   const fetchProducts = async () => {
     setIsLoading(true);
-    let queryParams: string[] = [];
+    const queryParams = new URLSearchParams();
 
-    queryParams.push(`page=${currentPage}`);
-    queryParams.push(`token=${session?.user.access_token}`);
-    // queryParams.push(`perPage=12`);
-    // queryParams.push(`status=1`);
+    queryParams.append("page", currentPage.toString());
+    queryParams.append("token", session?.user.access_token || "");
 
-    const queryString =
-      queryParams.length > 0 ? `?${queryParams.join("&")}` : "";
+    const queryString = queryParams.toString()
+      ? `?${queryParams.toString()}`
+      : "";
 
     try {
       const res = await fetch(`/api/favorites/get${queryString}`);
