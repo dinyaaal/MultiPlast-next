@@ -53,7 +53,7 @@ export function ProductsBody({ categories }: ProductsProps) {
       queryParams.append("type_of_product", selectedOptions.join(","));
     }
 
-    queryParams.append("page", "currentPage");
+    queryParams.append("page", `${currentPage}`);
 
     queryParams.append("perPage", "12");
 
