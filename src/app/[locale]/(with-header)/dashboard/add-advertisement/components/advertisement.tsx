@@ -231,11 +231,42 @@ export default function Advertisement({ categories }: SellProps) {
     setValue("type", searchSubCategory || "");
   }, [searchCategory, searchSubCategory, searchType]);
 
+  // const handlePhotosChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   const files = event.target.files;
+  //   if (files) {
+  //     setPhotos((prevPhotos) => [...prevPhotos, ...Array.from(files)]);
+  //   }
+  // };
+
+  const MAX_FILE_SIZE_MB = 1;
+
   const handlePhotosChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
-    if (files) {
-      setPhotos((prevPhotos) => [...prevPhotos, ...Array.from(files)]);
+    if (!files) return;
+
+    const maxSize = MAX_FILE_SIZE_MB * 1024 * 1024; // 1 МБ в байтах
+
+    const validFiles: File[] = [];
+    const invalidFiles: File[] = [];
+
+    Array.from(files).forEach((file) => {
+      if (file.size <= maxSize) {
+        validFiles.push(file);
+      } else {
+        invalidFiles.push(file);
+      }
+    });
+
+    if (invalidFiles.length > 0) {
+      toast.error(`Файлы превышающие 1 МБ не были добавлены`);
     }
+
+    if (validFiles.length > 0) {
+      setPhotos((prevPhotos) => [...prevPhotos, ...validFiles]);
+    }
+
+    // Сброс input, чтобы можно было загрузить те же файлы повторно
+    event.target.value = "";
   };
 
   const handleDeleteActivePhoto = async () => {
@@ -471,8 +502,6 @@ export default function Advertisement({ categories }: SellProps) {
         } else {
           throw new Error("Ошибка создания товара");
         }
-        const editResult = await postResponse.json();
-        console.log(editResult);
       } catch (error) {
         console.error("Ошибка при отправке данных:", error);
         toast.error("Ошибка создания товара");
