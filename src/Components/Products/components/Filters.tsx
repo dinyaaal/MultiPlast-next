@@ -1,5 +1,6 @@
 "use client";
 import { RadioGroup, Radio } from "@heroui/radio";
+import { CheckboxGroup, Checkbox } from "@heroui/checkbox";
 import Spoiler from "@/Components/Spoiler";
 import { Category } from "@/types/types";
 import Image from "next/image";
@@ -186,7 +187,7 @@ export const Filters: React.FC<FiltersProps> = ({
           </button>
           <div className="body-filters-trade__items spollers">
             <Spoiler isOpen className="item-filter" title="Тип оголошення">
-              <label className="check">
+              {/* <label className="check">
                 <input
                   type="checkbox"
                   className="real-checkbox"
@@ -196,9 +197,15 @@ export const Filters: React.FC<FiltersProps> = ({
                 />
                 <span className="custom-checkbox"></span>
                 Продажа
-              </label>
-
-              <label className="check">
+              </label> */}
+              <Checkbox
+                value="sell"
+                checked={selectedOptions.includes("sell")}
+                onChange={() => handleOptionChange("sell")}
+              >
+                Продажа
+              </Checkbox>
+              {/* <label className="check">
                 <input
                   type="checkbox"
                   className="real-checkbox"
@@ -208,7 +215,14 @@ export const Filters: React.FC<FiltersProps> = ({
                 />
                 <span className="custom-checkbox"></span>
                 Покупка
-              </label>
+              </label> */}
+              <Checkbox
+                value="buy"
+                checked={selectedOptions.includes("buy")}
+                onChange={() => handleOptionChange("buy")}
+              >
+                Покупка
+              </Checkbox>
             </Spoiler>
 
             <Spoiler className="item-filter" title={"Категория"}>
@@ -235,22 +249,28 @@ export const Filters: React.FC<FiltersProps> = ({
                     (category) => category.id.toString() === selectedCategory
                   )
                   ?.categories.map((subCategory) => (
-                    <label key={subCategory.id} className="check">
-                      <input
-                        type="checkbox"
-                        name="remember"
-                        className="real-checkbox"
-                        value={subCategory.id}
-                        checked={selectedSubCategories.includes(
-                          subCategory.id.toString()
-                        )}
-                        onChange={() =>
-                          handleCheckboxChange(subCategory.id.toString())
-                        }
-                      />
-                      <span className="custom-checkbox"></span>
+                    // <label key={subCategory.id} className="check">
+                    //   <input
+                    //     type="checkbox"
+                    //     name="remember"
+                    //     className="real-checkbox"
+
+                    //   />
+                    //   <span className="custom-checkbox"></span>
+
+                    // </label>
+                    <Checkbox
+                      key={subCategory.id}
+                      value={subCategory.id.toString()}
+                      checked={selectedSubCategories.includes(
+                        subCategory.id.toString()
+                      )}
+                      onChange={() =>
+                        handleCheckboxChange(subCategory.id.toString())
+                      }
+                    >
                       {subCategory.name}
-                    </label>
+                    </Checkbox>
                   ))}
               </Spoiler>
             )}

@@ -208,9 +208,9 @@
   justify-content: space-between;
   align-items: center;
   gap: toRem(10);
-  @media (min-width: $tablet) {
-    width: fit-content;
-  }
+  // @media (min-width: $tablet) {
+  //   width: fit-content;
+  // }
 
   // .input-body__input
   &__input {

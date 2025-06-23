@@ -75,7 +75,6 @@ export function ProductsBody({ categories }: ProductsProps) {
 
       const data = await res.json();
       if (data) {
-        console.log(data.data);
         setProducts(data.data);
         setLinks(data.links);
         setLastPage(data.last_page);
@@ -109,13 +108,13 @@ export function ProductsBody({ categories }: ProductsProps) {
         /> */}
         <div className="trade__content content-trade">
           <div className="content-trade__items">
-            {products.length > 0 ? (
+            {/* {products.length > 0 ? (
               products.map((product, index) => (
                 <ProductCard key={product.id} product={product} />
               ))
             ) : (
               <p>Нет товаров</p>
-            )}
+            )} */}
           </div>
           {lastPage && lastPage > 1 && (
             <div className="pages">

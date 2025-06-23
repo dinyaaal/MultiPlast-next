@@ -121,6 +121,7 @@ export const AdvertismentSchema = z
     volume: z.string().optional(),
     volume_price: z.string().optional(),
     arrangement: z.boolean(),
+    // arrangement: z.enum(["negotiated", "fixed"]),
   })
   .refine(
     (data) => {

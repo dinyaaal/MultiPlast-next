@@ -66,7 +66,7 @@ export default function Advertisement({ categories }: SellProps) {
   const [isLoadingRequest, setIsLoadingRequest] = useState(false);
   const [productError, setProductError] = useState<string | null>(null);
   const [activePhotoIndex, setActivePhotoIndex] = useState(0);
-
+  const [showDiscount, setShowDiscount] = useState(false);
   const {
     register,
     handleSubmit,
@@ -202,8 +202,6 @@ export default function Advertisement({ categories }: SellProps) {
     }
   }, [product]);
 
-  // console.log(photos)
-
   useEffect(() => {
     reset(
       {
@@ -230,13 +228,6 @@ export default function Advertisement({ categories }: SellProps) {
     setValue("advertType", newAdvertType);
     setValue("type", searchSubCategory || "");
   }, [searchCategory, searchSubCategory, searchType]);
-
-  // const handlePhotosChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   const files = event.target.files;
-  //   if (files) {
-  //     setPhotos((prevPhotos) => [...prevPhotos, ...Array.from(files)]);
-  //   }
-  // };
 
   const MAX_FILE_SIZE_MB = 1;
 
@@ -363,8 +354,19 @@ export default function Advertisement({ categories }: SellProps) {
     }
   };
 
-  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setArrangement(e.target.checked);
+  // const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   setArrangement(e.target.checked);
+  // };
+
+  const handleCheckboxChange = (checkbox: "arrangement" | "fixed") => {
+    if (checkbox === "arrangement") {
+      const newValue = !arrangement;
+      setArrangement(newValue);
+      setValue("arrangement", newValue);
+    } else {
+      setArrangement(false);
+      setValue("arrangement", false);
+    }
   };
 
   const handleChangeTypePrice = (
@@ -529,22 +531,6 @@ export default function Advertisement({ categories }: SellProps) {
           <div className="wrapper-dashboard__body body-dashboard">
             <div className="body-dashboard__wrapper">
               <div className="body-dashboard__block">
-                <div className="input-block input-block-title">
-                  <p>{t("enter-ad-title")}*</p>
-                  <div className="input-body input-body--title">
-                    <input
-                      maxLength={150}
-                      type="text"
-                      placeholder={t("enter-ad-title")}
-                      className={`input ${errors.title ? "input--error" : ""}`}
-                      // value={watch("title")}
-                      {...register("title")}
-                    />
-                    <div className="input-body__item">
-                      {t("max-characters")}
-                    </div>
-                  </div>
-                </div>
                 <div className="input-block">
                   <p>{t("select-ad-type")}*</p>
 
@@ -777,28 +763,65 @@ export default function Advertisement({ categories }: SellProps) {
                       ? t("price-per-kg")
                       : t("enter-price")}
                   </p>
-                  <div className="block-row block-row--nowrap">
-                    <div className="input-block">
-                      {(Number(watch("mainCategory")) === 1 ||
-                        Number(watch("mainCategory")) === 2 ||
-                        Number(watch("mainCategory")) === 3 ||
-                        Number(watch("mainCategory")) === 5) && (
-                        <p>{t("negotiated-price")}</p>
-                      )}
+                  <div className="input-block">
+                    {(Number(watch("mainCategory")) === 1 ||
+                      Number(watch("mainCategory")) === 2 ||
+                      Number(watch("mainCategory")) === 3 ||
+                      Number(watch("mainCategory")) === 5) && (
+                      <p>{t("negotiated-price")}</p>
+                    )}
+                    <div className="grid grid-cols-2 gap-2">
                       <div className="block-row__item">
                         <label className="check">
                           <input
                             type="checkbox"
                             className="real-checkbox"
-                            checked={arrangement}
                             {...register("arrangement")}
-                            onChange={handleCheckboxChange}
+                            checked={arrangement}
+                            onChange={() => handleCheckboxChange("arrangement")}
                           />
                           <span className="custom-checkbox"></span>
                           {t("negotiated-price")}
                         </label>
                       </div>
-                      {Number(watch("mainCategory")) === 4 && (
+                      <div className="block-row__item">
+                        <label className="check">
+                          <input
+                            type="checkbox"
+                            className="real-checkbox"
+                            checked={!arrangement} // второй чекбокс активен, когда arrangement = false
+                            onChange={() => handleCheckboxChange("fixed")}
+                          />
+                          <span className="custom-checkbox"></span>
+                          Фіксована ціна
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="block-row">
+                    {!arrangement && (
+                      <div className="input-block">
+                        <p>{t("fixed-price")}</p>
+
+                        <div
+                          className={`input-body input ${
+                            errors.price ? "input--error" : ""
+                          }`}
+                        >
+                          <input
+                            disabled={watch("arrangement")}
+                            autoComplete="off"
+                            type="number"
+                            placeholder=""
+                            className="input-body__input input-number"
+                            {...register("price")}
+                          />
+                          <div className="input-body__item">грн</div>
+                        </div>
+                      </div>
+                    )}
+                    {!arrangement && Number(watch("mainCategory")) === 4 && (
+                      <div className="block-row-item">
                         <Select
                           isDisabled={arrangement}
                           disallowEmptySelection
@@ -834,70 +857,59 @@ export default function Advertisement({ categories }: SellProps) {
                             <SelectItem key={unit.key}>{unit.label}</SelectItem>
                           ))}
                         </Select>
-                      )}
-                    </div>
-
-                    <div className="input-block">
-                      <p>{t("fixed-price")}</p>
-                      <div className="block-row__item">
-                        <div
-                          className={`input-body input ${
-                            errors.price ? "input--error" : ""
-                          }`}
-                        >
-                          <input
-                            disabled={arrangement}
-                            autoComplete="off"
-                            type="number"
-                            placeholder=""
-                            className="input-body__input input-number"
-                            {...register("price")}
-                          />
-                          <div className="input-body__item">грн</div>
-                        </div>
                       </div>
-                    </div>
+                    )}
                   </div>
                 </div>
-
-                {(Number(watch("mainCategory")) === 1 ||
-                  Number(watch("mainCategory")) === 2) && (
-                  <div className="block-row">
-                    <div className="block-row__item">
-                      <div className="input-block">
-                        <p>{t("enter-volume")}</p>
-                        <div className="input-body input">
-                          <input
-                            disabled={arrangement}
-                            autoComplete="off"
-                            type="number"
-                            placeholder=""
-                            className="input-body__input input-number"
-                            {...register("volume")}
-                          />
-                          <div className="input-body__item">кг</div>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="block-row__item">
-                      <div className="input-block">
-                        <p>{t("enter-price")}</p>
-                        <div className="input-body input">
-                          <input
-                            disabled={arrangement}
-                            autoComplete="off"
-                            type="number"
-                            placeholder=""
-                            className="input-body__input input-number"
-                            {...register("volume_price")}
-                          />
-                          <div className="input-body__item">грн</div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                {!arrangement && (
+                  <button
+                    type="button"
+                    onClick={() => setShowDiscount((prev) => !prev)}
+                    className=" button button--secondary"
+                  >
+                    Ціна зі знижкою
+                  </button>
                 )}
+                {!arrangement &&
+                  showDiscount &&
+                  (Number(watch("mainCategory")) === 1 ||
+                    Number(watch("mainCategory")) === 2) && (
+                    <div className="block-row">
+                      <div className="block-row__item">
+                        <div className="input-block">
+                          <p>{t("enter-volume")}</p>
+                          <div className="input-body input">
+                            <input
+                              disabled={arrangement}
+                              autoComplete="off"
+                              type="number"
+                              placeholder=""
+                              className="input-body__input input-number"
+                              {...register("volume")}
+                            />
+                            <div className="input-body__item">кг</div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="block-row__item">
+                        <div className="input-block">
+                          <p>{t("enter-price")}</p>
+                          <div className="input-body input">
+                            <input
+                              disabled={arrangement}
+                              autoComplete="off"
+                              type="number"
+                              placeholder=""
+                              className="input-body__input input-number"
+                              {...register("volume_price")}
+                            />
+                            <div className="input-body__item">грн</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
               </div>
               <div className="body-dashboard__block">
                 <div className="input-block">
@@ -1062,6 +1074,20 @@ export default function Advertisement({ categories }: SellProps) {
               </div>
             </div>
             <div className="body-dashboard__block">
+              <div className="input-block input-block-title">
+                <p>{t("enter-ad-title")}*</p>
+                <div className="input-body input-body--title">
+                  <input
+                    maxLength={150}
+                    type="text"
+                    placeholder={t("enter-ad-title")}
+                    className={`input ${errors.title ? "input--error" : ""}`}
+                    // value={watch("title")}
+                    {...register("title")}
+                  />
+                  <div className="input-body__item">{t("max-characters")}</div>
+                </div>
+              </div>
               <div className="description input-block">
                 <p>{t("enter-description")}*</p>
                 <textarea

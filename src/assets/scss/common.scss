@@ -48,9 +48,19 @@
   display: flex;
   text-align: start;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: end;
+
   gap: toRem(10);
+  p {
+    word-wrap: break-word; // разрешает перенос слов
+    overflow-wrap: break-word; // аналогично
+    hyphens: auto; // перенос по слогам (если браузер поддерживает)
+    white-space: normal; // запрещает поведение "в одну строку"
+    overflow: hidden;
+  }
   &--price {
+    justify-content: space-between;
+
     gap: toRem(30);
   }
 }
