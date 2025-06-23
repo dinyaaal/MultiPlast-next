@@ -86,13 +86,18 @@ export default async function Product(props: { params: Params }) {
               <div className="top-product__price price-product">
                 <div className="price-product__text title">
                   {product.type_price === "by_arrangement" ? (
-                    <p>По договорённости</p>
+                    <p>Цена по договорённости</p>
                   ) : (
                     <>
                       <p>{product.price} грн</p>
                     </>
                   )}
                 </div>
+                {product.volume && product.price_per_volume && (
+                  <div className="price-product__text title">
+                    Ціна за {product.volume} кг: {product.price_per_volume}
+                  </div>
+                )}
               </div>
             </div>
           </div>

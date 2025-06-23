@@ -243,36 +243,88 @@ export const Filters: React.FC<FiltersProps> = ({
             </Spoiler>
 
             {selectedCategory && (
-              <Spoiler className="item-filter" title="Тип оголошення">
-                {categories
-                  .find(
-                    (category) => category.id.toString() === selectedCategory
-                  )
-                  ?.categories.map((subCategory) => (
-                    // <label key={subCategory.id} className="check">
-                    //   <input
-                    //     type="checkbox"
-                    //     name="remember"
-                    //     className="real-checkbox"
-
-                    //   />
-                    //   <span className="custom-checkbox"></span>
-
-                    // </label>
-                    <Checkbox
-                      key={subCategory.id}
-                      value={subCategory.id.toString()}
-                      checked={selectedSubCategories.includes(
-                        subCategory.id.toString()
-                      )}
-                      onChange={() =>
-                        handleCheckboxChange(subCategory.id.toString())
-                      }
-                    >
-                      {subCategory.name}
-                    </Checkbox>
-                  ))}
-              </Spoiler>
+              <>
+                {/* <Spoiler className="item-filter" title="Тип оголошення">
+                  {categories
+                    .find(
+                      (category) => category.id.toString() === selectedCategory
+                    )
+                    ?.categories.map((subCategory) => (
+                      <Checkbox
+                        key={subCategory.id}
+                        value={subCategory.id.toString()}
+                        checked={selectedSubCategories.includes(
+                          subCategory.id.toString()
+                        )}
+                        onChange={() =>
+                          handleCheckboxChange(subCategory.id.toString())
+                        }
+                      >
+                        {subCategory.name}
+                      </Checkbox>
+                    ))}
+                </Spoiler> */}
+                {Number(selectedCategory) !== 1 && (
+                  <Spoiler
+                    className="item-filter"
+                    title={
+                      Number(selectedCategory) === 3
+                        ? "Виберіть тип обладнання"
+                        : Number(selectedCategory) === 4
+                        ? "Виберіть послугу"
+                        : Number(selectedCategory) === 5
+                        ? "Тип оголошення"
+                        : "Сировина"
+                    }
+                  >
+                    {categories
+                      .find(
+                        (category) =>
+                          category.id.toString() === selectedCategory
+                      )
+                      ?.categories.filter((sub) => sub.type === "Сировина")
+                      .map((subCategory) => (
+                        <Checkbox
+                          key={subCategory.id}
+                          value={subCategory.id.toString()}
+                          checked={selectedSubCategories.includes(
+                            subCategory.id.toString()
+                          )}
+                          onChange={() =>
+                            handleCheckboxChange(subCategory.id.toString())
+                          }
+                        >
+                          {subCategory.name}
+                        </Checkbox>
+                      ))}
+                  </Spoiler>
+                )}
+                {(Number(selectedCategory) === 1 ||
+                  Number(selectedCategory) === 2) && (
+                  <Spoiler className="item-filter" title="Полімер">
+                    {categories
+                      .find(
+                        (category) =>
+                          category.id.toString() === selectedCategory
+                      )
+                      ?.categories.filter((sub) => sub.type === "Полімер")
+                      .map((subCategory) => (
+                        <Checkbox
+                          key={subCategory.id}
+                          value={subCategory.id.toString()}
+                          checked={selectedSubCategories.includes(
+                            subCategory.id.toString()
+                          )}
+                          onChange={() =>
+                            handleCheckboxChange(subCategory.id.toString())
+                          }
+                        >
+                          {subCategory.name}
+                        </Checkbox>
+                      ))}
+                  </Spoiler>
+                )}
+              </>
             )}
           </div>
           <div className="body-filters-trade__actions">

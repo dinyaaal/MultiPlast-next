@@ -5,7 +5,6 @@ import { Category, Page, ProductType } from "@/types/types";
 
 import React, { useEffect, useState } from "react";
 import { Filters } from "@/Components/Products/components/Filters";
-import { ContentTrade } from "./ProductsContent";
 import { useSearchParams } from "next/navigation";
 
 interface ProductsProps {
@@ -108,13 +107,13 @@ export function ProductsBody({ categories }: ProductsProps) {
         /> */}
         <div className="trade__content content-trade">
           <div className="content-trade__items">
-            {/* {products.length > 0 ? (
+            {products.length > 0 ? (
               products.map((product, index) => (
                 <ProductCard key={product.id} product={product} />
               ))
             ) : (
               <p>Нет товаров</p>
-            )} */}
+            )}
           </div>
           {lastPage && lastPage > 1 && (
             <div className="pages">
