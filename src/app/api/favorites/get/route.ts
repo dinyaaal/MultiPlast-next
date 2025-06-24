@@ -8,7 +8,6 @@ export async function GET(request: NextRequest) {
     const res = await fetch(`https://multiplast.web-hub.online/api/favorites`, {
       method: "GET",
       headers: {
-        "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
     });

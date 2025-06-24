@@ -55,8 +55,8 @@ export default function Sections({ onChangeSectionId }: SectionsProps) {
   useEffect(() => {
     if (forumSectionsList.length > 0) {
       const firstId = forumSectionsList[0].id;
-      setActiveSection(firstId);
-      onChangeSectionId?.(firstId);
+      // setActiveSection(firstId);
+      // onChangeSectionId?.(firstId);
     }
   }, [forumSectionsList]);
 

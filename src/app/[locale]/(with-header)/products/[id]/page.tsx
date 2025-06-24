@@ -62,12 +62,13 @@ export default async function Product(props: { params: Params }) {
       <section className="product">
         <div className="product__container">
           <div className="product__top top-product">
-            <div className="top-product__body">
-              <div className="top-product__block">
-                <h2 className="top-product__title title">{product.title}</h2>
-                <div className="top-product__actions">
-                  <ProductActions product={product} />
-                  {/* <a href="#" className="share">
+            <div className="w-full flex flex-col gap-1 ">
+              <div className="top-product__body">
+                <div className="top-product__block">
+                  <h2 className="top-product__title title">{product.title}</h2>
+                  <div className="top-product__actions">
+                    <ProductActions product={product} />
+                    {/* <a href="#" className="share">
                     <svg
                       width="27"
                       height="30"
@@ -81,21 +82,24 @@ export default async function Product(props: { params: Params }) {
                       />
                     </svg>
                   </a> */}
+                  </div>
+                </div>
+                <div className="top-product__price price-product">
+                  <div className="price-product__text title">
+                    {product.type_price === "by_arrangement" ? (
+                      <p>Цена по договорённости</p>
+                    ) : (
+                      <>
+                        <p>{product.price} грн</p>
+                      </>
+                    )}
+                  </div>
                 </div>
               </div>
-              <div className="top-product__price price-product">
-                <div className="price-product__text title">
-                  {product.type_price === "by_arrangement" ? (
-                    <p>Цена по договорённости</p>
-                  ) : (
-                    <>
-                      <p>{product.price} грн</p>
-                    </>
-                  )}
-                </div>
+              <div className=" price-product self-end w-fit">
                 {product.volume && product.price_per_volume && (
-                  <div className="price-product__text title">
-                    Ціна за {product.volume} кг: {product.price_per_volume}
+                  <div className="price-product__text title title--small">
+                    Ціна за {product.volume} кг: {product.price_per_volume} грн
                   </div>
                 )}
               </div>
@@ -177,6 +181,14 @@ export default async function Product(props: { params: Params }) {
                     {/* <div className="price-product__sub-text">
                     від 3000 кг - 60 грн/кг
                   </div> */}
+                  </div>
+                  <div className=" price-product  w-fit">
+                    {product.volume && product.price_per_volume && (
+                      <div className="price-product__text title title--small">
+                        Ціна за {product.volume} кг: {product.price_per_volume}{" "}
+                        грн
+                      </div>
+                    )}
                   </div>
                 </div>
                 <div

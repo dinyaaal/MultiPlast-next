@@ -1,29 +1,27 @@
 "use client";
 
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import Image from "next/image";
 import { Link } from "@/i18n/routing";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { z } from "zod";
 import { RegistrationFormSchema } from "@/lib/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, SubmitHandler, FormProvider } from "react-hook-form";
-import { Select, SelectItem } from "@heroui/react";
-import PasswordInput from "@/Components/PasswordInput";
-import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 import { signIn } from "next-auth/react";
-
-const cities = ["Киев", "Харьков"];
+import { Autocomplete, AutocompleteItem } from "@heroui/react";
 
 type Inputs = z.infer<typeof RegistrationFormSchema>;
+type City = { name_ua: string; name_ru: string };
 
 export default function Registration() {
   const t = useTranslations("Auth");
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get("callbackUrl") || "./";
+  const locale = useLocale();
+
+  const [cities, setCities] = useState<City[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
   const {
     register,
     handleSubmit,
@@ -37,6 +35,45 @@ export default function Registration() {
   });
 
   useEffect(() => {
+    const fetchCities = async () => {
+      setIsLoading(true);
+      try {
+        const res = await fetch("/api/cities", {
+          cache: "force-cache",
+        });
+
+        if (!res.ok) {
+          throw new Error("Failed to fetch cities");
+        }
+
+        const data = await res.json();
+        console.log(data);
+        setCities(data);
+      } catch (error) {
+        console.error("Failed to load cities:", error);
+        toast.error("Не удалось загрузить города");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchCities();
+  }, []);
+
+  const myFilter = (textValue: string, inputValue: string) => {
+    if (inputValue.length === 0) {
+      return true;
+    }
+
+    // Normalize both strings so we can slice safely
+    // take into account the ignorePunctuation option as well...
+    textValue = textValue.normalize("NFC").toLocaleLowerCase();
+    inputValue = inputValue.normalize("NFC").toLocaleLowerCase();
+
+    return textValue.slice(0, inputValue.length) === inputValue;
+  };
+
+  useEffect(() => {
     if (errors.password) {
       toast.error(errors.password.message);
     }
@@ -47,29 +84,6 @@ export default function Registration() {
       toast.error(errors.agreement.message);
     }
   }, [errors.password, errors.passwordConfirmation, errors.agreement]);
-
-  const googleAuth = async () => {
-    try {
-      const response = await fetch(
-        "https://multiplast.web-hub.online/auth/google",
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("Failed to register");
-      }
-
-      const result = await response.json();
-      console.log("Registration successful:", result);
-    } catch (error) {
-      console.error("Registration error:", error);
-    }
-  };
 
   const processForm: SubmitHandler<Inputs> = async (data) => {
     try {
@@ -205,7 +219,7 @@ export default function Registration() {
           </div>
           <div className="input-block">
             <p>{t("registration-city")}</p>
-            <Select
+            {/* <Select
               placeholder={t("registration-city")}
               classNames={{
                 trigger: `min-h-[45px] text-black px-[12px] bg-[#F8FBFF] rounded-[5px] outline-offset-0 outline-[1px]  ${
@@ -233,10 +247,50 @@ export default function Registration() {
               }}
               {...register("city")}
             >
-              {cities.map((city) => (
-                <SelectItem key={city}>{city}</SelectItem>
+              {cities.map((city, index) => (
+                <SelectItem
+                  key={index}
+                  value={locale === "ru" ? city.name_ru : city.name_ua}
+                >
+                  {locale === "ru" ? city.name_ru : city.name_ua}
+                </SelectItem>
               ))}
-            </Select>
+            </Select> */}
+
+            <Autocomplete
+              allowsCustomValue
+              isVirtualized
+              defaultFilter={myFilter}
+              className="max-w-md"
+              label={t("registration-city")}
+              defaultItems={cities}
+              isLoading={isLoading}
+              inputProps={{ autoComplete: "off" }}
+              listboxProps={{
+                itemClasses: {
+                  base: [
+                    "min-h-[39px]",
+                    "px-[15px]",
+                    "py-[5px]",
+                    "rounded-none",
+                    "bg-transparent",
+                    "transition-colors",
+
+                    "data-[hover=true]:bg-[#c4dbff]",
+                    "data-[selectable=true]:focus:bg-[#c4dbff]",
+                  ],
+                },
+              }}
+              {...register("city")}
+            >
+              {(item) => (
+                <AutocompleteItem
+                  key={locale === "ru" ? item.name_ru : item.name_ua}
+                >
+                  {locale === "ru" ? item.name_ru : item.name_ua}
+                </AutocompleteItem>
+              )}
+            </Autocomplete>
           </div>
           <div className="input-block">
             <p>{t("registration-password")}</p>

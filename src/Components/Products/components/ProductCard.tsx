@@ -20,96 +20,173 @@ export const ProductCard: React.FC<{
   const [isLiked, setIsLiked] = useState<boolean>(false);
 
   useEffect(() => {
-    setIsLiked(liked);
-  }, [liked]);
+    if (status === "unauthenticated") {
+      const cookies = document.cookie
+        .split("; ")
+        .find((row) => row.startsWith("favorites="));
 
-  // const handleLikeClick = async () => {
-  //   const handleFavoriteInCookies = (action: "add" | "remove") => {
-  //     const cookies = document.cookie
-  //       .split("; ")
-  //       .find((row) => row.startsWith("favorites="));
+      const favorites = cookies
+        ? JSON.parse(decodeURIComponent(cookies.split("=")[1]))
+        : [];
 
-  //     let favorites = cookies
-  //       ? JSON.parse(decodeURIComponent(cookies.split("=")[1]))
-  //       : [];
+      const likedFromCookies = favorites.some(
+        (item: any) => item.id === product.id
+      );
 
-  //     if (action === "add") {
-  //       if (!favorites.some((item: any) => item.id === product.id)) {
-  //         favorites.push(product);
-  //         document.cookie = `favorites=${encodeURIComponent(
-  //           JSON.stringify(favorites)
-  //         )}; path=/; max-age=${365 * 24 * 60 * 60}`;
-  //         toast.success("Товар добавлен в избранное");
-  //         setIsLiked(!isLiked);
-  //       }
-  //     } else {
-  //       favorites = favorites.filter((item: any) => item.id !== product.id);
+      setIsLiked(likedFromCookies);
+    } else {
+      setIsLiked(liked);
+    }
+  }, [liked, status, product.id]);
+
+  // const handleFavoriteInCookies = (action: "add" | "remove") => {
+  //   const cookies = document.cookie
+  //     .split("; ")
+  //     .find((row) => row.startsWith("favorites="));
+
+  //   let favorites = cookies
+  //     ? JSON.parse(decodeURIComponent(cookies.split("=")[1]))
+  //     : [];
+
+  //   if (action === "add") {
+  //     if (!favorites.some((item: any) => item.id === product.id)) {
+  //       favorites.push(product);
   //       document.cookie = `favorites=${encodeURIComponent(
   //         JSON.stringify(favorites)
   //       )}; path=/; max-age=${365 * 24 * 60 * 60}`;
-  //       toast.success("Товар убран из избранного");
-  //       setIsLiked(!isLiked);
+  //       toast.success("Товар добавлен в избранное");
+  //       setIsLiked(true);
   //     }
-  //   };
-
-  //   if (status === "authenticated") {
-  //     if (!isLiked) {
-  //       try {
-  //         const response = await fetch("/api/favorites/add", {
-  //           method: "POST",
-  //           headers: {
-  //             "Content-Type": "application/json",
-  //           },
-  //           body: JSON.stringify({
-  //             id: product.id,
-  //             token: session?.user.access_token,
-  //           }),
-  //         });
-
-  //         if (!response.ok) {
-  //           throw new Error("Failed to add to favorites");
-  //         }
-
-  //         const data = await response.json();
-  //         console.log("Favorite added:", data);
-  //         setIsLiked(true);
-  //         toast.success("Товар добавлен в избранное");
-  //         setIsLiked(!isLiked);
-  //         // dispatch(addFavorite(product.id));
-  //       } catch (error) {
-  //         console.error("Error adding to favorites:", error);
-  //         toast.error("Error adding to favorites");
-  //       }
-  //     } else {
-  //       try {
-  //         const response = await fetch("/api/favorites/delete", {
-  //           method: "POST",
-  //           headers: {
-  //             "Content-Type": "application/json",
-  //           },
-  //           body: JSON.stringify({
-  //             id: product.id,
-  //             token: session?.user.access_token,
-  //           }),
-  //         });
-
-  //         if (!response.ok) {
-  //           throw new Error("Failed to remove from favorites");
-  //         }
-
-  //         const data = await response.json();
-  //         setIsLiked(!isLiked);
-  //         onUnlike?.(product.id);
-  //         toast.success("Товар убран из избранного");
-  //       } catch (error) {
-  //         toast.error("Failed to remove from favorites");
-  //       }
-  //       setIsLiked(false);
-  //     }
-  //   } else if (status === "unauthenticated") {
-  //     handleFavoriteInCookies(isLiked ? "remove" : "add");
+  //   } else {
+  //     favorites = favorites.filter((item: any) => item.id !== product.id);
+  //     document.cookie = `favorites=${encodeURIComponent(
+  //       JSON.stringify(favorites)
+  //     )}; path=/; max-age=${365 * 24 * 60 * 60}`;
+  //     toast.success("Товар убран из избранного");
+  //     setIsLiked(false);
+  //     onUnlike?.(product.id);
   //   }
   // };
+
+  const handleFavoriteInCookies = (action: "add" | "remove") => {
+    const cookies = document.cookie
+      .split("; ")
+      .find((row) => row.startsWith("favorites="));
+
+    let favorites = cookies
+      ? JSON.parse(decodeURIComponent(cookies.split("=")[1]))
+      : [];
+
+    const minimalProduct = {
+      id: product.id,
+      title: product.title,
+      photos: product.photos.length > 0 ? [{ url: product.photos[0].url }] : [],
+      type_price: product.type_price,
+      price: product.price,
+      author: product.author ? { id: product.author.id } : null,
+    };
+
+    if (action === "add") {
+      if (!favorites.some((item: any) => item.id === product.id)) {
+        const newFavorites = [...favorites, minimalProduct];
+        const encoded = encodeURIComponent(JSON.stringify(newFavorites));
+        document.cookie = `favorites=${encoded}; path=/; max-age=${
+          365 * 24 * 60 * 60
+        }`;
+
+        // Проверяем, сохранилась ли кука
+        const updatedCookies = document.cookie
+          .split("; ")
+          .find((row) => row.startsWith("favorites="));
+
+        if (!updatedCookies || !updatedCookies.includes(encoded)) {
+          toast.error(
+            "Не удалось сохранить товар в избранное (превышен лимит куки)"
+          );
+          setIsLiked(false);
+          return;
+        }
+
+        toast.success("Товар добавлен в избранное");
+        setIsLiked(true);
+      }
+    } else {
+      favorites = favorites.filter((item: any) => item.id !== product.id);
+      const encoded = encodeURIComponent(JSON.stringify(favorites));
+      document.cookie = `favorites=${encoded}; path=/; max-age=${
+        365 * 24 * 60 * 60
+      }`;
+
+      // Проверяем, что кука обновилась
+      const updatedCookies = document.cookie
+        .split("; ")
+        .find((row) => row.startsWith("favorites="));
+
+      if (!updatedCookies || !updatedCookies.includes(encoded)) {
+        toast.error("Не удалось убрать товар из избранного");
+        setIsLiked(true);
+        return;
+      }
+
+      toast.success("Товар убран из избранного");
+      setIsLiked(false);
+      onUnlike?.(product.id);
+    }
+  };
+
+  const handleLikeClick = async () => {
+    if (status === "authenticated") {
+      if (!isLiked) {
+        try {
+          const response = await fetch("/api/favorites/add", {
+            method: "POST",
+
+            body: JSON.stringify({
+              id: product.id,
+              token: session?.user.access_token,
+            }),
+          });
+
+          if (!response.ok) {
+            throw new Error("Failed to add to favorites");
+          }
+
+          const data = await response.json();
+          setIsLiked(true);
+          toast.success("Товар добавлен в избранное");
+          // dispatch(addFavorite(product.id));
+        } catch (error) {
+          console.error("Error adding to favorites:", error);
+          toast.error("Error adding to favorites");
+        }
+      } else {
+        try {
+          const response = await fetch("/api/favorites/delete", {
+            method: "POST",
+
+            body: JSON.stringify({
+              id: product.id,
+              token: session?.user.access_token,
+            }),
+          });
+
+          if (!response.ok) {
+            throw new Error("Failed to remove from favorites");
+          }
+
+          const data = await response.json();
+          setIsLiked(false);
+          onUnlike?.(product.id);
+          toast.success("Товар убран из избранного");
+        } catch (error) {
+          toast.error("Failed to remove from favorites");
+        }
+        setIsLiked(false);
+      }
+    } else if (status === "unauthenticated") {
+      handleFavoriteInCookies(isLiked ? "remove" : "add");
+    }
+  };
 
   function formatPrice(value: number): string {
     if (value >= 1_000_000_000) {
@@ -178,7 +255,7 @@ export const ProductCard: React.FC<{
               className={` like ${isLiked ? "active" : ""}`}
               onClick={(e) => {
                 e.preventDefault();
-                // handleLikeClick();
+                handleLikeClick();
               }}
             >
               <svg
