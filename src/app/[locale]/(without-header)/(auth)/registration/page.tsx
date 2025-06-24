@@ -261,12 +261,31 @@ export default function Registration() {
               allowsCustomValue
               isVirtualized
               defaultFilter={myFilter}
-              className="max-w-md"
               label={t("registration-city")}
               defaultItems={cities}
               isLoading={isLoading}
-              inputProps={{ autoComplete: "off" }}
+              autoComplete="off"
+              classNames={{
+                listbox: "p-0",
+              }}
+              popoverProps={{
+                classNames: {
+                  base: "p-0",
+                  content: "p-0",
+                },
+              }}
+              inputProps={{
+                autoComplete: "off",
+                classNames: {
+                  inputWrapper: `h-[45px] text-black px-[12px]  !bg-[#F8FBFF] rounded-[5px] outline-offset-0 outline-[1px]  ${
+                    errors.city ? "outline-[#FF0000]" : "outline-[#B0BFD7]"
+                  } `,
+                },
+              }}
               listboxProps={{
+                classNames: {
+                  base: "p-0",
+                },
                 itemClasses: {
                   base: [
                     "min-h-[39px]",
