@@ -5,11 +5,11 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { ProductType } from "@/types/types";
+import { MinimalProduct, ProductType } from "@/types/types";
 import { useRouter } from "@/i18n/routing";
 
 export const ProductCard: React.FC<{
-  product: ProductType;
+  product: MinimalProduct;
   liked?: boolean;
   onUnlike?: (id: number) => void;
 }> = ({ product, liked = false, onUnlike }) => {

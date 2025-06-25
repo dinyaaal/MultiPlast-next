@@ -1,20 +1,32 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import { Navigation, Pagination } from "swiper/modules";
+import { MinimalProduct } from "@/types/types";
+import { getRecentProducts } from "@/utils/getRecentProducts";
+import { ProductCard } from "./components/ProductCard";
 // import ProductCard from "./components/ProductCard";
 
 export default function Adverts() {
+  const [recent, setRecent] = useState<MinimalProduct[]>([]);
+
+  useEffect(() => {
+    const data = getRecentProducts();
+    setRecent(data);
+  }, []);
+
+  if (recent.length === 0) return null;
+
   return (
     <section className="adverts">
       <div className="adverts__container">
         <div className="adverts__top">
-          <h2 className="adverts__title title">Останні оголошення</h2>
-          <a href="#" className="adverts__button button">
+          <h2 className="adverts__title title">Нещодавно переглянуті</h2>
+          {/* <a href="#" className="adverts__button button">
             Подати оголошення
-          </a>
+          </a> */}
         </div>
         <div className="adverts__body">
           <Swiper
@@ -39,27 +51,11 @@ export default function Adverts() {
               },
             }}
           >
-            {/* <SwiperSlide>
-              <ProductCard />
-            </SwiperSlide>
-            <SwiperSlide>
-              <ProductCard />
-            </SwiperSlide>
-            <SwiperSlide>
-              <ProductCard />
-            </SwiperSlide>
-            <SwiperSlide>
-              <ProductCard />
-            </SwiperSlide>
-            <SwiperSlide>
-              <ProductCard />
-            </SwiperSlide>
-            <SwiperSlide>
-              <ProductCard />
-            </SwiperSlide>
-            <SwiperSlide>
-              <ProductCard />
-            </SwiperSlide> */}
+            {recent.map((product) => (
+              <SwiperSlide key={product.id}>
+                <ProductCard product={product} />
+              </SwiperSlide>
+            ))}
           </Swiper>
           <button
             type="button"
@@ -114,9 +110,9 @@ export default function Adverts() {
             </svg>
           </button>
         </div>
-        <a href="#" className="adverts__button adverts__button--mobile button">
+        {/* <a href="#" className="adverts__button adverts__button--mobile button">
           Подати оголошення
-        </a>
+        </a> */}
       </div>
     </section>
   );

@@ -4,12 +4,26 @@ import { ProductType } from "@/types/types";
 import { useSession } from "next-auth/react";
 import { Link } from "@/i18n/routing";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { saveToRecentProducts } from "@/utils/saveToRecentProducts";
 
 export function ProductActions({ product }: { product: ProductType }) {
   const [isLiked, setIsLiked] = useState(false);
   const { data: session, status } = useSession();
+
+  useEffect(() => {
+    const minimalProduct = {
+      id: product.id, // или `${product.id}`
+      title: product.title,
+      photos: product.photos,
+      type_price: product.type_price,
+      price: product.price,
+      author: product.author,
+    };
+
+    saveToRecentProducts(minimalProduct);
+  }, [product]);
 
   const handleLikeClick = async () => {
     if (!product) {

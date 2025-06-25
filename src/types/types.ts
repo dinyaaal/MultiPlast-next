@@ -87,6 +87,15 @@ export interface ProductType {
   contact: Contact; // Добавил контактные данные
 }
 
+export type MinimalProduct = {
+  id: number;
+  title: string;
+  photos: Photo[];
+  type_price: string;
+  price: number;
+  author: Author;
+};
+
 // export interface ProductType {
 //   id: number;
 //   title: string;

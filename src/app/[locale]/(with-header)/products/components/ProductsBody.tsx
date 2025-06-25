@@ -1,7 +1,7 @@
 "use client";
 import { Pagination } from "@heroui/pagination";
 import { ProductCard } from "@/Components/Products/components/ProductCard";
-import { Category, Page, ProductType } from "@/types/types";
+import { Category, MinimalProduct, Page } from "@/types/types";
 
 import React, { useEffect, useState } from "react";
 import { Filters } from "@/Components/Products/components/Filters";
@@ -13,7 +13,7 @@ interface ProductsProps {
 
 export function ProductsBody({ categories }: ProductsProps) {
   // const t = useTranslations("Products");
-  const [products, setProducts] = useState<ProductType[]>([]);
+  const [products, setProducts] = useState<MinimalProduct[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [links, setLinks] = useState<Page[]>([]);

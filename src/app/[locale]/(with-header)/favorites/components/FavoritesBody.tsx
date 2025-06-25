@@ -1,18 +1,18 @@
 "use client";
 import { ProductCard } from "@/Components/Products/components/ProductCard";
-import { ProductType } from "@/types/types";
+import { MinimalProduct } from "@/types/types";
 import { useSession } from "next-auth/react";
 import { useState, useEffect } from "react";
 import { Pagination, Spinner } from "@heroui/react";
 
 export default function FavoritesBody() {
   const { data: session, status } = useSession();
-  const [products, setProducts] = useState<ProductType[]>([]);
+  const [products, setProducts] = useState<MinimalProduct[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [lastPage, setLastPage] = useState<number>();
 
-  const getFavoritesFromCookies = (): ProductType[] => {
+  const getFavoritesFromCookies = (): MinimalProduct[] => {
     try {
       const cookie = document.cookie
         .split("; ")
