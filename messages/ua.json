@@ -128,9 +128,9 @@
     "select-category": "Виберіть категорію:",
     "select-type": "Виберіть тип сировини:",
     "select-polymer": "Виберіть полімер:",
-    "price-per-kg": "Вкажіть ціну продукту за кг:",
+    "price-per-kg": "Вкажіть ціну:",
     "negotiated-price": "За домовленістю",
-    "fixed-price": "Або фіксована ціна:",
+    "fixed-price": "Фіксована ціна:",
     "enter-volume": "При обʼємі",
     "enter-price": "Ціна",
 

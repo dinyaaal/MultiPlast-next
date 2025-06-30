@@ -764,12 +764,12 @@ export default function Advertisement({ categories }: SellProps) {
                       : t("enter-price")}
                   </p>
                   <div className="input-block">
-                    {(Number(watch("mainCategory")) === 1 ||
+                    {/* {(Number(watch("mainCategory")) === 1 ||
                       Number(watch("mainCategory")) === 2 ||
                       Number(watch("mainCategory")) === 3 ||
                       Number(watch("mainCategory")) === 5) && (
                       <p>{t("negotiated-price")}</p>
-                    )}
+                    )} */}
                     <div className="grid grid-cols-2 gap-2">
                       <div className="block-row__item">
                         <label className="check">

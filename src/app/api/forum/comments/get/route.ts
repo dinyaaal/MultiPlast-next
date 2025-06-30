@@ -9,9 +9,6 @@ export async function GET(req: NextRequest) {
       `https://multiplast.web-hub.online/api/forums/comments?${queryString}`,
       {
         method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
       }
     );
 

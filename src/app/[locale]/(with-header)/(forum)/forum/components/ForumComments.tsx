@@ -2,6 +2,7 @@
 
 import { ForumComment } from "@/Components/Forum/components/ForumComment";
 import { CommentType } from "@/types/types";
+import { Spinner } from "@heroui/react";
 import { useSession } from "next-auth/react";
 import React, { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
@@ -15,12 +16,14 @@ export default function ForumComments({ postId }: ForumCommentInputProps) {
   const [images, setImages] = useState<File[]>([]);
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const { data: session, status } = useSession();
-  const [visibleComments, setVisibleComments] = useState(1);
+  // const [visibleComments, setVisibleComments] = useState(1);
   const [showAll, setShowAll] = useState(false);
   const [comments, setComments] = useState<CommentType[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isLoadingSubmit, setIsLoadingSubmit] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [lastPage, setLastPage] = useState<number>();
+  const forumCommentsRef = useRef<HTMLDivElement>(null);
   const [replyData, setReplyData] = useState<{
     id: number;
     name: string;
@@ -33,15 +36,19 @@ export default function ForumComments({ postId }: ForumCommentInputProps) {
     text: string;
   }) => {
     setReplyData(replyData); // Присваиваем объект с id
+    forumCommentsRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
   const toggleComments = () => {
-    if (showAll) {
-      setVisibleComments(1);
-    } else {
-      setVisibleComments(comments.length);
-    }
-    setShowAll(!showAll);
+    setCurrentPage((prevPage) => {
+      if (!lastPage) return prevPage; // если `lastPage` ещё не известна — ничего не делаем
+      if (prevPage < lastPage) {
+        return prevPage + 1;
+      } else {
+        setComments([]);
+        return 1;
+      }
+    });
   };
 
   const fetchComments = async () => {
@@ -50,6 +57,7 @@ export default function ForumComments({ postId }: ForumCommentInputProps) {
     const queryParams = new URLSearchParams();
 
     queryParams.append("page", currentPage.toString());
+    // queryParams.append("per-page", "4");
     queryParams.append("forum_id", "5");
 
     const queryString = queryParams.toString()
@@ -59,9 +67,6 @@ export default function ForumComments({ postId }: ForumCommentInputProps) {
     try {
       const res = await fetch(`/api/forum/comments/get${queryString}`, {
         method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
       });
       if (!res.ok) {
         throw new Error("Network response was not ok");
@@ -69,7 +74,8 @@ export default function ForumComments({ postId }: ForumCommentInputProps) {
 
       const data = await res.json();
       if (data) {
-        setComments(data.data);
+        setComments((prev) => [...prev, ...data.data]);
+
         setLastPage(data.last_page);
       }
     } catch (error) {
@@ -107,7 +113,7 @@ export default function ForumComments({ postId }: ForumCommentInputProps) {
       toast.error("Пожалуйста, добавьте текст или изображение.");
       return;
     }
-
+    setIsLoadingSubmit(true);
     const formData = new FormData();
     formData.append("text", text);
     formData.append("forum_id", String(postId));
@@ -137,11 +143,13 @@ export default function ForumComments({ postId }: ForumCommentInputProps) {
       fetchComments();
     } catch (error) {
       console.error("Ошибка при отправке:", error);
+    } finally {
+      setIsLoadingSubmit(false);
     }
   };
 
   return (
-    <div className="forum-comments">
+    <div className="forum-comments" ref={forumCommentsRef}>
       <div className="forum-comments__write write-forum-comments">
         <div className="write-forum-comments__block">
           <h3 className="forum-comments__title title--small">
@@ -214,15 +222,16 @@ export default function ForumComments({ postId }: ForumCommentInputProps) {
         <button
           onClick={handleSubmit}
           className="write-forum-comments__button button"
-          disabled={!(text.trim() || images.length > 0)}
+          disabled={!(text.trim() || images.length > 0) || isLoadingSubmit}
         >
           Надіслати
+          {isLoadingSubmit && <Spinner size="sm" />}
         </button>
       </div>
       <div className="forum-comments__body">
         <h3 className="forum-comments__title title--small">Обговорення</h3>
         <div className="forum-comments__content">
-          {comments.slice(0, visibleComments).map((comment) => (
+          {comments.map((comment) => (
             <ForumComment
               postId={postId}
               key={comment.id}
@@ -231,13 +240,15 @@ export default function ForumComments({ postId }: ForumCommentInputProps) {
             />
           ))}
         </div>
-        {comments.length > 1 && (
+        {comments.length > 1 && lastPage && (
           <button
             type="button"
             className="forum-comments__more block__more button"
+            disabled={isLoading}
             onClick={toggleComments}
           >
-            <span>{showAll ? "Сховати" : "Дивитися ще"}</span>
+            <span>{currentPage < lastPage ? "Дивитися ще" : "Сховати"}</span>
+            {isLoading && <Spinner size="sm" />}
           </button>
         )}
       </div>

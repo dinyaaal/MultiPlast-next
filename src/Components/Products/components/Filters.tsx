@@ -110,19 +110,26 @@ export const Filters: React.FC<FiltersProps> = ({
   // -=-=-=-=-=-=-=-=- Фильтрация после перезагрузки страницы с выбранными фильтрами -=-=-=-=-=-=-=-=-
 
   useEffect(() => {
-    const option = searchParams.get("opt");
+    const optionsRaw = searchParams.get("opt");
     const category = searchParams.get("cat");
-    const subcategory = searchParams.get("subcat");
+    const subcategoriesRaw = searchParams.get("subcat");
 
+    const parsedOptions = optionsRaw?.split(",") ?? [];
+    const parsedSubcategories = subcategoriesRaw?.split(",") ?? [];
+
+    setSelectedOptions(parsedOptions);
     setSelectedCategory(category);
-    setSelectedOptions(option?.split(",") ?? []);
 
     if (category) {
       setTimeout(() => {
-        setSelectedSubCategories(subcategory?.split(",") ?? []);
+        setSelectedSubCategories(parsedSubcategories);
       }, 100);
     }
+
+    onSelectionConfirm(category, parsedSubcategories, parsedOptions);
   }, []);
+
+  console.log(selectedOptions);
 
   // -=-=-=-=-=-=-=-=- Фильтрация после перезагрузки страницы с выбранными фильтрами -=-=-=-=-=-=-=-=-
 
@@ -198,13 +205,27 @@ export const Filters: React.FC<FiltersProps> = ({
                 <span className="custom-checkbox"></span>
                 Продажа
               </label> */}
-              <Checkbox
-                value="sell"
-                checked={selectedOptions.includes("sell")}
-                onChange={() => handleOptionChange("sell")}
+              <CheckboxGroup
+                value={selectedOptions}
+                onValueChange={setSelectedOptions}
               >
-                Продажа
-              </Checkbox>
+                <Checkbox
+                  value="sell"
+                  // defaultSelected={selectedOptions.includes("sell")}
+                  // checked={selectedOptions.includes("sell")}
+                  // onChange={() => handleOptionChange("sell")}
+                >
+                  Продажа
+                </Checkbox>
+                <Checkbox
+                  value="buy"
+                  // checked={selectedOptions.includes("buy")}
+                  // onChange={() => handleOptionChange("buy")}
+                >
+                  Покупка
+                </Checkbox>
+              </CheckboxGroup>
+
               {/* <label className="check">
                 <input
                   type="checkbox"
@@ -216,16 +237,9 @@ export const Filters: React.FC<FiltersProps> = ({
                 <span className="custom-checkbox"></span>
                 Покупка
               </label> */}
-              <Checkbox
-                value="buy"
-                checked={selectedOptions.includes("buy")}
-                onChange={() => handleOptionChange("buy")}
-              >
-                Покупка
-              </Checkbox>
             </Spoiler>
 
-            <Spoiler className="item-filter" title={"Категория"}>
+            <Spoiler isOpen className="item-filter" title={"Категория"}>
               <RadioGroup
                 value={selectedCategory}
                 onValueChange={setSelectedCategory}
@@ -277,51 +291,50 @@ export const Filters: React.FC<FiltersProps> = ({
                         : "Сировина"
                     }
                   >
-                    {categories
-                      .find(
-                        (category) =>
-                          category.id.toString() === selectedCategory
-                      )
-                      ?.categories.filter((sub) => sub.type === "Сировина")
-                      .map((subCategory) => (
-                        <Checkbox
-                          key={subCategory.id}
-                          value={subCategory.id.toString()}
-                          checked={selectedSubCategories.includes(
-                            subCategory.id.toString()
-                          )}
-                          onChange={() =>
-                            handleCheckboxChange(subCategory.id.toString())
-                          }
-                        >
-                          {subCategory.name}
-                        </Checkbox>
-                      ))}
+                    <CheckboxGroup
+                      value={selectedSubCategories}
+                      onValueChange={setSelectedSubCategories}
+                    >
+                      {categories
+                        .find(
+                          (category) =>
+                            category.id.toString() === selectedCategory
+                        )
+                        ?.categories.filter((sub) => sub.type === "Сировина")
+                        .map((subCategory) => (
+                          <Checkbox
+                            key={subCategory.id}
+                            value={subCategory.id.toString()}
+                          >
+                            {subCategory.name}
+                          </Checkbox>
+                        ))}
+                    </CheckboxGroup>
                   </Spoiler>
                 )}
+
                 {(Number(selectedCategory) === 1 ||
                   Number(selectedCategory) === 2) && (
                   <Spoiler className="item-filter" title="Полімер">
-                    {categories
-                      .find(
-                        (category) =>
-                          category.id.toString() === selectedCategory
-                      )
-                      ?.categories.filter((sub) => sub.type === "Полімер")
-                      .map((subCategory) => (
-                        <Checkbox
-                          key={subCategory.id}
-                          value={subCategory.id.toString()}
-                          checked={selectedSubCategories.includes(
-                            subCategory.id.toString()
-                          )}
-                          onChange={() =>
-                            handleCheckboxChange(subCategory.id.toString())
-                          }
-                        >
-                          {subCategory.name}
-                        </Checkbox>
-                      ))}
+                    <CheckboxGroup
+                      value={selectedSubCategories}
+                      onValueChange={setSelectedSubCategories}
+                    >
+                      {categories
+                        .find(
+                          (category) =>
+                            category.id.toString() === selectedCategory
+                        )
+                        ?.categories.filter((sub) => sub.type === "Полімер")
+                        .map((subCategory) => (
+                          <Checkbox
+                            key={subCategory.id}
+                            value={subCategory.id.toString()}
+                          >
+                            {subCategory.name}
+                          </Checkbox>
+                        ))}
+                    </CheckboxGroup>
                   </Spoiler>
                 )}
               </>

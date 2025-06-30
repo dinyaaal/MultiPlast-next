@@ -6,6 +6,7 @@ import { Category, MinimalProduct, Page } from "@/types/types";
 import React, { useEffect, useState } from "react";
 import { Filters } from "@/Components/Products/components/Filters";
 import { useSearchParams } from "next/navigation";
+import { Spinner } from "@heroui/react";
 
 interface ProductsProps {
   categories: Category[];
@@ -106,15 +107,22 @@ export function ProductsBody({ categories }: ProductsProps) {
           setCurrentPage={setCurrentPage}
         /> */}
         <div className="trade__content content-trade">
-          <div className="content-trade__items">
-            {products.length > 0 ? (
-              products.map((product, index) => (
-                <ProductCard key={product.id} product={product} />
-              ))
+          {isLoading && (
+            <div className="flex w-full h-full flex-auto items-center justify-center">
+              <Spinner size="lg" />
+            </div>
+          )}
+          {!isLoading ? (
+            products.length > 0 ? (
+              <div className="content-trade__items">
+                {products.map((product) => (
+                  <ProductCard key={product.id} product={product} />
+                ))}
+              </div>
             ) : (
               <p>Нет товаров</p>
-            )}
-          </div>
+            )
+          ) : null}
           {lastPage && lastPage > 1 && (
             <div className="pages">
               <button

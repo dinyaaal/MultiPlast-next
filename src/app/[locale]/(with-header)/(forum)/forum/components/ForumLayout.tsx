@@ -4,7 +4,7 @@ import React from "react";
 import { useTranslations } from "next-intl";
 import { ForumSearch } from "@/Components/Forum/components/ForumSearch";
 
-export default function Layout({
+export default function ForumLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
