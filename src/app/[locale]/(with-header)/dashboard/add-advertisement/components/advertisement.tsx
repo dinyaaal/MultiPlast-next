@@ -805,7 +805,7 @@ export default function Advertisement({ categories }: SellProps) {
                         <div className="input-block">
                           <p>{t("fixed-price")}</p>
 
-                          <div
+                          <label
                             className={`input-body input ${
                               errors.price ? "input--error" : ""
                             }`}
@@ -819,7 +819,7 @@ export default function Advertisement({ categories }: SellProps) {
                               {...register("price")}
                             />
                             <div className="input-body__item">грн</div>
-                          </div>
+                          </label>
                         </div>
                       </div>
                     )}
@@ -890,7 +890,7 @@ export default function Advertisement({ categories }: SellProps) {
                       <div className="block-row__item">
                         <div className="input-block">
                           <p>{t("enter-volume")}</p>
-                          <div className="input-body input">
+                          <label className="input-body input">
                             <input
                               disabled={arrangement}
                               autoComplete="off"
@@ -900,14 +900,14 @@ export default function Advertisement({ categories }: SellProps) {
                               {...register("volume")}
                             />
                             <div className="input-body__item">кг</div>
-                          </div>
+                          </label>
                         </div>
                       </div>
 
                       <div className="block-row__item">
                         <div className="input-block">
                           <p>{t("enter-price")}</p>
-                          <div className="input-body input">
+                          <label className="input-body input">
                             <input
                               disabled={arrangement}
                               autoComplete="off"
@@ -917,7 +917,7 @@ export default function Advertisement({ categories }: SellProps) {
                               {...register("volume_price")}
                             />
                             <div className="input-body__item">грн</div>
-                          </div>
+                          </label>
                         </div>
                       </div>
                     </div>
@@ -1088,7 +1088,7 @@ export default function Advertisement({ categories }: SellProps) {
             <div className="body-dashboard__block">
               <div className="input-block input-block-title">
                 <p>{t("enter-ad-title")}*</p>
-                <div className="input-body input-body--title">
+                <label className="input-body input-body--title">
                   <input
                     maxLength={150}
                     type="text"
@@ -1098,7 +1098,7 @@ export default function Advertisement({ categories }: SellProps) {
                     {...register("title")}
                   />
                   <div className="input-body__item">{t("max-characters")}</div>
-                </div>
+                </label>
               </div>
               <div className="description input-block">
                 <p>{t("enter-description")}*</p>
