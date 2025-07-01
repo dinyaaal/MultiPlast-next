@@ -1,6 +1,7 @@
 import React from "react";
 import { ProductsBody } from "./components/ProductsBody";
 import { getTranslations } from "next-intl/server";
+import { BreadcrumbsClient } from "@/Components/Breadcrumbs";
 
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
 
@@ -28,9 +29,13 @@ export default async function Products(props: { searchParams: SearchParams }) {
   const searchParams = await props.searchParams;
   const categories = await fetchCategories();
   const t = await getTranslations("Products");
+  const tb = await getTranslations("Breadcrumbs");
 
+  const crumbs = [{ label: tb("home"), href: "/" }, { label: tb("products") }];
   return (
     <>
+      <BreadcrumbsClient items={crumbs} />
+
       <section className="trade">
         <div className="trade__container">
           <div className="trade__top">

@@ -1,8 +1,9 @@
-import Breadcrumbs from "@/Components/Breadcrumbs";
+// import Breadcrumbs from "@/Components/Breadcrumbs";
 import SelectTabs from "@/Components/Select/SelectTabs";
 import React from "react";
 import { useTranslations } from "next-intl";
 import { ForumSearch } from "@/Components/Forum/components/ForumSearch";
+import { BreadcrumbsClient } from "@/Components/Breadcrumbs";
 
 export default function ForumLayout({
   children,
@@ -10,10 +11,14 @@ export default function ForumLayout({
   children: React.ReactNode;
 }>) {
   const t = useTranslations("Forum");
+  const tb = useTranslations("Breadcrumbs");
+
+  const crumbs = [{ label: tb("home"), href: "/" }, { label: tb("forum") }];
 
   return (
     <>
-      <Breadcrumbs position={t("breadcrumbsPosition")} />
+      <BreadcrumbsClient items={crumbs} />
+
       <section className="forum">
         <div className="forum__top top-forum">
           <div className="top-forum__container">

@@ -1,4 +1,9 @@
 {
+  "Breadcrumbs": {
+    "home": "Головна",
+    "products": "Торгівельний майданчик",
+    "forum": "Форум"
+  },
   "Hero": {
     "text": "Спільнота професіоналів полімерного ринку України",
     "button": "Про проект"
@@ -72,6 +77,17 @@
   "Products": {
     "title": "Дошка оголошень"
   },
+  "Product": {
+    "published": "Опубліковано",
+    "price-types": {
+      "by_arrangement": "Ціна за домовленістю",
+      "for_piece": "шт",
+      "for_minute": "хв",
+      "for_hour": "год",
+      "for_kg": "кг",
+      "for_meter": "м"
+    }
+  },
 
   "Forum": {
     "breadcrumbsPosition": "Форум",
@@ -131,6 +147,7 @@
     "price-per-kg": "Вкажіть ціну:",
     "negotiated-price": "За домовленістю",
     "fixed-price": "Фіксована ціна:",
+    "price-type": "Тип ціни:",
     "enter-volume": "При обʼємі",
     "enter-price": "Ціна",
 

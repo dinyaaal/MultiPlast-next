@@ -7,6 +7,8 @@ import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { MinimalProduct, ProductType } from "@/types/types";
 import { useRouter } from "@/i18n/routing";
+import { useTranslations } from "next-intl";
+import { Tooltip } from "@heroui/react";
 
 export const ProductCard: React.FC<{
   product: MinimalProduct;
@@ -15,9 +17,15 @@ export const ProductCard: React.FC<{
 }> = ({ product, liked = false, onUnlike }) => {
   const { data: session, status } = useSession();
   const router = useRouter();
+  const t = useTranslations("Product");
+
   // const favorites = useSelector((state: RootState) => state.favorites.items);
   // const dispatch = useDispatch();
   const [isLiked, setIsLiked] = useState<boolean>(false);
+
+  const getPriceUnit = (type_price: string): string => {
+    return t(`price-types.${type_price}`);
+  };
 
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -189,16 +197,11 @@ export const ProductCard: React.FC<{
   };
 
   function formatPrice(value: number): string {
-    if (value >= 1_000_000_000) {
-      return (value / 1_000_000_000).toFixed(1).replace(/\.0$/, "") + "B";
+    const str = value.toString();
+    if (str.length > 6) {
+      return str.slice(0, 6) + "...";
     }
-    if (value >= 1_000_000) {
-      return (value / 1_000_000).toFixed(1).replace(/\.0$/, "") + "M";
-    }
-    if (value >= 1_000) {
-      return (value / 1_000).toFixed(1).replace(/\.0$/, "") + "K";
-    }
-    return value.toString();
+    return str;
   }
 
   return (
@@ -226,9 +229,13 @@ export const ProductCard: React.FC<{
             <p>По договорённости</p>
           ) : (
             <div className="item-advert__price">
-              <span>{formatPrice(product.price)} грн</span>
+              <span>
+                {formatPrice(product.price)} грн/
+                {getPriceUnit(product.type_price)}
+              </span>
             </div>
           )}
+
           {product.author && session?.user.id === product.author.id ? (
             <button
               onClick={(e) => {

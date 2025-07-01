@@ -125,7 +125,7 @@ export default function Advertisement({ categories }: SellProps) {
       });
       if (deleteResponse.ok) {
         toast.success("Удалено!");
-        router.push("./products");
+        router.push("/products");
       } else {
         throw new Error("Ошибка обновления информации пользователя");
       }
@@ -375,6 +375,7 @@ export default function Advertisement({ categories }: SellProps) {
     const selectedKey = event.target.value;
     const selectedUnit = units.find((unit) => unit.key === selectedKey);
     if (selectedUnit) {
+      console.log(selectedUnit.key as typePrice["type"]);
       setTypePrice({
         type: selectedUnit.key as typePrice["type"],
       });
@@ -800,76 +801,87 @@ export default function Advertisement({ categories }: SellProps) {
                   </div>
                   <div className="block-row">
                     {!arrangement && (
-                      <div className="input-block">
-                        <p>{t("fixed-price")}</p>
+                      <div className="block-row__item">
+                        <div className="input-block">
+                          <p>{t("fixed-price")}</p>
 
-                        <div
-                          className={`input-body input ${
-                            errors.price ? "input--error" : ""
-                          }`}
-                        >
-                          <input
-                            disabled={watch("arrangement")}
-                            autoComplete="off"
-                            type="number"
-                            placeholder=""
-                            className="input-body__input input-number"
-                            {...register("price")}
-                          />
-                          <div className="input-body__item">грн</div>
+                          <div
+                            className={`input-body input ${
+                              errors.price ? "input--error" : ""
+                            }`}
+                          >
+                            <input
+                              disabled={watch("arrangement")}
+                              autoComplete="off"
+                              type="number"
+                              placeholder=""
+                              className="input-body__input input-number"
+                              {...register("price")}
+                            />
+                            <div className="input-body__item">грн</div>
+                          </div>
                         </div>
                       </div>
                     )}
                     {!arrangement && Number(watch("mainCategory")) === 4 && (
-                      <div className="block-row-item">
-                        <Select
-                          isDisabled={arrangement}
-                          disallowEmptySelection
-                          placeholder={t("select-category")}
-                          classNames={{
-                            trigger: `min-h-[45px] text-black px-[12px] bg-[#F8FBFF] rounded-[5px] outline-offset-0 outline-[1px] outline-[#B0BFD7]`,
+                      <div className="block-row__item">
+                        <div className="input-block">
+                          <p>{t("price-type")}</p>
 
-                            popoverContent:
-                              "bg-[#F8FBFF] p-0 rounded-[5px] outline-offset-0 outline-[1px] outline-[#B0BFD7]",
-                            listbox: "p-0",
-                          }}
-                          listboxProps={{
-                            itemClasses: {
-                              base: [
-                                "min-h-[39px]",
-                                "px-[15px]",
-                                "py-[5px]",
-                                "rounded-none",
-                                "bg-transparent",
-                                "transition-colors",
+                          <Select
+                            isDisabled={arrangement}
+                            disallowEmptySelection
+                            placeholder={t("select-category")}
+                            className="w-full"
+                            classNames={{
+                              trigger: `min-h-[45px] text-black px-[12px] bg-[#F8FBFF] rounded-[5px] outline-offset-0 outline-[1px] outline-[#B0BFD7]`,
 
-                                "data-[hover=true]:bg-[#c4dbff]",
-                                "data-[selectable=true]:focus:bg-[#c4dbff]",
-                              ],
-                            },
-                          }}
-                          defaultSelectedKeys={["for_hour"]}
-                          onChange={(selectedKey) =>
-                            handleChangeTypePrice(selectedKey)
-                          }
-                        >
-                          {units.map((unit) => (
-                            <SelectItem key={unit.key}>{unit.label}</SelectItem>
-                          ))}
-                        </Select>
+                              popoverContent:
+                                "bg-[#F8FBFF] p-0 rounded-[5px] outline-offset-0 outline-[1px] outline-[#B0BFD7]",
+                              listbox: "p-0",
+                            }}
+                            listboxProps={{
+                              itemClasses: {
+                                base: [
+                                  "min-h-[39px]",
+                                  "px-[15px]",
+                                  "py-[5px]",
+                                  "rounded-none",
+                                  "bg-transparent",
+                                  "transition-colors",
+
+                                  "data-[hover=true]:bg-[#c4dbff]",
+                                  "data-[selectable=true]:focus:bg-[#c4dbff]",
+                                ],
+                              },
+                            }}
+                            defaultSelectedKeys={["for_hour"]}
+                            onChange={(selectedKey) =>
+                              handleChangeTypePrice(selectedKey)
+                            }
+                          >
+                            {units.map((unit) => (
+                              <SelectItem key={unit.key}>
+                                {unit.label}
+                              </SelectItem>
+                            ))}
+                          </Select>
+                        </div>
                       </div>
                     )}
                   </div>
                 </div>
-                {!arrangement && (
-                  <button
-                    type="button"
-                    onClick={() => setShowDiscount((prev) => !prev)}
-                    className=" button button--secondary"
-                  >
-                    Ціна зі знижкою
-                  </button>
-                )}
+                {!arrangement &&
+                  (Number(watch("mainCategory")) === 1 ||
+                    Number(watch("mainCategory")) === 2) && (
+                    <button
+                      type="button"
+                      onClick={() => setShowDiscount((prev) => !prev)}
+                      className=" button button--secondary"
+                    >
+                      Ціна зі знижкою
+                    </button>
+                  )}
                 {!arrangement &&
                   showDiscount &&
                   (Number(watch("mainCategory")) === 1 ||

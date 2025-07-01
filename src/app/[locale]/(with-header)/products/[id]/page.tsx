@@ -1,5 +1,4 @@
 import ReadMore from "@/Components/ReadMore";
-import { Breadcrumbs, BreadcrumbItem } from "@heroui/breadcrumbs";
 import { ProductType } from "@/types/types";
 import { Link } from "@/i18n/routing";
 import { SocialsNetwork } from "./components/SocialsNetworks";
@@ -7,6 +6,9 @@ import React from "react";
 import { ProductActions } from "./components/ProductActions";
 import { ProductPhotos } from "./components/ProductPhotos";
 import notFound from "@/app/[locale]/not-found";
+import { getServerSession } from "next-auth";
+import { getTranslations } from "next-intl/server";
+import { BreadcrumbsClient } from "@/Components/Breadcrumbs";
 
 type Params = Promise<{ id: string }>;
 
@@ -36,33 +38,42 @@ async function getProduct(id: string): Promise<ProductType | null> {
 export default async function Product(props: { params: Params }) {
   const params = await props.params;
   const product = await getProduct(params.id);
+  const session = await getServerSession();
+  const t = await getTranslations("Product");
+  const tb = await getTranslations("Breadcrumbs");
 
   function isEmpty(string: string | null | undefined) {
     return string ?? "";
   }
 
+  const getPriceUnit = (type_price: string): string => {
+    return t(`price-types.${type_price}`);
+  };
+
   if (!product) {
     return notFound();
   }
 
+  const crumbs = [
+    { label: tb("home"), href: "/" },
+    { label: tb("products"), href: "/products" },
+    { label: product.title },
+  ];
+
   return (
     <>
-      {/* <Breadcrumbs position={product.title} /> */}
-      <div className="breadcrumbs">
-        <Breadcrumbs className=" breadcrumbs__container">
-          <BreadcrumbItem>
-            <Link href="/">Головна</Link>
-          </BreadcrumbItem>
-          <BreadcrumbItem>
-            <Link href="/products">Торгівельний майданчик</Link>
-          </BreadcrumbItem>
-          <BreadcrumbItem>{product.title}</BreadcrumbItem>
-        </Breadcrumbs>
-      </div>
+      <BreadcrumbsClient items={crumbs} />
       <section className="product">
         <div className="product__container">
           <div className="product__top top-product">
-            <div className="w-full flex flex-col gap-1 ">
+            <div className="w-full flex flex-col gap-2 ">
+              <div className="flex items-center justify-between gap-3">
+                <span>ID: {product.id}</span>
+                <span>
+                  {t(`published`)}:{" "}
+                  {new Date(product.created_at).toLocaleDateString("uk-UA")}
+                </span>
+              </div>
               <div className="top-product__body">
                 <div className="top-product__block">
                   <h2 className="top-product__title title">{product.title}</h2>
@@ -87,10 +98,12 @@ export default async function Product(props: { params: Params }) {
                 <div className="top-product__price price-product">
                   <div className="price-product__text title">
                     {product.type_price === "by_arrangement" ? (
-                      <p>Цена по договорённости</p>
+                      <p>{t(`price-types.by_arrangement`)}</p>
                     ) : (
                       <>
-                        <p>{product.price} грн</p>
+                        <p>
+                          {product.price} грн/{getPriceUnit(product.type_price)}
+                        </p>
                       </>
                     )}
                   </div>
@@ -99,7 +112,7 @@ export default async function Product(props: { params: Params }) {
               <div className=" price-product self-end w-fit">
                 {product.volume && product.price_per_volume && (
                   <div className="price-product__text title title--small">
-                    Ціна за {product.volume} кг: {product.price_per_volume} грн
+                    От {product.volume} кг - {product.price_per_volume} грн
                   </div>
                 )}
               </div>
@@ -185,8 +198,7 @@ export default async function Product(props: { params: Params }) {
                   <div className=" price-product  w-fit">
                     {product.volume && product.price_per_volume && (
                       <div className="price-product__text title title--small">
-                        Ціна за {product.volume} кг: {product.price_per_volume}{" "}
-                        грн
+                        От {product.volume} кг - {product.price_per_volume} грн
                       </div>
                     )}
                   </div>
@@ -265,12 +277,14 @@ export default async function Product(props: { params: Params }) {
                       Зателефонувати
                     </Link>
                   )}
-                  <Link
-                    href={`/messages/${product.author.id}`}
-                    className="actions-body-product__message button"
-                  >
-                    Написати повідомлення
-                  </Link>
+                  {session && (
+                    <Link
+                      href={`/messages/${product.author.id}`}
+                      className="actions-body-product__message button"
+                    >
+                      Написати повідомлення
+                    </Link>
+                  )}
                   {product.files && product.files.length > 0 && (
                     <Link
                       href="#"

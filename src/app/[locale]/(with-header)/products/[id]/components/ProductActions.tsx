@@ -25,6 +25,26 @@ export function ProductActions({ product }: { product: ProductType }) {
     saveToRecentProducts(minimalProduct);
   }, [product]);
 
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      const cookies = document.cookie
+        .split("; ")
+        .find((row) => row.startsWith("favorites="));
+
+      const favorites = cookies
+        ? JSON.parse(decodeURIComponent(cookies.split("=")[1]))
+        : [];
+
+      const likedFromCookies = favorites.some(
+        (item: any) => item.id === product.id
+      );
+
+      setIsLiked(likedFromCookies);
+    } else {
+      setIsLiked(false);
+    }
+  }, [status, product.id]);
+
   const handleLikeClick = async () => {
     if (!product) {
       return;
