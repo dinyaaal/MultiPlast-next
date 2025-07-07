@@ -74,13 +74,16 @@ export default function Profile() {
         },
         body: formData,
       });
+      const result = await editResponse.json();
 
-      if (editResponse.ok) {
-        const editResult = await editResponse.json();
-        toast.success("Пароль успешно изменен");
-      } else {
-        throw new Error("Ошибка обновления информации пользователя");
+      if (!editResponse.ok) {
+        console.error("❌ Registration error:", result);
+
+        toast.error(result.message || "Unknown registration error");
+
+        return;
       }
+      toast.success("Пароль успешно изменен");
     } catch (error) {
       console.error("Ошибка при отправке данных:", error);
       toast.error("Ошибка обновления информации пользователя");

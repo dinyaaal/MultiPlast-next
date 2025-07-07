@@ -12,6 +12,7 @@ import { useForm, SubmitHandler, FormProvider } from "react-hook-form";
 import { toast } from "sonner";
 import { signIn } from "next-auth/react";
 import { Autocomplete, AutocompleteItem } from "@heroui/react";
+import { useRouter } from "next/navigation";
 
 type Inputs = z.infer<typeof RegistrationFormSchema>;
 type City = { name_ua: string; name_ru: string };
@@ -19,7 +20,7 @@ type City = { name_ua: string; name_ru: string };
 export default function Registration() {
   const t = useTranslations("Auth");
   const locale = useLocale();
-
+  const router = useRouter();
   const [cities, setCities] = useState<City[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const {
@@ -104,14 +105,21 @@ export default function Registration() {
         }),
       });
 
+      const result = await response.json();
+
       if (!response.ok) {
-        throw new Error("Failed to register");
+        console.error("❌ Registration error:", result);
+
+        toast.error(result.message || "Unknown registration error");
+
+        return;
       }
 
-      const result = await response.json();
       toast.success("Registration successful");
+      router.push("/");
     } catch (error) {
-      toast.error("Registration error");
+      console.error("❌ Unexpected error:", error);
+      toast.error("Unexpected error during registration");
     }
   };
 
@@ -219,43 +227,6 @@ export default function Registration() {
           </div>
           <div className="input-block">
             <p>{t("registration-city")}</p>
-            {/* <Select
-              placeholder={t("registration-city")}
-              classNames={{
-                trigger: `min-h-[45px] text-black px-[12px] bg-[#F8FBFF] rounded-[5px] outline-offset-0 outline-[1px]  ${
-                  errors.city ? "outline-[#FF0000]" : "outline-[#B0BFD7]"
-                } `,
-                value: `${errors.city ? "text-[#FF0000]" : ""}`,
-                popoverContent:
-                  "bg-[#F8FBFF] p-0 rounded-[5px] outline-offset-0 outline-[1px] outline-[#B0BFD7]",
-                listbox: "p-0",
-              }}
-              listboxProps={{
-                itemClasses: {
-                  base: [
-                    "min-h-[39px]",
-                    "px-[15px]",
-                    "py-[5px]",
-                    "rounded-none",
-                    "bg-transparent",
-                    "transition-colors",
-
-                    "data-[hover=true]:bg-[#c4dbff]",
-                    "data-[selectable=true]:focus:bg-[#c4dbff]",
-                  ],
-                },
-              }}
-              {...register("city")}
-            >
-              {cities.map((city, index) => (
-                <SelectItem
-                  key={index}
-                  value={locale === "ru" ? city.name_ru : city.name_ua}
-                >
-                  {locale === "ru" ? city.name_ru : city.name_ua}
-                </SelectItem>
-              ))}
-            </Select> */}
 
             <Autocomplete
               allowsCustomValue

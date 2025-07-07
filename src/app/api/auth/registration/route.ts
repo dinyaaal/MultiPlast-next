@@ -30,19 +30,28 @@ export async function POST(request: Request) {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Accept: "application/json",
         },
         body,
       }
     );
 
+    const data = await res.json(); // всегда парсим json, даже если ошибка
+
     if (!res.ok) {
-      throw new Error("Network response was not ok");
+      console.error("External API error:", data);
+      return NextResponse.json(data, { status: res.status });
     }
 
-    const data = await res.json();
     return NextResponse.json(data);
   } catch (error) {
-    console.error("Error fetching data:", error);
-    return NextResponse.error();
+    console.error("Unexpected error:", error);
+    return NextResponse.json(
+      {
+        message: "Unexpected server error",
+        error: (error as Error).message,
+      },
+      { status: 500 }
+    );
   }
 }

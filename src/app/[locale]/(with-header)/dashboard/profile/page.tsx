@@ -2,7 +2,7 @@
 import { UserInfoSchema } from "@/lib/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Select, SelectItem, Spinner } from "@heroui/react";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
@@ -149,7 +149,8 @@ export default function Profile() {
       });
       if (deleteResponse.ok) {
         toast.success("Удалено!");
-        router.push("./");
+        signOut({ callbackUrl: "/" });
+        // router.push("/");
       } else {
         throw new Error("Ошибка удаление акаунта");
       }
@@ -236,7 +237,7 @@ export default function Profile() {
                       <p>Прізвище*</p>
                       <input
                         {...register("last_name")}
-                        value={userInformation?.last_name}
+                        value={userInformation?.last_name ?? ""}
                         onChange={(e) =>
                           setUserInformation((prev) =>
                             prev ? { ...prev, last_name: e.target.value } : null
@@ -254,7 +255,7 @@ export default function Profile() {
                     <div className="input-block">
                       <p>Імʼя*</p>
                       <input
-                        value={userInformation?.first_name}
+                        value={userInformation?.first_name ?? ""}
                         {...register("first_name")}
                         onChange={(e) =>
                           setUserInformation((prev) =>
