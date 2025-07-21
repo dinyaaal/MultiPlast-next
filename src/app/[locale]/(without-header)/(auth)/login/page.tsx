@@ -148,9 +148,9 @@ export default function Login() {
             <span className="custom-checkbox"></span>
             {t("login-checkbox")}
           </label>
-          <a href="#" className="form-login__forget link">
+          <Link href="/forgot-password" className="form-login__forget link">
             {t("login-forgot")}
-          </a>
+          </Link>
         </div>
 
         <button type="submit" className="form-login__button button">

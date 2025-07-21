@@ -68,6 +68,16 @@ export interface Contact {
   city: string;
   area: string;
 }
+export interface ProductContact {
+  id: number;
+  product_id: number;
+  name_of_enterprise: string | null;
+  name: string;
+  phone_number: string;
+  address: string | null;
+  city: string;
+  area: string;
+}
 export interface ProductType {
   id: number;
   title: string;

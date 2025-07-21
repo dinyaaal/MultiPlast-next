@@ -32,6 +32,13 @@ export const LoginFormSchema = z.object({
   remember: z.boolean().optional(),
 });
 
+export const ForgotPasswordSchema = z.object({
+  email: z
+    .string()
+    .email("Введите корректный email")
+    .min(1, "Введите свой email "),
+});
+
 export const ForumAddSchema = z.object({
   title: z.string().min(1, "Введите заголовок "),
   // text: z.string().min(1, "Введите описание "),
@@ -92,6 +99,15 @@ export const UserSecuritySchema = z
     path: ["repeatPassword"], // ошибка будет привязана к полю repeatPassword
   });
 
+const ContactSchema = z.object({
+  position: z.string().optional(),
+  name: z.string().min(1, "Введите ваше имя"),
+  phone_number: z
+    .string()
+    .min(10, "Номер телефона должен содержать минимум 10 символов")
+    .max(15, "Номер телефона не может быть длиннее 15 символов"),
+});
+
 export const AdvertismentSchema = z
   .object({
     advertType: z.enum(["sell", "buy"]),
@@ -108,7 +124,7 @@ export const AdvertismentSchema = z
       .min(1, { message: "Описание обязательно" })
       .max(1000, { message: "Максимальная длина 1000 символов" }),
 
-    name_of_enterprise: z.string(),
+    name_of_enterprise: z.string().optional(),
     city: z.string().min(1, "Введите ваш город"),
     address: z.string(),
     area: z.string().min(1, "Введите вашу область"),
