@@ -22,6 +22,13 @@
       background-color: var(--blueColor-hover);
     }
   }
+  &--icon {
+    flex-shrink: 0;
+    width: 45px;
+    height: 45px;
+    min-width: none;
+    padding: 4px;
+  }
   &--fw {
     max-width: none;
     width: 100%;

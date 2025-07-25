@@ -1,19 +1,61 @@
+"use server";
+
 import Image from "next/image";
 import React from "react";
-import { useTranslations } from "next-intl";
+import { ForumPost } from "@/types/types";
 import { ForumCard } from "./components/ForumCard";
+import { getTranslations } from "next-intl/server";
+import Link from "next/link";
 
-export default function HomeForum() {
-  const t = useTranslations("HomeForum");
+async function getForumPosts(): Promise<ForumPost[] | null> {
+  const queryParams = new URLSearchParams();
 
+  queryParams.append("page", "1");
+  queryParams.append("perPage", "3");
+
+  const queryString = queryParams.toString()
+    ? `?${queryParams.toString()}`
+    : "";
+
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/forum/get${queryString}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        next: {
+          revalidate: 3600,
+        },
+      }
+    );
+
+    if (!res.ok) return null;
+
+    const data = await res.json();
+
+    if (!data || Object.keys(data).length === 0) {
+      return null;
+    }
+
+    return data.data as ForumPost[];
+  } catch {
+    return null;
+  }
+}
+
+export default async function HomeForum() {
+  const t = await getTranslations("HomeForum");
+  const posts = await getForumPosts();
+  console.log(posts);
   return (
     <section className="home-forum">
       <div className="home-forum__container">
         <h2 className="home-forum__title title">{t("forum")}</h2>
-        <div className="home-forum__items">
-          {/* <ForumCard small />
-          <ForumCard small />
-          <ForumCard small /> */}
+        <div className="grid  md:grid-cols-2 lg:grid-cols-3 gap-4 xl:gap-5">
+          {posts &&
+            posts.map((post) => <ForumCard small key={post.id} post={post} />)}
         </div>
         <div className="home-forum__body body-home-forum">
           <div className="body-home-forum__block">
@@ -22,9 +64,9 @@ export default function HomeForum() {
             </h3>
             <p className="body-home-forum__text">{t("chatShareExperience")}</p>
           </div>
-          <a href="#" className="body-home-forum__link button">
+          <Link href="/forum" className="body-home-forum__link button">
             {t("goToForum")}
-          </a>
+          </Link>
 
           <div className="body-home-forum__decor">
             <Image

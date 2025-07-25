@@ -10,7 +10,7 @@ import { toast } from "sonner";
 interface ForumCardProps {
   post: ForumPost;
   small?: boolean;
-  onDelete: (id: number) => void;
+  onDelete?: (id: number) => void;
 }
 export const ForumCard: React.FC<ForumCardProps> = ({
   post,
@@ -34,7 +34,7 @@ export const ForumCard: React.FC<ForumCardProps> = ({
       });
       if (deleteResponse.ok) {
         toast.success("Пост удален!");
-        onDelete(post.id);
+        onDelete?.(post.id);
       } else {
         throw new Error("Ошибка обновления информации пользователя");
       }
@@ -49,9 +49,9 @@ export const ForumCard: React.FC<ForumCardProps> = ({
       {small ? (
         <Link
           href={`/forum/${post.id}`}
-          className="home-forum__item item-forum"
+          className="home-forum__item item-forum w-full h-full"
         >
-          <div className="item-forum__body">
+          <div className="item-forum__body w-full h-full">
             <div className="item-forum__block">
               <h4 className="item-forum__title">{post.title}</h4>
               <p className="item-forum__text">{post.text}</p>

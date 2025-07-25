@@ -8,7 +8,7 @@ export default function About() {
 
   return (
     <>
-      <Hero />
+      {/* <Hero /> */}
       <section className="about">
         <div className="about__container">
           <div className="about__decor about__decor--01">

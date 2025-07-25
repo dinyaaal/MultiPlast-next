@@ -188,8 +188,8 @@
     //     margin: 0 toRem(50);
 
     // }
-
     .swiper-slide {
+      min-height: 100%;
       width: fit-content;
       display: flex;
       align-items: center;
@@ -258,7 +258,7 @@
   // .home-forum__item
   &__item {
     .item-forum__body {
-      max-width: toRem(413);
+      // max-width: toRem(413);
       flex-direction: column !important;
     }
     .item-forum__title {

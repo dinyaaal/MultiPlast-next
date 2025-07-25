@@ -2,23 +2,23 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
   const url = new URL(request.url);
-  const typeOfProduct = url.searchParams.get("type_of_product");
-  const categoriesParam = url.searchParams.get("categories");
-  const perPage = url.searchParams.get("perPage");
-  const page = url.searchParams.get("page");
+  // const typeOfProduct = url.searchParams.get("type_of_product");
+  // const categoriesParam = url.searchParams.get("categories");
+  // const perPage = url.searchParams.get("perPage");
+  // const page = url.searchParams.get("page");
 
-  const queryParams = new URLSearchParams();
+  // const queryParams = new URLSearchParams();
 
-  if (typeOfProduct) queryParams.append("type_of_product", typeOfProduct);
-  if (categoriesParam) queryParams.append("categories", categoriesParam);
-  if (perPage) queryParams.append("perPage", perPage);
-  if (page) queryParams.append("page", page);
+  // if (typeOfProduct) queryParams.append("type_of_product", typeOfProduct);
+  // if (categoriesParam) queryParams.append("categories", categoriesParam);
+  // if (perPage) queryParams.append("perPage", perPage);
+  // if (page) queryParams.append("page", page);
 
-  console.log(queryParams.toString());
+  // console.log(queryParams.toString());
 
   try {
     const res = await fetch(
-      `https://multiplast.web-hub.online/api/products?${queryParams.toString()}`,
+      `https://multiplast.web-hub.online/api/products?${url.searchParams}`,
       {
         method: "GET",
         headers: {

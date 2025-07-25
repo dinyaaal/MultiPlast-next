@@ -2,6 +2,7 @@ import React from "react";
 import { ProductsBody } from "./components/ProductsBody";
 import { getTranslations } from "next-intl/server";
 import { BreadcrumbsClient } from "@/Components/Breadcrumbs";
+import AdvertsWatched from "@/Components/Products/AdvertsWatched";
 
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
 
@@ -48,8 +49,7 @@ export default async function Products(props: { searchParams: SearchParams }) {
           <ProductsBody categories={categories} />
         </div>
       </section>
-
-      {/* <Adverts /> */}
+      <AdvertsWatched />
     </>
   );
 }

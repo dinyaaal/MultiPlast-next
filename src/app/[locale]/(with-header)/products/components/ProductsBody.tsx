@@ -66,9 +66,7 @@ export function ProductsBody({ categories }: ProductsProps) {
       : "";
 
     try {
-      const res = await fetch(
-        `https://multiplast.web-hub.online/api/products${queryString}`
-      );
+      const res = await fetch(`/api/products/get${queryString}`);
       if (!res.ok) {
         throw new Error("Network response was not ok");
       }

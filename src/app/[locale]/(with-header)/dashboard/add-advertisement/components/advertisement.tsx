@@ -6,17 +6,18 @@ import { AdvertismentSchema } from "@/lib/schema";
 import { RootState } from "@/store/store";
 import { Category, ProductType } from "@/types/types";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Select, SelectItem, Spinner } from "@heroui/react";
+import { Button, Select, SelectItem, Spinner } from "@heroui/react";
 import { useSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
 import { usePathname, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { toast } from "sonner";
 import { z } from "zod";
 import Image from "next/image";
 import { useRouter } from "@/i18n/routing";
+import { Minus } from "lucide-react";
 
 interface SellProps {
   categories: Category[];
@@ -27,6 +28,7 @@ const units = [
   { key: "for_minute", label: "За хвилину" },
   { key: "for_piece", label: "За штуку" },
   { key: "for_kg", label: "За кілограм" },
+  { key: "for_meter", label: "За метр" },
 ];
 
 const advertTypes = [
@@ -49,7 +51,6 @@ export default function Advertisement({ categories }: SellProps) {
   const searchType = searchParams.get("type");
   const searchSubCategory = searchParams.get("subCategory");
   const router = useRouter();
-  const pathname = usePathname();
   const { data: userInfo, error } = useSelector(
     (state: RootState) => state.userInfo
   );
@@ -67,6 +68,19 @@ export default function Advertisement({ categories }: SellProps) {
   const [productError, setProductError] = useState<string | null>(null);
   const [activePhotoIndex, setActivePhotoIndex] = useState(0);
   const [showDiscount, setShowDiscount] = useState(false);
+  // const {
+  //   register,
+  //   handleSubmit,
+  //   watch,
+  //   reset,
+  //   trigger,
+  //   setValue,
+  //   setError,
+  //   clearErrors,
+  //   formState: { errors },
+  // } = useForm<Inputs>({
+  //   resolver: zodResolver(AdvertismentSchema),
+  // });
   const {
     register,
     handleSubmit,
@@ -76,9 +90,18 @@ export default function Advertisement({ categories }: SellProps) {
     setValue,
     setError,
     clearErrors,
+    control,
     formState: { errors },
   } = useForm<Inputs>({
     resolver: zodResolver(AdvertismentSchema),
+    defaultValues: {
+      contact_data: [{ name: "", phone_number: "", position: "" }],
+    },
+  });
+
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "contact_data",
   });
 
   const fetchProduct = async () => {
@@ -141,18 +164,18 @@ export default function Advertisement({ categories }: SellProps) {
 
   useEffect(() => {
     if (userInfo && !editId) {
-      setValue("name", userInfo?.first_name ? userInfo?.first_name : "");
-      setValue(
-        "name_of_enterprise",
-        userInfo?.name_of_enterprise ? userInfo?.name_of_enterprise : ""
-      );
+      // setValue("name", userInfo?.first_name ? userInfo?.first_name : "");
+      // setValue(
+      //   "name_of_enterprise",
+      //   userInfo?.name_of_enterprise ? userInfo?.name_of_enterprise : ""
+      // );
       setValue("city", userInfo?.city ? userInfo?.city : "");
       setValue("address", userInfo?.address ? userInfo?.address : "");
       setValue("area", userInfo?.area ? userInfo?.area : "");
-      setValue(
-        "phone_number",
-        userInfo?.phone_number ? userInfo?.phone_number : ""
-      );
+      // setValue(
+      //   "phone_number",
+      //   userInfo?.phone_number ? userInfo?.phone_number : ""
+      // );
     }
   }, [userInfo]);
 
@@ -174,11 +197,11 @@ export default function Advertisement({ categories }: SellProps) {
 
       setValue("text", product?.text);
       setValue("address", product?.contact.address || "");
-      setValue("name", product?.contact.name || "");
+      // setValue("name", product?.contact.name || "");
       setValue("area", product?.contact.area || "");
       setValue("city", product?.contact.city || "");
-      setValue("name_of_enterprise", product?.contact.name_of_enterprise || "");
-      setValue("phone_number", product?.contact.phone_number || "");
+      // setValue("name_of_enterprise", product?.contact.name_of_enterprise || "");
+      // setValue("phone_number", product?.contact.phone_number || "");
       setValue("price", product.price?.toString() || "");
       setArrangement(product.type_price === "by_arrangement");
       setValue("volume", product?.volume);
@@ -394,9 +417,9 @@ export default function Advertisement({ categories }: SellProps) {
     const formData = new FormData();
 
     const {
-      name_of_enterprise,
-      name,
-      phone_number,
+      // name_of_enterprise,
+      // name,
+      // phone_number,
       address,
       city,
       area,
@@ -418,9 +441,9 @@ export default function Advertisement({ categories }: SellProps) {
     };
 
     const contactData = {
-      name_of_enterprise,
+      // name_of_enterprise,
       name,
-      phone_number,
+      // phone_number,
       address,
       city,
       area,
@@ -879,7 +902,7 @@ export default function Advertisement({ categories }: SellProps) {
                       onClick={() => setShowDiscount((prev) => !prev)}
                       className=" button button--secondary"
                     >
-                      Ціна зі знижкою
+                      {showDiscount ? "Ціна без знижки" : "Ціна зі знижкою"}
                     </button>
                   )}
                 {!arrangement &&
@@ -1149,34 +1172,11 @@ export default function Advertisement({ categories }: SellProps) {
         </div>
         <div className="dashboard__contact contact-dashboard">
           <h2 className="contact-dashboard__title title title--small">
-            {t("contact-details")}
+            Інформація
           </h2>
           <div className="contact-dashboard__body">
             <div className="contact-dashboard__content">
-              <div className="input-block">
-                <p>{t("company-name")}</p>
-                <input
-                  autoComplete="off"
-                  type="text"
-                  placeholder=""
-                  className={`input ${
-                    errors.name_of_enterprise ? "input--error" : ""
-                  }`}
-                  {...register("name_of_enterprise")}
-                  // value={
-                  //   userInformation?.name_of_enterprise
-                  //     ? userInformation?.name_of_enterprise
-                  //     : ""
-                  // }
-                  // onChange={(e) =>
-                  //   setUserInformation((prev) =>
-                  //     prev
-                  //       ? { ...prev, name_of_enterprise: e.target.value }
-                  //       : null
-                  //   )
-                  // }
-                />
-              </div>
+              {/* 
               <div className="input-block">
                 <p>{t("name")}*</p>
                 <input
@@ -1215,6 +1215,30 @@ export default function Advertisement({ categories }: SellProps) {
                   // onChange={(e) =>
                   //   setUserInformation((prev) =>
                   //     prev ? { ...prev, phone_number: e.target.value } : null
+                  //   )
+                  // }
+                />
+              </div> */}
+              <div className="input-block">
+                <p>{t("company-name")}</p>
+                <input
+                  autoComplete="off"
+                  type="text"
+                  placeholder=""
+                  className={`input ${
+                    errors.name_of_enterprise ? "input--error" : ""
+                  }`}
+                  {...register("name_of_enterprise")}
+                  // value={
+                  //   userInformation?.name_of_enterprise
+                  //     ? userInformation?.name_of_enterprise
+                  //     : ""
+                  // }
+                  // onChange={(e) =>
+                  //   setUserInformation((prev) =>
+                  //     prev
+                  //       ? { ...prev, name_of_enterprise: e.target.value }
+                  //       : null
                   //   )
                   // }
                 />
@@ -1270,7 +1294,94 @@ export default function Advertisement({ categories }: SellProps) {
                 />
               </div>
             </div>
+            {/* <p className="contact-dashboard__text">{t("default-info")}</p> */}
+          </div>
+        </div>
+        <div className="dashboard__contact contact-dashboard">
+          <h2 className="contact-dashboard__title title title--small">
+            {t("contact-details")}
+          </h2>
+          <div className="contact-dashboard__body">
+            <div className="flex flex-col gap-8">
+              {fields.map((field, index) => (
+                <div
+                  key={field.id}
+                  className={`flex flex-col xl:flex-row items-end w-full gap-5 ${
+                    index === 0 ? "xl:pr-[65px]" : ""
+                  }`}
+                >
+                  <div className="contact-dashboard__content w-full">
+                    <div className="input-block">
+                      <p>Имя*</p>
+                      <input
+                        autoComplete="off"
+                        type="text"
+                        placeholder=""
+                        className={`input ${
+                          errors.contact_data?.[index]?.name
+                            ? "input--error"
+                            : ""
+                        }`}
+                        {...register(`contact_data.${index}.name`)}
+                      />
+                    </div>
+
+                    <div className="input-block">
+                      <p>Должность</p>
+                      <input
+                        autoComplete="off"
+                        type="text"
+                        placeholder=""
+                        className={`input ${
+                          errors.contact_data?.[index]?.position
+                            ? "input--error"
+                            : ""
+                        }`}
+                        {...register(`contact_data.${index}.position`)}
+                      />
+                    </div>
+
+                    <div className="input-block">
+                      <p>Телефон*</p>
+                      <input
+                        autoComplete="off"
+                        type="text"
+                        placeholder=""
+                        className={`input ${
+                          errors.contact_data?.[index]?.phone_number
+                            ? "input--error"
+                            : ""
+                        }`}
+                        {...register(`contact_data.${index}.phone_number`)}
+                      />
+                    </div>
+                  </div>
+                  {fields.length > 1 && index !== 0 && (
+                    <button
+                      type="button"
+                      onClick={() => remove(index)}
+                      className=" button button--icon"
+                    >
+                      <Minus />
+                    </button>
+                  )}
+                </div>
+              ))}
+            </div>
             <p className="contact-dashboard__text">{t("default-info")}</p>
+            <button
+              type="button"
+              className="button"
+              onClick={() =>
+                append({
+                  name: "",
+                  position: "",
+                  phone_number: "",
+                })
+              }
+            >
+              Добавить контакт
+            </button>
           </div>
         </div>
         <div className="dashboard__actions actions-dashboard">
