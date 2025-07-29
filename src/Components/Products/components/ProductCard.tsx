@@ -8,7 +8,6 @@ import { toast } from "sonner";
 import { MinimalProduct, ProductType } from "@/types/types";
 import { useRouter } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
-import { Tooltip } from "@heroui/react";
 
 export const ProductCard: React.FC<{
   product: MinimalProduct;
@@ -43,9 +42,9 @@ export const ProductCard: React.FC<{
 
       setIsLiked(likedFromCookies);
     } else {
-      setIsLiked(liked);
+      setIsLiked(product.is_liked);
     }
-  }, [liked, status, product.id]);
+  }, [liked, status, product]);
 
   // const handleFavoriteInCookies = (action: "add" | "remove") => {
   //   const cookies = document.cookie

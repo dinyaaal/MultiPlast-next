@@ -20,6 +20,7 @@ export function ProductActions({ product }: { product: ProductType }) {
       type_price: product.type_price,
       price: product.price,
       author: product.author,
+      is_liked: product.is_liked,
     };
 
     saveToRecentProducts(minimalProduct);
@@ -41,9 +42,9 @@ export function ProductActions({ product }: { product: ProductType }) {
 
       setIsLiked(likedFromCookies);
     } else {
-      setIsLiked(false);
+      setIsLiked(product.is_liked);
     }
-  }, [status, product.id]);
+  }, [status, product]);
 
   const handleLikeClick = async () => {
     if (!product) {

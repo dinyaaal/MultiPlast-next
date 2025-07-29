@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
   const url = new URL(request.url);
+  const token = request.headers.get("token");
   // const typeOfProduct = url.searchParams.get("type_of_product");
   // const categoriesParam = url.searchParams.get("categories");
   // const perPage = url.searchParams.get("perPage");
@@ -23,6 +24,7 @@ export async function GET(request: NextRequest) {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
+          ...(token && { Authorization: "Bearer " + token }),
         },
       }
     );

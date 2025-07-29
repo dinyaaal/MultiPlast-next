@@ -85,16 +85,17 @@ export interface ProductType {
   type_price: string;
   price: number;
   type_of_product: "sell" | "buy";
-  volume: string;
-  price_per_volume: string;
+  volume: string | null;
+  price_per_volume: string | null;
   user_id: number;
   created_at: string;
   updated_at: string;
+  is_liked: boolean;
   categories: ProductCategory[];
   author: Author;
-  photos: Photo[]; // Оставил массив, если структура фото изменится, лучше создать отдельный интерфейс
-  files: any[]; // Если файлы имеют структуру, лучше заменить `any[]` на интерфейс
-  contact: Contact; // Добавил контактные данные
+  photos: Photo[];
+  files: any[];
+  contacts: ProductContact[]; // <-- Массив, а не объект
 }
 
 export type MinimalProduct = {
@@ -104,6 +105,7 @@ export type MinimalProduct = {
   type_price: string;
   price: number;
   author: Author;
+  is_liked: boolean;
 };
 
 // export interface ProductType {

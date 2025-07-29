@@ -7,12 +7,14 @@ import React, { useEffect, useState } from "react";
 import { Filters } from "@/Components/Products/components/Filters";
 import { useSearchParams } from "next/navigation";
 import { Spinner } from "@heroui/react";
+import { useSession } from "next-auth/react";
 
 interface ProductsProps {
   categories: Category[];
 }
 
 export function ProductsBody({ categories }: ProductsProps) {
+  const { data: session, status } = useSession();
   // const t = useTranslations("Products");
   const [products, setProducts] = useState<MinimalProduct[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -64,9 +66,16 @@ export function ProductsBody({ categories }: ProductsProps) {
     const queryString = queryParams.toString()
       ? `?${queryParams.toString()}`
       : "";
-
+    session?.user.access_token;
     try {
-      const res = await fetch(`/api/products/get${queryString}`);
+      const res = await fetch(`/api/products/get${queryString}`, {
+        method: "GET",
+        headers: {
+          ...(session?.user.access_token && {
+            token: session?.user.access_token,
+          }),
+        },
+      });
       if (!res.ok) {
         throw new Error("Network response was not ok");
       }
@@ -85,8 +94,12 @@ export function ProductsBody({ categories }: ProductsProps) {
   };
 
   useEffect(() => {
+    if (status === "loading") {
+      return;
+    }
     fetchProducts();
   }, [
+    session,
     currentPage,
     selectedCategory,
     selectedSubCategories,

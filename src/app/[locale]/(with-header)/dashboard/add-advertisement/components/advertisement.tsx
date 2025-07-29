@@ -417,12 +417,10 @@ export default function Advertisement({ categories }: SellProps) {
     const formData = new FormData();
 
     const {
-      // name_of_enterprise,
-      // name,
-      // phone_number,
       address,
       city,
       area,
+      name_of_enterprise,
       mainCategory,
       type,
       polymer,
@@ -432,6 +430,7 @@ export default function Advertisement({ categories }: SellProps) {
       volume,
       volume_price,
       arrangement,
+      contact_data, // <- ожидаем, что это массив контактов
     } = data;
 
     const categoriesData = {
@@ -440,26 +439,43 @@ export default function Advertisement({ categories }: SellProps) {
       polymer,
     };
 
-    const contactData = {
-      // name_of_enterprise,
-      name,
-      // phone_number,
-      address,
-      city,
-      area,
-    };
+    // const contactData = {
+    //   // name_of_enterprise,
+    //   name,
+    //   // phone_number,
+    //   address,
+    //   city,
+    //   area,
+    // };
+
     Object.entries(categoriesData).forEach(([key, value]) => {
       if (value !== undefined && value !== null && value !== "") {
         formData.append(`categories[${key}]`, value);
       }
     });
 
-    Object.entries(contactData).forEach(([key, value]) => {
-      if (value !== undefined && value !== null && value !== "") {
-        formData.append(`contact_data[${key}]`, value);
-      }
-    });
+    // Object.entries(contactData).forEach(([key, value]) => {
+    //   if (value !== undefined && value !== null && value !== "") {
+    //     formData.append(`contact_data[${key}]`, value);
+    //   }
+    // });
 
+    const contactDataWithExtraFields = (contact_data || []).map((contact) => ({
+      ...contact,
+      city,
+      address,
+      area,
+      name_of_enterprise,
+    }));
+
+    // Далее в formData используем contactDataWithExtraFields
+    contactDataWithExtraFields.forEach((contact, index) => {
+      Object.entries(contact).forEach(([key, value]) => {
+        if (value !== undefined && value !== null && value !== "") {
+          formData.append(`contact_data[${index}][${key}]`, value);
+        }
+      });
+    });
     photos.forEach((photo) => {
       formData.append("photos[]", photo);
     });
@@ -488,6 +504,10 @@ export default function Advertisement({ categories }: SellProps) {
       formData.append("volume", data.volume);
       formData.append("price_per_volume", data.volume_price);
     }
+
+    // for (const [key, value] of formData.entries()) {
+    //   console.log(key, value);
+    // }
 
     if (editId && product) {
       try {
@@ -1306,10 +1326,9 @@ export default function Advertisement({ categories }: SellProps) {
               {fields.map((field, index) => (
                 <div
                   key={field.id}
-                  className={`flex flex-col xl:flex-row items-end w-full gap-5 ${
-                    index === 0 ? "xl:pr-[65px]" : ""
-                  }`}
+                  className={`flex flex-col  items-center w-full gap-5 `}
                 >
+                  <h4 className="title title--small">Контакт №{index + 1}</h4>
                   <div className="contact-dashboard__content w-full">
                     <div className="input-block">
                       <p>Имя*</p>
@@ -1356,32 +1375,34 @@ export default function Advertisement({ categories }: SellProps) {
                       />
                     </div>
                   </div>
-                  {fields.length > 1 && index !== 0 && (
-                    <button
-                      type="button"
-                      onClick={() => remove(index)}
-                      className=" button button--icon"
-                    >
-                      <Minus />
-                    </button>
-                  )}
                 </div>
               ))}
             </div>
+            <div className="grid grid-cols-2 w-full gap-3 items-center">
+              <button
+                type="button"
+                className="button button--fw"
+                onClick={() =>
+                  append({
+                    name: "",
+                    position: "",
+                    phone_number: "",
+                  })
+                }
+              >
+                Добавить контакт
+              </button>
+              {fields.length > 1 && (
+                <button
+                  type="button"
+                  onClick={() => remove(fields.length - 1)}
+                  className="button button--secondary button--fw"
+                >
+                  Удалить контакт
+                </button>
+              )}
+            </div>
             <p className="contact-dashboard__text">{t("default-info")}</p>
-            <button
-              type="button"
-              className="button"
-              onClick={() =>
-                append({
-                  name: "",
-                  position: "",
-                  phone_number: "",
-                })
-              }
-            >
-              Добавить контакт
-            </button>
           </div>
         </div>
         <div className="dashboard__actions actions-dashboard">

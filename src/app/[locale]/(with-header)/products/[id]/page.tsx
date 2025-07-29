@@ -9,10 +9,16 @@ import notFound from "@/app/[locale]/not-found";
 import { getServerSession } from "next-auth";
 import { getTranslations } from "next-intl/server";
 import { BreadcrumbsClient } from "@/Components/Breadcrumbs";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
 type Params = Promise<{ id: string }>;
 
-async function getProduct(id: string): Promise<ProductType | null> {
+async function getProduct(
+  id: string,
+  token: string
+): Promise<ProductType | null> {
+  console.log("token", token);
+  console.log("id", id);
   try {
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/api/products/product?id=${id}`,
@@ -20,6 +26,7 @@ async function getProduct(id: string): Promise<ProductType | null> {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
+          ...(token && { token: token }),
         },
       }
     );
@@ -37,8 +44,9 @@ async function getProduct(id: string): Promise<ProductType | null> {
 
 export default async function Product(props: { params: Params }) {
   const params = await props.params;
-  const product = await getProduct(params.id);
-  const session = await getServerSession();
+  const session = await getServerSession(authOptions);
+  console.log(session);
+  const product = await getProduct(params.id, session?.user.access_token || "");
   const t = await getTranslations("Product");
   const tb = await getTranslations("Breadcrumbs");
 
