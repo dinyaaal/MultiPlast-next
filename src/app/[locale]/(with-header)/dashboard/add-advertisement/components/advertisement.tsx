@@ -179,49 +179,100 @@ export default function Advertisement({ categories }: SellProps) {
     }
   }, [userInfo]);
 
+  // useEffect(() => {
+  //   if (product) {
+  //     // setCategoryId(
+  //     //   Number(
+  //     //     product?.categories.find((category) => category.parent_id === null)
+  //     //       ?.id
+  //     //   )
+  //     // );
+  //     setValue(
+  //       "mainCategory",
+  //       product?.categories
+  //         .find((category) => category.parent_id === null)
+  //         ?.id?.toString() || ""
+  //     );
+  //     setValue("title", product?.title);
+
+  //     setValue("text", product?.text);
+  //     setValue("address", product?.contact.address || "");
+  //     // setValue("name", product?.contact.name || "");
+  //     setValue("area", product?.contact.area || "");
+  //     setValue("city", product?.contact.city || "");
+  //     // setValue("name_of_enterprise", product?.contact.name_of_enterprise || "");
+  //     // setValue("phone_number", product?.contact.phone_number || "");
+  //     setValue("price", product.price?.toString() || "");
+  //     setArrangement(product.type_price === "by_arrangement");
+  //     setValue("volume", product?.volume);
+  //     setValue("volume_price", product?.price_per_volume);
+  //     setValue("title", product?.title);
+
+  //     setValue("advertType", product?.type_of_product || "");
+  //     setValue(
+  //       "polymer",
+  //       product?.categories
+  //         .find((category) => category.type === "Полімер")
+  //         ?.id?.toString() || ""
+  //     );
+  //     setValue(
+  //       "type",
+  //       product?.categories
+  //         .find((category) => category.type === "Сировина")
+  //         ?.id?.toString() || ""
+  //     );
+  //     // setPhotos(product.photos);
+  //   }
+  // }, [product]);
+
   useEffect(() => {
     if (product) {
-      // setCategoryId(
-      //   Number(
-      //     product?.categories.find((category) => category.parent_id === null)
-      //       ?.id
-      //   )
-      // );
+      // Категории
       setValue(
         "mainCategory",
-        product?.categories
-          .find((category) => category.parent_id === null)
-          ?.id?.toString() || ""
+        product.categories.find((c) => c.parent_id === null)?.id?.toString() ||
+          ""
       );
-      setValue("title", product?.title);
-
-      setValue("text", product?.text);
-      setValue("address", product?.contact.address || "");
-      // setValue("name", product?.contact.name || "");
-      setValue("area", product?.contact.area || "");
-      setValue("city", product?.contact.city || "");
-      // setValue("name_of_enterprise", product?.contact.name_of_enterprise || "");
-      // setValue("phone_number", product?.contact.phone_number || "");
-      setValue("price", product.price?.toString() || "");
-      setArrangement(product.type_price === "by_arrangement");
-      setValue("volume", product?.volume);
-      setValue("volume_price", product?.price_per_volume);
-      setValue("title", product?.title);
-
-      setValue("advertType", product?.type_of_product || "");
       setValue(
         "polymer",
-        product?.categories
-          .find((category) => category.type === "Полімер")
-          ?.id?.toString() || ""
+        product.categories.find((c) => c.type === "Полімер")?.id?.toString() ||
+          ""
       );
       setValue(
         "type",
-        product?.categories
-          .find((category) => category.type === "Сировина")
-          ?.id?.toString() || ""
+        product.categories.find((c) => c.type === "Сировина")?.id?.toString() ||
+          ""
       );
-      // setPhotos(product.photos);
+
+      // Основные поля объявления
+      setValue("title", product.title);
+      setValue("text", product.text);
+      setValue("price", product.price?.toString() || "");
+      setArrangement(product.type_price === "by_arrangement");
+      setValue("volume", product.volume || "");
+      setValue("volume_price", product.price_per_volume || "");
+      setValue("advertType", product.type_of_product || "");
+      setValue("address", product.contacts[0].address || "");
+      setValue("city", product.contacts[0].city || "");
+      setValue("area", product.contacts[0].area || "");
+      setValue(
+        "name_of_enterprise",
+        product.contacts[0].name_of_enterprise || ""
+      );
+
+      // Заполняем массив контактов
+      if (Array.isArray(product.contacts) && product.contacts.length > 0) {
+        reset({
+          contact_data: product.contacts.map((c) => ({
+            name: c.name,
+            phone_number: c.phone_number,
+
+            position: c.position || "", // если есть поле position, добавь в интерфейс и сюда
+          })),
+        });
+      } else {
+        reset({ contact_data: [] });
+      }
     }
   }, [product]);
 

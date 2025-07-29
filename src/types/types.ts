@@ -77,6 +77,7 @@ export interface ProductContact {
   address: string | null;
   city: string;
   area: string;
+  position: string | null;
 }
 export interface ProductType {
   id: number;
