@@ -12,6 +12,17 @@ export interface Category {
   categories: SubCategory[];
 }
 
+export interface UserAuth {
+  id: number;
+  access_token: string;
+  email: string;
+  first_name: string;
+  city: string;
+  phone_number: string;
+  avatar: string;
+  last_name: string;
+}
+
 export interface User {
   id: number; // Уникальный идентификатор пользователя
   first_name: string; // Имя

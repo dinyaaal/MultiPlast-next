@@ -48,7 +48,11 @@ async function getForumPosts(): Promise<ForumPost[] | null> {
 export default async function HomeForum() {
   const t = await getTranslations("HomeForum");
   const posts = await getForumPosts();
-  console.log(posts);
+
+  if (!posts || posts.length === 0) {
+    return null;
+  }
+
   return (
     <section className="home-forum">
       <div className="home-forum__container">

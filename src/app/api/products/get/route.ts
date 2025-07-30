@@ -19,7 +19,7 @@ export async function GET(request: NextRequest) {
 
   try {
     const res = await fetch(
-      `https://multiplast.web-hub.online/api/products?${url.searchParams}`,
+      `https://multiplast-api.web-hub.online/api/products?${url.searchParams}`,
       {
         method: "GET",
         headers: {

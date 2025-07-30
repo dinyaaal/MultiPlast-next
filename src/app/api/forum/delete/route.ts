@@ -10,7 +10,7 @@ export async function DELETE(request: NextRequest) {
 
   try {
     const res = await fetch(
-      `https://multiplast.web-hub.online/api/forums/delete/${id}`,
+      `https://multiplast-api.web-hub.online/api/forums/delete/${id}`,
       {
         method: "DELETE",
         headers: {

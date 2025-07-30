@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 export async function GET(request: NextRequest) {
   try {
     const res = await fetch(
-      `https://multiplast.web-hub.online/api/categories`,
+      `https://multiplast-api.web-hub.online/api/categories`,
       {
         method: "GET",
         headers: {

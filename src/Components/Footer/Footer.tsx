@@ -10,7 +10,7 @@ export default async function Footer() {
 
   // TODO Надо вывести инфу с запроса
   // async function getStaticData() {
-  //   const res = await fetch("https://multiplast.web-hub.online/api/static-data").then((res) => {
+  //   const res = await fetch("https://multiplast-api.web-hub.online/api/static-data").then((res) => {
   //     console.log(res);
   //   });
   // }

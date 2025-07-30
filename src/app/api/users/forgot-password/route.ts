@@ -11,7 +11,7 @@ export async function POST(request: NextRequest) {
 
   try {
     const res = await fetch(
-      `https://multiplast.web-hub.online/api/forgot-password`,
+      `https://multiplast-api.web-hub.online/api/forgot-password`,
       {
         method: "POST",
         headers: {

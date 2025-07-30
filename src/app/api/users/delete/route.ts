@@ -10,7 +10,7 @@ export async function DELETE(request: NextRequest) {
 
   try {
     const res = await fetch(
-      `https://multiplast.web-hub.online/api/auth/delete-account`,
+      `https://multiplast-api.web-hub.online/api/auth/delete-account`,
       {
         method: "DELETE",
         headers: {

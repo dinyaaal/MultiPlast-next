@@ -6,7 +6,7 @@ export async function GET(req: NextRequest) {
     const queryString = searchParams.toString();
 
     const res = await fetch(
-      `https://multiplast.web-hub.online/api/forums/comments?${queryString}`,
+      `https://multiplast-api.web-hub.online/api/forums/comments?${queryString}`,
       {
         method: "GET",
       }

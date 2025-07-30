@@ -11,13 +11,16 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const res = await fetch(`https://multiplast.web-hub.online/api/forums`, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      body: formData,
-    });
+    const res = await fetch(
+      `https://multiplast-api.web-hub.online/api/forums`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+      }
+    );
 
     if (!res.ok) {
       throw new Error("Network response was not ok");

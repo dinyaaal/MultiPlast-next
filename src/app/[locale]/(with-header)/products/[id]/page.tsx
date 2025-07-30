@@ -9,7 +9,7 @@ import notFound from "@/app/[locale]/not-found";
 import { getServerSession } from "next-auth";
 import { getTranslations } from "next-intl/server";
 import { BreadcrumbsClient } from "@/Components/Breadcrumbs";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/lib/authOptions";
 
 type Params = Promise<{ id: string }>;
 
@@ -17,8 +17,6 @@ async function getProduct(
   id: string,
   token: string
 ): Promise<ProductType | null> {
-  console.log("token", token);
-  console.log("id", id);
   try {
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/api/products/product?id=${id}`,
@@ -45,10 +43,11 @@ async function getProduct(
 export default async function Product(props: { params: Params }) {
   const params = await props.params;
   const session = await getServerSession(authOptions);
-  console.log(session);
   const product = await getProduct(params.id, session?.user.access_token || "");
   const t = await getTranslations("Product");
   const tb = await getTranslations("Breadcrumbs");
+
+  console.log(product);
 
   function isEmpty(string: string | null | undefined) {
     return string ?? "";
@@ -224,9 +223,9 @@ export default async function Product(props: { params: Params }) {
             </div>
             <div className="body-product__block">
               <div className="body-product__info info-body-product">
-                {product.contact?.name_of_enterprise && (
+                {product.contacts[0]?.name_of_enterprise && (
                   <h4 className="info-body-product__title">
-                    {product.contact.name_of_enterprise}
+                    {product.contacts[0]?.name_of_enterprise}
                   </h4>
                 )}
                 {/* <p className="info-body-product__text">
@@ -236,15 +235,15 @@ export default async function Product(props: { params: Params }) {
                 <a href="#" className="info-body-product__link">
                   www.polymer.com.ua
                 </a> */}
-                {product.contact?.city && product.contact?.area && (
+                {product.contacts[0]?.city && product.contacts[0]?.area && (
                   <div className="info-body-product__location location-info-body-product">
                     <div className="location-info-body-product__block">
                       <p className="location-info-body-product__text">
                         Місцезнаходження:
                       </p>
                       <div className="location-info-body-product__place">
-                        {`${isEmpty(product?.contact?.city)}, ${isEmpty(
-                          product?.contact?.area
+                        {`${isEmpty(product?.contacts[0]?.city)}, ${isEmpty(
+                          product?.contacts[0]?.area
                         )} область`}
                       </div>
                     </div>
@@ -277,14 +276,28 @@ export default async function Product(props: { params: Params }) {
               </div>
               <div className="body-product__actions actions-body-product">
                 <div className="actions-body-product__block">
-                  {product.contact?.phone_number && (
-                    <Link
-                      href={`tel:${product.contact.phone_number}`}
-                      className="actions-body-product__call button"
-                    >
-                      Зателефонувати
-                    </Link>
-                  )}
+                  <div className="flex flex-col gap-5 w-full">
+                    <h4 className="title title--small">Контакти:</h4>
+                    {product.contacts.map((contact) => (
+                      <div
+                        key={contact.id}
+                        className="flex w-full flex-col gap-4"
+                      >
+                        <div className="flex flex-col w-full gap-2">
+                          <div className="">{contact.name}</div>
+                          <p className="">{contact.position}</p>
+                        </div>
+                        {contact.phone_number && (
+                          <Link
+                            href={`tel:${contact.phone_number}`}
+                            className="link"
+                          >
+                            {contact.phone_number}
+                          </Link>
+                        )}
+                      </div>
+                    ))}
+                  </div>
                   {session && (
                     <Link
                       href={`/messages/${product.author.id}`}

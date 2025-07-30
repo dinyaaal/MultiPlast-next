@@ -10,7 +10,7 @@ export async function POST(request: NextRequest) {
 
   try {
     const res = await fetch(
-      `https://multiplast.web-hub.online/api/chats/unblock/${id}`,
+      `https://multiplast-api.web-hub.online/api/chats/unblock/${id}`,
       {
         method: "POST",
         headers: {

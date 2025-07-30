@@ -7,7 +7,7 @@ export async function GET(request: NextRequest) {
 
   try {
     const res = await fetch(
-      `https://multiplast.web-hub.online/api/forums/${id}`,
+      `https://multiplast-api.web-hub.online/api/forums/${id}`,
       {
         method: "GET",
         headers: {

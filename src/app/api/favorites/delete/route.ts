@@ -12,7 +12,7 @@ export async function POST(request: NextRequest) {
     }
 
     const res = await fetch(
-      `https://multiplast.web-hub.online/api/favorites/remove/${id}`,
+      `https://multiplast-api.web-hub.online/api/favorites/remove/${id}`,
       {
         method: "POST",
         headers: {

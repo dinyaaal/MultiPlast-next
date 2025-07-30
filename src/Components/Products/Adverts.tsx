@@ -46,7 +46,7 @@ export default async function Adverts() {
   const recent = await getProducts();
   console.log(recent);
 
-  if (!recent) return null;
+  if (!recent || recent.length === 0) return null;
 
   return (
     <section className="adverts">
