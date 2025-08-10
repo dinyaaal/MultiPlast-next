@@ -2,9 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
   const bodyData = await request.json();
-  const token = request.headers.get("token");
+  const authHeader = request.headers.get("authorization");
 
-  if (!token) {
+  if (!authHeader) {
     return NextResponse.json({ error: "Missing id or token" }, { status: 400 });
   }
 
@@ -12,7 +12,8 @@ export async function POST(request: NextRequest) {
     const res = await fetch(`https://multiplast-api.web-hub.online/api/chats`, {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+        Authorization: `${authHeader}`,
       },
       body: JSON.stringify(bodyData),
     });

@@ -17,6 +17,30 @@ export default function ChatBody({
   const { data: session, status } = useSession();
   const token = session?.user.access_token;
 
+  const fetchChat = async () => {
+    if (!token) {
+      return;
+    }
+    try {
+      const response = await fetch(`/api/chats/create`, {
+        method: "POST",
+        body: JSON.stringify({ to_user_id: id }),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const data = await response.json();
+      console.log(data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchChat();
+  }, [id, token]);
+
   // useEffect(() => {
   //   const socket = io("wss://multiplast.web-hub.online", {
   //     path: "/chat",

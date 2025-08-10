@@ -1,10 +1,9 @@
 "use client";
 
-import { socket } from "@/lib/socket";
 import { ChatItemData } from "@/types/types";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 interface Message {
   message_content: string;
@@ -21,14 +20,6 @@ export default function Messages() {
   const { data: session, status } = useSession();
   const token = session?.user.access_token;
   const [chats, setChats] = useState<ChatItemData[]>([]);
-
-  const chatId = 7;
-
-  // Пример текущего пользователя — ты можешь передать его через props или контекст
-  const currentUser = {
-    id: 1,
-    name: "User1",
-  };
 
   // useEffect(() => {
   //   const eventName = "App\\Events\\Message";
