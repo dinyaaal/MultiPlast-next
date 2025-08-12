@@ -850,172 +850,6 @@ export default function Advertisement({ categories }: SellProps) {
                     </Select>
                   </div>
                 )}
-
-                <div className="input-block input-block--price">
-                  <p>
-                    {Number(watch("mainCategory")) === 1 ||
-                    Number(watch("mainCategory")) === 2
-                      ? t("price-per-kg")
-                      : t("enter-price")}
-                  </p>
-                  <div className="input-block">
-                    {/* {(Number(watch("mainCategory")) === 1 ||
-                      Number(watch("mainCategory")) === 2 ||
-                      Number(watch("mainCategory")) === 3 ||
-                      Number(watch("mainCategory")) === 5) && (
-                      <p>{t("negotiated-price")}</p>
-                    )} */}
-                    <div className="grid grid-cols-2 gap-2">
-                      <div className="block-row__item">
-                        <label className="check">
-                          <input
-                            type="checkbox"
-                            className="real-checkbox"
-                            {...register("arrangement")}
-                            checked={arrangement}
-                            onChange={() => handleCheckboxChange("arrangement")}
-                          />
-                          <span className="custom-checkbox"></span>
-                          {t("negotiated-price")}
-                        </label>
-                      </div>
-                      <div className="block-row__item">
-                        <label className="check">
-                          <input
-                            type="checkbox"
-                            className="real-checkbox"
-                            checked={!arrangement} // второй чекбокс активен, когда arrangement = false
-                            onChange={() => handleCheckboxChange("fixed")}
-                          />
-                          <span className="custom-checkbox"></span>
-                          Фіксована ціна
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="block-row">
-                    {!arrangement && (
-                      <div className="block-row__item">
-                        <div className="input-block">
-                          <p>{t("fixed-price")}</p>
-
-                          <label
-                            className={`input-body input ${
-                              errors.price ? "input--error" : ""
-                            }`}
-                          >
-                            <input
-                              disabled={watch("arrangement")}
-                              autoComplete="off"
-                              type="number"
-                              placeholder=""
-                              className="input-body__input input-number"
-                              {...register("price")}
-                            />
-                            <div className="input-body__item">грн</div>
-                          </label>
-                        </div>
-                      </div>
-                    )}
-                    {!arrangement && Number(watch("mainCategory")) === 4 && (
-                      <div className="block-row__item">
-                        <div className="input-block">
-                          <p>{t("price-type")}</p>
-
-                          <Select
-                            isDisabled={arrangement}
-                            disallowEmptySelection
-                            placeholder={t("select-category")}
-                            className="w-full"
-                            classNames={{
-                              trigger: `min-h-[45px] text-black px-[12px] bg-[#F8FBFF] rounded-[5px] outline-offset-0 outline-[1px] outline-[#B0BFD7]`,
-
-                              popoverContent:
-                                "bg-[#F8FBFF] p-0 rounded-[5px] outline-offset-0 outline-[1px] outline-[#B0BFD7]",
-                              listbox: "p-0",
-                            }}
-                            listboxProps={{
-                              itemClasses: {
-                                base: [
-                                  "min-h-[39px]",
-                                  "px-[15px]",
-                                  "py-[5px]",
-                                  "rounded-none",
-                                  "bg-transparent",
-                                  "transition-colors",
-
-                                  "data-[hover=true]:bg-[#c4dbff]",
-                                  "data-[selectable=true]:focus:bg-[#c4dbff]",
-                                ],
-                              },
-                            }}
-                            defaultSelectedKeys={["for_hour"]}
-                            onChange={(selectedKey) =>
-                              handleChangeTypePrice(selectedKey)
-                            }
-                          >
-                            {units.map((unit) => (
-                              <SelectItem key={unit.key}>
-                                {unit.label}
-                              </SelectItem>
-                            ))}
-                          </Select>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </div>
-                {!arrangement &&
-                  (Number(watch("mainCategory")) === 1 ||
-                    Number(watch("mainCategory")) === 2) && (
-                    <button
-                      type="button"
-                      onClick={() => setShowDiscount((prev) => !prev)}
-                      className=" button button--secondary"
-                    >
-                      {showDiscount ? "Ціна без знижки" : "Ціна зі знижкою"}
-                    </button>
-                  )}
-                {!arrangement &&
-                  showDiscount &&
-                  (Number(watch("mainCategory")) === 1 ||
-                    Number(watch("mainCategory")) === 2) && (
-                    <div className="block-row">
-                      <div className="block-row__item">
-                        <div className="input-block">
-                          <p>{t("enter-volume")}</p>
-                          <label className="input-body input">
-                            <input
-                              disabled={arrangement}
-                              autoComplete="off"
-                              type="number"
-                              placeholder=""
-                              className="input-body__input input-number"
-                              {...register("volume")}
-                            />
-                            <div className="input-body__item">кг</div>
-                          </label>
-                        </div>
-                      </div>
-
-                      <div className="block-row__item">
-                        <div className="input-block">
-                          <p>{t("enter-price")}</p>
-                          <label className="input-body input">
-                            <input
-                              disabled={arrangement}
-                              autoComplete="off"
-                              type="number"
-                              placeholder=""
-                              className="input-body__input input-number"
-                              {...register("volume_price")}
-                            />
-                            <div className="input-body__item">грн</div>
-                          </label>
-                        </div>
-                      </div>
-                    </div>
-                  )}
               </div>
               <div className="body-dashboard__block">
                 <div className="input-block">
@@ -1241,12 +1075,181 @@ export default function Advertisement({ categories }: SellProps) {
             </div>
           </div>
         </div>
-        <div className="dashboard__contact contact-dashboard">
-          <h2 className="contact-dashboard__title title title--small">
-            Інформація
-          </h2>
-          <div className="contact-dashboard__body">
-            <div className="contact-dashboard__content">
+        <div className="grid gap-10 xl:grid-cols-2">
+          <div className="flex flex-col gap-8 ">
+            <h2 className=" title title--small">{t("enter-price")}</h2>
+            <div className="flex flex-col gap-5">
+              <div className="input-block input-block--price">
+                <p>
+                  {Number(watch("mainCategory")) === 1 ||
+                  Number(watch("mainCategory")) === 2
+                    ? t("price-per-kg")
+                    : t("enter-price")}
+                </p>
+
+                <div className="input-block">
+                  {/* {(Number(watch("mainCategory")) === 1 ||
+                      Number(watch("mainCategory")) === 2 ||
+                      Number(watch("mainCategory")) === 3 ||
+                      Number(watch("mainCategory")) === 5) && (
+                      <p>{t("negotiated-price")}</p>
+                    )} */}
+                  <div className="grid grid-cols-2 gap-2">
+                    <div className="block-row__item">
+                      <label className="check">
+                        <input
+                          type="checkbox"
+                          className="real-checkbox"
+                          {...register("arrangement")}
+                          checked={arrangement}
+                          onChange={() => handleCheckboxChange("arrangement")}
+                        />
+                        <span className="custom-checkbox"></span>
+                        {t("negotiated-price")}
+                      </label>
+                    </div>
+                    <div className="block-row__item">
+                      <label className="check">
+                        <input
+                          type="checkbox"
+                          className="real-checkbox"
+                          checked={!arrangement} // второй чекбокс активен, когда arrangement = false
+                          onChange={() => handleCheckboxChange("fixed")}
+                        />
+                        <span className="custom-checkbox"></span>
+                        Фіксована ціна
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <div className="block-row">
+                  {!arrangement && (
+                    <div className="block-row__item">
+                      <div className="input-block">
+                        <p>{t("fixed-price")}</p>
+
+                        <label
+                          className={`input-body input ${
+                            errors.price ? "input--error" : ""
+                          }`}
+                        >
+                          <input
+                            disabled={watch("arrangement")}
+                            autoComplete="off"
+                            type="number"
+                            placeholder=""
+                            className="input-body__input input-number"
+                            {...register("price")}
+                          />
+                          <div className="input-body__item">грн</div>
+                        </label>
+                      </div>
+                    </div>
+                  )}
+                  {!arrangement && Number(watch("mainCategory")) === 4 && (
+                    <div className="block-row__item">
+                      <div className="input-block">
+                        <p>{t("price-type")}</p>
+
+                        <Select
+                          isDisabled={arrangement}
+                          disallowEmptySelection
+                          placeholder={t("select-category")}
+                          className="w-full"
+                          classNames={{
+                            trigger: `min-h-[45px] text-black px-[12px] bg-[#F8FBFF] rounded-[5px] outline-offset-0 outline-[1px] outline-[#B0BFD7]`,
+
+                            popoverContent:
+                              "bg-[#F8FBFF] p-0 rounded-[5px] outline-offset-0 outline-[1px] outline-[#B0BFD7]",
+                            listbox: "p-0",
+                          }}
+                          listboxProps={{
+                            itemClasses: {
+                              base: [
+                                "min-h-[39px]",
+                                "px-[15px]",
+                                "py-[5px]",
+                                "rounded-none",
+                                "bg-transparent",
+                                "transition-colors",
+
+                                "data-[hover=true]:bg-[#c4dbff]",
+                                "data-[selectable=true]:focus:bg-[#c4dbff]",
+                              ],
+                            },
+                          }}
+                          defaultSelectedKeys={["for_hour"]}
+                          onChange={(selectedKey) =>
+                            handleChangeTypePrice(selectedKey)
+                          }
+                        >
+                          {units.map((unit) => (
+                            <SelectItem key={unit.key}>{unit.label}</SelectItem>
+                          ))}
+                        </Select>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+              {!arrangement &&
+                (Number(watch("mainCategory")) === 1 ||
+                  Number(watch("mainCategory")) === 2) && (
+                  <button
+                    type="button"
+                    onClick={() => setShowDiscount((prev) => !prev)}
+                    className=" button button--secondary"
+                  >
+                    {showDiscount ? "Ціна без знижки" : "Ціна зі знижкою"}
+                  </button>
+                )}
+              {!arrangement &&
+                showDiscount &&
+                (Number(watch("mainCategory")) === 1 ||
+                  Number(watch("mainCategory")) === 2) && (
+                  <div className="block-row">
+                    <div className="block-row__item">
+                      <div className="input-block">
+                        <p>{t("enter-volume")}</p>
+                        <label className="input-body input">
+                          <input
+                            disabled={arrangement}
+                            autoComplete="off"
+                            type="number"
+                            placeholder=""
+                            className="input-body__input input-number"
+                            {...register("volume")}
+                          />
+                          <div className="input-body__item">кг</div>
+                        </label>
+                      </div>
+                    </div>
+
+                    <div className="block-row__item">
+                      <div className="input-block">
+                        <p>{t("enter-price")}</p>
+                        <label className="input-body input">
+                          <input
+                            disabled={arrangement}
+                            autoComplete="off"
+                            type="number"
+                            placeholder=""
+                            className="input-body__input input-number"
+                            {...register("volume_price")}
+                          />
+                          <div className="input-body__item">грн</div>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                )}
+            </div>
+          </div>
+          <div className="flex flex-col gap-8 ">
+            <h2 className="contact-dashboard__title title title--small">
+              Інформація
+            </h2>
+            <div className="flex flex-col gap-5">
               {/* 
               <div className="input-block">
                 <p>{t("name")}*</p>
@@ -1365,7 +1368,6 @@ export default function Advertisement({ categories }: SellProps) {
                 />
               </div>
             </div>
-            {/* <p className="contact-dashboard__text">{t("default-info")}</p> */}
           </div>
         </div>
         <div className="dashboard__contact contact-dashboard">

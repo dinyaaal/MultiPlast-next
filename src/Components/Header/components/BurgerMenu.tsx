@@ -27,7 +27,7 @@ export default function BurgerMenu() {
     }
   }, [isOpen]);
 
-  const t = useTranslations("Header");
+  const tNavigation = useTranslations("Navigation");
 
   return (
     <div className={`header__menu menu ${isOpen ? "menu-open" : ""} `}>
@@ -58,7 +58,7 @@ export default function BurgerMenu() {
           <ul className="menu__list">
             <li className="menu__item">
               <Link onClick={closeMenu} href="/products" className="menu__link">
-                {t("marketplace")}
+                {tNavigation("marketplace")}
               </Link>
             </li>
             {status === "authenticated" && (
@@ -69,7 +69,7 @@ export default function BurgerMenu() {
                     href="/dashboard/add-advertisement"
                     className="menu__link"
                   >
-                    {t("postAd")}
+                    {tNavigation("addAdvertisement")}
                   </Link>
                 </li>
 
@@ -79,14 +79,14 @@ export default function BurgerMenu() {
                     href="/messages"
                     className="menu__link"
                   >
-                    {t("messages")}
+                    {tNavigation("myMessages")}
                   </Link>
                 </li>
               </>
             )}
             <li className="menu__item">
               <Link onClick={closeMenu} href="/forum" className="menu__link">
-                {t("forum")}
+                {tNavigation("forum")}
                 <div className="notification-value">
                   <span className="notification-value__number">99</span>
                 </div>

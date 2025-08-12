@@ -20,11 +20,11 @@
     align-items: center;
     justify-content: space-between;
     background-color: #ffffff;
-    @media (min-width: $mobileSmall) {
-      .notifications__body {
-        display: none;
-      }
-    }
+    // @media (min-width: $mobileSmall) {
+    //   .notifications__body {
+    //     display: none;
+    //   }
+    // }
   }
   // .body-header__logo
   &__logo {
@@ -375,11 +375,11 @@
       display: none;
     }
   }
-  .btn-icon--notify {
-    @media (min-width: $mobileSmall) {
-      display: none;
-    }
-  }
+  // .btn-icon--notify {
+  //   @media (min-width: $mobileSmall) {
+  //     display: none;
+  //   }
+  // }
   .btn-icon--menu {
     @media (min-width: $tablet) {
       display: none;
@@ -678,7 +678,7 @@
   right: 0;
   overflow: hidden;
   pointer-events: none;
-  @media (min-width: $mobileSmall) {
+  @media (min-width: 768px) {
     width: toRem(412);
     height: fit-content;
     top: calc(100% + 15px);

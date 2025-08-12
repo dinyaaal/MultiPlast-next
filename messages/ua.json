@@ -31,21 +31,29 @@
     "activeBusiness": "Діючий бізнес"
   },
   "HeaderMenu": {
-    "menu": "Меню",
+    "menu": "Меню"
+  },
+  "Navigation": {
+    "personalAccount": "Особистий кабінет",
+    "myAds": "Мої оголошення",
+    "addAdvertisement": "Подати оголошення",
+    "mySellAds": "Мої оголошення про продаж",
+    "myBuyAds": "Мої оголошення про купівлю",
+    "editContactDetails": "Редагувати контактні данні",
+    "changePassword": "Смена пароля",
+    "deleteAccount": "Удалить аккаунт",
+    "myMessages": "Мої повідомлення",
     "aboutProject": "Про проект",
     "userAgreement": "Угода користувача",
-    "howToSellBuy": "Як продати і купити?"
+    "howToSellBuy": "Як продати і купити?",
+    "forum": "Форум",
+    "marketplace": "Торгівельний майданчик",
+    "home": "Головна",
+    "privacyPolicy": "Політика конфіденційності"
   },
 
   "Footer": {
-    "menu": "Меню",
-    "aboutProject": "Про проєкт",
-    "userAgreement": "Угода користувача",
-    "howToSellBuy": "Як продати і купити?",
     "informationPages": "Інформаційні сторінки",
-    "home": "Головна",
-    "marketplace": "Торгівельний майданчик",
-    "forum": "Форум",
     "socialsText": "Ми в соціальних мережах:",
     "forClients": "Клієнтам",
     "myMessages": "Мої повідомлення",

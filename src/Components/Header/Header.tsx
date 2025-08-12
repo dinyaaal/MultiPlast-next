@@ -44,6 +44,7 @@ export default async function Header() {
   const session = await getServerSession();
   const categories: Category[] = await fetchCategories();
   const t = await getTranslations("Header");
+  const tNavigation = await getTranslations("Navigation");
   return (
     <header className="header">
       <div className="header__body body-header">
@@ -58,7 +59,9 @@ export default async function Header() {
           <div className="body-header__block body-header__block--actions">
             <div className="body-header__actions actions-body-header">
               <SearchMobile />
-              <NotificationsMobile />
+              <div className="flex md:hidden">
+                <Notifications />
+              </div>
               <BurgerMenu />
             </div>
 
@@ -75,7 +78,7 @@ export default async function Header() {
           <ul className="bottom-header__list menu__list">
             <li className="menu__item">
               <Link href="/products" className="menu__link">
-                {t("marketplace")}
+                {tNavigation("marketplace")}
               </Link>
             </li>
             {session && (
@@ -85,7 +88,7 @@ export default async function Header() {
                     href="/dashboard/add-advertisement"
                     className="menu__link"
                   >
-                    {t("postAd")}
+                    {tNavigation("addAdvertisement")}
                     {categories.length > 0 && (
                       <div className="main-menu__arrow menu__arrow">
                         <Image
@@ -240,7 +243,7 @@ export default async function Header() {
                 </li>
                 <li className="menu__item">
                   <Link href="/messages" className="menu__link">
-                    {t("messages")}
+                    {tNavigation("myMessages")}
                   </Link>
                 </li>
               </>
@@ -248,7 +251,7 @@ export default async function Header() {
 
             <li className="menu__item">
               <Link href="/forum" className="menu__link">
-                {t("forum")}
+                {tNavigation("forum")}
               </Link>
               {/* <div className="notification-value">
                 <span className="notification-value__number">99</span>
@@ -258,17 +261,21 @@ export default async function Header() {
           </ul>
 
           <div className="bottom-header__actions">
-            <Link href="/favorites" className="btn-icon btn-icon--favorites">
-              <div className="btn-icon__image">
-                <Image
-                  src="/icons/heart.svg"
-                  alt="Icon"
-                  width={100}
-                  height={100}
-                />
-              </div>
-            </Link>
-            <Notifications />
+            <div className="hidden md:flex">
+              <Link href="/favorites" className="btn-icon btn-icon--favorites">
+                <div className="btn-icon__image">
+                  <Image
+                    src="/icons/heart.svg"
+                    alt="Icon"
+                    width={100}
+                    height={100}
+                  />
+                </div>
+              </Link>
+            </div>
+            <div className="hidden md:flex">
+              <Notifications />
+            </div>
           </div>
         </div>
       </div>

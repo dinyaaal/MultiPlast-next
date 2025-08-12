@@ -5,7 +5,7 @@ import { getTranslations } from "next-intl/server";
 
 export default async function Footer() {
   const t = await getTranslations("Footer");
-
+  const tNavigation = await getTranslations("Navigation");
   const session = await getServerSession();
 
   // TODO Надо вывести инфу с запроса
@@ -99,17 +99,17 @@ export default async function Footer() {
             <div className="menu-footer__title">{t("informationPages")}</div>
             <ul className="menu-footer__items">
               <li className="menu-footer__item">
-                <Link href="/about">{t("aboutProject")}</Link>
+                <Link href="/about">{tNavigation("aboutProject")}</Link>
               </li>
               <li className="menu-footer__item">
-                <Link href="#">{t("userAgreement")}</Link>
+                <Link href="#">{tNavigation("userAgreement")}</Link>
               </li>
 
               <li className="menu-footer__item">
-                <Link href="#">{t("howToSellBuy")}</Link>
+                <Link href="#">{tNavigation("howToSellBuy")}</Link>
               </li>
               <li className="menu-footer__item">
-                <Link href="#">{t("privacyPolicy")}</Link>
+                <Link href="#">{tNavigation("privacyPolicy")}</Link>
               </li>
             </ul>
           </div>
@@ -117,22 +117,22 @@ export default async function Footer() {
             <div className="menu-footer__title">{t("forClients")}</div>
             <ul className="menu-footer__items">
               <li className="menu-footer__item">
-                <Link href="/">{t("home")}</Link>
+                <Link href="/">{tNavigation("home")}</Link>
               </li>
               <li className="menu-footer__item">
-                <Link href="/forum">{t("forum")}</Link>
+                <Link href="/forum">{tNavigation("forum")}</Link>
               </li>
               <li className="menu-footer__item">
-                <Link href="/products">{t("marketplace")}</Link>
+                <Link href="/products">{tNavigation("marketplace")}</Link>
               </li>
               {session && (
                 <>
                   <li className="menu-footer__item">
-                    <Link href="/messages">{t("myMessages")}</Link>
+                    <Link href="/messages">{tNavigation("myMessages")}</Link>
                   </li>
                   <li className="menu-footer__item">
                     <Link href="/dashboard/add-advertisement">
-                      {t("postAd")}
+                      {tNavigation("addAdvertisement")}
                     </Link>
                   </li>
                 </>

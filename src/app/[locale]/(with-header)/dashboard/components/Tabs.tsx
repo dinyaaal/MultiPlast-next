@@ -6,8 +6,10 @@ import { Navigation } from "swiper/modules";
 import "swiper/css";
 
 import AdvertismentTab from "@/Components/Advertisment/AdvertismentTab";
+import { useTranslations } from "next-intl";
 
 export default function Tabs() {
+  const tNavigation = useTranslations("Navigation");
   return (
     <div className="tabs-dashboard">
       <Swiper
@@ -27,12 +29,12 @@ export default function Tabs() {
         }}
       >
         <SwiperSlide>
-          <div className="tabs-dashboard__title">Оголошення</div>
+          <div className="tabs-dashboard__title">{tNavigation("myAds")}</div>
 
           <div className="tabs-dashboard__items">
             <AdvertismentTab
               href="/dashboard/add-advertisement"
-              text="Подати оголошення"
+              text={tNavigation("addAdvertisement")}
               // params="sell"
             />
             {/* <AdvertismentTab
@@ -43,31 +45,33 @@ export default function Tabs() {
           </div>
         </SwiperSlide>
         <SwiperSlide>
-          <div className="tabs-dashboard__title">Мої оголошення</div>
+          <div className="tabs-dashboard__title">{tNavigation("myAds")}</div>
 
           <div className="tabs-dashboard__items">
             <AdvertismentTab
               href="/dashboard/my-sell"
-              text="Мої оголошення про продаж"
+              text={tNavigation("mySellAds")}
             />
             <AdvertismentTab
               href="/dashboard/my-buy"
-              text="Мої оголошення про купівлю"
+              text={tNavigation("myBuyAds")}
             />
           </div>
         </SwiperSlide>
         <SwiperSlide>
-          <div className="tabs-dashboard__title">Особистий кабінет</div>
+          <div className="tabs-dashboard__title">
+            {tNavigation("personalAccount")}
+          </div>
 
           <div className="tabs-dashboard__items">
             <AdvertismentTab
               href="/dashboard/profile"
-              text="Редагувати контактні данні"
+              text={tNavigation("editContactDetails")}
               className="tabs-dashboard__item--mobile"
             />
             <AdvertismentTab
               href="/dashboard/security"
-              text="Смена пароля"
+              text={tNavigation("changePassword")}
               className="tabs-dashboard__item--mobile"
             />
           </div>

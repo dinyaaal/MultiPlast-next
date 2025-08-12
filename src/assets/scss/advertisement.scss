@@ -68,6 +68,7 @@
     width: fit-content;
     height: fit-content;
     top: 5px;
+    background-color: transparent !important;
     @media (min-width: $tablet) {
       display: none;
     }

@@ -7,6 +7,8 @@ import { Link } from "@/i18n/routing";
 
 export default function Hero() {
   const t = useTranslations("Hero");
+  const tNavigation = useTranslations("Navigation");
+
   return (
     <section className="hero">
       <div className="hero__bg">
@@ -19,7 +21,7 @@ export default function Hero() {
             <div className="top-hero__text">{t("text")}</div>
           </div>
           <Link href="/about" className="top-hero__button button">
-            {t("button")}
+            {tNavigation("aboutProject")}
           </Link>
         </div>
       </div>
