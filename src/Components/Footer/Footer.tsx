@@ -28,7 +28,7 @@ export default async function Footer() {
               <p className="socials__text">{t("socialsText")}</p>
 
               <div className="socials__items">
-                <Link href="#" className="socials__item">
+                <Link href="#" target="_blank" className="socials__item">
                   <svg
                     width="35"
                     height="35"
@@ -46,7 +46,7 @@ export default async function Footer() {
                     </g>
                   </svg>
                 </Link>
-                <Link href="#" className="socials__item">
+                <Link href="#" target="_blank" className="socials__item">
                   <svg
                     width="35"
                     height="35"
@@ -61,7 +61,7 @@ export default async function Footer() {
                     />
                   </svg>
                 </Link>
-                <Link href="#" className="socials__item">
+                <Link href="#" target="_blank" className="socials__item">
                   <svg
                     width="35"
                     height="35"
@@ -76,7 +76,7 @@ export default async function Footer() {
                     />
                   </svg>
                 </Link>
-                <Link href="#" className="socials__item">
+                <Link href="#" target="_blank" className="socials__item">
                   <svg
                     width="35"
                     height="35"

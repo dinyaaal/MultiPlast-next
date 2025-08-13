@@ -60,7 +60,9 @@
   &__title {
     text-wrap: nowrap;
     line-height: 80%;
-    @include adaptiveValue("font-size", 160, 40);
+    @include adaptiveValue("font-size", 150, 40);
+    border-bottom: 1px solid #fff;
+    padding-bottom: toRem(10);
     &::first-letter {
       @include adaptiveValue("font-size", 200, 50);
     }

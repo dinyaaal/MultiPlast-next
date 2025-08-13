@@ -1,6 +1,7 @@
 "use client";
 import { Link } from "@/i18n/routing";
 import { RootState } from "@/store/store";
+import { Spinner } from "@heroui/react";
 import { signOut, useSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
@@ -13,7 +14,6 @@ export default function HeaderUser() {
   const { data: userInfo, error } = useSelector(
     (state: RootState) => state.userInfo
   );
-  
 
   return (
     <>

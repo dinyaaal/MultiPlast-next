@@ -241,9 +241,10 @@
 
       top: calc(100% - 2px);
 
-      outline: 1px solid var(--blueColor);
-      background-color: #fff;
-      padding: 5px 0px 5px 0px;
+      // outline: 1px solid var(--blueColor);
+      background-color: #edf4ff;
+      padding: 0px;
+      border: 1px solid #b0bfd7;
     }
     // .select__scroll
     &__scroll {
@@ -266,6 +267,7 @@
       cursor: pointer;
       padding: 5px 15px;
       color: inherit;
+      color: #000;
       &:not(:last-child) {
         border-bottom: 1px solid #b0bfd7;
       }
@@ -274,7 +276,7 @@
       }
       @media (any-hover: hover) {
         &:hover {
-          background: #d9d9d9;
+          background: #c4dbff !important;
         }
       }
     }

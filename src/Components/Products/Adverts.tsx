@@ -2,7 +2,7 @@
 
 import { MinimalProduct } from "@/types/types";
 import AdvertsSwiper from "./components/AdvertsSwiper";
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 
 async function getProducts(): Promise<MinimalProduct[] | null> {
   const queryParams = new URLSearchParams();
