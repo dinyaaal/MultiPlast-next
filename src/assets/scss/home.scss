@@ -188,14 +188,17 @@
     padding: toRem(10) !important;
     // @media (min-width:$mobile){
     //     margin: 0 toRem(50);
-
+    .swiper-wrapper {
+      align-items: stretch;
+    }
     // }
     .swiper-slide {
-      min-height: 100%;
-      width: fit-content;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      height: auto;
+      // min-height: 100%;
+      // width: fit-content;
+      // display: flex;
+      // align-items: center;
+      // justify-content: center;
     }
     .swiper-pagination {
       @media (min-width: em(1400)) {

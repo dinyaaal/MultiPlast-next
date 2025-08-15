@@ -38,6 +38,8 @@ export default async function ForumTopicPage(props: { params: Params }) {
   const params = await props.params;
   const post = await getPost(params.id);
 
+  await new Promise((resolve) => setTimeout(resolve, 2000));
+
   if (!post) {
     return notFound();
   }

@@ -213,7 +213,7 @@ export const ProductCard: React.FC<{
           src={
             product.photos.length > 0 ? product.photos[0].url : "/advert/01.jpg"
           }
-          alt={product.title}
+          alt={"Image"}
           width={1000}
           height={1000}
         />

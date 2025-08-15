@@ -1,3 +1,18 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+  --color-primary: #ffffff;
+  --color-secondary: #edf4ff;
+  --color-blue: #1858b8;
+  --color-blue-hover: #0b4397;
+  --color-border: #b0bfd7;
+  --color-text: #0e274d;
+  --color-grey: #838383;
+  --color-bg-lite: #edf4ff;
+}
+
+.menu__item {
+  @apply flex items-center gap-2.5;
+}
