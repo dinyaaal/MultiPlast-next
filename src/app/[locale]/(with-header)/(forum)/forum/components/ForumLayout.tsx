@@ -21,7 +21,7 @@ export default function ForumLayout({
 
       <section className="forum">
         <div className="forum__top top-forum">
-          <div className="top-forum__container">
+          <div className="top-forum__container main-container">
             <div className="top-forum__title title">{t("forumTitle")}</div>
             <div className="top-forum__block">
               <SelectTabs

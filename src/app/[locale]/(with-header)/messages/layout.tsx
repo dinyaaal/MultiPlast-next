@@ -8,7 +8,7 @@ export default function MessagesLayout({
 }) {
   return (
     <section className="chat">
-      <div className="chat__container">
+      <div className="chat__container main-container">
         <div className="chat__wrapper">
           <div className="chat__block block-chat">
             <div className="block-chat__top chat-top">

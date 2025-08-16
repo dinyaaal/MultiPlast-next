@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Rubik } from "next/font/google";
 import "./globals.css";
-import "../../assets/scss/style.scss";
+// import "../../assets/scss/style.scss";
 import { HeroUIProvider } from "@heroui/system";
 import { getMessages, setRequestLocale } from "next-intl/server";
 import { AuthProviders } from "@/Components/AuthProviders";

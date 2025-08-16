@@ -7,10 +7,14 @@ import { Link } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
 import { useSession } from "next-auth/react";
 import HeaderUser from "./HeaderUser";
+import { useClickOutside } from "@/hooks/ClickOutside";
+import Notifications from "./Notifications";
+import SearchMobile from "./SearchMobile";
 
 export default function BurgerMenu() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const { data: session, status } = useSession();
+  const { rootEl } = useClickOutside(setIsOpen);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -22,15 +26,20 @@ export default function BurgerMenu() {
   useEffect(() => {
     if (isOpen) {
       document.body.classList.add("no-scroll");
+      document.body.classList.add("burger-menu-open");
     } else {
       document.body.classList.remove("no-scroll");
+      document.body.classList.remove("burger-menu-open");
     }
   }, [isOpen]);
 
   const tNavigation = useTranslations("Navigation");
 
   return (
-    <div className={`header__menu menu ${isOpen ? "menu-open" : ""} `}>
+    <div
+      ref={rootEl}
+      className={`header__menu menu ${isOpen ? "menu-open" : ""} `}
+    >
       <button onClick={toggleMenu} className="btn-icon btn-icon--menu">
         <div className="menu__icon icon-menu">
           <span></span>

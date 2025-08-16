@@ -79,7 +79,7 @@ export default async function Product(props: { params: Params }) {
     <>
       <BreadcrumbsClient items={crumbs} />
       <section className="product">
-        <div className="product__container">
+        <div className="product__container main-container">
           <div className="product__top top-product">
             <div className="w-full flex flex-col gap-2 ">
               <div className="flex items-center justify-between gap-3">

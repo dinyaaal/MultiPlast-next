@@ -248,7 +248,7 @@ export default function Registration() {
               inputProps={{
                 autoComplete: "off",
                 classNames: {
-                  inputWrapper: `h-[45px] text-black px-[12px]  !bg-[#F8FBFF] rounded-[5px] outline-offset-0 outline-[1px]  ${
+                  inputWrapper: `h-[45px] text-black px-[12px]  bg-[#F8FBFF]! rounded-[5px] outline-offset-0 outline-[1px]  ${
                     errors.city ? "outline-[#FF0000]" : "outline-[#B0BFD7]"
                   } `,
                 },

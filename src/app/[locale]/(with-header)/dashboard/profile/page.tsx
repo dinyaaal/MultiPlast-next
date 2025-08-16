@@ -784,7 +784,7 @@ export default function Profile() {
                   onClick={(e) => {
                     toast("Вы уверены что хотите удалить пост?", {
                       classNames: {
-                        actionButton: "!bg-red-600 !p-4",
+                        actionButton: "bg-red-600! p-4!",
                       },
                       action: {
                         label: "Удалить",

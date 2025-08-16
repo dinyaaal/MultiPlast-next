@@ -15,7 +15,7 @@ export default function Hero() {
         <Image src="/hero/bg.jpg" alt="Image" width={1920} height={100} />
       </div>
       <div className="hero__top top-hero">
-        <div className="top-hero__container">
+        <div className="top-hero__container main-container">
           <div className="top-hero__block">
             <h1 className="top-hero__title">multi Plast</h1>
             <div className="top-hero__text">{t("text")}</div>
@@ -26,7 +26,7 @@ export default function Hero() {
         </div>
       </div>
       <div className="hero__body body-hero">
-        <div className="body-hero__container">
+        <div className="body-hero__container main-container">
           <HeroSwiper />
         </div>
       </div>

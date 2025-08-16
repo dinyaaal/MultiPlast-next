@@ -154,12 +154,12 @@ export default function FavoritesBody() {
                 classNames={{
                   base: " flex justify-center ",
                   wrapper:
-                    "gap-0 text-[#fff] overflow-hidden rounded-lg border border-solid border-[#B0BFD7]",
-                  item: "w-10 h-10 text-[#000] text-xs md:text-base bg-[#F8FBFF] rounded-none  border-r border-solid border-[#B0BFD7] last:border-r-0 ",
+                    "gap-0 text-white overflow-hidden rounded-lg border border-solid border-[#B0BFD7]",
+                  item: "w-10 h-10 text-black text-xs md:text-base bg-[#F8FBFF] rounded-none  border-r border-solid border-[#B0BFD7] last:border-r-0 ",
                   cursor:
-                    "rounded-none text-[#fff] w-10 h-10  text-xs md:text-base bg-[#1858B8]",
-                  // prev: "w-10 h-10 text-[#fff] bg-[#1858B8] rounded-none outline-none border border-[#B0BFD7]" ,
-                  // next: "w-10 h-10 text-[#fff] bg-[#1858B8] rounded-none outline-none border border-[#B0BFD7]" ,
+                    "rounded-none text-white w-10 h-10  text-xs md:text-base bg-[#1858B8]",
+                  // prev: "w-10 h-10 text-white bg-[#1858B8] rounded-none outline-none border border-[#B0BFD7]" ,
+                  // next: "w-10 h-10 text-white bg-[#1858B8] rounded-none outline-none border border-[#B0BFD7]" ,
                 }}
                 initialPage={1}
                 total={lastPage}

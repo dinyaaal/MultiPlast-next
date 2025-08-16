@@ -18,7 +18,7 @@ export default async function Footer() {
   // getStaticData()
   return (
     <footer className="footer">
-      <div className="footer__container">
+      <div className="footer__container main-container">
         <div className="footer__body">
           <div className="footer__block">
             <Link href="/" className="footer__logo logo">

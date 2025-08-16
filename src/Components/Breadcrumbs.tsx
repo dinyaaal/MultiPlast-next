@@ -16,7 +16,7 @@ interface BreadcrumbsClientProps {
 export function BreadcrumbsClient({ items }: BreadcrumbsClientProps) {
   return (
     <div className="breadcrumbs">
-      <Breadcrumbs className="breadcrumbs__container">
+      <Breadcrumbs className="breadcrumbs__container main-container">
         {items.map(({ label, href }, idx) => (
           <BreadcrumbItem key={idx}>
             {href ? <Link href={href}>{label}</Link> : label}

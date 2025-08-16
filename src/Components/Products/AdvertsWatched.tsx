@@ -22,7 +22,7 @@ export default function AdvertsWatched() {
 
   return (
     <section className="adverts">
-      <div className="adverts__container">
+      <div className="adverts__container main-container">
         <div className="adverts__top">
           <h2 className="adverts__title title">Нещодавно переглянуті</h2>
           {/* <a href="#" className="adverts__button button">

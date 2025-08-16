@@ -15,7 +15,7 @@ export default function Forum() {
   return (
     <>
       <ForumLayout>
-        <div className="body-forum__container">
+        <div className="body-forum__container main-container">
           <div className="body-forum__content">
             <Sections onChangeSectionId={setActiveSectionId} />
 

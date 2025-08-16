@@ -55,7 +55,7 @@ export default async function HomeForum() {
 
   return (
     <section className="home-forum">
-      <div className="home-forum__container">
+      <div className="home-forum__container main-container">
         <h2 className="home-forum__title title">{t("forum")}</h2>
         <div className="grid  md:grid-cols-2 lg:grid-cols-3 gap-4 xl:gap-5">
           {posts &&

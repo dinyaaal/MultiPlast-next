@@ -74,7 +74,7 @@ export default function ForumAdd() {
   return (
     <ForumLayout>
       <div className="add-forum">
-        <div className="add-forum__container">
+        <div className="add-forum__container main-container">
           <form
             onSubmit={handleSubmit(processForm)}
             className="add-forum__block"

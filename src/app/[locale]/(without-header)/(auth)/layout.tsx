@@ -7,7 +7,7 @@ export default function AuthLayout({
   return (
     <div className="page page-registration">
       <div className="login">
-        <div className="login__container">
+        <div className="login__container main-container">
           <div className="login__wrapper">
             <div className="login__body">{children}</div>
           </div>

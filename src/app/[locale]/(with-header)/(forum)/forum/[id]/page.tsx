@@ -46,7 +46,7 @@ export default async function ForumTopicPage(props: { params: Params }) {
 
   return (
     <section className="forum-topic">
-      <div className="forum-topic__container">
+      <div className="forum-topic__container main-container">
         <div className="forum-topic__body body-forum-topic">
           <div className="body-forum-topic__top top-body-forum-topic">
             <h2 className="top-body-forum-topic__title title">{post.title}</h2>

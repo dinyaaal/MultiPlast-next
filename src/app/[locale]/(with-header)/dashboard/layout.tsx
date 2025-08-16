@@ -9,7 +9,7 @@ export default function AdvertismentLayout({
   return (
     <>
       <section className="dashboard">
-        <div className="dashboard__container">
+        <div className="dashboard__container main-container">
           <Tabs />
 
           <div className="dashboard__block">{children}</div>

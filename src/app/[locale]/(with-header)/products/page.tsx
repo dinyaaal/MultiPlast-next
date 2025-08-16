@@ -41,7 +41,7 @@ export default async function Products(props: { searchParams: SearchParams }) {
       <BreadcrumbsClient items={crumbs} />
 
       <section className="trade">
-        <div className="trade__container">
+        <div className="trade__container main-container">
           <div className="trade__top">
             <h1 className="trade__title title">
               {searchParams?.search
