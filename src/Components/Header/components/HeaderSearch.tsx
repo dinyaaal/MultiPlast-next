@@ -21,7 +21,7 @@ export const HeaderSearch: React.FC<IHeaderSearchProps> = ({ placeholder }) => {
   };
 
   return (
-    <form onSubmit={handleSearch} className="body-header__search search">
+    <form onSubmit={handleSearch} className="body-header__search search ">
       <input
         type="text"
         placeholder={placeholder}

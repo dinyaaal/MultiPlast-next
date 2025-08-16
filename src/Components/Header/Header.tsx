@@ -54,9 +54,8 @@ export default async function Header() {
             <Link href="/" className="body-header__logo logo">
               <span>M</span>ulti<span>P</span>last
             </Link>
-            <div className="hidden md:block">
-              <HeaderSearch placeholder={t("searchPlaceholder")} />
-            </div>
+
+            <HeaderSearch placeholder={t("searchPlaceholder")} />
           </div>
           <div className="body-header__block body-header__block--actions">
             <div className="xl:hidden">
