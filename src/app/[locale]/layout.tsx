@@ -11,7 +11,7 @@ import { Toaster } from "sonner";
 import { NextIntlClientProvider, Locale, hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
-import "@mdxeditor/editor/style.css";
+// import "@mdxeditor/editor/style.css";
 
 const rubikFont = Rubik({
   subsets: ["latin"],
