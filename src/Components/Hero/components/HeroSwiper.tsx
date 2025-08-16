@@ -1,9 +1,9 @@
 "use client";
 
 import Image from "next/image";
+import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
-import React from "react";
 import { Pagination } from "swiper/modules";
 
 export default function HeroSwiper() {
@@ -13,7 +13,7 @@ export default function HeroSwiper() {
       slidesPerView={1}
       className="body-hero__slider"
       modules={[Pagination]}
-      pagination={{ clickable: true }}
+      pagination={{ enabled: true, clickable: true }}
       breakpoints={{
         479.98: {
           slidesPerView: 2,
@@ -61,37 +61,5 @@ export default function HeroSwiper() {
         />
       </SwiperSlide>
     </Swiper>
-    // <div className="body-hero__slider swiper">
-    //   <div className="body-hero__wrapper swiper-wrapper">
-    //     <div className="body-hero__slide swiper-slide">
-
-    //     </div>
-    //     <div className="body-hero__slide swiper-slide">
-    //       <Image
-    //         src="/hero/items/02.jpg"
-    //         alt="Image"
-    //         width={100}
-    //         height={100}
-    //       />
-    //     </div>
-    //     <div className="body-hero__slide swiper-slide">
-    //       <Image
-    //         src="/hero/items/03.jpg"
-    //         alt="Image"
-    //         width={100}
-    //         height={100}
-    //       />
-    //     </div>
-    //     <div className="body-hero__slide swiper-slide">
-    //       <Image
-    //         src="/hero/items/04.jpg"
-    //         alt="Image"
-    //         width={100}
-    //         height={100}
-    //       />
-    //     </div>
-    //   </div>
-    //   <div className="body-hero__pagination swiper-pagination"></div>
-    // </div>
   );
 }

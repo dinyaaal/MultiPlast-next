@@ -16,7 +16,15 @@ interface BreadcrumbsClientProps {
 export function BreadcrumbsClient({ items }: BreadcrumbsClientProps) {
   return (
     <div className="breadcrumbs">
-      <Breadcrumbs className="breadcrumbs__container main-container">
+      <Breadcrumbs
+        classNames={{
+          base: "text-greyColor text-sm",
+        }}
+        itemClasses={{
+          item: " data-[current=true]:text-black",
+        }}
+        className="breadcrumbs__container main-container"
+      >
         {items.map(({ label, href }, idx) => (
           <BreadcrumbItem key={idx}>
             {href ? <Link href={href}>{label}</Link> : label}
