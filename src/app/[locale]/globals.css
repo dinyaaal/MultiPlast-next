@@ -1136,3 +1136,79 @@ button:disabled {
 .menu-open .icon-menu::after {
   @apply bottom-[calc(50%-1px)] rotate-[45deg];
 }
+
+/* FOOTER ///////////////////////// */
+
+.footer {
+  @apply border-t border-border pt-[50px] pb-[15px] bg-secondary mt-[20px];
+}
+.footer__body {
+  @apply flex flex-col gap-y-5 gap-x-[60px] justify-center text-center xl:text-start xl:flex-row xl:justify-between;
+}
+.footer__block {
+  @apply flex flex-col gap-[35px];
+}
+.footer .logo {
+  @apply text-[35px];
+}
+.footer__support {
+  @apply mx-auto;
+}
+.footer__copy {
+  @apply font-light text-[11px] text-center;
+}
+
+.socials {
+  @apply flex flex-col gap-[25px];
+}
+.socials__text {
+  @apply font-medium;
+}
+.socials__items {
+  @apply flex gap-[15px] items-center justify-center xl:justify-start;
+}
+
+.socials__item {
+  @apply shrink-0 size-[35px];
+}
+.socials__item svg {
+  @apply size-full;
+}
+.socials__item svg * {
+  @apply transition-all duration-300;
+}
+.socials__item:hover svg path {
+  @apply fill-blueColor;
+}
+.socials__item:hover svg circle {
+  @apply stroke-blueColor;
+}
+
+.menu-footer {
+  @apply flex flex-col gap-[25px];
+}
+.menu-footer__title {
+  @apply font-medium;
+}
+.menu-footer__items {
+  @apply grid gap-[15px];
+}
+.menu-footer__item {
+  @apply transition-all duration-300 hover:text-blueColor;
+}
+
+.support-footer {
+  @apply max-w-[275px] mx-auto xl:mx-0;
+}
+.support-footer__title {
+  @apply font-medium;
+}
+.support-footer__title:not(:last-child) {
+  @apply mb-[25px];
+}
+.support-footer__text {
+  @apply leading-[118.75%];
+}
+.support-footer__text:not(:last-child) {
+  @apply mb-[44px];
+}
