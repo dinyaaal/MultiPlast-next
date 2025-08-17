@@ -3,14 +3,12 @@
 import Image from "next/image";
 import { useRouter } from "@/i18n/routing";
 
-import React, { FormEvent, ReactEventHandler, useState } from "react";
+import React, { FormEvent, useState } from "react";
+import { useTranslations } from "next-intl";
 
-interface IHeaderSearchProps {
-  placeholder: string;
-}
-
-export const HeaderSearch: React.FC<IHeaderSearchProps> = ({ placeholder }) => {
+export const HeaderSearch = () => {
   const router = useRouter();
+  const t = useTranslations("Header");
 
   const [searchValue, setSearchValue] = useState<string>("");
 
@@ -21,19 +19,27 @@ export const HeaderSearch: React.FC<IHeaderSearchProps> = ({ placeholder }) => {
   };
 
   return (
-    <form onSubmit={handleSearch} className="body-header__search search ">
-      <input
-        type="text"
-        placeholder={placeholder}
-        className="search__input"
-        onChange={(e) => setSearchValue(e.target.value)}
-        value={searchValue}
-      />
-      <button className="search__icon-body">
-        <div className="search__icon">
-          <Image src="/icons/search.svg" alt="Icon" width={100} height={100} />
-        </div>
-      </button>
+    <form onSubmit={handleSearch} className="w-full">
+      <label htmlFor="search" className="body-header__search search ">
+        <input
+          type="text"
+          placeholder={t("searchPlaceholder")}
+          className=" search__input"
+          onChange={(e) => setSearchValue(e.target.value)}
+          value={searchValue}
+          id="search"
+        />
+        <button className="search__icon-body cursor-pointer">
+          <div className="search__icon">
+            <Image
+              src="/icons/search.svg"
+              alt="Icon"
+              width={100}
+              height={100}
+            />
+          </div>
+        </button>
+      </label>
     </form>
   );
 };

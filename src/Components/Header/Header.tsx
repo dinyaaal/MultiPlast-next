@@ -55,7 +55,7 @@ export default async function Header() {
               <span>M</span>ulti<span>P</span>last
             </Link>
 
-            <HeaderSearch placeholder={t("searchPlaceholder")} />
+            <HeaderSearch />
           </div>
           <div className="body-header__block body-header__block--actions">
             <div className="xl:hidden">

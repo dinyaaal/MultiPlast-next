@@ -1,6 +1,5 @@
 "use client";
 
-import { useClickOutside } from "@/hooks/ClickOutside";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -64,24 +63,27 @@ export default function SearchMobile() {
             />
           </svg>
         </button>
-        <form onSubmit={handleSearch} className="body-search-mobile__field">
-          <input
-            type="text"
-            placeholder={t("searchPlaceholder")}
-            className="search__input"
-            onChange={(e) => setSearchValue(e.target.value)}
-            value={searchValue}
-          />
-          <button>
-            <div className="search__icon">
-              <Image
-                src="/icons/search-blue.svg"
-                alt="Icon"
-                width={100}
-                height={100}
-              />
-            </div>
-          </button>
+        <form onSubmit={handleSearch} className="w-full">
+          <label htmlFor="search-mobile" className="body-search-mobile__field">
+            <input
+              type="text"
+              placeholder={t("searchPlaceholder")}
+              className="search__input"
+              onChange={(e) => setSearchValue(e.target.value)}
+              value={searchValue}
+              id="search-mobile"
+            />
+            <button type="submit">
+              <div className="search__icon">
+                <Image
+                  src="/icons/search-blue.svg"
+                  alt="Icon"
+                  width={100}
+                  height={100}
+                />
+              </div>
+            </button>
+          </label>
         </form>
       </div>
     </div>

@@ -44,7 +44,10 @@ export default function AdvertsWatched() {
               375: {
                 slidesPerView: "auto",
               },
-              991.98: {
+              640: {
+                slidesPerView: 2,
+              },
+              768: {
                 slidesPerView: 3,
               },
               1280: {

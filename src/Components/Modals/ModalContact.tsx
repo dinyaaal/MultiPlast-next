@@ -20,7 +20,7 @@ type Inputs = z.infer<typeof ContactFormSchema>;
 
 export default function ModalContact() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const t = useTranslations("Modals");
+  const t = useTranslations("Modals.proposals");
 
   const {
     register,
@@ -42,21 +42,21 @@ export default function ModalContact() {
       });
       if (response.ok) {
         const result = await response.json();
-        toast.success("Мы скоро с вами свяжемся");
+        toast.success(t("toast.success"));
         reset();
       } else {
-        throw new Error("Ошибка обновления информации пользователя");
+        throw new Error(t("toast.error"));
       }
     } catch (error) {
-      console.error("Ошибка при отправке данных:", error);
-      toast.error("Ошибка");
+      console.error(t("toast.error"), error);
+      toast.error(t("toast.error"));
     }
   };
 
   return (
     <>
       <button onClick={onOpen} className="support-footer__button button">
-        <span>{t("support")}</span>
+        <span>{t("open-modal")}</span>
       </button>
 
       <Modal
@@ -72,12 +72,8 @@ export default function ModalContact() {
               <ModalHeader className="flex flex-col gap-1"></ModalHeader>
               <ModalBody>
                 <div className="body-popup-form__top">
-                  <h3 className="body-popup-form__title">
-                    Якщо у Вас є зауваження чи пропозиції, напишіть нам!
-                  </h3>
-                  <p className="body-popup-form__text">
-                    Ми працюємо над тим, щоб Вам було комфортно з нами!
-                  </p>
+                  <h3 className="body-popup-form__title">{t("title")}</h3>
+                  <p className="body-popup-form__text">{t("subtitle")}</p>
                 </div>
                 <form
                   onSubmit={handleSubmit(processForm)}
@@ -85,19 +81,19 @@ export default function ModalContact() {
                 >
                   <div className="form-popup__block">
                     <div className="input-block">
-                      <p>Імʼя</p>
+                      <p>{t("form.name")}</p>
                       <input
                         type="text"
-                        placeholder="Імʼя"
+                        placeholder={t("form.name")}
                         className={`input ${errors.name ? "input--error" : ""}`}
                         {...register("name")}
                       />
                     </div>
                     <div className="input-block">
-                      <p>Ваша пошта</p>
+                      <p>{t("form.email")}</p>
                       <input
                         type="email"
-                        placeholder="Ваша пошта"
+                        placeholder={t("form.email")}
                         className={`input ${
                           errors.email ? "input--error" : ""
                         }`}
@@ -105,18 +101,18 @@ export default function ModalContact() {
                       />
                     </div>
                     <div className="input-block">
-                      <p>Повідомлення</p>
+                      <p>{t("form.message")}</p>
                       <textarea
                         className={`input form-popup__textarea ${
                           errors.message ? "input--error" : ""
                         }`}
-                        placeholder="Повідомлення"
+                        placeholder={t("form.message")}
                         {...register("message")}
                       ></textarea>
                     </div>
                   </div>
                   <button type="submit" className="form-popup__button button">
-                    Надіслати
+                    {t("form.send")}
                   </button>
                 </form>
               </ModalBody>

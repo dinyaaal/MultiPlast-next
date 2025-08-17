@@ -96,9 +96,9 @@ export default function BurgerMenu() {
             <li className="menu__item">
               <Link onClick={closeMenu} href="/forum" className="menu__link">
                 {tNavigation("forum")}
-                <div className="notification-value">
+                {/* <div className="notification-value">
                   <span className="notification-value__number">99</span>
-                </div>
+                </div> */}
               </Link>
             </li>
           </ul>

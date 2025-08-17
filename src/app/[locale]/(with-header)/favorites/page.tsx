@@ -1,5 +1,6 @@
 import React from "react";
 import FavoritesBody from "./components/FavoritesBody";
+import AdvertsWatched from "@/Components/Products/AdvertsWatched";
 
 export default function Favorite() {
   return (
@@ -12,6 +13,7 @@ export default function Favorite() {
           <FavoritesBody />
         </div>
       </section>
+      <AdvertsWatched />
       {/* <Adverts /> */}
     </>
   );

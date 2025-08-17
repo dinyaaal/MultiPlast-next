@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
 import { NotificationType } from "@/types/types";
+import { useTranslations } from "next-intl";
 
 // const notificationsFake = [
 //   {
@@ -59,6 +60,7 @@ export default function Notifications() {
 
   const { rootEl } = useClickOutside(setIsOpen);
   const { data: session, status } = useSession();
+  const t = useTranslations("Notifications");
 
   const token = session?.user?.access_token;
 
@@ -79,10 +81,9 @@ export default function Notifications() {
         },
       });
 
-      if (!res.ok)
-        throw new Error("Ошибка при пометке уведомления как прочитанного");
+      if (!res.ok) throw new Error(t("toast.readItemError"));
     } catch (error) {
-      toast.error("Не удалось обновить статус уведомления");
+      toast.error(t("toast.readItemError"));
     }
   };
 
@@ -96,7 +97,7 @@ export default function Notifications() {
     }));
     setNotificationsList(updated);
 
-    toast.success("Все уведомления успешно прочитаны");
+    toast.success(t("toast.readAllSuccess"));
 
     try {
       const res = await fetch("/api/notifications/read-all", {
@@ -107,10 +108,10 @@ export default function Notifications() {
       });
 
       if (!res.ok) {
-        throw new Error("Ошибка при массовом обновлении уведомлений");
+        throw new Error(t("toast.readAllError"));
       }
     } catch (error) {
-      toast.error("Не удалось пометить все уведомления как прочитанные");
+      toast.error(t("toast.readAllError"));
     }
   };
 
@@ -125,12 +126,12 @@ export default function Notifications() {
         },
       });
 
-      if (!res.ok) throw new Error("Ошибка при получении уведомлений");
+      if (!res.ok) throw new Error(t("toast.getError"));
 
       const data = await res.json();
       setNotificationsList(data.notifications);
     } catch (error) {
-      toast.error("Не удалось загрузить уведомления");
+      toast.error(t("toast.getError"));
     }
   };
 
@@ -178,7 +179,7 @@ export default function Notifications() {
                 onClick={handleRead}
                 className="login-user__link link-login-user login-user__log-in"
               >
-                Прочитать все
+                {t("readAll")}
               </button>
 
               {notificationsList.map((item) => (
@@ -215,7 +216,9 @@ export default function Notifications() {
               ))}
             </>
           ) : (
-            <h3 className="item-body-notifications__text">Нету уведомлений</h3>
+            <h3 className="item-body-notifications__text">
+              {t("noNotifications")}
+            </h3>
           )}
         </div>
       </div>
