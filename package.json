@@ -9,15 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@heroui/breadcrumbs": "^2.2.20",
-    "@heroui/modal": "^2.2.21",
-    "@heroui/pagination": "^2.2.22",
     "@heroui/react": "^2.8.2",
-    "@heroui/select": "^2.4.25",
-    "@heroui/spinner": "^2.2.21",
-    "@heroui/system": "^2.4.20",
-    "@heroui/theme": "^2.4.20",
-    "@heroui/use-infinite-scroll": "^2.2.10",
     "@hookform/resolvers": "^3.9.0",
     "@mdxeditor/editor": "^3.29.2",
     "@reduxjs/toolkit": "^2.5.0",

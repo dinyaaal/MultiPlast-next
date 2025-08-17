@@ -8,10 +8,9 @@ import {
   ModalBody,
   ModalFooter,
   useDisclosure,
-} from "@heroui/modal";
+} from "@heroui/react";
 import { useTranslations } from "next-intl";
-import { ContactFormSchema, UserInfoSchema } from "@/lib/schema";
-import { setUserInfoData, setUserInfoError } from "@/store/userInfoSlice";
+import { ContactFormSchema } from "@/lib/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { toast } from "sonner";

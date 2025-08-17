@@ -1,15 +1,14 @@
 @import "tailwindcss";
-/* @import "../../assets/scss/style.scss";
-@import "@mdxeditor/editor/style.css"; */
-@plugin '../../../hero.ts';
+
+@plugin '../../hero.ts';
+
 /* Note: You may need to change the path to fit your project structure */
-@source '../../../node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}';
+@source '../../node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}';
 
 @custom-variant dark (&:is(.dark *));
 
 @theme {
-  --color-primary: #fff;
-  --color-secondary: #edf4ff;
+  --color-secondaryColor: #edf4ff;
   --color-blueColor: #1858b8;
   --color-blueColor-hover: #0b4397;
   --color-border: #b0bfd7;
@@ -100,10 +99,10 @@
 .button--fw {
   @apply max-w-none w-full;
 }
-.button--secondary {
-  @apply bg-secondary text-black border border-black hover:bg-[#c4dbff];
+.button--secondaryColor {
+  @apply bg-secondaryColor text-black border border-black hover:bg-[#c4dbff];
 }
-.button--secondary:active {
+.button--secondaryColor:active {
   @apply transition-none text-[#ba360c];
 }
 
@@ -425,18 +424,7 @@ input::-webkit-inner-spin-button {
 .breadcrumbs__body {
   @apply flex items-center gap-5;
 }
-.breadcrumbs__arrow {
-  @apply w-[33px]  flex items-center justify-center;
-}
-.breadcrumbs__arrow .breadcrumbs__arrow-icon {
-  @apply transition-all duration-300;
-}
 
-@media (any-hover: hover) {
-  .breadcrumbs__arrow:hover .breadcrumbs__arrow-icon {
-    @apply fill-blueColor;
-  }
-}
 .breadcrumbs__content {
   @apply flex items-center gap-1.25 text-sm;
 }
@@ -529,6 +517,82 @@ input::-webkit-inner-spin-button {
 
 .custom-radio--error {
   border-color: #ff0000 !important;
+}
+
+.spollers {
+  display: grid;
+  gap: 15px;
+}
+
+.spollers__item {
+  font-size: toRem(20);
+}
+.spollers__item.active .spollers__title::before {
+  transform: translateX(-75%) rotate(-40deg);
+}
+.spollers__item.active .spollers__title::after {
+  transform: rotate(40deg);
+}
+
+.spollers__title {
+  width: 100%;
+  cursor: default;
+  text-align: left;
+  padding-right: toRem(15);
+  border-radius: toRem(5);
+  position: relative;
+  list-style: none;
+  cursor: pointer;
+}
+.spollers__title::marker,
+.spollers__title::-webkit-details-marker {
+  display: none;
+}
+.spollers__title::before,
+.spollers__title::after {
+  content: "";
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  background-color: var(--greyColor);
+  height: 1.5px;
+  width: 8px;
+  transition: transform 0.5s ease 0s;
+}
+.spollers__title::before {
+  transform: translate(-75%, -50%) rotate(40deg);
+}
+.spollers__title::after {
+  transform: translate(0, -50%) rotate(-40deg);
+}
+
+.spollers__body {
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+.spollers__content {
+  padding-top: toRem(20);
+}
+
+.body-popup-form {
+  @apply w-full max-w-[630px] flex flex-col gap-[30px];
+}
+.body-popup-form__top {
+  @apply w-full flex flex-col gap-[25px] text-center;
+}
+.body-popup-form__title {
+  @apply font-medium text-xl md:text-[30px];
+}
+
+.form-popup {
+  @apply flex flex-col justify-center items-center gap-[30px] xl:gap-[55px];
+}
+.form-popup__block {
+  @apply w-full flex flex-col justify-center items-center gap-[15px] xl:gap-[20px];
+}
+.form-popup__textarea {
+  @apply h-[120px] p-[14px];
 }
 
 .lg-backdrop {
@@ -688,7 +752,7 @@ button:disabled {
   @apply absolute w-0 h-0 opacity-0 z-[-1];
 }
 .check .custom-checkbox {
-  @apply shrink-0 w-[20px] h-[20px] relative flex items-center justify-center rounded-sm bg-secondary border border-border after:w-[12px] after:h-[8px] after:bg-[url('/icons/check.svg')] after:bg-no-repeat after:bg-center after:bg-contain after:scale-0 after:transition-all after:duration-300;
+  @apply shrink-0 w-[20px] h-[20px] relative flex items-center justify-center rounded-sm bg-secondaryColor border border-border after:w-[12px] after:h-[8px] after:bg-[url('/icons/check.svg')] after:bg-no-repeat after:bg-center after:bg-contain after:scale-0 after:transition-all after:duration-300;
 }
 
 .check .real-checkbox:checked + .custom-checkbox {
@@ -830,7 +894,7 @@ button:disabled {
   @apply flex items-center gap-5;
 }
 .account-body-user__icon-body {
-  @apply shrink-0 w-11 h-11 rounded-sm overflow-hidden bg-secondary flex items-center justify-center;
+  @apply shrink-0 w-11 h-11 rounded-sm overflow-hidden bg-secondaryColor flex items-center justify-center;
 }
 .account-body-user__icon {
   @apply shrink-0 size-5;
@@ -879,7 +943,7 @@ button:disabled {
 }
 
 .bottom-header {
-  @apply bg-secondary py-[12px];
+  @apply bg-secondaryColor py-[12px];
 }
 .bottom-header__container {
   @apply w-full flex items-center justify-between gap-2.5 sm:gap-[20px];
@@ -912,7 +976,7 @@ button:disabled {
 }
 
 .bottom-header__list .sub-menu__list > li:hover {
-  @apply bg-secondary;
+  @apply bg-secondaryColor;
 }
 .bottom-header__list .sub-menu__list > li:hover .sub-menu__arrow {
   @apply transform rotate-90;
@@ -932,7 +996,7 @@ button:disabled {
 }
 
 .bottom-header__list .sub-sub-menu__list > li:hover {
-  @apply bg-secondary;
+  @apply bg-secondaryColor;
 }
 .bottom-header__list .sub-sub-menu__list > li:hover .sub-sub-menu__arrow {
   @apply transform rotate-90;
@@ -949,7 +1013,7 @@ button:disabled {
 }
 
 .bottom-header__list .sub-sub-menu__list .sub-sub-sub-menu__list > li:hover {
-  @apply bg-secondary;
+  @apply bg-secondaryColor;
 }
 .bottom-header__list .sub-sub-menu__list .sub-sub-sub-menu__link {
   @apply inline-block p-[15px];
@@ -1030,7 +1094,7 @@ button:disabled {
   @apply flex flex-col gap-[15px];
 }
 .item-body-notifications.new {
-  @apply bg-secondary rounded-md;
+  @apply bg-secondaryColor rounded-md;
 }
 .item-body-notifications__more {
   @apply flex items-center gap-2.5 text-blueColor underline hover:text-blueColor-hover;
@@ -1147,7 +1211,7 @@ button:disabled {
 /* FOOTER ///////////////////////// */
 
 .footer {
-  @apply border-t border-border pt-[50px] pb-[15px] bg-secondary mt-[20px];
+  @apply border-t border-border pt-[50px] pb-[15px] bg-secondaryColor mt-[20px];
 }
 .footer__body {
   @apply flex flex-col gap-y-5 gap-x-[60px] justify-center text-center xl:text-start xl:flex-row xl:justify-between;
@@ -1350,7 +1414,7 @@ button:disabled {
 }
 
 .body-home-forum {
-  @apply rounded-[7px] bg-secondary py-[40px] flex flex-col text-center items-center justify-between gap-[60px] relative px-[15px] md:flex-row md:text-start xl:px-10;
+  @apply rounded-[7px] bg-secondaryColor py-[40px] flex flex-col text-center items-center justify-between gap-[60px] relative px-[15px] md:flex-row md:text-start xl:px-10;
 }
 .body-home-forum__block {
   @apply relative flex flex-col gap-[25px] max-w-[758px];
@@ -1976,6 +2040,10 @@ button:disabled {
   @apply font-normal;
 }
 
+.trade {
+  @apply pt-[60px] xl:pt-[50px] pb-[30px] xl:pb-[45px];
+}
+
 .trade__container {
   @apply flex flex-col gap-10;
 }
@@ -2007,18 +2075,18 @@ button:disabled {
 }
 
 .body-filters-trade {
-  @apply flex flex-col items-start fixed w-full h-full top-0 left-0 transform scale-0 transition-all duration-300 bg-white z-50 xl:relative xl:scale-100;
+  @apply flex flex-col items-start fixed max-xl:w-full max-xl:h-full max-xl:top-0 max-xl:left-0 scale-0 transition-all duration-300 bg-white z-50 xl:z-1 xl:static xl:scale-100;
 }
 
 .body-filters-trade.active {
   @apply scale-100;
 }
 .body-filters-trade__wrapper {
-  @apply w-full flex flex-col items-start overflow-auto py-[20px] px-[35px] xl:p-0;
+  @apply w-full flex flex-col items-start overflow-auto py-[20px] px-[35px] xl:p-0 xl:overflow-hidden;
 }
 
 .body-filters-trade__items {
-  @apply w-full flex flex-col gap-[20px];
+  @apply w-full flex flex-col gap-[20px] mb-[20px] last:mb-0;
 }
 .body-filters-trade__items:not(:last-child) {
   @apply mb-[20px];
@@ -2054,7 +2122,7 @@ button:disabled {
   @apply text-[18px] font-medium;
 }
 .item-filter .spollers__content {
-  @apply flex flex-col gap-[15px];
+  @apply flex flex-col gap-[15px] pt-5;
 }
 .item-filter__block {
   @apply flex flex-col gap-[15px];
@@ -2149,15 +2217,15 @@ button:disabled {
   @apply w-[159px] h-fit right-0;
 }
 .item-block-chat .body-actions-menu__list {
-  @apply relative z-999 bg-[#EDF4FF] rounded-[3px] outline outline-border;
+  @apply relative z-10 bg-[#EDF4FF] rounded-[3px] outline outline-border;
 }
-.item-block-chat .body-actions-menu__item {
+.body-actions-menu__item {
   @apply w-full cursor-pointer flex items-center justify-center text-center py-[10px] px-[5px] text-[15px];
 }
-.item-block-chat .body-actions-menu__item:not(:last-child) {
+.body-actions-menu__item:not(:last-child) {
   @apply border-b border-border;
 }
-.item-block-chat .body-actions-menu__item--red {
+.body-actions-menu__item--red {
   @apply text-[#BA360C];
 }
 

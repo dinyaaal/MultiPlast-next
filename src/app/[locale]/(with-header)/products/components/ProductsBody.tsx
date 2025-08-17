@@ -3,7 +3,7 @@ import { Pagination } from "@heroui/pagination";
 import { ProductCard } from "@/Components/Products/components/ProductCard";
 import { Category, MinimalProduct, Page } from "@/types/types";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Filters } from "@/Components/Products/components/Filters";
 import { useSearchParams } from "next/navigation";
 import { Spinner } from "@heroui/react";
@@ -22,7 +22,8 @@ export function ProductsBody({ categories }: ProductsProps) {
   const [links, setLinks] = useState<Page[]>([]);
   const [lastPage, setLastPage] = useState<number>();
   const searchParams = useSearchParams();
-  const search = searchParams.get("search");
+  const search = useMemo(() => searchParams.get("search"), [searchParams]);
+  const accessToken = session?.user.access_token;
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedSubCategories, setSelectedSubCategories] = useState<string[]>(
     []
@@ -71,8 +72,8 @@ export function ProductsBody({ categories }: ProductsProps) {
       const res = await fetch(`/api/products/get${queryString}`, {
         method: "GET",
         headers: {
-          ...(session?.user.access_token && {
-            token: session?.user.access_token,
+          ...(accessToken && {
+            token: accessToken,
           }),
         },
       });
@@ -99,7 +100,7 @@ export function ProductsBody({ categories }: ProductsProps) {
     }
     fetchProducts();
   }, [
-    session,
+    accessToken,
     currentPage,
     selectedCategory,
     selectedSubCategories,

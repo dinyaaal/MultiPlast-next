@@ -1,11 +1,13 @@
 "use client";
-import { RadioGroup, Radio } from "@heroui/radio";
-import { CheckboxGroup, Checkbox } from "@heroui/checkbox";
-import Spoiler from "@/Components/Spoiler";
+import { RadioGroup, Radio } from "@heroui/react";
+import { CheckboxGroup, Checkbox } from "@heroui/react";
+
+import { Accordion, AccordionItem } from "@heroui/react";
 import { Category } from "@/types/types";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { ChevronDownIcon } from "lucide-react";
 
 interface FiltersProps {
   categories: Category[];
@@ -193,53 +195,179 @@ export const Filters: React.FC<FiltersProps> = ({
             <span>Фільтри</span>
           </button>
           <div className="body-filters-trade__items spollers">
-            <Spoiler isOpen className="item-filter" title="Тип оголошення">
-              {/* <label className="check">
-                <input
-                  type="checkbox"
-                  className="real-checkbox"
-                  value="sell"
-                  checked={selectedOptions.includes("sell")}
-                  onChange={() => handleOptionChange("sell")}
-                />
-                <span className="custom-checkbox"></span>
-                Продажа
-              </label> */}
+            <Accordion
+              selectionMode="multiple"
+              keepContentMounted
+              showDivider={false}
+              defaultExpandedKeys={["1", "2", "3", "4"]}
+            >
+              <AccordionItem
+                classNames={{
+                  base: "py-5 cursor-pointer border-b border-border",
+                  trigger: "p-0 cursor-pointer",
+                  title: "text-lg font-medium",
+                  indicator: "data-[open=true]:-rotate-180 text-greyColor",
+                  content: "p-0 pt-5",
+                }}
+                indicator={<ChevronDownIcon />}
+                key="1"
+                aria-label="Тип оголошення"
+                title="Тип оголошення"
+              >
+                <CheckboxGroup
+                  value={selectedOptions}
+                  onValueChange={setSelectedOptions}
+                >
+                  <Checkbox classNames={{ label: "text-xl" }} value="sell">
+                    Продажа
+                  </Checkbox>
+                  <Checkbox classNames={{ label: "text-xl" }} value="buy">
+                    Покупка
+                  </Checkbox>
+                </CheckboxGroup>
+              </AccordionItem>
+
+              <AccordionItem
+                classNames={{
+                  base: "py-5 cursor-pointer border-b border-border",
+                  trigger: "p-0 cursor-pointer",
+                  title: "text-lg font-medium",
+                  indicator: "data-[open=true]:-rotate-180 text-greyColor",
+                  content: "p-0 pt-5",
+                }}
+                indicator={<ChevronDownIcon />}
+                key="2"
+                aria-label="Категория"
+                title="Категория"
+              >
+                <RadioGroup
+                  value={selectedCategory}
+                  onValueChange={setSelectedCategory}
+                >
+                  {categories.map((category) => (
+                    <Radio
+                      key={category.id}
+                      classNames={{ label: "text-xl" }}
+                      value={category.id.toString()}
+                    >
+                      {category.name}
+                    </Radio>
+                  ))}
+                </RadioGroup>
+              </AccordionItem>
+              {selectedCategory && Number(selectedCategory) !== 1 ? (
+                <AccordionItem
+                  classNames={{
+                    base: "py-5 cursor-pointer border-b border-border",
+                    trigger: "p-0 cursor-pointer",
+                    title: "text-lg font-medium",
+                    indicator: "data-[open=true]:-rotate-180 text-greyColor",
+                    content: "p-0 pt-5",
+                  }}
+                  indicator={<ChevronDownIcon />}
+                  key="3"
+                  aria-label={
+                    Number(selectedCategory) === 3
+                      ? "Виберіть тип обладнання"
+                      : Number(selectedCategory) === 4
+                      ? "Виберіть послугу"
+                      : Number(selectedCategory) === 5
+                      ? "Тип оголошення"
+                      : "Сировина"
+                  }
+                  title={
+                    Number(selectedCategory) === 3
+                      ? "Виберіть тип обладнання"
+                      : Number(selectedCategory) === 4
+                      ? "Виберіть послугу"
+                      : Number(selectedCategory) === 5
+                      ? "Тип оголошення"
+                      : "Сировина"
+                  }
+                >
+                  <CheckboxGroup
+                    value={selectedSubCategories}
+                    onValueChange={setSelectedSubCategories}
+                  >
+                    {categories
+                      .find(
+                        (category) =>
+                          category.id.toString() === selectedCategory
+                      )
+                      ?.categories.filter((sub) => sub.type === "Сировина")
+                      .map((subCategory) => (
+                        <Checkbox
+                          classNames={{ label: "text-xl" }}
+                          key={subCategory.id}
+                          value={subCategory.id.toString()}
+                        >
+                          {subCategory.name}
+                        </Checkbox>
+                      ))}
+                  </CheckboxGroup>
+                </AccordionItem>
+              ) : null}
+              {Number(selectedCategory) === 1 ||
+              Number(selectedCategory) === 2 ? (
+                <AccordionItem
+                  classNames={{
+                    base: "py-5 cursor-pointer border-b border-border",
+                    trigger: "p-0 cursor-pointer",
+                    title: "text-lg font-medium",
+                    indicator: "data-[open=true]:-rotate-180 text-greyColor",
+                    content: "p-0 pt-5",
+                  }}
+                  indicator={<ChevronDownIcon />}
+                  key="4"
+                  aria-label="Полімер"
+                  title="Полімер"
+                >
+                  <CheckboxGroup
+                    value={selectedSubCategories}
+                    onValueChange={setSelectedSubCategories}
+                  >
+                    {categories
+                      .find(
+                        (category) =>
+                          category.id.toString() === selectedCategory
+                      )
+                      ?.categories.filter((sub) => sub.type === "Полімер")
+                      .map((subCategory) => (
+                        <Checkbox
+                          classNames={{ label: "text-xl" }}
+                          key={subCategory.id}
+                          value={subCategory.id.toString()}
+                        >
+                          {subCategory.name}
+                        </Checkbox>
+                      ))}
+                  </CheckboxGroup>
+                </AccordionItem>
+              ) : null}
+            </Accordion>
+            {/* <Spoiler isOpen className="item-filter" title="Тип оголошення">
+    
               <CheckboxGroup
                 value={selectedOptions}
                 onValueChange={setSelectedOptions}
               >
                 <Checkbox
                   value="sell"
-                  // defaultSelected={selectedOptions.includes("sell")}
-                  // checked={selectedOptions.includes("sell")}
-                  // onChange={() => handleOptionChange("sell")}
+            
                 >
                   Продажа
                 </Checkbox>
                 <Checkbox
                   value="buy"
-                  // checked={selectedOptions.includes("buy")}
-                  // onChange={() => handleOptionChange("buy")}
+      
                 >
                   Покупка
                 </Checkbox>
               </CheckboxGroup>
 
-              {/* <label className="check">
-                <input
-                  type="checkbox"
-                  className="real-checkbox"
-                  value="buy"
-                  checked={selectedOptions.includes("buy")}
-                  onChange={() => handleOptionChange("buy")}
-                />
-                <span className="custom-checkbox"></span>
-                Покупка
-              </label> */}
-            </Spoiler>
+            </Spoiler> */}
 
-            <Spoiler isOpen className="item-filter" title={"Категория"}>
+            {/* <Spoiler isOpen className="item-filter" title={"Категория"}>
               <RadioGroup
                 value={selectedCategory}
                 onValueChange={setSelectedCategory}
@@ -254,30 +382,11 @@ export const Filters: React.FC<FiltersProps> = ({
                   </Radio>
                 ))}
               </RadioGroup>
-            </Spoiler>
+            </Spoiler> */}
 
-            {selectedCategory && (
+            {/* {selectedCategory && (
               <>
-                {/* <Spoiler className="item-filter" title="Тип оголошення">
-                  {categories
-                    .find(
-                      (category) => category.id.toString() === selectedCategory
-                    )
-                    ?.categories.map((subCategory) => (
-                      <Checkbox
-                        key={subCategory.id}
-                        value={subCategory.id.toString()}
-                        checked={selectedSubCategories.includes(
-                          subCategory.id.toString()
-                        )}
-                        onChange={() =>
-                          handleCheckboxChange(subCategory.id.toString())
-                        }
-                      >
-                        {subCategory.name}
-                      </Checkbox>
-                    ))}
-                </Spoiler> */}
+               
                 {Number(selectedCategory) !== 1 && (
                   <Spoiler
                     className="item-filter"
@@ -338,7 +447,7 @@ export const Filters: React.FC<FiltersProps> = ({
                   </Spoiler>
                 )}
               </>
-            )}
+            )} */}
           </div>
           <div className="body-filters-trade__actions">
             <button
