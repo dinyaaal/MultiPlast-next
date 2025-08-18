@@ -3,6 +3,7 @@
 import { MinimalProduct } from "@/types/types";
 import AdvertsSwiper from "./components/AdvertsSwiper";
 import { Link } from "@/i18n/routing";
+import { getTranslations } from "next-intl/server";
 
 async function getProducts(): Promise<MinimalProduct[] | null> {
   const queryParams = new URLSearchParams();
@@ -44,7 +45,7 @@ async function getProducts(): Promise<MinimalProduct[] | null> {
 
 export default async function Adverts() {
   const recent = await getProducts();
-  console.log(recent);
+  const t = await getTranslations("Adverts.recentlyPosted");
 
   if (!recent || recent.length === 0) return null;
 
@@ -52,12 +53,12 @@ export default async function Adverts() {
     <section className="adverts">
       <div className="adverts__container main-container">
         <div className="adverts__top">
-          <h2 className="adverts__title title">Останні оголошення</h2>
+          <h2 className="adverts__title title">{t("title")}</h2>
           <Link
             href="/dashboard/add-advertisement"
             className="adverts__button button"
           >
-            Подати оголошення
+            {t("button")}
           </Link>
         </div>
         <AdvertsSwiper adverts={recent} />

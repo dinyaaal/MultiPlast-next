@@ -720,11 +720,11 @@ button:disabled {
 }
 
 .logo {
-  @apply capitalize text-[clamp(35px,5vw,45px)] leading-none;
+  @apply flex items-center justify-center w-full aspect-[100/40] min-w-[100px] max-w-[100px];
 }
 
-.logo span {
-  @apply text-blueColor;
+.logo img {
+  @apply object-contain w-full;
 }
 
 .title {

@@ -64,7 +64,9 @@ export const authOptions: AuthOptions = {
           return { ...user };
         } catch (e) {
           console.error(e);
-          return null;
+          // return { error: e instanceof Error ? e.message : "Unknown error" };
+          throw new Error(e instanceof Error ? e.message : "Login failed");
+          // return null;
         }
       },
     }),

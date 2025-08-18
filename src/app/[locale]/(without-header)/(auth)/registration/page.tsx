@@ -126,8 +126,8 @@ export default function Registration() {
   return (
     <>
       <div className="login__top">
-        <Link href="/" className="login__logo logo">
-          л<span>ого</span>
+        <Link href="/" className="body-header__logo logo">
+          <Image src="/logo.svg" alt="Logo" width={100} height={100} />
         </Link>
         <h2 className="login__title title">{t("registration-title")}</h2>
         <div className="login__entry entry-login">

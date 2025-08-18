@@ -1,17 +1,16 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
-import { Navigation, Pagination } from "swiper/modules";
 import { MinimalProduct } from "@/types/types";
 import { getRecentProducts } from "@/utils/getRecentProducts";
-import { ProductCard } from "./components/ProductCard";
-import { ChevronRight } from "lucide-react";
-// import ProductCard from "./components/ProductCard";
+import { useTranslations } from "next-intl";
+
+import AdvertsSwiper from "./components/AdvertsSwiper";
 
 export default function AdvertsWatched() {
   const [recent, setRecent] = useState<MinimalProduct[]>([]);
+  const t = useTranslations("Adverts.recentlyWatched");
 
   useEffect(() => {
     const data = getRecentProducts();
@@ -24,59 +23,9 @@ export default function AdvertsWatched() {
     <section className="adverts">
       <div className="adverts__container main-container">
         <div className="adverts__top">
-          <h2 className="adverts__title title">Нещодавно переглянуті</h2>
-          {/* <a href="#" className="adverts__button button">
-            Подати оголошення
-          </a> */}
+          <h2 className="adverts__title title">{t("title")}</h2>
         </div>
-        <div className="adverts__body">
-          <Swiper
-            spaceBetween={20}
-            slidesPerView={1}
-            className="adverts__slider"
-            modules={[Pagination, Navigation]}
-            navigation={{
-              nextEl: ".swiper-button-next",
-              prevEl: ".swiper-button-prev",
-            }}
-            pagination={{ clickable: true }}
-            breakpoints={{
-              375: {
-                slidesPerView: "auto",
-              },
-              640: {
-                slidesPerView: 2,
-              },
-              768: {
-                slidesPerView: 3,
-              },
-              1280: {
-                slidesPerView: 4,
-              },
-            }}
-          >
-            {recent.map((product) => (
-              <SwiperSlide key={product.id}>
-                <ProductCard product={product} />
-              </SwiperSlide>
-            ))}
-          </Swiper>
-          <button
-            type="button"
-            className="swiper-button swiper-button-prev adverts-arrow-prev"
-          >
-            <ChevronRight />
-          </button>
-          <button
-            type="button"
-            className="swiper-button swiper-button-next adverts-arrow-next"
-          >
-            <ChevronRight />
-          </button>
-        </div>
-        {/* <a href="#" className="adverts__button adverts__button--mobile button">
-          Подати оголошення
-        </a> */}
+        <AdvertsSwiper adverts={recent} />
       </div>
     </section>
   );

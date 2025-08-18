@@ -3,12 +3,10 @@ import React from "react";
 import HeaderMenu from "./components/HeaderMenu";
 import Notifications from "./components/Notifications";
 import BurgerMenu from "./components/BurgerMenu";
-import NotificationsMobile from "./components/NotificationsMobile";
 import SearchMobile from "./components/SearchMobile";
 import Language from "../Language/Language";
 import { Link } from "@/i18n/routing";
-import { getTranslations, setRequestLocale } from "next-intl/server";
-// import { useTranslations } from "next-intl";
+import { getTranslations } from "next-intl/server";
 import HeaderUser from "./components/HeaderUser";
 import { Category } from "@/types/types";
 import { getServerSession } from "next-auth";
@@ -52,7 +50,7 @@ export default async function Header() {
         <div className="body-header__container main-container">
           <div className="body-header__block w-full">
             <Link href="/" className="body-header__logo logo">
-              <span>M</span>ulti<span>P</span>last
+              <Image src="/logo.svg" alt="Logo" width={100} height={100} />
             </Link>
 
             <HeaderSearch />

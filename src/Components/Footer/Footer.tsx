@@ -2,6 +2,7 @@ import { Link } from "@/i18n/routing";
 import ModalContact from "../Modals/ModalContact";
 import { getServerSession } from "next-auth";
 import { getTranslations } from "next-intl/server";
+import Image from "next/image";
 
 export default async function Footer() {
   const t = await getTranslations("Footer");
@@ -21,8 +22,8 @@ export default async function Footer() {
       <div className="footer__container main-container flex flex-col gap-[30px] xl:gap-[70px]">
         <div className="footer__body">
           <div className="footer__block">
-            <Link href="/" className="footer__logo logo">
-              <span>M</span>ulti<span>P</span>last
+            <Link href="/" className="body-header__logo logo">
+              <Image src="/logo.svg" alt="Logo" width={100} height={100} />
             </Link>
             <div className="footer__socials socials">
               <p className="socials__text">{t("socialsText")}</p>

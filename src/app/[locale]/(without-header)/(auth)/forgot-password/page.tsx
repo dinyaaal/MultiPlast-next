@@ -7,6 +7,7 @@ import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
+import Image from "next/image";
 
 const StepOneSchema = z.object({
   email: z.string().email("Невірний email"),
@@ -104,8 +105,8 @@ export default function ForgotPassword() {
   return (
     <>
       <div className="login__top">
-        <Link href="/" className="login__logo logo">
-          л<span>ого</span>
+        <Link href="/" className="body-header__logo logo">
+          <Image src="/logo.svg" alt="Logo" width={100} height={100} />
         </Link>
         <h2 className="login__title title">{t("title")}</h2>
         <p className="entry-login__text">{t("subtitle")}</p>
