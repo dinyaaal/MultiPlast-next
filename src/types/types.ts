@@ -110,7 +110,7 @@ export interface ProductType {
   contacts: ProductContact[]; // <-- Массив, а не объект
 }
 
-export type MinimalProduct = {
+export interface MinimalProduct {
   id: number;
   title: string;
   photos: Photo[];
@@ -118,7 +118,9 @@ export type MinimalProduct = {
   price: number;
   author: Author;
   is_liked: boolean;
-};
+  volume: string | null;
+  price_per_volume: string | null;
+}
 
 // export interface ProductType {
 //   id: number;

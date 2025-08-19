@@ -21,6 +21,8 @@ export function ProductActions({ product }: { product: ProductType }) {
       price: product.price,
       author: product.author,
       is_liked: product.is_liked,
+      volume: product.volume,
+      price_per_volume: product.price_per_volume,
     };
 
     saveToRecentProducts(minimalProduct);
@@ -60,22 +62,62 @@ export function ProductActions({ product }: { product: ProductType }) {
         ? JSON.parse(decodeURIComponent(cookies.split("=")[1]))
         : [];
 
+      const minimalProduct = {
+        id: product.id,
+        title: product.title,
+        photos:
+          product.photos.length > 0 ? [{ url: product.photos[0].url }] : [],
+        type_price: product.type_price,
+        price: product.price,
+        author: product.author ? { id: product.author.id } : null,
+        volume: product.volume,
+        price_per_volume: product.price_per_volume,
+      };
+
       if (action === "add") {
         if (!favorites.some((item: any) => item.id === product.id)) {
-          favorites.push(product);
-          document.cookie = `favorites=${encodeURIComponent(
-            JSON.stringify(favorites)
-          )}; path=/; max-age=${365 * 24 * 60 * 60}`;
+          const newFavorites = [...favorites, minimalProduct];
+          const encoded = encodeURIComponent(JSON.stringify(newFavorites));
+          document.cookie = `favorites=${encoded}; path=/; max-age=${
+            365 * 24 * 60 * 60
+          }`;
+
+          // Проверяем, сохранилась ли кука
+          const updatedCookies = document.cookie
+            .split("; ")
+            .find((row) => row.startsWith("favorites="));
+
+          if (!updatedCookies || !updatedCookies.includes(encoded)) {
+            toast.error(
+              "Не удалось сохранить товар в избранное (превышен лимит куки)"
+            );
+            setIsLiked(false);
+            return;
+          }
+
           toast.success("Товар добавлен в избранное");
-          setIsLiked(!isLiked);
+          setIsLiked(true);
         }
       } else {
         favorites = favorites.filter((item: any) => item.id !== product.id);
-        document.cookie = `favorites=${encodeURIComponent(
-          JSON.stringify(favorites)
-        )}; path=/; max-age=${365 * 24 * 60 * 60}`;
+        const encoded = encodeURIComponent(JSON.stringify(favorites));
+        document.cookie = `favorites=${encoded}; path=/; max-age=${
+          365 * 24 * 60 * 60
+        }`;
+
+        // Проверяем, что кука обновилась
+        const updatedCookies = document.cookie
+          .split("; ")
+          .find((row) => row.startsWith("favorites="));
+
+        if (!updatedCookies || !updatedCookies.includes(encoded)) {
+          toast.error("Не удалось убрать товар из избранного");
+          setIsLiked(true);
+          return;
+        }
+
         toast.success("Товар убран из избранного");
-        setIsLiked(!isLiked);
+        setIsLiked(false);
       }
     };
 

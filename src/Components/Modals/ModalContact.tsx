@@ -34,24 +34,26 @@ export default function ModalContact() {
     resolver: zodResolver(ContactFormSchema),
   });
 
-  const processForm: SubmitHandler<Inputs> = async (data) => {
-    try {
-      const response = await fetch(`/api/contact`, {
-        method: "POST",
-        body: JSON.stringify(data),
-      });
-      if (response.ok) {
-        const result = await response.json();
-        toast.success(t("toast.success"));
-        reset();
-      } else {
-        throw new Error(t("toast.error"));
+  const processForm =
+    (onClose: () => void): SubmitHandler<Inputs> =>
+    async (data) => {
+      try {
+        const response = await fetch(`/api/contact`, {
+          method: "POST",
+          body: JSON.stringify(data),
+        });
+        if (response.ok) {
+          toast.success(t("toast.success"));
+          reset();
+          onClose(); // ✅ закрываем модалку
+        } else {
+          throw new Error(t("toast.error"));
+        }
+      } catch (error) {
+        console.error(t("toast.error"), error);
+        toast.error(t("toast.error"));
       }
-    } catch (error) {
-      console.error(t("toast.error"), error);
-      toast.error(t("toast.error"));
-    }
-  };
+    };
 
   return (
     <>
@@ -76,7 +78,7 @@ export default function ModalContact() {
                   <p className="body-popup-form__text">{t("subtitle")}</p>
                 </div>
                 <form
-                  onSubmit={handleSubmit(processForm)}
+                  onSubmit={handleSubmit(processForm(onClose))}
                   className="body-popup-form__form form-popup"
                 >
                   <div className="form-popup__block">

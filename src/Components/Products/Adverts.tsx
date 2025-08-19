@@ -51,20 +51,23 @@ export default async function Adverts() {
 
   return (
     <section className="adverts">
-      <div className="adverts__container main-container">
-        <div className="adverts__top">
+      <div className="adverts__container main-container w-full items-center">
+        <div className="adverts__top w-full">
           <h2 className="adverts__title title">{t("title")}</h2>
-          <Link
-            href="/dashboard/add-advertisement"
-            className="adverts__button button"
-          >
+          <div className="hidden md:block">
+            <Link href="/dashboard/add-advertisement" className=" button">
+              {t("button")}
+            </Link>
+          </div>
+        </div>
+        <div className="w-full">
+          <AdvertsSwiper adverts={recent} />
+        </div>
+        <div className="md:hidden">
+          <Link href="/dashboard/add-advertisement" className=" button">
             {t("button")}
           </Link>
         </div>
-        <AdvertsSwiper adverts={recent} />
-        {/* <a href="#" className="adverts__button adverts__button--mobile button">
-          Подати оголошення
-        </a> */}
       </div>
     </section>
   );

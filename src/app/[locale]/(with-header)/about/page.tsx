@@ -10,7 +10,7 @@ export default function About() {
     <>
       {/* <Hero /> */}
       <section className="about">
-        <div className="about__container main-container">
+        <div className="about__container main-container text-[#0E274D]">
           <div className="about__decor about__decor--01">
             <Image
               src="/decor/molecules-01.png"

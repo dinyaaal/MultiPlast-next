@@ -3,18 +3,17 @@
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import Language from "../../Language/Language";
-import { Link } from "@/i18n/routing";
+import { Link, usePathname } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
 import { useSession } from "next-auth/react";
 import HeaderUser from "./HeaderUser";
 import { useClickOutside } from "@/hooks/ClickOutside";
-import Notifications from "./Notifications";
-import SearchMobile from "./SearchMobile";
 
 export default function BurgerMenu() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const { data: session, status } = useSession();
   const { rootEl } = useClickOutside(setIsOpen);
+  const pathname = usePathname();
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -66,7 +65,13 @@ export default function BurgerMenu() {
           </div>
           <ul className="menu__list">
             <li className="menu__item">
-              <Link onClick={closeMenu} href="/products" className="menu__link">
+              <Link
+                onClick={closeMenu}
+                href="/products"
+                className={`menu__link ${
+                  pathname === "/products" ? "active" : ""
+                }`}
+              >
                 {tNavigation("marketplace")}
               </Link>
             </li>
@@ -76,7 +81,11 @@ export default function BurgerMenu() {
                   <Link
                     onClick={closeMenu}
                     href="/dashboard/add-advertisement"
-                    className="menu__link"
+                    className={`menu__link ${
+                      pathname === "/dashboard/add-advertisement"
+                        ? "active"
+                        : ""
+                    }`}
                   >
                     {tNavigation("addAdvertisement")}
                   </Link>
@@ -86,7 +95,9 @@ export default function BurgerMenu() {
                   <Link
                     onClick={closeMenu}
                     href="/messages"
-                    className="menu__link"
+                    className={`menu__link ${
+                      pathname === "/messages" ? "active" : ""
+                    }`}
                   >
                     {tNavigation("myMessages")}
                   </Link>
@@ -94,11 +105,14 @@ export default function BurgerMenu() {
               </>
             )}
             <li className="menu__item">
-              <Link onClick={closeMenu} href="/forum" className="menu__link">
+              <Link
+                onClick={closeMenu}
+                href="/forum"
+                className={`menu__link ${
+                  pathname === "/forum" ? "active" : ""
+                }`}
+              >
                 {tNavigation("forum")}
-                {/* <div className="notification-value">
-                  <span className="notification-value__number">99</span>
-                </div> */}
               </Link>
             </li>
           </ul>

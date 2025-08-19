@@ -976,7 +976,8 @@ export default function Advertisement({ categories }: SellProps) {
             <div className="body-dashboard__block">
               <div className="input-block input-block-title">
                 <p>{t("enter-ad-title")}*</p>
-                <label className="input-body input-body--title">
+                <div className="w-full flex flex-col items-end gap-1">
+                  <div className="input-body__item">{t("max-characters")}</div>
                   <input
                     maxLength={150}
                     type="text"
@@ -985,8 +986,7 @@ export default function Advertisement({ categories }: SellProps) {
                     // value={watch("title")}
                     {...register("title")}
                   />
-                  <div className="input-body__item">{t("max-characters")}</div>
-                </label>
+                </div>
               </div>
               <div className="description input-block">
                 <p>{t("enter-description")}*</p>

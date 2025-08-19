@@ -88,7 +88,9 @@
 .no-scroll {
   overflow: hidden;
 }
-
+button {
+  @apply cursor-pointer;
+}
 .button {
   @apply cursor-pointer inline-flex gap-2.5 w-full max-w-[200px] min-h-[55px] items-center justify-center text-center px-5 py-1 rounded-md bg-blueColor text-white transition-all duration-300 hover:bg-blueColor-hover;
 }
@@ -118,6 +120,10 @@ textarea {
 textarea {
   resize: none;
   padding: 0;
+}
+
+.input-body input {
+  @apply outline-none;
 }
 
 .input {
@@ -680,7 +686,7 @@ input::-webkit-inner-spin-button {
 }
 
 button:disabled {
-  @apply bg-[#b0bfd7] pointer-events-none;
+  @apply bg-[#b0bfd7] cursor-default;
 }
 
 .chat-input-reply {
@@ -744,7 +750,7 @@ button:disabled {
 }
 
 .input-block p {
-  @apply hyphens-auto whitespace-normal overflow-hidden wrap-break-word;
+  @apply hyphens-auto whitespace-normal overflow-hidden wrap-break-word text-lg;
 }
 
 .input-block--price {
@@ -975,7 +981,7 @@ button:disabled {
   @apply relative;
 }
 .bottom-header__list .sub-menu__list {
-  @apply hidden absolute top-2.5 right-0 pt-[30px];
+  @apply hidden absolute top-full right-0 pt-[23px];
 }
 .bottom-header__list .sub-menu__list > li {
   @apply relative bg-white border border-border border-collapse transition-all duration-300;
@@ -1127,10 +1133,6 @@ button:disabled {
   @apply sm:hidden;
 }
 
-.menu__top .language {
-  @apply mr-auto;
-}
-
 .menu .user {
   @apply w-full border-t border-border py-[25px] px-[15px];
 }
@@ -1157,6 +1159,7 @@ button:disabled {
 .menu__list {
   @apply text-black relative  flex-col flex items-center justify-center text-center xl:flex-row;
 }
+
 .sub-menu__list .sub-menu__link {
   @apply truncate w-full max-w-[300px];
 }
@@ -1169,11 +1172,19 @@ button:disabled {
 }
 
 .menu .menu__item {
-  @apply border-t border-border py-[25px] px-[15px] w-full;
+  @apply border-t border-border  w-full;
 }
 
 .menu__link {
-  @apply relative flex items-center justify-center gap-[5px] transition-all duration-300 hover:text-blueColor;
+  @apply relative flex items-center  gap-[5px] transition-all duration-300 hover:text-blueColor;
+}
+
+.menu__link.active {
+  @apply text-blueColor;
+}
+
+.menu__list .menu__link {
+  @apply text-center w-full py-[25px] px-[15px];
 }
 
 .menu__arrow {
@@ -1220,10 +1231,10 @@ button:disabled {
   @apply border-t border-border pt-[50px] pb-[15px] bg-secondaryColor mt-[20px];
 }
 .footer__body {
-  @apply flex flex-col gap-y-5 gap-x-[60px] justify-center text-center xl:text-start xl:flex-row xl:justify-between;
+  @apply flex flex-col  gap-[60px] justify-center text-center xl:text-start xl:flex-row xl:justify-between;
 }
 .footer__block {
-  @apply flex flex-col gap-[35px];
+  @apply flex flex-col items-center xl:items-start gap-[35px];
 }
 .footer .logo {
   @apply text-[35px];
@@ -1264,14 +1275,15 @@ button:disabled {
 .menu-footer {
   @apply flex flex-col gap-[25px];
 }
+
 .menu-footer__title {
   @apply font-medium;
 }
 .menu-footer__items {
-  @apply grid gap-[15px];
+  @apply flex flex-col items-center xl:items-start gap-[15px];
 }
 .menu-footer__item {
-  @apply transition-all duration-300 hover:text-blueColor;
+  @apply transition-all duration-300 hover:text-blueColor w-fit;
 }
 
 .support-footer {
@@ -1691,6 +1703,7 @@ button:disabled {
 .input-body {
   @apply relative w-full flex justify-between items-center gap-[10px];
 }
+
 .input-body__item {
   @apply w-fit h-fit;
 }

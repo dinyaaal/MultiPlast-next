@@ -3,6 +3,7 @@ import ModalContact from "../Modals/ModalContact";
 import { getServerSession } from "next-auth";
 import { getTranslations } from "next-intl/server";
 import Image from "next/image";
+import FooterNavigation from "./components/FooterNavigation";
 
 export default async function Footer() {
   const t = await getTranslations("Footer");
@@ -96,7 +97,7 @@ export default async function Footer() {
             </div>
           </div>
 
-          <div className="footer__menu menu-footer">
+          {/* <div className="footer__menu menu-footer">
             <div className="menu-footer__title">{t("informationPages")}</div>
             <ul className="menu-footer__items">
               <li className="menu-footer__item">
@@ -139,7 +140,9 @@ export default async function Footer() {
                 </>
               )}
             </ul>
-          </div>
+          </div> */}
+          <FooterNavigation />
+
           <div className="footer__support support-footer">
             <div className="support-footer__title">{t("techSupport")}</div>
             <p className="support-footer__text">{t("contactSupportText")}</p>

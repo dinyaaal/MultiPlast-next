@@ -77,6 +77,7 @@ export const Filters: React.FC<FiltersProps> = ({
       selectedSubCategories,
       selectedOptions
     );
+    closeMenu();
 
     updateUrl();
   };
@@ -87,6 +88,7 @@ export const Filters: React.FC<FiltersProps> = ({
     setSelectedOptions([]);
     onSelectionConfirm(null, [], []);
 
+    closeMenu();
     updateUrl(true);
   };
 

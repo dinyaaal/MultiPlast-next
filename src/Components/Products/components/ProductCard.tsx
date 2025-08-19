@@ -91,6 +91,8 @@ export const ProductCard: React.FC<{
       type_price: product.type_price,
       price: product.price,
       author: product.author ? { id: product.author.id } : null,
+      volume: product.volume,
+      price_per_volume: product.price_per_volume,
     };
 
     if (action === "add") {
@@ -221,7 +223,7 @@ export const ProductCard: React.FC<{
       <div className="item-advert__body">
         <div className="item-advert__content">
           <div className="item-advert__name">{product.title}</div>
-          {/* <div className="item-advert__value">125г</div> */}
+          {/* <div className="item-advert__value">{product.volume}</div> */}
         </div>
         <div className="item-advert__bottom">
           {product.type_price === "by_arrangement" ? (
