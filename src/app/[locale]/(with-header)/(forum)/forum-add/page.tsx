@@ -1,133 +1,45 @@
-"use client";
-
 import ModalContact from "@/Components/Modals/ModalContact";
-import React, { useRef, useState } from "react";
-import { useTranslations } from "next-intl";
+import React from "react";
 
-import { ForumAddSchema } from "@/lib/schema";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { z } from "zod";
-import { toast } from "sonner";
-import { useSession } from "next-auth/react";
-import { MDXEditorMethods } from "@mdxeditor/editor";
-import { ForwardRefEditor } from "@/Components/ForwardRefEditor";
 import ForumLayout from "../forum/components/ForumLayout";
+import { getTranslations } from "next-intl/server";
+import ForumBody from "./components/ForumBody";
 
-type Inputs = z.infer<typeof ForumAddSchema>;
-
-export default function ForumAdd() {
-  const t = useTranslations("Forum");
-  const { data: session, status } = useSession();
-  const editorRef = useRef<MDXEditorMethods>(null);
-  const [content, setContent] = useState<string>("");
-
-  const {
-    register,
-    handleSubmit,
-    watch,
-    reset,
-    trigger,
-    setValue,
-    formState: { errors },
-  } = useForm<Inputs>({
-    resolver: zodResolver(ForumAddSchema),
-  });
-
-  const processForm: SubmitHandler<Inputs> = async (data) => {
-    if (!session?.user.access_token) {
-      return;
-    }
-
-    const token = session.user.access_token;
-
-    const formData = new FormData();
-
-    formData.append("title", data.title);
-    if (content) {
-      formData.append("text", content);
-    }
-    // if (data.keywords) {
-    //   formData.append("keywords", data.keywords);
-    // }
-
-    try {
-      const forumAddResponse = await fetch(`/api/forum/add`, {
-        method: "POST",
+async function fetchForumCategories() {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/forum/categories`,
+      {
+        method: "GET",
         headers: {
-          token: token,
+          "Content-Type": "application/json",
         },
-        body: formData,
-      });
-      if (forumAddResponse.ok) {
-        const editResult = await forumAddResponse.json();
-        toast.success("Тема добавлена");
-      } else {
-        throw new Error("Ошибка обновления информации пользователя");
+        cache: "force-cache",
+        // кеш оставляем (по умолчанию cache: 'force-cache')
       }
-    } catch (error) {
-      console.error("Ошибка при отправке данных:", error);
-      toast.error("Ошибка создания темы");
+    );
+
+    if (!res.ok) {
+      throw new Error("Network response was not ok");
     }
-  };
+
+    const data = await res.json();
+    return data.data;
+  } catch (error) {
+    console.error("Error fetching forum categories:", error);
+    return null;
+  }
+}
+
+export default async function ForumAdd() {
+  const t = await getTranslations("Forum");
+  const categories = await fetchForumCategories();
 
   return (
     <ForumLayout>
       <div className="add-forum">
         <div className="add-forum__container main-container">
-          <form
-            onSubmit={handleSubmit(processForm)}
-            className="add-forum__block"
-          >
-            <div className="input-block">
-              <p>{t("enterTitle")}</p>
-              <input
-                autoComplete="off"
-                type="text"
-                placeholder={t("titlePlaceholder")}
-                className={` input ${errors.title ? "input--error" : ""}`}
-                {...register("title")}
-              />
-            </div>
-
-            <div className="input-block editor">
-              <ForwardRefEditor
-                markdown={content}
-                onChange={setContent}
-                ref={editorRef}
-                placeholder={t("descriptionPlaceholder")}
-              />
-              {/* <button type="button" onClick={(e) => console.log(content)}>
-                    otpravit
-                  </button> */}
-              {/* <textarea
-                    id="editor"
-                    placeholder={t("descriptionPlaceholder")}
-                    className={`description__input input ${
-                      errors.text ? "input--error" : ""
-                    }`}
-                    {...register("text")}
-                  ></textarea> */}
-            </div>
-
-            <label className="check">
-              <input
-                type="checkbox"
-                name="incognito"
-                className="real-checkbox"
-              />
-              <span className="custom-checkbox"></span>
-              Інкогніто
-            </label>
-            <div className="add-forum__actions">
-              <button type="submit" className="add-forum__add button">
-                {t("publish")}
-              </button>
-              {/* <button className="add-forum__delete button button--secondary">
-                  {t("delete")}
-                </button> */}
-            </div>
-          </form>
+          <ForumBody categories={categories} />
           <div className="add-forum__info info-contact">
             <div className="info-contact__body">
               <p className="info-contact__text">{t("contactAdmin")}</p>

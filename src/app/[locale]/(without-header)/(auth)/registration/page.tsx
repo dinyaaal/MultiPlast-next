@@ -205,7 +205,7 @@ export default function Registration() {
             <p>{t("registration-number")}</p>
             <input
               autoComplete="off"
-              type="number"
+              type="tel"
               placeholder={t("registration-number")}
               className={`form-login__input input ${
                 errors.phoneNumber ? "input--error" : ""

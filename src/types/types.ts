@@ -165,6 +165,11 @@ export interface ForumCategory {
   };
 }
 
+export interface ForumCategoryMinimal {
+  id: number;
+  title: string;
+}
+
 export interface ForumPost {
   id: number;
   author_id: number;

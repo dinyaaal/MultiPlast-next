@@ -17,7 +17,7 @@ import { toast } from "sonner";
 import { z } from "zod";
 import Image from "next/image";
 import { useRouter } from "@/i18n/routing";
-import { ChevronRight, Minus } from "lucide-react";
+import { ChevronRight, Minus, TrashIcon } from "lucide-react";
 
 interface SellProps {
   categories: Category[];
@@ -95,7 +95,7 @@ export default function Advertisement({ categories }: SellProps) {
   } = useForm<Inputs>({
     resolver: zodResolver(AdvertismentSchema),
     defaultValues: {
-      contact_data: [{ name: "", phone_number: "", position: "" }],
+      contact_data: [{ name: "", phone_numbers: [""], position: "" }],
     },
   });
 
@@ -484,76 +484,59 @@ export default function Advertisement({ categories }: SellProps) {
       contact_data, // <- ожидаем, что это массив контактов
     } = data;
 
-    const categoriesData = {
-      mainCategory,
-      type,
-      polymer,
-    };
-
-    // const contactData = {
-    //   // name_of_enterprise,
-    //   name,
-    //   // phone_number,
-    //   address,
-    //   city,
-    //   area,
-    // };
-
+    const categoriesData = { mainCategory, type, polymer };
     Object.entries(categoriesData).forEach(([key, value]) => {
       if (value !== undefined && value !== null && value !== "") {
         formData.append(`categories[${key}]`, value);
       }
     });
 
-    // Object.entries(contactData).forEach(([key, value]) => {
-    //   if (value !== undefined && value !== null && value !== "") {
-    //     formData.append(`contact_data[${key}]`, value);
-    //   }
-    // });
+    // Контакты
+    (contact_data || []).forEach((contact, index) => {
+      const { phone_numbers, name, position } = contact;
 
-    const contactDataWithExtraFields = (contact_data || []).map((contact) => ({
-      ...contact,
-      city,
-      address,
-      area,
-      name_of_enterprise,
-    }));
+      formData.append(`contact_data[${index}][name]`, name);
+      if (position)
+        formData.append(`contact_data[${index}][position]`, position);
+      if (phone_numbers && phone_numbers.length > 0) {
+        phone_numbers.forEach((phone, phoneIndex) => {
+          formData.append(
+            `contact_data[${index}][phone_numbers][${phoneIndex}]`,
+            phone
+          );
+        });
+      }
 
-    // Далее в formData используем contactDataWithExtraFields
-    contactDataWithExtraFields.forEach((contact, index) => {
-      Object.entries(contact).forEach(([key, value]) => {
-        if (value !== undefined && value !== null && value !== "") {
-          formData.append(`contact_data[${index}][${key}]`, value);
-        }
-      });
+      // Можно добавить поля адреса для каждого контакта, если нужно
+      formData.append(`contact_data[${index}][city]`, city);
+      formData.append(`contact_data[${index}][address]`, address);
+      formData.append(`contact_data[${index}][area]`, area);
+      if (name_of_enterprise)
+        formData.append(
+          `contact_data[${index}][name_of_enterprise]`,
+          name_of_enterprise
+        );
     });
-    photos.forEach((photo) => {
-      formData.append("photos[]", photo);
-    });
 
+    // Файлы и фото
+    photos.forEach((photo) => formData.append("photos[]", photo));
     if (files && files.length > 0) {
-      files.forEach((file) => {
-        formData.append("files[]", file);
-      });
+      files.forEach((file) => formData.append("files[]", file));
     }
 
+    // Основные поля объявления
     formData.append("title", title);
-    if (text) {
-      formData.append("text", text);
-    }
-
+    if (text) formData.append("text", text);
     formData.append("type_of_product", data.advertType);
-    if (arrangement) {
-      formData.append("type_price", "by_arrangement");
-    } else {
-      formData.append("type_price", typePrice.type);
-    }
-    if (!arrangement && price) {
-      formData.append("price", price);
-    }
-    if (data.volume && data.volume_price) {
-      formData.append("volume", data.volume);
-      formData.append("price_per_volume", data.volume_price);
+    formData.append(
+      "type_price",
+      arrangement ? "by_arrangement" : typePrice.type
+    );
+
+    if (!arrangement && price) formData.append("price", price);
+    if (volume && volume_price) {
+      formData.append("volume", volume);
+      formData.append("price_per_volume", volume_price);
     }
 
     // for (const [key, value] of formData.entries()) {
@@ -1335,71 +1318,128 @@ export default function Advertisement({ categories }: SellProps) {
             {t("contact-details")}
           </h2>
           <div className="contact-dashboard__body">
-            <div className="flex flex-col gap-8">
-              {fields.map((field, index) => (
-                <div
-                  key={field.id}
-                  className={`flex flex-col  items-center w-full gap-5 `}
-                >
-                  <h4 className="title title--small">Контакт №{index + 1}</h4>
-                  <div className="contact-dashboard__content w-full">
-                    <div className="input-block">
-                      <p>Имя*</p>
-                      <input
-                        autoComplete="off"
-                        type="text"
-                        placeholder=""
-                        className={`input ${
-                          errors.contact_data?.[index]?.name
-                            ? "input--error"
-                            : ""
-                        }`}
-                        {...register(`contact_data.${index}.name`)}
-                      />
-                    </div>
+            <div className="flex flex-col gap-8 w-full">
+              {fields.map((field, index) => {
+                let phones = watch(`contact_data.${index}.phone_numbers`) || [];
 
-                    <div className="input-block">
-                      <p>Должность</p>
-                      <input
-                        autoComplete="off"
-                        type="text"
-                        placeholder=""
-                        className={`input ${
-                          errors.contact_data?.[index]?.position
-                            ? "input--error"
-                            : ""
-                        }`}
-                        {...register(`contact_data.${index}.position`)}
-                      />
-                    </div>
+                // Если массив пустой, создаём один элемент
+                if (phones.length === 0) {
+                  phones = [""]; // минимально одно поле
+                  setValue(`contact_data.${index}.phone_numbers`, phones);
+                }
+                const addPhone = () =>
+                  setValue(`contact_data.${index}.phone_numbers`, [
+                    ...phones,
+                    "",
+                  ]);
 
-                    <div className="input-block">
-                      <p>Телефон*</p>
-                      <input
-                        autoComplete="off"
-                        type="text"
-                        placeholder=""
-                        className={`input ${
-                          errors.contact_data?.[index]?.phone_number
-                            ? "input--error"
-                            : ""
-                        }`}
-                        {...register(`contact_data.${index}.phone_number`)}
-                      />
+                const removePhone = (phoneIndex: number) => {
+                  if (phones.length <= 1) return; // нельзя удалять последний номер
+
+                  const newPhones = phones.filter((_, i) => i !== phoneIndex);
+
+                  // Приведение к типу [string, ...string[]], безопасно, потому что newPhones.length >= 1
+                  setValue(
+                    `contact_data.${index}.phone_numbers`,
+                    newPhones as [string, ...string[]]
+                  );
+                };
+
+                return (
+                  <div
+                    key={field.id}
+                    className="flex flex-col w-full items-center gap-5"
+                  >
+                    <h4 className="title title--small">Контакт №{index + 1}</h4>
+                    <div className="flex flex-col gap-5 w-full">
+                      <div className="grid grid-cols-2 w-full gap-5 items-center">
+                        {/* Имя */}
+                        <div className="input-block">
+                          <p>Имя*</p>
+                          <input
+                            autoComplete="off"
+                            type="text"
+                            className={`input ${
+                              errors.contact_data?.[index]?.name
+                                ? "input--error"
+                                : ""
+                            }`}
+                            {...register(`contact_data.${index}.name`)}
+                          />
+                        </div>
+
+                        {/* Должность */}
+                        <div className="input-block">
+                          <p>Должность</p>
+                          <input
+                            autoComplete="off"
+                            type="text"
+                            className={`input ${
+                              errors.contact_data?.[index]?.position
+                                ? "input--error"
+                                : ""
+                            }`}
+                            {...register(`contact_data.${index}.position`)}
+                          />
+                        </div>
+                      </div>
+                      {/* Телефоны */}
+                      <div className="flex flex-col w-full gap-5">
+                        <div className="flex flex-col w-full gap-5">
+                          {phones.map((phone, phoneIndex) => (
+                            <div key={phoneIndex} className="input-block">
+                              <p>Телефон №{phoneIndex + 1}</p>
+
+                              <div className="flex gap-2 items-center w-full ">
+                                <input
+                                  type="tel"
+                                  {...register(
+                                    `contact_data.${index}.phone_numbers.${phoneIndex}`
+                                  )}
+                                  className={`input ${
+                                    errors.contact_data?.[index]
+                                      ?.phone_numbers?.[phoneIndex]
+                                      ? "input--error"
+                                      : ""
+                                  }`}
+                                />
+                                {phones.length > 1 && phoneIndex > 0 && (
+                                  <Button
+                                    onPress={() => removePhone(phoneIndex)}
+                                    isIconOnly
+                                    aria-label="Delete number"
+                                    radius="sm"
+                                    className="button--danger"
+                                  >
+                                    <TrashIcon />
+                                  </Button>
+                                )}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                        <button
+                          type="button"
+                          className="button button--fw button--secondary"
+                          onClick={addPhone}
+                        >
+                          + Добавить телефон
+                        </button>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
             <div className="grid grid-cols-2 w-full gap-3 items-center">
               <button
                 type="button"
-                className="button button--fw"
+                className="button button--fw button--secondary"
                 onClick={() =>
                   append({
                     name: "",
                     position: "",
-                    phone_number: "",
+                    phone_numbers: [""],
                   })
                 }
               >
@@ -1409,7 +1449,7 @@ export default function Advertisement({ categories }: SellProps) {
                 <button
                   type="button"
                   onClick={() => remove(fields.length - 1)}
-                  className="button button--secondary button--fw"
+                  className="button button--danger button--fw"
                 >
                   Удалить контакт
                 </button>

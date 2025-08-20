@@ -486,7 +486,7 @@ export default function Profile() {
                     <div className="input-block">
                       <p>Номер телефону*</p>
                       <input
-                        type="number"
+                        type="tel"
                         {...register("phone_number")}
                         placeholder="Номер телефону"
                         className={` input ${
@@ -792,7 +792,7 @@ export default function Profile() {
                       },
                     });
                   }}
-                  className="dashboard-contacts__delete button button--secondary"
+                  className="dashboard-contacts__delete button button--danger"
                 >
                   Видалити акаунт
                 </button>

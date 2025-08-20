@@ -96,17 +96,22 @@ button {
   @apply cursor-pointer inline-flex gap-2.5 w-full max-w-[200px] min-h-[55px] items-center justify-center text-center px-5 py-1 rounded-md bg-blueColor text-white transition-all duration-300 hover:bg-blueColor-hover;
 }
 
-.button--icon {
-  @apply flex-shrink-0 w-[45px] h-[45px] min-w-0 p-1;
-}
 .button--fw {
   @apply max-w-none w-full;
 }
-.button--secondaryColor {
+.button--secondary {
   @apply bg-secondaryColor text-black border border-black hover:bg-[#c4dbff];
 }
-.button--secondaryColor:active {
+.button--secondary:active {
   @apply transition-none text-[#ba360c];
+}
+
+.button--danger {
+  @apply bg-red-800 text-white hover:bg-red-700;
+}
+
+.button--icon {
+  @apply flex-shrink-0 !size-[45px] aspect-square min-w-0 p-1;
 }
 
 input[type="text"],
@@ -140,7 +145,7 @@ textarea:has(textarea:disabled) {
 /* placeholder */
 input::placeholder,
 textarea::placeholder {
-  color: #b0bfd7;
+  @apply text-foreground-500;
 }
 
 input[placeholder]:not([data-placeholder-nohiden])::placeholder,
@@ -640,7 +645,7 @@ input::-webkit-inner-spin-button {
 }
 
 .description__input {
-  @apply min-h-[115px] h-auto rounded-md w-full block p-[14px] text-[14px] outline outline-border;
+  @apply min-h-[115px] h-auto rounded-md w-full block p-[14px] text-[14px] outline outline-border hover:outline-border;
 }
 .description__input ul {
   @apply list-disc pl-[20px] mt-[20px] mb-0;
@@ -656,6 +661,23 @@ input::-webkit-inner-spin-button {
 }
 .description__input ol li {
   @apply list-decimal;
+}
+
+.editor {
+  @apply gap-[10px] max-w-[847px] w-full;
+}
+.editor .editor-toolbar {
+  @apply border border-border rounded-[5px] h-[220px] min-h-[220px];
+}
+.editor .CodeMirror-scroll {
+  @apply min-h-[220px];
+}
+.editor .editor-statusbar {
+  @apply hidden;
+}
+
+.editor--error .description__input {
+  @apply outline-red-500;
 }
 
 .chat-input {
@@ -1056,6 +1078,7 @@ button:disabled {
 .menu-bottom-header.active .menu-bottom-header__items {
   @apply translate-y-0;
 }
+
 .menu-bottom-header__text {
   @apply text-white;
 }
@@ -1065,8 +1088,8 @@ button:disabled {
 .menu-bottom-header__items {
   @apply flex flex-col relative -translate-y-[200%] bg-[#f8fbff] border border-border rounded-b-lg pointer-events-auto transition-all duration-300;
 }
-.menu-bottom-header__item {
-  @apply py-[15px] px-[5px] text-center transition-all duration-300 hover:text-blueColor-hover;
+.menu-bottom-header .menu__link {
+  @apply py-[15px] px-[5px] text-center transition-all duration-300 hover:text-blueColor-hover justify-center;
 }
 
 .menu-bottom-header__item:not(:first-child) {
@@ -1177,7 +1200,7 @@ button:disabled {
 }
 
 .menu__link {
-  @apply relative flex items-center  gap-[5px] transition-all duration-300 hover:text-blueColor;
+  @apply relative text-center flex items-center  gap-[5px] transition-all duration-300 hover:text-blueColor;
 }
 
 .menu__link.active {
@@ -2592,19 +2615,6 @@ button:disabled {
 }
 .add-forum__actions {
   @apply flex items-center flex-wrap justify-center md:justify-start gap-[20px] xl:gap-[50px];
-}
-
-.editor {
-  @apply gap-[10px] max-w-[847px] w-full;
-}
-.editor .editor-toolbar {
-  @apply border border-border rounded-[5px] h-[220px] min-h-[220px];
-}
-.editor .CodeMirror-scroll {
-  @apply min-h-[220px];
-}
-.editor .editor-statusbar {
-  @apply hidden;
 }
 
 .info-contact {

@@ -41,9 +41,8 @@ export const ForgotPasswordSchema = z.object({
 
 export const ForumAddSchema = z.object({
   title: z.string().min(1, "Введите заголовок "),
-  // text: z.string().min(1, "Введите описание "),
-  // keywords: z
-  // .string()
+  text: z.string().min(1, "Введите описание "),
+  category: z.string().min(1, "Выберите категорию "),
 });
 
 export const UserInfoSchema = z
@@ -100,10 +99,14 @@ export const UserSecuritySchema = z
   });
 
 export const ContactSchema = z.object({
-  phone_number: z
-    .string()
-    .min(10, "Номер телефона должен содержать минимум 10 символов")
-    .max(15, "Номер телефона не может быть длиннее 15 символов"),
+  phone_numbers: z
+    .array(
+      z
+        .string()
+        .min(10, "Номер телефона должен содержать минимум 10 символов")
+        .max(15, "Номер телефона не может быть длиннее 15 символов")
+    )
+    .nonempty("Укажите хотя бы один номер телефона"),
   position: z.string().optional(),
   name: z.string().min(1, "Введите ваше имя"),
 });

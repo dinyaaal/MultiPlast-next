@@ -1,6 +1,5 @@
 "use client";
 import { ForumPost } from "@/types/types";
-import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
 import { Pagination, Spinner } from "@heroui/react";
 
@@ -12,9 +11,6 @@ interface ForumItemsProps {
 }
 
 export default function ForumItems({ activeSectionId }: ForumItemsProps) {
-  const { data: session } = useSession();
-
-  const [error, setError] = useState<string | null>(null);
   const [forumPosts, setForumPosts] = useState<ForumPost[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [currentPage, setCurrentPage] = useState<number>(1);

@@ -3,7 +3,7 @@
 import { useClickOutside } from "@/hooks/ClickOutside";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
-import { Link } from "@/i18n/routing";
+import { Link, usePathname } from "@/i18n/routing";
 import React, { useState } from "react";
 import { useSession } from "next-auth/react";
 
@@ -13,6 +13,7 @@ export default function HeaderMenu() {
   const t = useTranslations("HeaderMenu");
   const tNavigation = useTranslations("Navigation");
   const { data: session, status } = useSession();
+  const pathname = usePathname();
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -33,46 +34,71 @@ export default function HeaderMenu() {
 
       <div className="menu-bottom-header__body ">
         <div className="menu-bottom-header__items ">
-          <Link href="/about" className="menu-bottom-header__item">
+          <Link
+            href="/about"
+            className={`menu__link menu-bottom-header__item ${
+              pathname === "/about" ? "active" : ""
+            }`}
+          >
             {tNavigation("aboutProject")}
           </Link>
-          <Link href="#" className="menu-bottom-header__item">
+          <Link
+            href="#"
+            className={`menu__link menu-bottom-header__item ${
+              pathname === "/user-agreement" ? "active" : ""
+            }`}
+          >
             {tNavigation("userAgreement")}
           </Link>
-          <Link href="#" className="menu-bottom-header__item">
+          <Link
+            href="#"
+            className={`menu__link menu-bottom-header__item ${
+              pathname === "/how-to-sell-buy" ? "active" : ""
+            }`}
+          >
             {tNavigation("howToSellBuy")}
           </Link>
           {status === "authenticated" && (
             <>
               <Link
                 href="/dashboard/profile"
-                className="menu-bottom-header__item"
+                className={`menu__link menu-bottom-header__item ${
+                  pathname === "/dashboard/profile" ? "active" : ""
+                }`}
               >
                 {tNavigation("personalAccount")}
               </Link>
 
               <Link
-                href="/add-advertisement"
-                className="menu-bottom-header__item"
+                href="/dashboard/add-advertisement"
+                className={`menu__link menu-bottom-header__item ${
+                  pathname === "/dashboard/add-advertisement" ? "active" : ""
+                }`}
               >
                 {tNavigation("addAdvertisement")}
               </Link>
               <Link
                 href="/dashboard/my-sell"
-                className="menu-bottom-header__item"
+                className={`menu__link menu-bottom-header__item ${
+                  pathname === "/dashboard/my-sell" ? "active" : ""
+                }`}
               >
                 {tNavigation("mySellAds")}
               </Link>
               <Link
                 href="/dashboard/my-buy"
-                className="menu-bottom-header__item"
+                className={`menu__link menu-bottom-header__item ${
+                  pathname === "/dashboard/my-buy" ? "active" : ""
+                }`}
               >
                 {tNavigation("myBuyAds")}
               </Link>
 
               <Link
                 href="/dashboard/security"
-                className="menu-bottom-header__item"
+                className={`menu__link menu-bottom-header__item ${
+                  pathname === "/dashboard/security" ? "active" : ""
+                }`}
               >
                 {tNavigation("changePassword")}
               </Link>

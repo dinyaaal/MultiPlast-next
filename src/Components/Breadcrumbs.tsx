@@ -21,7 +21,7 @@ export function BreadcrumbsClient({ items }: BreadcrumbsClientProps) {
           base: "text-greyColor text-sm",
         }}
         itemClasses={{
-          item: " data-[current=true]:text-black",
+          item: " data-[current=true]:text-black hover:text-blueColor-hover transition-colors duration-300",
         }}
         className="breadcrumbs__container main-container"
       >
