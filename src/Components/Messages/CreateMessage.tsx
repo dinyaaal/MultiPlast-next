@@ -1,0 +1,55 @@
+"use client";
+
+import { useRouter } from "@/i18n/routing";
+import { useSession } from "next-auth/react";
+import { useTranslations } from "next-intl";
+import React from "react";
+import { toast } from "sonner";
+
+interface CreateMessageProps {
+  id: number;
+}
+
+export default function CreateMessage({ id }: CreateMessageProps) {
+  const { data: session, status } = useSession();
+  const token = session?.user.access_token;
+  const router = useRouter();
+  const t = useTranslations("Messages");
+  const createMessage = async () => {
+    if (!token) {
+      return;
+    }
+    try {
+      const response = await fetch(`/api/chats/create`, {
+        method: "POST",
+        body: JSON.stringify({ to_user_id: id }),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (!response.ok) {
+        throw new Error("Ошибка при создании чата");
+      }
+
+      const data = await response.json();
+      console.log(data);
+
+      //   router.push(`/messages/${id}`);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      toast.error("Помилка при створенні чату");
+    }
+  };
+
+  return (
+    <button
+      onClick={() => {
+        createMessage();
+      }}
+      className="actions-body-product__message button"
+    >
+      {t("createMessage")}
+    </button>
+  );
+}

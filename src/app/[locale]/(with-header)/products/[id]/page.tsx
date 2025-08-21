@@ -10,6 +10,7 @@ import { getServerSession } from "next-auth";
 import { getTranslations } from "next-intl/server";
 import { BreadcrumbsClient } from "@/Components/Breadcrumbs";
 import { authOptions } from "@/lib/authOptions";
+import CreateMessage from "@/Components/Messages/CreateMessage";
 
 type Params = Promise<{ id: string }>;
 
@@ -251,12 +252,13 @@ export default async function Product(props: { params: Params }) {
                     ))}
                   </div>
                   {session && (
-                    <Link
-                      href={`/messages/${product.author.id}`}
-                      className="actions-body-product__message button"
-                    >
-                      Написати повідомлення
-                    </Link>
+                    // <Link
+                    //   href={`/messages/${product.author.id}`}
+                    //   className="actions-body-product__message button"
+                    // >
+                    //   Написати повідомлення
+                    // </Link>
+                    <CreateMessage id={product.author.id} />
                   )}
                   {product.files && product.files.length > 0 && (
                     <Link
