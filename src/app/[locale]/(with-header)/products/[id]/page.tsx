@@ -1,16 +1,19 @@
-import ReadMore from "@/Components/ReadMore";
+"use server";
+
 import { ProductType } from "@/types/types";
-import { Link } from "@/i18n/routing";
-import { SocialsNetwork } from "./components/SocialsNetworks";
-import React from "react";
-import { ProductActions } from "./components/ProductActions";
-import { ProductPhotos } from "./components/ProductPhotos";
+
+import React, { Suspense } from "react";
 import notFound from "@/app/[locale]/not-found";
 import { getServerSession } from "next-auth";
 import { getTranslations } from "next-intl/server";
 import { BreadcrumbsClient } from "@/Components/Breadcrumbs";
 import { authOptions } from "@/lib/authOptions";
 import CreateMessage from "@/Components/Messages/CreateMessage";
+import ReadMore from "@/Components/ReadMore";
+import { Link } from "@/i18n/routing";
+import { ProductActions } from "./components/ProductActions";
+import { ProductPhotos } from "./components/ProductPhotos";
+import { SocialsNetwork } from "./components/SocialsNetworks";
 
 type Params = Promise<{ id: string }>;
 
@@ -27,6 +30,7 @@ async function getProduct(
           "Content-Type": "application/json",
           ...(token && { token: token }),
         },
+        cache: "no-store",
       }
     );
 
@@ -44,19 +48,17 @@ async function getProduct(
 export default async function Product(props: { params: Params }) {
   const params = await props.params;
   const session = await getServerSession(authOptions);
-  // const product = await getProduct(params.id, session?.user.access_token || "");
-  // const t = await getTranslations("Product");
-  // const tb = await getTranslations("Breadcrumbs");
+  const product = await getProduct(params.id, session?.user.access_token || "");
+  const t = await getTranslations("Product");
+  const tb = await getTranslations("Breadcrumbs");
 
-  const [product, t, tb] = await Promise.all([
-    getProduct(params.id, session?.user.access_token || ""),
-    getTranslations("Product"),
-    getTranslations("Breadcrumbs"),
-  ]);
+  // const [product, t, tb] = await Promise.all([
+  //   getProduct(params.id, session?.user.access_token || ""),
+  //   getTranslations("Product"),
+  //   getTranslations("Breadcrumbs"),
+  // ]);
 
-  await new Promise((resolve) => setTimeout(resolve, 2000));
-
-  console.log(product);
+  // await new Promise((resolve) => setTimeout(resolve, 2000));
 
   function isEmpty(string: string | null | undefined) {
     return string ?? "";

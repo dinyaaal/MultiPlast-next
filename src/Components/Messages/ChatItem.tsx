@@ -7,6 +7,7 @@ import { Link } from "@/i18n/routing";
 import { ChatItemData } from "@/types/types";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
+import { Ellipsis } from "lucide-react";
 
 interface ChatItemProps {
   chat: ChatItemData;
@@ -37,10 +38,10 @@ export const ChatItem: React.FC<ChatItemProps> = ({ chat, onDelete }) => {
         toast.success("Чат удален!");
         onDelete(chat.id);
       } else {
-        throw new Error("Ошибка обновления информации пользователя");
+        throw new Error("Ошибка удаления");
       }
     } catch (error) {
-      console.error("Ошибка при отправке данных:", error);
+      console.error("Ошибка удаления:", error);
       toast.error("Ошибка удаления");
     }
   };
@@ -62,10 +63,10 @@ export const ChatItem: React.FC<ChatItemProps> = ({ chat, onDelete }) => {
         toast.success("Пользователь заблокирован");
         setIsBlocked(true);
       } else {
-        throw new Error("Ошибка обновления информации пользователя");
+        throw new Error("Не удалось заблокировать пользователя");
       }
     } catch (error) {
-      console.error("Ошибка при отправке данных:", error);
+      console.error("Не удалось заблокировать пользователя:", error);
       toast.error("Не удалось заблокировать пользователя");
     }
   };
@@ -87,10 +88,10 @@ export const ChatItem: React.FC<ChatItemProps> = ({ chat, onDelete }) => {
         toast.success("Пользователь разблокирован");
         setIsBlocked(false);
       } else {
-        throw new Error("Ошибка обновления информации пользователя");
+        throw new Error("Не удалось разблокировать пользователя");
       }
     } catch (error) {
-      console.error("Ошибка при отправке данных:", error);
+      console.error("Не удалось разблокировать пользователя:", error);
       toast.error("Не удалось разблокировать пользователя");
     }
   };
@@ -100,23 +101,6 @@ export const ChatItem: React.FC<ChatItemProps> = ({ chat, onDelete }) => {
       href={`/messages/${chat.id}`}
       className="block-chat__item item-block-chat"
     >
-      {/* <div className="item-block-chat__topic topic-message">
-        <div className="topic-message__block">
-          <p className="topic-message__title">
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quibusdam
-            dolorum libero odit sed fugit consequatur obcaecati vero repellat
-            eius fuga.
-          </p>
-          <div className="topic-message__user">
-            <p>
-              Контактна особа: <span>Дмитро Вишнивецький</span>
-            </p>
-          </div>
-        </div>
-        <div className="topic-message__image">
-          <Image src="/advert/01.jpg" alt="Image" width={100} height={100} />
-        </div>
-      </div> */}
       <div className="item-block-chat__message">
         <div className="item-block-chat__image">
           <div className="notification-value">
@@ -143,17 +127,7 @@ export const ChatItem: React.FC<ChatItemProps> = ({ chat, onDelete }) => {
                   onClick={(e) => e.preventDefault()}
                   className="actions-menu__icon"
                 >
-                  <svg
-                    width="13"
-                    height="3"
-                    viewBox="0 0 13 3"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <circle cx="1.5" cy="1.5" r="1.5" fill="#0E274D" />
-                    <circle cx="6.5" cy="1.5" r="1.5" fill="#0E274D" />
-                    <circle cx="11.5" cy="1.5" r="1.5" fill="#0E274D" />
-                  </svg>
+                  <Ellipsis />
                 </button>
               </PopoverTrigger>
               <PopoverContent>

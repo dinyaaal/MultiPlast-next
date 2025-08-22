@@ -1,11 +1,13 @@
 "use client";
 
-import { Link } from "@/i18n/routing";
+import { Link, useRouter } from "@/i18n/routing";
 import Image from "next/image";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Tooltip } from "@heroui/tooltip";
 import { useSession } from "next-auth/react";
-import { io } from "socket.io-client";
+import { toast } from "sonner";
+import { Popover, PopoverContent, PopoverTrigger } from "@heroui/react";
+import { Ellipsis } from "lucide-react";
 
 export default function ChatBody({
   params,
@@ -16,30 +18,84 @@ export default function ChatBody({
   const id = unwrappedParams.id;
   const { data: session, status } = useSession();
   const token = session?.user.access_token;
+  const router = useRouter();
+  const [isBlocked, setIsBlocked] = useState<boolean>(false);
 
-  // const fetchChat = async () => {
-  //   if (!token) {
-  //     return;
-  //   }
-  //   try {
-  //     const response = await fetch(`/api/chats/create`, {
-  //       method: "POST",
-  //       body: JSON.stringify({ to_user_id: id }),
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //     });
-  //     const data = await response.json();
-  //     console.log(data);
-  //   } catch (error) {
-  //     console.error("Error fetching data:", error);
-  //   }
-  // };
+  const handleChatDelete = async () => {
+    if (!session?.user.access_token || !id) {
+      return;
+    }
 
-  // useEffect(() => {
-  //   fetchChat();
-  // }, [id, token]);
+    try {
+      const deleteResponse = await fetch(`/api/chats/delete`, {
+        method: "DELETE",
+        headers: {
+          token: session?.user.access_token,
+          id: id.toString(),
+        },
+      });
+      if (deleteResponse.ok) {
+        toast.success("Чат удален!");
+        router.push("/messages");
+        // onDelete(chat.id);
+      } else {
+        throw new Error("Ошибка удаления");
+      }
+    } catch (error) {
+      console.error("Ошибка удаления:", error);
+      toast.error("Ошибка удаления");
+    }
+  };
+
+  const handleChatBlock = async () => {
+    if (!session?.user.access_token || !id) {
+      return;
+    }
+
+    try {
+      const blockResponse = await fetch(`/api/chats/block`, {
+        method: "POST",
+        headers: {
+          token: session?.user.access_token,
+          id: id.toString(),
+        },
+      });
+      if (blockResponse.ok) {
+        toast.success("Пользователь заблокирован");
+        // setIsBlocked(true);
+      } else {
+        throw new Error("Не удалось заблокировать пользователя");
+      }
+    } catch (error) {
+      console.error("Не удалось заблокировать пользователя:", error);
+      toast.error("Не удалось заблокировать пользователя");
+    }
+  };
+
+  const handleChatUnblock = async () => {
+    if (!session?.user.access_token || !id) {
+      return;
+    }
+
+    try {
+      const blockResponse = await fetch(`/api/chats/unblock`, {
+        method: "POST",
+        headers: {
+          token: session?.user.access_token,
+          id: id.toString(),
+        },
+      });
+      if (blockResponse.ok) {
+        toast.success("Пользователь разблокирован");
+        // setIsBlocked(false);
+      } else {
+        throw new Error("Не удалось разблокировать пользователя");
+      }
+    } catch (error) {
+      console.error("Не удалось разблокировать пользователя:", error);
+      toast.error("Не удалось разблокировать пользователя");
+    }
+  };
 
   // useEffect(() => {
   //   const socket = io("wss://multiplast.web-hub.online", {
@@ -93,19 +149,70 @@ export default function ChatBody({
               </div>
             </div>
             <div className="chat-top__actions-menu actions-menu">
-              <div className="actions-menu__icon">
-                <svg
-                  width="13"
-                  height="3"
-                  viewBox="0 0 13 3"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <circle cx="1.5" cy="1.5" r="1.5" fill="#0E274D" />
-                  <circle cx="6.5" cy="1.5" r="1.5" fill="#0E274D" />
-                  <circle cx="11.5" cy="1.5" r="1.5" fill="#0E274D" />
-                </svg>
-              </div>
+              <Popover
+                placement="bottom-end"
+                className="item-block-chat__actions actions-menu"
+                classNames={{
+                  content: ["p-0"],
+                }}
+              >
+                <PopoverTrigger>
+                  <button
+                    onClick={(e) => e.preventDefault()}
+                    className="actions-menu__icon"
+                  >
+                    <Ellipsis />
+                  </button>
+                </PopoverTrigger>
+                <PopoverContent>
+                  <div className="actions-menu__body body-actions-menu">
+                    <menu className="body-actions-menu__list">
+                      <button
+                        onClick={(e) => e.preventDefault()}
+                        className="body-actions-menu__item"
+                      >
+                        Поскаржитися
+                      </button>
+                      {isBlocked ? (
+                        <button
+                          onClick={(e) => {
+                            e.preventDefault();
+                            handleChatUnblock();
+                          }}
+                          className="body-actions-menu__item"
+                        >
+                          Разблокувати
+                        </button>
+                      ) : (
+                        <button
+                          onClick={(e) => {
+                            e.preventDefault();
+                            handleChatBlock();
+                          }}
+                          className="body-actions-menu__item"
+                        >
+                          Заблокувати
+                        </button>
+                      )}
+
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          toast("Вы уверены что хотите удалить чат?", {
+                            action: {
+                              label: "Удалить",
+                              onClick: () => handleChatDelete(),
+                            },
+                          });
+                        }}
+                        className="body-actions-menu__item body-actions-menu__item--red"
+                      >
+                        Видалити
+                      </button>
+                    </menu>
+                  </div>
+                </PopoverContent>
+              </Popover>
               {/* <div className="actions-menu__body body-actions-menu">
               <ul className="body-actions-menu__list">
                 <li className="body-actions-menu__item">

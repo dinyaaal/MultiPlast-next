@@ -2299,14 +2299,14 @@ button:disabled {
   @apply grid;
 }
 .actions-menu__icon {
-  @apply cursor-pointer size-[30px] flex items-center justify-center relative;
+  @apply cursor-pointer size-[30px] text-[#0E274D] flex items-center justify-center relative;
 }
 .actions-menu__icon svg {
-  @apply w-[13px] h-[3px];
+  @apply size-full transition-all duration-300;
 }
-.actions-menu__icon svg * {
+/* .actions-menu__icon svg * {
   @apply transition-all duration-300;
-}
+} */
 
 .body-actions-menu {
   @apply w-full max-w-[160px] h-fit right-0;
@@ -2325,8 +2325,12 @@ button:disabled {
 }
 
 .body-chat {
-  @apply absolute z-10 inset-0 w-full h-full flex flex-col items-center justify-center bg-white xl:static;
+  @apply absolute z-10 inset-0 w-full h-full flex flex-col items-center justify-center bg-white xl:!static;
 }
+
+/* .body-chat.active {
+  @apply ;
+} */
 
 .body-chat__content {
   @apply w-full flex-1 flex flex-col overflow-hidden;

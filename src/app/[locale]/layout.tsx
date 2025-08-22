@@ -1,15 +1,13 @@
 import type { Metadata } from "next";
 import { Rubik } from "next/font/google";
 import "../globals.css";
-// import "../../assets/scss/style.scss";
 import { HeroUIProvider } from "@heroui/system";
-// import {HeroUIProvider} from "@heroui/react";
 import { setRequestLocale } from "next-intl/server";
 import { AuthProviders } from "@/Components/AuthProviders";
 
 import { ReduxProvider } from "@/store/provider";
 import { Toaster } from "sonner";
-import { NextIntlClientProvider, Locale, hasLocale } from "next-intl";
+import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import "@mdxeditor/editor/style.css";
