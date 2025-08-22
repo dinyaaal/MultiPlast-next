@@ -4,8 +4,10 @@ import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
 import { Spinner } from "@heroui/react";
 import { ChatItem } from "./ChatItem";
+import { useTranslations } from "next-intl";
 
 export default function ChatItems() {
+  const t = useTranslations("Messages");
   const { data: session } = useSession();
   const [chats, setChats] = useState<ChatItemData[]>([]);
   const [loading, setLoading] = useState(true);
@@ -55,7 +57,7 @@ export default function ChatItems() {
   return (
     <div className="block-chat__items">
       <div className="block-chat__section">
-        <div className="block-chat__section-title">Оголошення</div>
+        {/* <div className="block-chat__section-title">Оголошення</div> */}
         <div className="block-chat__section-items">
           {chats.length > 0 ? (
             chats
@@ -68,7 +70,7 @@ export default function ChatItems() {
                 />
               ))
           ) : (
-            <p>Нет чатов для отображения</p>
+            <p>{t("Messages.noChats")}</p>
           )}
         </div>
       </div>

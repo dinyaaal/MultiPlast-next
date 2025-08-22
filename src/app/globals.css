@@ -15,8 +15,12 @@
   --color-text: #0e274d;
   --color-greyColor: #838383;
   --color-bg-lite: #edf4ff;
-
+  --color-dark-blue: #0e274d;
   --breakpoint-1400: 1400px;
+}
+
+body {
+  @apply text-dark-blue;
 }
 
 .lock body {
@@ -2182,7 +2186,7 @@ button:disabled {
   @apply pt-[40px] pb-[60px];
 }
 .chat__wrapper {
-  @apply relative overflow-hidden flex outline-1 border-border rounded-[7px] h-screen min-h-[400px] xl:min-h-[600px];
+  @apply relative overflow-hidden flex border border-border rounded-[7px] h-screen min-h-[400px] xl:min-h-[600px];
 }
 
 .chat__block {
@@ -2203,7 +2207,7 @@ button:disabled {
   @apply flex flex-col gap-[30px];
 }
 .block-chat__title {
-  @apply uppercase font-medium text-[17px] xl:text-xl;
+  @apply uppercase font-medium leading-none text-[17px] xl:text-xl;
 }
 .block-chat__content {
   @apply w-full h-full overflow-y-auto;
@@ -2340,7 +2344,7 @@ button:disabled {
 }
 
 .chat-top {
-  @apply border-b border-greyColor min-h-[100px] flex items-center w-full gap-[20px] justify-between p-[15px] xl:p-[25px];
+  @apply border-b border-border min-h-[60px] xl:min-h-[100px] flex items-center w-full gap-[20px] justify-between py-5 px-[15px] xl:p-[25px];
 }
 
 .chat-top__block {
@@ -2727,7 +2731,7 @@ button:disabled {
 }
 
 .user-chat__image {
-  @apply shrink-0 size-[41px];
+  @apply shrink-0 size-[40px];
 }
 .user-chat__name {
   @apply text-[16px] font-normal;
