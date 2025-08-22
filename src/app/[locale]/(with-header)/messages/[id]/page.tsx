@@ -8,12 +8,14 @@ import { useSession } from "next-auth/react";
 import { toast } from "sonner";
 import { Popover, PopoverContent, PopoverTrigger } from "@heroui/react";
 import { Ellipsis } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 export default function ChatBody({
   params,
 }: {
   params: Promise<{ id: string }>;
 }) {
+  const t = useTranslations("Messages");
   const unwrappedParams = React.use(params);
   const id = unwrappedParams.id;
   const { data: session, status } = useSession();
@@ -35,15 +37,15 @@ export default function ChatBody({
         },
       });
       if (deleteResponse.ok) {
-        toast.success("Чат удален!");
+        toast.success(t("toast.deleteSuccess"));
         router.push("/messages");
         // onDelete(chat.id);
       } else {
-        throw new Error("Ошибка удаления");
+        throw new Error(t("toast.deleteError"));
       }
     } catch (error) {
-      console.error("Ошибка удаления:", error);
-      toast.error("Ошибка удаления");
+      console.error(t("toast.deleteError"), error);
+      toast.error(t("toast.deleteError"));
     }
   };
 
@@ -61,14 +63,14 @@ export default function ChatBody({
         },
       });
       if (blockResponse.ok) {
-        toast.success("Пользователь заблокирован");
+        toast.success(t("toast.blockSuccess"));
         // setIsBlocked(true);
       } else {
-        throw new Error("Не удалось заблокировать пользователя");
+        throw new Error(t("toast.blockError"));
       }
     } catch (error) {
-      console.error("Не удалось заблокировать пользователя:", error);
-      toast.error("Не удалось заблокировать пользователя");
+      console.error(t("toast.blockError"), error);
+      toast.error(t("toast.blockError"));
     }
   };
 
@@ -86,14 +88,14 @@ export default function ChatBody({
         },
       });
       if (blockResponse.ok) {
-        toast.success("Пользователь разблокирован");
+        toast.success(t("toast.unblockSuccess"));
         // setIsBlocked(false);
       } else {
-        throw new Error("Не удалось разблокировать пользователя");
+        throw new Error(t("toast.unblockError"));
       }
     } catch (error) {
-      console.error("Не удалось разблокировать пользователя:", error);
-      toast.error("Не удалось разблокировать пользователя");
+      console.error(t("toast.unblockError"), error);
+      toast.error(t("toast.unblockError"));
     }
   };
 
@@ -171,7 +173,7 @@ export default function ChatBody({
                         onClick={(e) => e.preventDefault()}
                         className="body-actions-menu__item"
                       >
-                        Поскаржитися
+                        {t("actions.report")}
                       </button>
                       {isBlocked ? (
                         <button
@@ -181,7 +183,7 @@ export default function ChatBody({
                           }}
                           className="body-actions-menu__item"
                         >
-                          Разблокувати
+                          {t("actions.unblock")}
                         </button>
                       ) : (
                         <button
@@ -191,23 +193,23 @@ export default function ChatBody({
                           }}
                           className="body-actions-menu__item"
                         >
-                          Заблокувати
+                          {t("actions.block")}
                         </button>
                       )}
 
                       <button
                         onClick={(e) => {
                           e.preventDefault();
-                          toast("Вы уверены что хотите удалить чат?", {
+                          toast(t("toast.deleteConfirm"), {
                             action: {
-                              label: "Удалить",
+                              label: t("toast.delete"),
                               onClick: () => handleChatDelete(),
                             },
                           });
                         }}
                         className="body-actions-menu__item body-actions-menu__item--red"
                       >
-                        Видалити
+                        {t("actions.delete")}
                       </button>
                     </menu>
                   </div>

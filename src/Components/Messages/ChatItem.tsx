@@ -8,6 +8,7 @@ import { ChatItemData } from "@/types/types";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
 import { Ellipsis } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 interface ChatItemProps {
   chat: ChatItemData;
@@ -15,6 +16,7 @@ interface ChatItemProps {
 }
 
 export const ChatItem: React.FC<ChatItemProps> = ({ chat, onDelete }) => {
+  const t = useTranslations("Messages");
   const { data: session, status } = useSession();
   const formattedDate = new Date(chat.updated_at).toLocaleDateString();
   const [isBlocked, setIsBlocked] = useState<boolean>(
@@ -35,14 +37,14 @@ export const ChatItem: React.FC<ChatItemProps> = ({ chat, onDelete }) => {
         },
       });
       if (deleteResponse.ok) {
-        toast.success("Чат удален!");
+        toast.success(t("toast.deleteSuccess"));
         onDelete(chat.id);
       } else {
-        throw new Error("Ошибка удаления");
+        throw new Error(t("toast.deleteError"));
       }
     } catch (error) {
-      console.error("Ошибка удаления:", error);
-      toast.error("Ошибка удаления");
+      console.error(t("toast.deleteError"), error);
+      toast.error(t("toast.deleteError"));
     }
   };
 
@@ -60,14 +62,14 @@ export const ChatItem: React.FC<ChatItemProps> = ({ chat, onDelete }) => {
         },
       });
       if (blockResponse.ok) {
-        toast.success("Пользователь заблокирован");
+        toast.success(t("toast.blockSuccess"));
         setIsBlocked(true);
       } else {
-        throw new Error("Не удалось заблокировать пользователя");
+        throw new Error(t("toast.blockError"));
       }
     } catch (error) {
-      console.error("Не удалось заблокировать пользователя:", error);
-      toast.error("Не удалось заблокировать пользователя");
+      console.error(t("toast.blockError"), error);
+      toast.error(t("toast.blockError"));
     }
   };
 
@@ -85,14 +87,14 @@ export const ChatItem: React.FC<ChatItemProps> = ({ chat, onDelete }) => {
         },
       });
       if (blockResponse.ok) {
-        toast.success("Пользователь разблокирован");
+        toast.success(t("toast.unblockSuccess"));
         setIsBlocked(false);
       } else {
-        throw new Error("Не удалось разблокировать пользователя");
+        throw new Error(t("toast.unblockError"));
       }
     } catch (error) {
-      console.error("Не удалось разблокировать пользователя:", error);
-      toast.error("Не удалось разблокировать пользователя");
+      console.error(t("toast.unblockError"), error);
+      toast.error(t("toast.unblockError"));
     }
   };
 
@@ -137,7 +139,7 @@ export const ChatItem: React.FC<ChatItemProps> = ({ chat, onDelete }) => {
                       onClick={(e) => e.preventDefault()}
                       className="body-actions-menu__item"
                     >
-                      Поскаржитися
+                      {t("actions.report")}
                     </button>
                     {isBlocked ? (
                       <button
@@ -147,7 +149,7 @@ export const ChatItem: React.FC<ChatItemProps> = ({ chat, onDelete }) => {
                         }}
                         className="body-actions-menu__item"
                       >
-                        Разблокувати
+                        {t("actions.unblock")}
                       </button>
                     ) : (
                       <button
@@ -157,62 +159,28 @@ export const ChatItem: React.FC<ChatItemProps> = ({ chat, onDelete }) => {
                         }}
                         className="body-actions-menu__item"
                       >
-                        Заблокувати
+                        {t("actions.block")}
                       </button>
                     )}
 
                     <button
                       onClick={(e) => {
                         e.preventDefault();
-                        toast("Вы уверены что хотите удалить чат?", {
+                        toast(t("toast.deleteConfirm"), {
                           action: {
-                            label: "Удалить",
+                            label: t("toast.delete"),
                             onClick: () => handleChatDelete(),
                           },
                         });
                       }}
                       className="body-actions-menu__item body-actions-menu__item--red"
                     >
-                      Видалити
+                      {t("actions.delete")}
                     </button>
                   </menu>
                 </div>
               </PopoverContent>
             </Popover>
-            {/* <div className="item-block-chat__actions actions-menu">
-              <div className="actions-menu__icon">
-                <svg
-                  width="13"
-                  height="3"
-                  viewBox="0 0 13 3"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <circle cx="1.5" cy="1.5" r="1.5" fill="#0E274D" />
-                  <circle cx="6.5" cy="1.5" r="1.5" fill="#0E274D" />
-                  <circle cx="11.5" cy="1.5" r="1.5" fill="#0E274D" />
-                </svg>
-              </div>
-              <div className="actions-menu__body body-actions-menu">
-                <ul className="body-actions-menu__list">
-                  <li className="body-actions-menu__item">
-                    <a href="#" className="body-actions-menu__button">
-                      Поскаржитися
-                    </a>
-                  </li>
-                  <li className="body-actions-menu__item">
-                    <a href="#" className="body-actions-menu__button">
-                      Заблокувати
-                    </a>
-                  </li>
-                  <li className="body-actions-menu__item body-actions-menu__item--red">
-                    <a href="#" className="body-actions-menu__button">
-                      Видалити
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </div> */}
           </div>
           <p className="item-block-chat__text">
             Вітаю! Потрібна допомога в здісненні платежу....
