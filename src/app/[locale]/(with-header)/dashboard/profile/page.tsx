@@ -14,6 +14,7 @@ import { toast } from "sonner";
 import Image from "next/image";
 import { setUserInfoData, setUserInfoError } from "@/store/userInfoSlice";
 import { useRouter } from "@/i18n/routing";
+import { useTranslations } from "next-intl";
 
 type Inputs = z.infer<typeof UserInfoSchema>;
 
@@ -31,7 +32,7 @@ const years = Array.from({ length: 100 }, (_, i) =>
 
 export default function Profile() {
   const { data: session, status } = useSession();
-  const router = useRouter();
+  const t = useTranslations("Dashboard.Profile");
   const { data: userInfo, error } = useSelector(
     (state: RootState) => state.userInfo
   );
@@ -148,15 +149,15 @@ export default function Profile() {
         },
       });
       if (deleteResponse.ok) {
-        toast.success("Удалено!");
+        toast.success(t("toast.delete-success"));
         signOut({ callbackUrl: "/" });
         // router.push("/");
       } else {
-        throw new Error("Ошибка удаление акаунта");
+        throw new Error(t("toast.delete-error"));
       }
     } catch (error) {
       console.error("Ошибка при отправке данных:", error);
-      toast.error("Ошибка удаления");
+      toast.error(t("toast.delete-error"));
     }
   };
 
@@ -214,7 +215,7 @@ export default function Profile() {
                       )}
                     </div>
                     <label className="photo-dashboard-contacts__save button">
-                      Завантажити фото
+                      {t("upload-photo")}
                       <input
                         type="file"
                         accept="image/jpeg, image/png"
@@ -229,12 +230,12 @@ export default function Profile() {
             <div className="dashboard-contacts__data data-dashboard-contacts">
               <div className="data-dashboard-contacts__body body-dashboard__block">
                 <h2 className="body-dashboard__title title title--small">
-                  Контактні дані
+                  {t("contact-details.title")}
                 </h2>
                 <div className="block-row">
                   <div className="block-row__item">
                     <div className="input-block">
-                      <p>Прізвище*</p>
+                      <p>{t("contact-details.last-name")}*</p>
                       <input
                         {...register("last_name")}
                         value={userInformation?.last_name ?? ""}
@@ -253,7 +254,7 @@ export default function Profile() {
                   </div>
                   <div className="block-row__item">
                     <div className="input-block">
-                      <p>Імʼя*</p>
+                      <p>{t("contact-details.first-name")}*</p>
                       <input
                         value={userInformation?.first_name ?? ""}
                         {...register("first_name")}
@@ -276,7 +277,7 @@ export default function Profile() {
                 <div className="block-row">
                   <div className="block-row__item">
                     <div className="input-block">
-                      <p>По батькові</p>
+                      <p>{t("contact-details.middle-name")}</p>
                       <input
                         {...register("middle_name")}
                         value={
@@ -301,7 +302,7 @@ export default function Profile() {
                   </div>
                   <div className="block-row__item">
                     <div className="input-block">
-                      <p>Стать</p>
+                      <p>{t("contact-details.gender")}</p>
                       <div className="radio-group gender__items">
                         <div className="radio-group__item">
                           <label>
@@ -317,7 +318,7 @@ export default function Profile() {
                                 errors.gender ? "custom-radio--error" : ""
                               }`}
                             >
-                              Ч
+                              {t("contact-details.gender-male")}
                             </span>
                           </label>
                         </div>
@@ -335,7 +336,7 @@ export default function Profile() {
                                 errors.gender ? "custom-radio--error" : ""
                               }`}
                             >
-                              Ж
+                              {t("contact-details.gender-female")}
                             </span>
                           </label>
                         </div>
@@ -344,11 +345,11 @@ export default function Profile() {
                   </div>
                 </div>
                 <div className="input-block">
-                  <p>Дата народження</p>
+                  <p>{t("contact-details.birthday")}</p>
                   <div className="birth-date">
                     <div className="birth-date__item">
                       <Select
-                        placeholder={"День"}
+                        placeholder={t("contact-details.day")}
                         defaultSelectedKeys={
                           userInformation && userInformation.birthday
                             ? [
@@ -395,7 +396,7 @@ export default function Profile() {
                     </div>
                     <div className="birth-date__item">
                       <Select
-                        placeholder={"Месяц"}
+                        placeholder={t("contact-details.month")}
                         defaultSelectedKeys={
                           userInfo && userInfo.birthday
                             ? [userInfo.birthday.split(" ")[0].split("-")[1]]
@@ -438,7 +439,7 @@ export default function Profile() {
                     </div>
                     <div className="birth-date__item">
                       <Select
-                        placeholder={"Год"}
+                        placeholder={t("contact-details.year")}
                         defaultSelectedKeys={
                           userInfo && userInfo.birthday
                             ? [userInfo.birthday.split(" ")[0].split("-")[0]]
@@ -484,11 +485,11 @@ export default function Profile() {
                 <div className="block-row">
                   <div className="block-row__item">
                     <div className="input-block">
-                      <p>Номер телефону*</p>
+                      <p>{t("contact-details.phone-number")}*</p>
                       <input
                         type="tel"
                         {...register("phone_number")}
-                        placeholder="Номер телефону"
+                        placeholder={t("contact-details.phone-number")}
                         className={` input ${
                           errors.phone_number ? "input--error" : ""
                         }`}
@@ -509,11 +510,11 @@ export default function Profile() {
                   </div>
                   <div className="block-row__item">
                     <div className="input-block">
-                      <p>Пошта*</p>
+                      <p>{t("contact-details.email")}*</p>
                       <input
                         type="email"
                         {...register("email")}
-                        placeholder="Пошта"
+                        placeholder={t("contact-details.email")}
                         className={` input ${
                           errors.email ? "input--error" : ""
                         }`}
@@ -532,11 +533,11 @@ export default function Profile() {
                 <div className="block-row">
                   <div className="block-row__item">
                     <div className="input-block">
-                      <p>Назва підприємства</p>
+                      <p>{t("contact-details.name-of-enterprise")}</p>
                       <input
                         type="text"
                         {...register("name_of_enterprise")}
-                        placeholder="Назва підприємства"
+                        placeholder={t("contact-details.name-of-enterprise")}
                         className={` input ${
                           errors.name_of_enterprise ? "input--error" : ""
                         }`}
@@ -557,11 +558,11 @@ export default function Profile() {
                   </div>
                   <div className="block-row__item">
                     <div className="input-block">
-                      <p>Посилання на сайт</p>
+                      <p>{t("contact-details.website-link")}</p>
                       <input
                         type="text"
                         {...register("web_site")}
-                        placeholder="Посилання на сайт"
+                        placeholder={t("contact-details.website-link")}
                         className={` input ${
                           errors.web_site ? "input--error" : ""
                         }`}
@@ -582,11 +583,11 @@ export default function Profile() {
                 <div className="block-row">
                   <div className="block-row__item">
                     <div className="input-block">
-                      <p>Країна</p>
+                      <p>{t("contact-details.country")}</p>
                       <input
                         type="text"
                         {...register("country")}
-                        placeholder="Країна"
+                        placeholder={t("contact-details.country")}
                         className={` input ${
                           errors.country ? "input--error" : ""
                         }`}
@@ -605,10 +606,10 @@ export default function Profile() {
                   </div>
                   <div className="block-row__item">
                     <div className="input-block">
-                      <p>Область</p>
+                      <p>{t("contact-details.region")}</p>
                       <input
                         type="text"
-                        placeholder="Область"
+                        placeholder={t("contact-details.region")}
                         {...register("area")}
                         className={` input ${
                           errors.area ? "input--error" : ""
@@ -628,10 +629,10 @@ export default function Profile() {
                 <div className="block-row">
                   <div className="block-row__item">
                     <div className="input-block">
-                      <p>Місто</p>
+                      <p>{t("contact-details.city")}</p>
                       <input
                         type="text"
-                        placeholder="Місто"
+                        placeholder={t("contact-details.city")}
                         className={` input ${
                           errors.city ? "input--error" : ""
                         }`}
@@ -649,10 +650,10 @@ export default function Profile() {
                   </div>
                   <div className="block-row__item">
                     <div className="input-block">
-                      <p>Адреса</p>
+                      <p>{t("contact-details.address")}</p>
                       <input
                         type="text"
-                        placeholder="Адреса"
+                        placeholder={t("contact-details.address")}
                         {...register("address")}
                         className={` input ${
                           errors.address ? "input--error" : ""
@@ -674,10 +675,10 @@ export default function Profile() {
                 <div className="block-row">
                   <div className="block-row__item">
                     <div className="input-block">
-                      <p>Посилання на Instagram</p>
+                      <p>{t("contact-details.ig-link")}</p>
                       <input
                         type="text"
-                        placeholder="Посилання на Instagram"
+                        placeholder={t("contact-details.ig-link")}
                         className={` input ${
                           errors.ig_link ? "input--error" : ""
                         }`}
@@ -697,10 +698,10 @@ export default function Profile() {
                   </div>
                   <div className="block-row__item">
                     <div className="input-block">
-                      <p>Посилання на Telegram/Viber</p>
+                      <p>{t("contact-details.tg-link")}</p>
                       <input
                         type="text"
-                        placeholder="Посилання на Telegram/Viber"
+                        placeholder={t("contact-details.tg-link")}
                         className={` input ${
                           errors.tg_link ? "input--error" : ""
                         }`}
@@ -722,10 +723,10 @@ export default function Profile() {
                 <div className="block-row">
                   <div className="block-row__item">
                     <div className="input-block">
-                      <p>Посилання на Facebook</p>
+                      <p>{t("contact-details.fb-link")}</p>
                       <input
                         type="text"
-                        placeholder="Посилання на Facebook"
+                        placeholder={t("contact-details.fb-link")}
                         className={` input ${
                           errors.fb_link ? "input--error" : ""
                         }`}
@@ -745,10 +746,10 @@ export default function Profile() {
                   </div>
                   <div className="block-row__item">
                     <div className="input-block">
-                      <p>Посилання на YouTube</p>
+                      <p>{t("contact-details.yt-link")}</p>
                       <input
                         type="text"
-                        placeholder="Посилання на YouTube"
+                        placeholder={t("contact-details.yt-link")}
                         className={` input ${
                           errors.yt_link ? "input--error" : ""
                         }`}
@@ -768,7 +769,7 @@ export default function Profile() {
                   </div>
                 </div>
                 <p className="data-dashboard-contacts__text">
-                  Поля, що відмічені *, обовʼязкові для заповнення
+                  {t("contact-details.required-fields")}
                 </p>
               </div>
               <div className="block-row">
@@ -776,25 +777,25 @@ export default function Profile() {
                   type="submit"
                   className="data-dashboard-contacts__save button"
                 >
-                  Зберегти
+                  {t("save")}
                   {isLoadingRequest && <Spinner color="current" size="sm" />}
                 </button>
                 <button
                   type="button"
                   onClick={(e) => {
-                    toast("Вы уверены что хотите удалить пост?", {
+                    toast(t("toast.delete-confirm"), {
                       classNames: {
                         actionButton: "bg-red-600! p-4!",
                       },
                       action: {
-                        label: "Удалить",
+                        label: t("toast.delete-account"),
                         onClick: () => handleDeleteAccount(),
                       },
                     });
                   }}
                   className="dashboard-contacts__delete button button--danger"
                 >
-                  Видалити акаунт
+                  {t("toast.delete-account")}
                 </button>
               </div>
             </div>

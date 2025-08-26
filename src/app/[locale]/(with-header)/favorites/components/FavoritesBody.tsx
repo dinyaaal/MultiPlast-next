@@ -4,8 +4,10 @@ import { MinimalProduct } from "@/types/types";
 import { useSession } from "next-auth/react";
 import { useState, useEffect } from "react";
 import { Pagination, Spinner } from "@heroui/react";
+import { useTranslations } from "next-intl";
 
 export default function FavoritesBody() {
+  const t = useTranslations("Favorites");
   const { data: session, status } = useSession();
   const [products, setProducts] = useState<MinimalProduct[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -199,7 +201,7 @@ export default function FavoritesBody() {
           )}
         </>
       ) : (
-        <p>Нет товаров</p>
+        <p>{t("no-products")}</p>
       )}
     </div>
   );

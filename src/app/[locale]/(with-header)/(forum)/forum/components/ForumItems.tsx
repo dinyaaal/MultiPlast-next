@@ -5,12 +5,14 @@ import { Pagination, Spinner } from "@heroui/react";
 
 import { ForumCard } from "@/Components/Forum/components/ForumCard";
 import { useSearchParams } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 interface ForumItemsProps {
   activeSectionId: number | null;
 }
 
 export default function ForumItems({ activeSectionId }: ForumItemsProps) {
+  const t = useTranslations("Forum");
   const [forumPosts, setForumPosts] = useState<ForumPost[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -91,7 +93,7 @@ export default function ForumItems({ activeSectionId }: ForumItemsProps) {
             <ForumCard onDelete={handleDeleteForum} key={post.id} post={post} />
           ))
         ) : (
-          <p>Нету тем</p>
+          <p>{t("noTopics")}</p>
         )}
       </div>
 

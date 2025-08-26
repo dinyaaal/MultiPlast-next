@@ -3,7 +3,7 @@ import { ProductCard } from "@/Components/Products/components/ProductCard";
 import { ProductType } from "@/types/types";
 import { Pagination, Spinner } from "@heroui/react";
 import { useSession } from "next-auth/react";
-import router from "next/router";
+import { useTranslations } from "next-intl";
 import React, { useEffect, useState } from "react";
 
 export default function page() {
@@ -12,7 +12,7 @@ export default function page() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [lastPage, setLastPage] = useState<number>();
-
+  const t = useTranslations("Dashboard.MyBuy");
   const fetchProducts = async () => {
     setIsLoading(true);
     const queryParams = new URLSearchParams();
@@ -52,9 +52,7 @@ export default function page() {
 
   if (status === "unauthenticated") {
     <div className="dashboard__block my-dashboard__block">
-      <h2 className="my-dashboard__title title title--small">
-        Мої оголошення про продаж
-      </h2>
+      <h2 className="my-dashboard__title title title--small">{t("title")}</h2>
       <div className="my-dashboard__content"></div>
     </div>;
   }
@@ -69,9 +67,7 @@ export default function page() {
 
   return (
     <div className="dashboard__block my-dashboard__block">
-      <h2 className="my-dashboard__title title title--small">
-        Мої оголошення про купівлю
-      </h2>
+      <h2 className="my-dashboard__title title title--small">{t("title")}</h2>
 
       <div className="my-dashboard__content">
         {products.length > 0 ? (
@@ -81,7 +77,7 @@ export default function page() {
             ))}
           </div>
         ) : (
-          <p>Нет товаров</p>
+          <p>{t("no-products")}</p>
         )}
         {lastPage && lastPage > 1 && (
           <div className="pages">

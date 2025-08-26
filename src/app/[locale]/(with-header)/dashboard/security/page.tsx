@@ -10,13 +10,14 @@ import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { Toaster, toast } from "sonner";
+import { useTranslations } from "next-intl";
 
 type Inputs = z.infer<typeof UserSecuritySchema>;
 
 export default function Profile() {
   const { data: session, status } = useSession();
   const router = useRouter();
-
+  const t = useTranslations("Dashboard.Security");
   const [isVisibleOld, setIsVisibleOld] = useState(false);
   const [isVisibleNew, setIsVisibleNew] = useState(false);
   const [isVisibleRepeat, setIsVisibleRepeat] = useState(false);
@@ -79,14 +80,14 @@ export default function Profile() {
       if (!editResponse.ok) {
         console.error("❌ Registration error:", result);
 
-        toast.error(result.message || "Unknown registration error");
+        toast.error(result.message || t("toast.password-change-error"));
 
         return;
       }
-      toast.success("Пароль успешно изменен");
+      toast.success(t("toast.password-changed"));
     } catch (error) {
       console.error("Ошибка при отправке данных:", error);
-      toast.error("Ошибка обновления информации пользователя");
+      toast.error(t("toast.password-change-error"));
     } finally {
       setIsLoadingRequest(false);
     }
@@ -114,11 +115,11 @@ export default function Profile() {
             <div className="dashboard-contacts__user-block">
               <div className="dashboard-contacts__password password-dashboard-contacts">
                 <div className="password-dashboard-contacts__title">
-                  Зміна пароля
+                  {t("title")}
                 </div>
                 <div className="password-dashboard-contacts__body">
                   <div className="input-block">
-                    <p>Старий пароль</p>
+                    <p>{t("old-password")}</p>
                     <div
                       className={`password input ${
                         errors.oldPassword ? "input--error" : ""
@@ -160,7 +161,7 @@ export default function Profile() {
                     {/* <PasswordInput /> */}
                   </div>
                   <div className="input-block">
-                    <p>Новий пароль</p>
+                    <p>{t("new-password")}</p>
                     <div
                       className={`password input ${
                         errors.newPassword ? "input--error" : ""
@@ -202,7 +203,7 @@ export default function Profile() {
                     {/* <PasswordInput /> */}
                   </div>
                   <div className="input-block">
-                    <p>Підтвердження пароля</p>
+                    <p>{t("repeat-password")}</p>
                     <div
                       className={`password input ${
                         errors.repeatPassword ? "input--error" : ""
@@ -243,14 +244,14 @@ export default function Profile() {
                     </div>
                     {/* <PasswordInput /> */}
                   </div>
-                  <p>Мінімальна довжина паролю - 6 символів</p>
+                  <p>{t("min-length")}</p>
                 </div>
                 <div className="password-dashboard-contacts__actions">
                   <button
                     type="submit"
                     className="password-dashboard-contacts__save button"
                   >
-                    Зберегти
+                    {t("save")}
                     {isLoadingRequest && <Spinner color="current" size="sm" />}
                   </button>
                   {/* <button className="password-dashboard-contacts__cancel">

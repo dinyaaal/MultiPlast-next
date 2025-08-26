@@ -43,7 +43,7 @@ export default function HeaderMenu() {
             {tNavigation("aboutProject")}
           </Link>
           <Link
-            href="#"
+            href="/user-agreement"
             className={`menu__link menu-bottom-header__item ${
               pathname === "/user-agreement" ? "active" : ""
             }`}
@@ -51,9 +51,9 @@ export default function HeaderMenu() {
             {tNavigation("userAgreement")}
           </Link>
           <Link
-            href="#"
+            href="/how-to-trade"
             className={`menu__link menu-bottom-header__item ${
-              pathname === "/how-to-sell-buy" ? "active" : ""
+              pathname === "/how-to-trade" ? "active" : ""
             }`}
           >
             {tNavigation("howToSellBuy")}

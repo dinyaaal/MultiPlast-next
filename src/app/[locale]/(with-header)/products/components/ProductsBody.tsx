@@ -8,6 +8,7 @@ import { Filters } from "@/Components/Products/components/Filters";
 import { useSearchParams } from "next/navigation";
 import { Spinner } from "@heroui/react";
 import { useSession } from "next-auth/react";
+import { useTranslations } from "next-intl";
 
 interface ProductsProps {
   categories: Category[];
@@ -15,7 +16,7 @@ interface ProductsProps {
 
 export function ProductsBody({ categories }: ProductsProps) {
   const { data: session, status } = useSession();
-  // const t = useTranslations("Products");
+  const t = useTranslations("Products");
   const [products, setProducts] = useState<MinimalProduct[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -132,7 +133,7 @@ export function ProductsBody({ categories }: ProductsProps) {
                 ))}
               </div>
             ) : (
-              <p>Нет товаров</p>
+              <p>{t("noProducts")}</p>
             )
           ) : null}
           {lastPage && lastPage > 1 && (

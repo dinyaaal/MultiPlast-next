@@ -35,9 +35,9 @@ export default function FooterNavigation() {
 
           <li className="menu-footer__item">
             <Link
-              href="/how-to-sell-buy"
+              href="/how-to-trade"
               className={`menu__link ${
-                pathname === "/how-to-sell-buy" ? "active" : ""
+                pathname === "/how-to-trade" ? "active" : ""
               }`}
             >
               {tNavigation("howToSellBuy")}

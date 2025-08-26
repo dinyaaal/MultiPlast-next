@@ -8,6 +8,7 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ChevronDownIcon } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 interface FiltersProps {
   categories: Category[];
@@ -22,6 +23,7 @@ export const Filters: React.FC<FiltersProps> = ({
   categories,
   onSelectionConfirm,
 }) => {
+  const t = useTranslations("Products.filters");
   const [isOpen, setIsOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedSubCategories, setSelectedSubCategories] = useState<string[]>(
@@ -164,7 +166,7 @@ export const Filters: React.FC<FiltersProps> = ({
             fill="#0E274D"
           />
         </svg>
-        <span>Фільтри</span>
+        <span>{t("button")}</span>
       </button>
       <div
         className={`filters-trade__body body-filters-trade ${
@@ -179,7 +181,7 @@ export const Filters: React.FC<FiltersProps> = ({
               width={1000}
               height={1000}
             />
-            До товарів
+            {t("back")}
           </button>
           <button onClick={toggleMenu} className="filters-trade__button button">
             <svg
@@ -194,7 +196,7 @@ export const Filters: React.FC<FiltersProps> = ({
                 fill="#0E274D"
               />
             </svg>
-            <span>Фільтри</span>
+            <span>{t("button")}</span>
           </button>
           <div className="body-filters-trade__items spollers">
             <Accordion
@@ -221,10 +223,10 @@ export const Filters: React.FC<FiltersProps> = ({
                   onValueChange={setSelectedOptions}
                 >
                   <Checkbox classNames={{ label: "text-xl" }} value="sell">
-                    Продажа
+                    {t("typeSell")}
                   </Checkbox>
                   <Checkbox classNames={{ label: "text-xl" }} value="buy">
-                    Покупка
+                    {t("typeBuy")}
                   </Checkbox>
                 </CheckboxGroup>
               </AccordionItem>
@@ -270,21 +272,21 @@ export const Filters: React.FC<FiltersProps> = ({
                   key="3"
                   aria-label={
                     Number(selectedCategory) === 3
-                      ? "Виберіть тип обладнання"
+                      ? t("typeEquipment")
                       : Number(selectedCategory) === 4
-                      ? "Виберіть послугу"
+                      ? t("typeService")
                       : Number(selectedCategory) === 5
-                      ? "Тип оголошення"
-                      : "Сировина"
+                      ? t("type")
+                      : t("typeRawMaterial")
                   }
                   title={
                     Number(selectedCategory) === 3
-                      ? "Виберіть тип обладнання"
+                      ? t("typeEquipment")
                       : Number(selectedCategory) === 4
-                      ? "Виберіть послугу"
+                      ? t("typeService")
                       : Number(selectedCategory) === 5
-                      ? "Тип оголошення"
-                      : "Сировина"
+                      ? t("type")
+                      : t("typeRawMaterial")
                   }
                 >
                   <CheckboxGroup
@@ -321,8 +323,8 @@ export const Filters: React.FC<FiltersProps> = ({
                   }}
                   indicator={<ChevronDownIcon />}
                   key="4"
-                  aria-label="Полімер"
-                  title="Полімер"
+                  aria-label={t("typePolymer")}
+                  title={t("typePolymer")}
                 >
                   <CheckboxGroup
                     value={selectedSubCategories}
@@ -456,13 +458,13 @@ export const Filters: React.FC<FiltersProps> = ({
               onClick={handleConfirm}
               className="body-filters-trade__button button"
             >
-              Застосувати фільтри
+              {t("applyFilters")}
             </button>
             <button
               onClick={handleReset}
               className="body-filters-trade__button button button--secondary"
             >
-              Сбросить фильтры
+              {t("resetFilters")}
             </button>
           </div>
         </div>

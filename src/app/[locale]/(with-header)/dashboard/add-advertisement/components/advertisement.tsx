@@ -43,7 +43,7 @@ interface typePrice {
 type Inputs = z.infer<typeof AdvertismentSchema>;
 
 export default function Advertisement({ categories }: SellProps) {
-  const t = useTranslations("Sell");
+  const t = useTranslations("Dashboard.Sell");
   const searchParams = useSearchParams();
   // const router = useRouter();
   const editId = searchParams.get("edit");
@@ -697,13 +697,13 @@ export default function Advertisement({ categories }: SellProps) {
                   <div className="input-block">
                     <p>
                       {Number(watch("mainCategory")) === 2
-                        ? t("select-type")
+                        ? t("select-equipment")
                         : Number(watch("mainCategory")) === 3
-                        ? "Виберіть тип устаткування:*"
+                        ? t("select-type")
                         : Number(watch("mainCategory")) === 4
-                        ? "Виберіть послугу:*"
+                        ? t("select-service")
                         : Number(watch("mainCategory")) === 5
-                        ? "Виберіть тип оголошення:*"
+                        ? t("select-type-ad")
                         : ""}
                     </p>
 
@@ -713,11 +713,11 @@ export default function Advertisement({ categories }: SellProps) {
                         Number(watch("mainCategory")) === 2
                           ? t("select-type")
                           : Number(watch("mainCategory")) === 3
-                          ? "Виберіть тип устаткування:"
+                          ? t("select-equipment")
                           : Number(watch("mainCategory")) === 4
-                          ? "Виберіть послугу:"
+                          ? t("select-service")
                           : Number(watch("mainCategory")) === 5
-                          ? "Виберіть тип оголошення:"
+                          ? t("select-type-ad")
                           : ""
                       }
                       classNames={{
@@ -916,7 +916,7 @@ export default function Advertisement({ categories }: SellProps) {
                         />
                       </label>
                     </div>
-                    <p>Первая загруженная фотография будет главной</p>
+                    <p>{t("main-photo")}</p>
                     <div className="input-body-file__content">
                       <div className="input-body-file__downloads downloads-input-body-file">
                         <div className="downloads-input-body-file__image-box">
@@ -990,7 +990,7 @@ export default function Advertisement({ categories }: SellProps) {
 
                       {files && files.length > 0 && (
                         <p className="input-body-file__item">
-                          Кількість завантажених файлів: {files.length}
+                          {t("files-uploaded")} {files.length}
                         </p>
                       )}
                     </div>
@@ -1143,7 +1143,9 @@ export default function Advertisement({ categories }: SellProps) {
                     onClick={() => setShowDiscount((prev) => !prev)}
                     className=" button button--secondary"
                   >
-                    {showDiscount ? "Ціна без знижки" : "Ціна зі знижкою"}
+                    {showDiscount
+                      ? t("price-without-discount")
+                      : t("price-with-discount")}
                   </button>
                 )}
               {!arrangement &&
@@ -1190,7 +1192,7 @@ export default function Advertisement({ categories }: SellProps) {
           </div>
           <div className="flex flex-col gap-8 ">
             <h2 className="contact-dashboard__title title title--small">
-              Інформація
+              {t("information")}
             </h2>
             <div className="flex flex-col gap-5">
               {/* 
@@ -1350,12 +1352,14 @@ export default function Advertisement({ categories }: SellProps) {
                     key={field.id}
                     className="flex flex-col w-full items-center gap-5"
                   >
-                    <h4 className="title title--small">Контакт №{index + 1}</h4>
+                    <h4 className="title title--small">
+                      {t("contacts.contact")} №{index + 1}
+                    </h4>
                     <div className="flex flex-col gap-5 w-full">
                       <div className="grid grid-cols-2 w-full gap-5 items-center">
                         {/* Имя */}
                         <div className="input-block">
-                          <p>Имя*</p>
+                          <p>{t("contacts.name")}*</p>
                           <input
                             autoComplete="off"
                             type="text"
@@ -1370,7 +1374,7 @@ export default function Advertisement({ categories }: SellProps) {
 
                         {/* Должность */}
                         <div className="input-block">
-                          <p>Должность</p>
+                          <p>{t("contacts.position")}</p>
                           <input
                             autoComplete="off"
                             type="text"
@@ -1388,7 +1392,9 @@ export default function Advertisement({ categories }: SellProps) {
                         <div className="flex flex-col w-full gap-5">
                           {phones.map((phone, phoneIndex) => (
                             <div key={phoneIndex} className="input-block">
-                              <p>Телефон №{phoneIndex + 1}</p>
+                              <p>
+                                {t("contacts.phone")} №{phoneIndex + 1}
+                              </p>
 
                               <div className="flex gap-2 items-center w-full ">
                                 <input
@@ -1423,7 +1429,7 @@ export default function Advertisement({ categories }: SellProps) {
                           className="button button--fw button--secondary"
                           onClick={addPhone}
                         >
-                          + Добавить телефон
+                          {t("contacts.add-phone")}
                         </button>
                       </div>
                     </div>
@@ -1443,7 +1449,7 @@ export default function Advertisement({ categories }: SellProps) {
                   })
                 }
               >
-                Добавить контакт
+                {t("contacts.add-contact")}
               </button>
               {fields.length > 1 && (
                 <button
@@ -1451,7 +1457,7 @@ export default function Advertisement({ categories }: SellProps) {
                   onClick={() => remove(fields.length - 1)}
                   className="button button--danger button--fw"
                 >
-                  Удалить контакт
+                  {t("contacts.delete-contact")}
                 </button>
               )}
             </div>
