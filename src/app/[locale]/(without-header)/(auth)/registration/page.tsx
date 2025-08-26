@@ -109,17 +109,31 @@ export default function Registration() {
 
       if (!response.ok) {
         console.error("❌ Registration error:", result);
-
-        toast.error(result.message || "Unknown registration error");
-
+        toast.error(result.message || t("toast.error"));
         return;
       }
 
-      toast.success("Registration successful");
+      // ✅ Регистрация успешна
+      toast.success(t("toast.success"));
+
+      // ⚡ Автовход
+      const res = await signIn("credentials", {
+        redirect: false,
+        email: data.email,
+        password: data.password,
+      });
+
+      if (res?.error) {
+        toast.error(res.error || t("toast.login-error"));
+        console.error("❌ Login error:", res.error);
+        return;
+      }
+
+      toast.success(t("toast.login-success"));
       router.push("/");
     } catch (error) {
       console.error("❌ Unexpected error:", error);
-      toast.error("Unexpected error during registration");
+      toast.error(t("toast.error"));
     }
   };
 
