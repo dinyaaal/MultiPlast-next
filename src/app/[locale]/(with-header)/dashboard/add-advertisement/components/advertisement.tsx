@@ -17,7 +17,7 @@ import { toast } from "sonner";
 import { z } from "zod";
 import Image from "next/image";
 import { useRouter } from "@/i18n/routing";
-import { ChevronRight, Minus, TrashIcon } from "lucide-react";
+import { ChevronRight, TrashIcon } from "lucide-react";
 
 interface SellProps {
   categories: Category[];
@@ -697,9 +697,9 @@ export default function Advertisement({ categories }: SellProps) {
                   <div className="input-block">
                     <p>
                       {Number(watch("mainCategory")) === 2
-                        ? t("select-equipment")
-                        : Number(watch("mainCategory")) === 3
                         ? t("select-type")
+                        : Number(watch("mainCategory")) === 3
+                        ? t("select-equipment")
                         : Number(watch("mainCategory")) === 4
                         ? t("select-service")
                         : Number(watch("mainCategory")) === 5

@@ -11,6 +11,7 @@ import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import "@mdxeditor/editor/style.css";
+import Preloader from "@/Components/Preloader";
 
 const rubikFont = Rubik({
   subsets: ["latin"],
@@ -42,6 +43,7 @@ export default async function RootLayout({
           <AuthProviders>
             <NextIntlClientProvider>
               <HeroUIProvider className=" w-full h-full">
+                <Preloader />
                 {children}
                 <Toaster
                   position="top-right"
