@@ -5,20 +5,20 @@ export async function POST(request: NextRequest) {
 
   const email = formData.get("email");
 
-  if (!email || typeof email !== "string") {
-    return NextResponse.json({ error: "Email is required" }, { status: 400 });
-  }
+  // if (!email || typeof email !== "string") {
+  //   return NextResponse.json({ error: "Email is required" }, { status: 400 });
+  // }
 
   try {
     const res = await fetch(
-      `https://multiplast-api.web-hub.online/api/forgot-password`,
+      `https://multiplast-api.web-hub.online/api/auth/forgot-password`,
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
         },
-        body: formData,
+        body: JSON.stringify({ email }),
       }
     );
 

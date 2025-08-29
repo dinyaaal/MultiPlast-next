@@ -1361,6 +1361,7 @@ export default function Advertisement({ categories }: SellProps) {
                         <div className="input-block">
                           <p>{t("contacts.name")}*</p>
                           <input
+                            minLength={3}
                             autoComplete="off"
                             type="text"
                             className={`input ${

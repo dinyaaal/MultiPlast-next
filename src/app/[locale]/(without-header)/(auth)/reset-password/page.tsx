@@ -3,11 +3,12 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 import Image from "next/image";
+import { useSearchParams } from "next/navigation";
 
 const StepOneSchema = z.object({
   email: z.string().email("Невірний email"),
@@ -29,9 +30,17 @@ type StepTwoInputs = z.infer<typeof StepTwoSchema>;
 
 export default function ForgotPassword() {
   const t = useTranslations("Auth.forgot-password");
-
+  const searchParams = useSearchParams();
+  const email = searchParams.get("email");
+  const token = searchParams.get("token");
   const [step, setStep] = useState<1 | 2>(1);
-  const [email, setEmail] = useState("");
+  // const [email, setEmail] = useState("");
+
+  useEffect(() => {
+    if (email && token) {
+      setStep(2);
+    }
+  }, [email, token]);
 
   // Шаг 1 — Email
   const {
@@ -69,7 +78,7 @@ export default function ForgotPassword() {
       }
 
       toast.success(t("send-instructions"));
-      setEmail(data.email);
+      // setEmail(data.email);
       setStep(2);
     } catch (err) {
       toast.error(t("send-error"));
@@ -78,8 +87,8 @@ export default function ForgotPassword() {
 
   const handleResetSubmit: SubmitHandler<StepTwoInputs> = async (data) => {
     const formData = new FormData();
-    formData.append("email", email);
-    formData.append("token", data.token);
+    // formData.append("email", email);
+    // formData.append("token", token);
     formData.append("password", data.password);
 
     try {
@@ -141,8 +150,8 @@ export default function ForgotPassword() {
           className="login__form form-login"
         >
           <div className="form-login__block">
-            <div className="input-block">
-              <p>Код з пошти</p>
+            {/* <div className="input-block">
+              <p>{t("code-from-email")}</p>
               <input
                 type="text"
                 className={`form-login__input input ${
@@ -150,7 +159,7 @@ export default function ForgotPassword() {
                 }`}
                 {...registerStep2("token")}
               />
-            </div>
+            </div> */}
             <div className="input-block">
               <p>{t("new-password")}</p>
               <input

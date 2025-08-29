@@ -39,6 +39,21 @@ export const ForgotPasswordSchema = z.object({
     .min(1, "Введите свой email "),
 });
 
+export const ResetPasswordSchema = z
+  .object({
+    email: z
+      .string()
+      .email("Введите корректный email")
+      .min(1, "Введите свой email "),
+    token: z.string().min(1, "Введіть код з пошти"),
+    newPassword: z.string().min(6, "Введите новый пароль"), // обязательное поле
+    repeatPassword: z.string().min(6, "Повторите новый пароль"), // обязательное поле
+  })
+  .refine((data) => data.newPassword === data.repeatPassword, {
+    message: "Новый пароль и его повтор должны совпадать",
+    path: ["repeatPassword"],
+  });
+
 export const ForumAddSchema = z.object({
   title: z.string().min(1, "Введите заголовок "),
   text: z.string().min(1, "Введите описание "),
@@ -108,7 +123,7 @@ export const ContactSchema = z.object({
     )
     .nonempty("Укажите хотя бы один номер телефона"),
   position: z.string().optional(),
-  name: z.string().min(1, "Введите ваше имя"),
+  name: z.string().min(3, "Введите ваше имя"),
 });
 
 export const AdvertismentSchema = z
