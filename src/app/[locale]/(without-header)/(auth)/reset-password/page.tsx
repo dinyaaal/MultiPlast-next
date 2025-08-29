@@ -9,24 +9,10 @@ import { toast } from "sonner";
 import { z } from "zod";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
+import { ForgotPasswordSchema, ResetPasswordSchema } from "@/lib/schema";
 
-const StepOneSchema = z.object({
-  email: z.string().email("Невірний email"),
-});
-
-const StepTwoSchema = z
-  .object({
-    token: z.string().min(4, "Введіть код з пошти"),
-    password: z.string().min(6, "Мінімум 6 символів"),
-    confirm: z.string(),
-  })
-  .refine((data) => data.password === data.confirm, {
-    message: "Паролі не співпадають",
-    path: ["confirm"],
-  });
-
-type StepOneInputs = z.infer<typeof StepOneSchema>;
-type StepTwoInputs = z.infer<typeof StepTwoSchema>;
+type StepOneInputs = z.infer<typeof ForgotPasswordSchema>;
+type StepTwoInputs = z.infer<typeof ResetPasswordSchema>;
 
 export default function ForgotPassword() {
   const t = useTranslations("Auth.forgot-password");
@@ -39,6 +25,8 @@ export default function ForgotPassword() {
   useEffect(() => {
     if (email && token) {
       setStep(2);
+      setValueStep2("email", email);
+      setValueStep2("token", token);
     }
   }, [email, token]);
 
@@ -48,16 +36,18 @@ export default function ForgotPassword() {
     handleSubmit: handleSubmitStep1,
     formState: { errors: errors1 },
   } = useForm<StepOneInputs>({
-    resolver: zodResolver(StepOneSchema),
+    resolver: zodResolver(ForgotPasswordSchema),
   });
 
   // Шаг 2 — Token и новый пароль
   const {
     register: registerStep2,
+    watch: watchStep2,
+    setValue: setValueStep2,
     handleSubmit: handleSubmitStep2,
     formState: { errors: errors2 },
   } = useForm<StepTwoInputs>({
-    resolver: zodResolver(StepTwoSchema),
+    resolver: zodResolver(ResetPasswordSchema),
   });
 
   const handleEmailSubmit: SubmitHandler<StepOneInputs> = async (data) => {
@@ -87,9 +77,9 @@ export default function ForgotPassword() {
 
   const handleResetSubmit: SubmitHandler<StepTwoInputs> = async (data) => {
     const formData = new FormData();
-    // formData.append("email", email);
-    // formData.append("token", token);
-    formData.append("password", data.password);
+    formData.append("email", data.email);
+    formData.append("token", data.token);
+    formData.append("password", data.newPassword);
 
     try {
       const res = await fetch("/api/users/reset-password", {
@@ -165,9 +155,9 @@ export default function ForgotPassword() {
               <input
                 type="password"
                 className={`form-login__input input ${
-                  errors2.password ? "input--error" : ""
+                  errors2.newPassword ? "input--error" : ""
                 }`}
-                {...registerStep2("password")}
+                {...registerStep2("newPassword")}
               />
             </div>
             <div className="input-block">
@@ -175,9 +165,9 @@ export default function ForgotPassword() {
               <input
                 type="password"
                 className={`form-login__input input ${
-                  errors2.confirm ? "input--error" : ""
+                  errors2.repeatPassword ? "input--error" : ""
                 }`}
-                {...registerStep2("confirm")}
+                {...registerStep2("repeatPassword")}
               />
             </div>
           </div>
