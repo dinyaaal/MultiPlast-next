@@ -17,10 +17,11 @@ export interface UserAuth {
   access_token: string;
   email: string;
   first_name: string;
+  last_name: string;
   city: string;
   phone_number: string;
   avatar: string;
-  last_name: string;
+  remember: boolean;
 }
 
 export interface User {

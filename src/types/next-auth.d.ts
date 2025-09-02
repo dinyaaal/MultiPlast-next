@@ -1,28 +1,15 @@
 import NextAuth from "next-auth";
+import { UserAuth } from "@/types/types";
 
 declare module "next-auth" {
   interface Session {
-    user: {
-      id: number;
-      access_token: string;
-      email: string;
-      first_name: string;
-      city: string;
-      phone_number: string;
-      avatar: string;
-      last_name: string;
-    };
+    user: UserAuth;
   }
+
   interface Token {
-    user?: {
-      id: number;
-      access_token: string;
-      email: string;
-      first_name: string;
-      last_name: string;
-      city: string;
-      phone_number: string;
-      avatar: string;
-    };
+    user?: UserAuth;
+    exp?: number;
   }
+
+  interface User extends UserAuth {}
 }
