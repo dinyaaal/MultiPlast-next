@@ -649,7 +649,7 @@ input::-webkit-inner-spin-button {
 }
 
 .description__input {
-  @apply min-h-[115px] h-auto rounded-md w-full block p-[14px] text-[14px] outline outline-border hover:outline-border;
+  @apply min-h-[115px] h-auto rounded-md w-full block p-[14px] text-[14px] !outline !outline-border bg-[#f8fbff];
 }
 .description__input ul {
   @apply list-disc pl-[20px] mt-[20px] mb-0;

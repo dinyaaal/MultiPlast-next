@@ -44,6 +44,7 @@ export default function Login() {
       redirect: false,
       email: data.email,
       password: data.password,
+      remember: data.remember,
     });
 
     if (res?.error) {

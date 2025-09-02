@@ -12,7 +12,7 @@ import { toast } from "sonner";
 import { useSession } from "next-auth/react";
 import { MDXEditorMethods } from "@mdxeditor/editor";
 import { ForwardRefEditor } from "@/Components/ForwardRefEditor";
-import { Select, SelectItem } from "@heroui/react";
+import { Select, SelectItem, Spinner } from "@heroui/react";
 import { ForumCategoryMinimal } from "@/types/types";
 
 type Inputs = z.infer<typeof ForumAddSchema>;
@@ -26,14 +26,7 @@ export default function ForumBody({ categories }: ForumBodyProps) {
   const { data: session, status } = useSession();
   const editorRef = useRef<MDXEditorMethods>(null);
   const [content, setContent] = useState<string>("");
-
-  const allCategories = [
-    {
-      id: 0,
-      title: "Інше",
-    },
-    ...categories,
-  ];
+  const [isLoading, setIsLoading] = useState(false);
 
   const {
     register,
@@ -56,6 +49,7 @@ export default function ForumBody({ categories }: ForumBodyProps) {
     if (!session?.user.access_token) {
       return;
     }
+    setIsLoading(true);
 
     const token = session.user.access_token;
 
@@ -86,6 +80,8 @@ export default function ForumBody({ categories }: ForumBodyProps) {
     } catch (error) {
       console.error("Ошибка при отправке данных:", error);
       toast.error("Ошибка создания темы");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -126,7 +122,7 @@ export default function ForumBody({ categories }: ForumBodyProps) {
           {...register("category")}
           // onChange={(selectedKey) => handleChangeType(selectedKey)}
         >
-          {allCategories.map((category) => (
+          {categories.map((category) => (
             <SelectItem key={category.id}>{category.title}</SelectItem>
           ))}
         </Select>
@@ -173,6 +169,7 @@ export default function ForumBody({ categories }: ForumBodyProps) {
       <div className="add-forum__actions">
         <button type="submit" className="add-forum__add button">
           {t("publish")}
+          {isLoading && <Spinner size="sm" />}
         </button>
         {/* <button className="add-forum__delete button button--secondary">
                   {t("delete")}

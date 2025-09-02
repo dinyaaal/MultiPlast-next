@@ -39,7 +39,13 @@ export default function Sections({ onChangeSectionId }: SectionsProps) {
       const data = await res.json();
       if (data) {
         console.log(data.data);
-        setForumSectionsList(data.data);
+        // сортировка по position
+        const sorted = [...data.data].sort(
+          (a: ForumCategory, b: ForumCategory) => a.position - b.position
+        );
+
+        setForumSectionsList(sorted);
+        // setForumSectionsList(data.data);
         // setLastPage(data.last_page);
       }
     } catch (error) {

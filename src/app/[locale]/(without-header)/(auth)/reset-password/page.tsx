@@ -10,6 +10,7 @@ import { z } from "zod";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import { ForgotPasswordSchema, ResetPasswordSchema } from "@/lib/schema";
+import { Spinner } from "@heroui/react";
 
 type StepOneInputs = z.infer<typeof ForgotPasswordSchema>;
 type StepTwoInputs = z.infer<typeof ResetPasswordSchema>;
@@ -20,6 +21,7 @@ export default function ForgotPassword() {
   const email = searchParams.get("email");
   const token = searchParams.get("token");
   const [step, setStep] = useState<1 | 2>(1);
+  const [isLoading, setIsLoading] = useState(false);
   // const [email, setEmail] = useState("");
 
   useEffect(() => {
@@ -51,19 +53,21 @@ export default function ForgotPassword() {
   });
 
   const handleEmailSubmit: SubmitHandler<StepOneInputs> = async (data) => {
-    const formData = new FormData();
-    formData.append("email", data.email);
+    setIsLoading(true);
+    // const formData = new FormData();
+    // formData.append("email", data.email);
 
     try {
       const res = await fetch("/api/users/forgot-password", {
         method: "POST",
-        body: formData,
+        body: JSON.stringify({ email: data.email }),
       });
 
       const result = await res.json();
 
       if (!res.ok) {
-        toast.error(t("send-error"));
+        console.error("❌ Forgot password error:", result);
+        toast.error(result.message || t("send-error"));
         return;
       }
 
@@ -72,6 +76,8 @@ export default function ForgotPassword() {
       setStep(2);
     } catch (err) {
       toast.error(t("send-error"));
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -132,6 +138,7 @@ export default function ForgotPassword() {
 
           <button type="submit" className="form-login__button button">
             {t("button")}
+            {isLoading && <Spinner color="current" size="sm" />}
           </button>
         </form>
       ) : (

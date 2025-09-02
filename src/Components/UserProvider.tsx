@@ -58,57 +58,10 @@ export default function UserProvider({
     }
   };
 
-  const fetchFavorites = async () => {
-    if (!session) return;
-
-    try {
-      const responseFavorites = await fetch(
-        `/api/favorites/get?token=${session?.user.access_token}`
-      );
-
-      if (!responseFavorites.ok) {
-        throw new Error("Network response was not ok");
-      }
-
-      const data = await responseFavorites.json();
-
-      if (data) {
-        dispatch(setFavorites(data));
-      }
-    } catch (error) {
-      console.error("Error fetching order status:", error);
-    }
-  };
-
-  // const fetchCategories = async () => {
-  //   try {
-  //     const res = await fetch(`/api/categories`, {
-  //       method: "GET",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //     });
-
-  //     if (!res.ok) throw new Error("Failed to fetch categories");
-
-  //     const data = await res.json();
-  //     dispatch(setCategories(data));
-  //   } catch (error) {
-  //     console.error("Ошибка загрузки категорий:", error);
-  //   }
-  // };
-
-  useEffect(() => {
-    // if (categories.length === 0) {
-    //   fetchCategories();
-    // }
-  }, []);
-
   useEffect(() => {
     if (!userInfo) {
       fetchUserInfo();
     }
-    // fetchFavorites();
   }, [session]);
 
   return <>{children}</>;

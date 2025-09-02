@@ -16,9 +16,9 @@ export default function ForumComments({ postId }: ForumCommentInputProps) {
   const [images, setImages] = useState<File[]>([]);
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const { data: session, status } = useSession();
-  // const [visibleComments, setVisibleComments] = useState(1);
-  const [showAll, setShowAll] = useState(false);
+
   const [comments, setComments] = useState<CommentType[]>([]);
+  const [visibleComments, setVisibleComments] = useState<CommentType[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isLoadingSubmit, setIsLoadingSubmit] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -30,6 +30,57 @@ export default function ForumComments({ postId }: ForumCommentInputProps) {
     text: string;
   } | null>(null);
 
+  const fetchComments = async (page = 1) => {
+    setIsLoading(true);
+    try {
+      const res = await fetch(
+        `/api/forum/comments/get?forum_id=${postId}&page=${page}`
+      );
+      if (!res.ok) throw new Error("Ошибка загрузки комментариев");
+      const data = await res.json();
+      return data;
+    } catch (err) {
+      console.error(err);
+      return null;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // 🔹 Перезагрузка комментариев с первой страницы
+  const reloadComments = async () => {
+    const data = await fetchComments(1);
+    if (data) {
+      setComments(data.data);
+      setCurrentPage(1);
+      setLastPage(data.last_page);
+    }
+  };
+
+  // 🔹 Подгрузка следующих страниц
+  const toggleComments = async () => {
+    if (!lastPage) return;
+
+    if (currentPage < lastPage) {
+      // Подгружаем следующую страницу
+      const nextPage = currentPage + 1;
+      const data = await fetchComments(nextPage);
+
+      if (data) {
+        setComments((prev) => [...prev, ...data.data]);
+        setCurrentPage(nextPage);
+        setLastPage(data.last_page);
+      }
+    } else {
+      setCurrentPage(1); // сбрасываем страницу
+      reloadComments();
+    }
+  };
+
+  useEffect(() => {
+    reloadComments();
+  }, [postId]);
+
   const handleReply = (replyData: {
     id: number;
     name: string;
@@ -39,55 +90,17 @@ export default function ForumComments({ postId }: ForumCommentInputProps) {
     forumCommentsRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
-  const toggleComments = () => {
-    setCurrentPage((prevPage) => {
-      if (!lastPage) return prevPage; // если `lastPage` ещё не известна — ничего не делаем
-      if (prevPage < lastPage) {
-        return prevPage + 1;
-      } else {
-        setComments([]);
-        return 1;
-      }
-    });
-  };
-
-  const fetchComments = async () => {
-    setIsLoading(true);
-
-    const queryParams = new URLSearchParams();
-
-    queryParams.append("page", currentPage.toString());
-    // queryParams.append("per-page", "4");
-    queryParams.append("forum_id", "5");
-
-    const queryString = queryParams.toString()
-      ? `?${queryParams.toString()}`
-      : "";
-
-    try {
-      const res = await fetch(`/api/forum/comments/get${queryString}`, {
-        method: "GET",
-      });
-      if (!res.ok) {
-        throw new Error("Network response was not ok");
-      }
-
-      const data = await res.json();
-      if (data) {
-        setComments((prev) => [...prev, ...data.data]);
-
-        setLastPage(data.last_page);
-      }
-    } catch (error) {
-      console.error("Error fetching order status:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchComments();
-  }, [currentPage]);
+  // const toggleComments = () => {
+  //   setCurrentPage((prevPage) => {
+  //     if (!lastPage) return prevPage; // если `lastPage` ещё не известна — ничего не делаем
+  //     if (prevPage < lastPage) {
+  //       return prevPage + 1;
+  //     } else {
+  //       setComments([]);
+  //       return 1;
+  //     }
+  //   });
+  // };
 
   useEffect(() => {
     const textarea = textareaRef.current;
@@ -140,7 +153,8 @@ export default function ForumComments({ postId }: ForumCommentInputProps) {
       setReplyData(null);
       setText("");
       setImages([]);
-      fetchComments();
+      // fetchComments();
+      await reloadComments();
     } catch (error) {
       console.error("Ошибка при отправке:", error);
     } finally {

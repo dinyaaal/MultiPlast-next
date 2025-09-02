@@ -1,10 +1,10 @@
 "use client";
 
 import Image from "next/image";
-import { useRouter } from "@/i18n/routing";
 
 import React, { FormEvent, useState } from "react";
 import { useTranslations } from "next-intl";
+import { useRouter } from "@/i18n/routing";
 
 export const HeaderSearch = () => {
   const router = useRouter();

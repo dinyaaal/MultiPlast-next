@@ -6,11 +6,9 @@ import BurgerMenu from "./components/BurgerMenu";
 import SearchMobile from "./components/SearchMobile";
 import Language from "../Language/Language";
 import { Link } from "@/i18n/routing";
-import { getTranslations } from "next-intl/server";
 import HeaderUser from "./components/HeaderUser";
 import { Category } from "@/types/types";
-import { getServerSession } from "next-auth";
-import { NotificationsCount } from "./components/NotificationsCount";
+
 import { HeaderSearch } from "./components/HeaderSearch";
 import HeaderNavigation from "./components/HeaderNavigation";
 
@@ -26,7 +24,7 @@ const fetchCategories = async (): Promise<Category[]> => {
       headers: {
         "Content-Type": "application/json",
       },
-      cache: "force-cache",
+      // cache: "force-cache",
       // next: { revalidate: 86400  },
     }
   );
@@ -40,10 +38,11 @@ const fetchCategories = async (): Promise<Category[]> => {
 
 export default async function Header() {
   // const t = useTranslations("Header");
-  const session = await getServerSession();
+  // const session = await getServerSession();
   const categories: Category[] = await fetchCategories();
-  const t = await getTranslations("Header");
-  const tNavigation = await getTranslations("Navigation");
+  console.log(categories);
+  // const t = await getTranslations("Header");
+  // const tNavigation = await getTranslations("Navigation");
 
   return (
     <header className="header">

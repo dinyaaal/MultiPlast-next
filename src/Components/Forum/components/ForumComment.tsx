@@ -135,7 +135,9 @@ export const ForumComment: React.FC<ForumCommentProps> = ({
     <div className="forum-comments__comment comment comment-main">
       <div className="comment__user user-chat">
         <div className="user-chat__image item-block-chat__image"></div>
-        <div className="user-chat__name">{`${comment.author.first_name} ${comment.author.last_name}`}</div>
+        <div className="user-chat__name">{`${comment.author.first_name} ${
+          comment.author.last_name || ""
+        }`}</div>
       </div>
       <div className="comment__block">
         <div className="comment__body body-comment">

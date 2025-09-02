@@ -3,7 +3,7 @@ import { Pagination } from "@heroui/pagination";
 import { ProductCard } from "@/Components/Products/components/ProductCard";
 import { Category, MinimalProduct, Page } from "@/types/types";
 
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Filters } from "@/Components/Products/components/Filters";
 import { useSearchParams } from "next/navigation";
 import { Spinner } from "@heroui/react";
@@ -41,65 +41,94 @@ export function ProductsBody({ categories }: ProductsProps) {
     setSelectedOptions(options);
   };
 
-  const fetchProducts = async () => {
+  // const fetchProducts = async () => {
+  //   setIsLoading(true);
+  //   const queryParams = new URLSearchParams();
+
+  //   if (selectedCategory) {
+  //     queryParams.append("category_id", selectedCategory);
+  //   }
+
+  //   if (selectedSubCategories.length > 0) {
+  //     queryParams.append("type_id", selectedSubCategories.join(","));
+  //   }
+
+  //   if (selectedOptions.length > 0) {
+  //     queryParams.append("type_of_product", selectedOptions.join(","));
+  //   }
+
+  //   queryParams.append("page", `${currentPage}`);
+
+  //   queryParams.append("perPage", "12");
+
+  //   if (search) {
+  //     queryParams.append("search", search);
+  //   }
+
+  //   const queryString = queryParams.toString()
+  //     ? `?${queryParams.toString()}`
+  //     : "";
+  //   session?.user.access_token;
+  //   try {
+  //     const res = await fetch(`/api/products/get${queryString}`, {
+  //       method: "GET",
+  //       headers: {
+  //         ...(accessToken && {
+  //           token: accessToken,
+  //         }),
+  //       },
+  //     });
+  //     if (!res.ok) {
+  //       throw new Error("Network response was not ok");
+  //     }
+
+  //     const data = await res.json();
+  //     if (data) {
+  //       setProducts(data.data);
+  //       setLinks(data.links);
+  //       setLastPage(data.last_page);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error fetching order status:", error);
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
+
+  const fetchProducts = useCallback(async () => {
     setIsLoading(true);
     const queryParams = new URLSearchParams();
 
-    if (selectedCategory) {
-      queryParams.append("category_id", selectedCategory);
-    }
-
-    if (selectedSubCategories.length > 0) {
+    if (selectedCategory) queryParams.append("category_id", selectedCategory);
+    if (selectedSubCategories.length > 0)
       queryParams.append("type_id", selectedSubCategories.join(","));
-    }
-
-    if (selectedOptions.length > 0) {
+    if (selectedOptions.length > 0)
       queryParams.append("type_of_product", selectedOptions.join(","));
-    }
-
     queryParams.append("page", `${currentPage}`);
-
     queryParams.append("perPage", "12");
-
-    if (search) {
-      queryParams.append("search", search);
-    }
+    if (search) queryParams.append("search", search);
 
     const queryString = queryParams.toString()
       ? `?${queryParams.toString()}`
       : "";
-    session?.user.access_token;
+
     try {
       const res = await fetch(`/api/products/get${queryString}`, {
         method: "GET",
         headers: {
-          ...(accessToken && {
-            token: accessToken,
-          }),
+          ...(accessToken && { token: accessToken }),
         },
       });
-      if (!res.ok) {
-        throw new Error("Network response was not ok");
-      }
-
+      if (!res.ok) throw new Error("Network response was not ok");
       const data = await res.json();
-      if (data) {
-        setProducts(data.data);
-        setLinks(data.links);
-        setLastPage(data.last_page);
-      }
+      setProducts(data.data);
+      setLinks(data.links);
+      setLastPage(data.last_page);
     } catch (error) {
-      console.error("Error fetching order status:", error);
+      console.error("Error fetching products:", error);
     } finally {
       setIsLoading(false);
     }
-  };
-
-  useEffect(() => {
-    if (status === "loading") {
-      return;
-    }
-    fetchProducts();
   }, [
     accessToken,
     currentPage,
@@ -108,6 +137,25 @@ export function ProductsBody({ categories }: ProductsProps) {
     selectedOptions,
     search,
   ]);
+
+  useEffect(() => {
+    if (status !== "loading") {
+      fetchProducts();
+    }
+  }, [fetchProducts, status]);
+
+  // useEffect(() => {
+  //   if (status === "loading") return;
+
+  //   fetchProducts();
+  // }, [
+  //   accessToken,
+  //   currentPage,
+  //   selectedCategory,
+  //   selectedSubCategories,
+  //   selectedOptions,
+  //   search,
+  // ]);
 
   return (
     <>

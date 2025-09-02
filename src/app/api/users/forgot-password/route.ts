@@ -1,17 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
-  const formData = await request.formData();
-
-  const email = formData.get("email");
-
-  // if (!email || typeof email !== "string") {
-  //   return NextResponse.json({ error: "Email is required" }, { status: 400 });
-  // }
+  const { email } = await request.json();
 
   try {
     const res = await fetch(
-      `https://multiplast-api.web-hub.online/api/auth/forgot-password`,
+      "https://multiplast-api.web-hub.online/api/auth/forgot-password",
       {
         method: "POST",
         headers: {
@@ -22,6 +16,7 @@ export async function POST(request: NextRequest) {
       }
     );
 
+    // всегда парсим JSON, даже если ошибка
     const data = await res.json();
 
     if (!res.ok) {
