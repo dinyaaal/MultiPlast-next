@@ -1,6 +1,6 @@
 import Footer from "@/Components/Footer/Footer";
-import Header from "@/Components/Header/Header";
 import React from "react";
+import Image from "next/image";
 
 export default function Layout({
   children,

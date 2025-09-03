@@ -12,7 +12,6 @@ import { useSearchParams } from "next/navigation";
 import { ForgotPasswordSchema, ResetPasswordSchema } from "@/lib/schema";
 import { Spinner } from "@heroui/react";
 
-type StepOneInputs = z.infer<typeof ForgotPasswordSchema>;
 type StepTwoInputs = z.infer<typeof ResetPasswordSchema>;
 
 export default function ForgotPassword() {
@@ -20,26 +19,14 @@ export default function ForgotPassword() {
   const searchParams = useSearchParams();
   const email = searchParams.get("email");
   const token = searchParams.get("token");
-  const [step, setStep] = useState<1 | 2>(1);
   const [isLoading, setIsLoading] = useState(false);
-  // const [email, setEmail] = useState("");
 
   useEffect(() => {
     if (email && token) {
-      setStep(2);
       setValueStep2("email", email);
       setValueStep2("token", token);
     }
   }, [email, token]);
-
-  // Шаг 1 — Email
-  const {
-    register: registerStep1,
-    handleSubmit: handleSubmitStep1,
-    formState: { errors: errors1 },
-  } = useForm<StepOneInputs>({
-    resolver: zodResolver(ForgotPasswordSchema),
-  });
 
   // Шаг 2 — Token и новый пароль
   const {
@@ -51,35 +38,6 @@ export default function ForgotPassword() {
   } = useForm<StepTwoInputs>({
     resolver: zodResolver(ResetPasswordSchema),
   });
-
-  const handleEmailSubmit: SubmitHandler<StepOneInputs> = async (data) => {
-    setIsLoading(true);
-    // const formData = new FormData();
-    // formData.append("email", data.email);
-
-    try {
-      const res = await fetch("/api/users/forgot-password", {
-        method: "POST",
-        body: JSON.stringify({ email: data.email }),
-      });
-
-      const result = await res.json();
-
-      if (!res.ok) {
-        console.error("❌ Forgot password error:", result);
-        toast.error(result.message || t("send-error"));
-        return;
-      }
-
-      toast.success(t("send-instructions"));
-      // setEmail(data.email);
-      setStep(2);
-    } catch (err) {
-      toast.error(t("send-error"));
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   const handleResetSubmit: SubmitHandler<StepTwoInputs> = async (data) => {
     const formData = new FormData();
@@ -110,80 +68,44 @@ export default function ForgotPassword() {
   return (
     <>
       <div className="login__top">
-        <Link href="/" className="body-header__logo logo">
+        {/* <Link href="/" className="body-header__logo logo">
           <Image src="/logo.svg" alt="Logo" width={100} height={100} />
-        </Link>
+        </Link> */}
         <h2 className="login__title title">{t("title")}</h2>
         <p className="entry-login__text">{t("subtitle")}</p>
       </div>
 
-      {step === 1 ? (
-        <form
-          onSubmit={handleSubmitStep1(handleEmailSubmit)}
-          className="login__form form-login"
-        >
-          <div className="form-login__block">
-            <div className="input-block">
-              <p>{t("email")}</p>
-              <input
-                type="email"
-                placeholder={t("email")}
-                className={`form-login__input input ${
-                  errors1.email ? "input--error" : ""
-                }`}
-                {...registerStep1("email")}
-              />
-            </div>
+      <form
+        onSubmit={handleSubmitStep2(handleResetSubmit)}
+        className="login__form form-login"
+      >
+        <div className="form-login__block">
+          <div className="input-block">
+            <p>{t("new-password")}</p>
+            <input
+              type="password"
+              className={`form-login__input input ${
+                errors2.newPassword ? "input--error" : ""
+              }`}
+              {...registerStep2("newPassword")}
+            />
           </div>
-
-          <button type="submit" className="form-login__button button">
-            {t("button")}
-            {isLoading && <Spinner color="current" size="sm" />}
-          </button>
-        </form>
-      ) : (
-        <form
-          onSubmit={handleSubmitStep2(handleResetSubmit)}
-          className="login__form form-login"
-        >
-          <div className="form-login__block">
-            {/* <div className="input-block">
-              <p>{t("code-from-email")}</p>
-              <input
-                type="text"
-                className={`form-login__input input ${
-                  errors2.token ? "input--error" : ""
-                }`}
-                {...registerStep2("token")}
-              />
-            </div> */}
-            <div className="input-block">
-              <p>{t("new-password")}</p>
-              <input
-                type="password"
-                className={`form-login__input input ${
-                  errors2.newPassword ? "input--error" : ""
-                }`}
-                {...registerStep2("newPassword")}
-              />
-            </div>
-            <div className="input-block">
-              <p>{t("repeat-password")}</p>
-              <input
-                type="password"
-                className={`form-login__input input ${
-                  errors2.repeatPassword ? "input--error" : ""
-                }`}
-                {...registerStep2("repeatPassword")}
-              />
-            </div>
+          <div className="input-block">
+            <p>{t("repeat-password")}</p>
+            <input
+              type="password"
+              className={`form-login__input input ${
+                errors2.repeatPassword ? "input--error" : ""
+              }`}
+              {...registerStep2("repeatPassword")}
+            />
           </div>
+        </div>
 
-          <button type="submit" className="form-login__button button">
-            {t("save-button")}
-          </button>
-        </form>
-      )}
+        <button type="submit" className="form-login__button button">
+          {t("save-button")}
+        </button>
+      </form>
     </>
   );
 }

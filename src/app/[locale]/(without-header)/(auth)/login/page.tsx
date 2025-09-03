@@ -12,6 +12,7 @@ import React, { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { toast } from "sonner";
+import Language from "@/Components/Language/Language";
 
 type Inputs = z.infer<typeof LoginFormSchema>;
 
@@ -63,9 +64,6 @@ export default function Login() {
   return (
     <>
       <div className="login__top">
-        <Link href="/" className="body-header__logo logo">
-          <Image src="/logo.svg" alt="Logo" width={100} height={100} />
-        </Link>
         <h2 className="login__title title">{t("login-title")}</h2>
         <div className="login__entry entry-login">
           <p className="entry-login__text">{t("login-not")}</p>
