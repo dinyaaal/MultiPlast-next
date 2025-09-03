@@ -2,11 +2,10 @@
 
 import { useSession } from "next-auth/react";
 import Image from "next/image";
-import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { MinimalProduct, ProductType } from "@/types/types";
-import { useRouter } from "@/i18n/routing";
+import { Link, useRouter } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
 
 export const ProductCard: React.FC<{
