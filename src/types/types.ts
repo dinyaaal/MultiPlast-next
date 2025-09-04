@@ -169,6 +169,7 @@ export interface ForumCategory {
 export interface ForumCategoryMinimal {
   id: number;
   title: string;
+  position: number;
 }
 
 export interface ForumPost {

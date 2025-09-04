@@ -4,6 +4,7 @@ import React from "react";
 import ForumLayout from "../forum/components/ForumLayout";
 import { getTranslations } from "next-intl/server";
 import ForumBody from "./components/ForumBody";
+import { ForumCategory, ForumCategoryMinimal } from "@/types/types";
 
 async function fetchForumCategories() {
   try {
@@ -14,7 +15,7 @@ async function fetchForumCategories() {
         headers: {
           "Content-Type": "application/json",
         },
-        cache: "force-cache",
+        // cache: "force-cache",
         // кеш оставляем (по умолчанию cache: 'force-cache')
       }
     );
@@ -24,7 +25,12 @@ async function fetchForumCategories() {
     }
 
     const data = await res.json();
-    return data.data;
+    const sorted = [...data.data].sort(
+      (a: ForumCategoryMinimal, b: ForumCategoryMinimal) =>
+        a.position - b.position
+    );
+
+    return sorted;
   } catch (error) {
     console.error("Error fetching forum categories:", error);
     return null;
@@ -34,6 +40,10 @@ async function fetchForumCategories() {
 export default async function ForumAdd() {
   const t = await getTranslations("Forum");
   const categories = await fetchForumCategories();
+
+  if (!categories) {
+    return null;
+  }
 
   return (
     <ForumLayout>

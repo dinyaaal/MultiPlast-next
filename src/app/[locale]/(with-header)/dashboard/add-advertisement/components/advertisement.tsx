@@ -1466,7 +1466,11 @@ export default function Advertisement({ categories }: SellProps) {
           </div>
         </div>
         <div className="dashboard__actions actions-dashboard">
-          <button type="submit" className="actions-dashboard__save button">
+          <button
+            type="submit"
+            disabled={isLoadingRequest}
+            className="actions-dashboard__save button"
+          >
             {t("save-publish")}
             {isLoadingRequest && <Spinner color="current" size="sm" />}
           </button>

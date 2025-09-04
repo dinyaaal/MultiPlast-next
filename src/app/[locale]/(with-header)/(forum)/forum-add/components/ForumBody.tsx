@@ -180,7 +180,11 @@ export default function ForumBody({ categories }: ForumBodyProps) {
         {t("incognito")}
       </label>
       <div className="add-forum__actions">
-        <button type="submit" className="add-forum__add button">
+        <button
+          type="submit"
+          disabled={isLoading}
+          className="add-forum__add button"
+        >
           {t("publish")}
           {isLoading && <Spinner size="sm" />}
         </button>
