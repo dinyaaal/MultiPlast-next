@@ -1982,15 +1982,18 @@ button:disabled {
 .body-product__images {
   @apply grid gap-[20px];
 }
+.body-product__image {
+  @apply w-full h-full object-cover max-h-[500px] rounded-[10px] overflow-hidden;
+}
 .body-product__slider {
   @apply w-full !flex;
 }
-.body-product__slider .swiper-slide {
+/* .body-product__slider .swiper-slide {
   @apply !w-full !h-full max-h-[500px] !rounded-[10px] !overflow-hidden;
-}
-.body-product__slider .swiper-slide img {
+} */
+/* .body-product__slider .swiper-slide img {
   @apply w-full h-full object-cover;
-}
+} */
 .body-product .body-product__thumbs-slider-wrapper {
   @apply relative px-[51px] mx-auto w-full max-w-[60%] hidden md:grid;
 }

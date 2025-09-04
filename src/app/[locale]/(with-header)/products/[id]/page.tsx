@@ -253,15 +253,8 @@ export default async function Product(props: { params: Params }) {
                       </div>
                     ))}
                   </div>
-                  {session && (
-                    // <Link
-                    //   href={`/messages/${product.author.id}`}
-                    //   className="actions-body-product__message button"
-                    // >
-                    //   Написати повідомлення
-                    // </Link>
-                    <CreateMessage id={product.author.id} />
-                  )}
+
+                  <CreateMessage id={product.author.id} />
                   {product.files && product.files.length > 0 && (
                     <Link
                       href="#"

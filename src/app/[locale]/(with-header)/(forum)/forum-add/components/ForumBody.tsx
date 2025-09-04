@@ -1,6 +1,5 @@
 "use client";
 
-import ModalContact from "@/Components/Modals/ModalContact";
 import React, { useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 
@@ -14,6 +13,7 @@ import { MDXEditorMethods } from "@mdxeditor/editor";
 import { ForwardRefEditor } from "@/Components/ForwardRefEditor";
 import { Select, SelectItem, Spinner } from "@heroui/react";
 import { ForumCategoryMinimal } from "@/types/types";
+import { Link } from "@/i18n/routing";
 
 type Inputs = z.infer<typeof ForumAddSchema>;
 
@@ -84,6 +84,19 @@ export default function ForumBody({ categories }: ForumBodyProps) {
       setIsLoading(false);
     }
   };
+
+  if (status === "unauthenticated") {
+    return (
+      <div className="flex flex-col gap-10">
+        <h3 className="title title--small">
+          Для створення теми, необхідно авторизуватися
+        </h3>
+        <Link href="/login" className="button">
+          Авторизуватися
+        </Link>
+      </div>
+    );
+  }
 
   return (
     <form onSubmit={handleSubmit(processForm)} className="add-forum__block">

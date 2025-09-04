@@ -12,6 +12,7 @@ import "lightgallery/css/lightgallery.css";
 import "lightgallery/css/lg-zoom.css";
 import { Navigation, Thumbs } from "swiper/modules";
 import { ProductType } from "@/types/types";
+import Link from "next/link";
 
 export function ProductPhotos({ product }: { product: ProductType }) {
   const [thumbsSwiper, setThumbsSwiper] = useState<SwiperType | null>(null);
@@ -20,18 +21,18 @@ export function ProductPhotos({ product }: { product: ProductType }) {
 
   return (
     <>
-      <div>
-        <LightGallery
-          onInit={(ref) => (galleryRef.current = ref.instance)}
-          dynamic
-          plugins={[lgZoom]}
-          dynamicEl={product.photos.map((item) => ({
-            src: item.url,
-            thumb: item.url,
-            subHtml: `<h4>${product.title}</h4>`,
-          }))}
-        />
-        {!!product.photos.length && (
+      {!!product.photos.length ? (
+        <div>
+          <LightGallery
+            onInit={(ref) => (galleryRef.current = ref.instance)}
+            dynamic
+            plugins={[lgZoom]}
+            dynamicEl={product.photos.map((item) => ({
+              src: item.url,
+              thumb: item.url,
+              subHtml: `<h4>${product.title}</h4>`,
+            }))}
+          />
           <div className="body-product__images">
             <Swiper
               thumbs={{ swiper: thumbsSwiper }}
@@ -135,8 +136,22 @@ export function ProductPhotos({ product }: { product: ProductType }) {
               </div>
             )}
           </div>
-        )}
-      </div>
+        </div>
+      ) : (
+        // <div className="body-product__images">
+        // </div>
+        <LightGallery plugins={[lgZoom]}>
+          <Link href="/image-not-found.png">
+            <Image
+              className="body-product__image"
+              src="/image-not-found.png"
+              alt="Image not found"
+              width={1000}
+              height={1000}
+            />
+          </Link>
+        </LightGallery>
+      )}
     </>
   );
 }

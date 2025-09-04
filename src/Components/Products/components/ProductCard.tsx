@@ -212,7 +212,9 @@ export const ProductCard: React.FC<{
       <div className="item-advert__image">
         <Image
           src={
-            product.photos.length > 0 ? product.photos[0].url : "/advert/01.jpg"
+            product.photos.length > 0
+              ? product.photos[0].url
+              : "/image-not-found.png"
           }
           alt={"Image"}
           width={1000}

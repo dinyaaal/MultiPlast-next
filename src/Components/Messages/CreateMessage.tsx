@@ -14,9 +14,19 @@ export default function CreateMessage({ id }: CreateMessageProps) {
   const { data: session, status } = useSession();
   const token = session?.user.access_token;
   const router = useRouter();
-  const t = useTranslations("Messages");
+  const t = useTranslations("Messages.CreateMessage");
+
   const createMessage = async () => {
-    if (!token) {
+    if (!token || status === "unauthenticated") {
+      toast(t("toast.auth-required"), {
+        classNames: {
+          actionButton: "bg-red-600! p-4!",
+        },
+        action: {
+          label: t("toast.auth-button"),
+          onClick: () => router.push("/login"),
+        },
+      });
       return;
     }
     try {
@@ -38,7 +48,7 @@ export default function CreateMessage({ id }: CreateMessageProps) {
       //   router.push(`/messages/${id}`);
     } catch (error) {
       console.error("Error fetching data:", error);
-      toast.error("Помилка при створенні чату");
+      toast.error(t("toast.error"));
     }
   };
 
