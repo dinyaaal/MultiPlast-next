@@ -21,7 +21,7 @@ export function ProductPhotos({ product }: { product: ProductType }) {
 
   return (
     <>
-      {!!product.photos.length ? (
+      {!!product.photos.length && (
         <div>
           <LightGallery
             onInit={(ref) => (galleryRef.current = ref.instance)}
@@ -137,20 +137,6 @@ export function ProductPhotos({ product }: { product: ProductType }) {
             )}
           </div>
         </div>
-      ) : (
-        // <div className="body-product__images">
-        // </div>
-        <LightGallery plugins={[lgZoom]}>
-          <Link href="/image-not-found.png">
-            <Image
-              className="body-product__image"
-              src="/image-not-found.png"
-              alt="Image not found"
-              width={1000}
-              height={1000}
-            />
-          </Link>
-        </LightGallery>
       )}
     </>
   );

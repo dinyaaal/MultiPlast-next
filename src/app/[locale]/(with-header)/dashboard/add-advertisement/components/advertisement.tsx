@@ -68,19 +68,7 @@ export default function Advertisement({ categories }: SellProps) {
   const [productError, setProductError] = useState<string | null>(null);
   const [activePhotoIndex, setActivePhotoIndex] = useState(0);
   const [showDiscount, setShowDiscount] = useState(false);
-  // const {
-  //   register,
-  //   handleSubmit,
-  //   watch,
-  //   reset,
-  //   trigger,
-  //   setValue,
-  //   setError,
-  //   clearErrors,
-  //   formState: { errors },
-  // } = useForm<Inputs>({
-  //   resolver: zodResolver(AdvertismentSchema),
-  // });
+
   const {
     register,
     handleSubmit,
@@ -554,15 +542,15 @@ export default function Advertisement({ categories }: SellProps) {
           body: formData,
         });
         if (editResponse.ok) {
-          toast.success("Обновлено!");
+          toast.success(t("toast.update-success"));
           const result = await editResponse.json();
           router.push(`/products/${product.id}`);
         } else {
-          throw new Error("Ошибка обновления информации пользователя");
+          throw new Error(t("toast.update-error"));
         }
       } catch (error) {
         console.error("Ошибка при отправке данных:", error);
-        toast.error("Ошибка обновления товара");
+        toast.error(t("toast.update-error"));
       } finally {
         setIsLoadingRequest(false);
       }
@@ -577,14 +565,15 @@ export default function Advertisement({ categories }: SellProps) {
         });
         const result = await postResponse.json();
         if (postResponse.ok) {
-          toast.success("Оголошення подано");
+          toast.success(t("toast.success"));
           router.push(`/products/${result.id}`);
         } else {
-          throw new Error("Ошибка создания товара");
+          const errorMessage = result?.error || "Ошибка создания товара";
+          throw new Error(errorMessage);
         }
-      } catch (error) {
+      } catch (error: any) {
         console.error("Ошибка при отправке данных:", error);
-        toast.error("Ошибка создания товара");
+        toast.error(error.message || t("toast.error"));
       } finally {
         setIsLoadingRequest(false);
       }

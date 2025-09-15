@@ -144,6 +144,10 @@ export interface Author {
   first_name: string | null;
   last_name: string | null;
   avatar?: string;
+  ig_link?: string;
+  fb_link?: string;
+  yt_link?: string;
+  tg_link?: string;
 }
 
 export interface Page {

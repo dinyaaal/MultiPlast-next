@@ -43,9 +43,7 @@ export default function CreateMessage({ id }: CreateMessageProps) {
       }
 
       const data = await response.json();
-      console.log(data);
-
-      //   router.push(`/messages/${id}`);
+      router.push(`/messages/${id}`);
     } catch (error) {
       console.error("Error fetching data:", error);
       toast.error(t("toast.error"));

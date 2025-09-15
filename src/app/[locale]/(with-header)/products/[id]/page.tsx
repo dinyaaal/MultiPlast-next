@@ -268,7 +268,7 @@ export default async function Product(props: { params: Params }) {
                   )}
                 </div>
 
-                <SocialsNetwork />
+                <SocialsNetwork product={product} />
               </div>
             </div>
           </div>
