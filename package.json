@@ -12,6 +12,7 @@
     "@heroui/react": "^2.8.2",
     "@hookform/resolvers": "^3.9.0",
     "@mdxeditor/editor": "^3.29.2",
+    "@react-google-maps/api": "^2.20.7",
     "@reduxjs/toolkit": "^2.5.0",
     "@tailwindcss/postcss": "^4.1.12",
     "framer-motion": "^12.23.12",

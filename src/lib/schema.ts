@@ -152,6 +152,8 @@ export const AdvertismentSchema = z
       .min(1, "Хотя бы один контакт обязателен"),
 
     price: z.string().optional(),
+    type_price: z.string().optional().default("for_kg"),
+
     volume: z.string().optional(),
     volume_price: z.string().optional(),
     arrangement: z.boolean(),
@@ -254,3 +256,5 @@ export const ContactFormSchema = z.object({
   name: z.string().min(1, "Введите Ваше имя"),
   message: z.string().min(1, "Введите Ваше сообщение"),
 });
+
+export type AdvertisementInputs = z.infer<typeof AdvertismentSchema>;

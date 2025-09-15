@@ -2,7 +2,7 @@
 import React from "react";
 import { Link, usePathname } from "@/i18n/routing";
 import { useSession } from "next-auth/react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { Category } from "@/types/types";
 import Image from "next/image";
 import { NotificationsCount } from "./NotificationsCount";
@@ -14,6 +14,10 @@ export default function HeaderNavigation({
 }) {
   const pathname = usePathname();
   const { data: session } = useSession();
+  const locale = useLocale();
+
+  console.log(locale);
+
   const tNavigation = useTranslations("Navigation");
   return (
     <ul className="bottom-header__list ">
@@ -78,7 +82,11 @@ export default function HeaderNavigation({
                               href={`/dashboard/add-advertisement?type=sell&category=${category.id}`}
                               className="sub-menu__link menu__link"
                             >
-                              <span className="truncate">{category.name}</span>
+                              <span className="truncate">
+                                {category.translations.name[
+                                  locale as keyof typeof category.translations.name
+                                ] || category.name}
+                              </span>
                               <div className="sub-sub-menu__arrow menu__arrow">
                                 <Image
                                   src="/icons/dropdown-arrow.svg"
@@ -101,7 +109,9 @@ export default function HeaderNavigation({
                                       className="sub-menu__link"
                                     >
                                       <span className="truncate">
-                                        {subCategory.name}
+                                        {subCategory.translations.name[
+                                          locale as keyof typeof subCategory.translations.name
+                                        ] || subCategory.name}
                                       </span>
                                     </Link>
                                   </li>
@@ -113,7 +123,11 @@ export default function HeaderNavigation({
                             href={`/dashboard/add-advertisement?type=sell&category=${category.id}`}
                             className="sub-menu__link"
                           >
-                            <span className="truncate">{category.name}</span>
+                            <span className="truncate">
+                              {category.translations.name[
+                                locale as keyof typeof category.translations.name
+                              ] || category.name}
+                            </span>
                           </Link>
                         )}
                       </li>
@@ -148,7 +162,11 @@ export default function HeaderNavigation({
                               href={`/dashboard/add-advertisement?type=buy&category=${category.id}`}
                               className="sub-menu__link menu__link"
                             >
-                              <span className="truncate">{category.name}</span>
+                              <span className="truncate">
+                                {category.translations.name[
+                                  locale as keyof typeof category.translations.name
+                                ] || category.name}
+                              </span>
                               <div className="sub-sub-menu__arrow menu__arrow">
                                 <Image
                                   src="/icons/dropdown-arrow.svg"
@@ -171,7 +189,9 @@ export default function HeaderNavigation({
                                       className="sub-menu__link"
                                     >
                                       <span className="truncate">
-                                        {subCategory.name}
+                                        {subCategory.translations.name[
+                                          locale as keyof typeof subCategory.translations.name
+                                        ] || subCategory.name}
                                       </span>
                                     </Link>
                                   </li>
@@ -183,7 +203,12 @@ export default function HeaderNavigation({
                             href={`/dashboard/add-advertisement?type=buy&category=${category.id}`}
                             className="sub-menu__link"
                           >
-                            <span className="truncate">{category.name}</span>
+                            <span className="truncate">
+                              {" "}
+                              {category.translations.name[
+                                locale as keyof typeof category.translations.name
+                              ] || category.name}
+                            </span>
                           </Link>
                         )}
                       </li>

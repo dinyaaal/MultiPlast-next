@@ -19,7 +19,7 @@ export default function UserProvider({
   const { data: userInfo, error } = useSelector(
     (state: RootState) => state.userInfo
   );
-  const favorites = useSelector((state: RootState) => state.favorites.items);
+  // const favorites = useSelector((state: RootState) => state.favorites.items);
 
   console.log(session);
 

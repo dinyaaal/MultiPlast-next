@@ -6,7 +6,7 @@ import { useRouter, usePathname } from "next/navigation";
 import { useState, useTransition, FC } from "react";
 
 const options = [
-  { value: "ua", label: "Укр" },
+  { value: "ukr", label: "Укр" },
   { value: "ru", label: "Рус" },
 ];
 

@@ -1,8 +1,17 @@
+export interface Translations {
+  name: {
+    en: string;
+    ukr: string;
+    ru: string;
+  };
+}
+
 export interface SubCategory {
   id: number;
   parent_id: number;
   name: string;
   type: string;
+  translations: Translations;
 }
 
 export interface Category {
@@ -10,6 +19,7 @@ export interface Category {
   name: string;
   type: string;
   categories: SubCategory[];
+  translations: Translations;
 }
 
 export interface UserAuth {
@@ -121,6 +131,10 @@ export interface MinimalProduct {
   is_liked: boolean;
   volume: string | null;
   price_per_volume: string | null;
+}
+
+export interface PriceType {
+  type: "by_arrangement" | "for_minute" | "for_hour" | "for_piece" | "for_kg";
 }
 
 // export interface ProductType {
