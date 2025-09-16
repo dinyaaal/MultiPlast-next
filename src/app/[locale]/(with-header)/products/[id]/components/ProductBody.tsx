@@ -235,7 +235,7 @@ export default async function ProductBody({ product }: ProductBodyProps) {
                 )}
               </div>
 
-              <SocialsNetwork />
+              <SocialsNetwork product={product} />
             </div>
           </div>
         </div>

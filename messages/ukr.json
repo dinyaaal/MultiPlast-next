@@ -294,6 +294,7 @@
       "save-publish": "Зберегти та опублікувати",
       "delete-ad": "Видалити оголошення",
       "information": "Інформація",
+      "location": "Місцезнаходження",
       "contacts": {
         "contact": "Контакт",
         "position": "Посада",
@@ -376,5 +377,8 @@
   "Favorites": {
     "title": "Обране",
     "no-products": "Немає товарів"
+  },
+  "Map": {
+    "search": "Пошук"
   }
 }

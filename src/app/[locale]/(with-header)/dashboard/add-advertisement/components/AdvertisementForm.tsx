@@ -19,6 +19,7 @@ import { ChevronRight } from "lucide-react";
 import { toast } from "sonner";
 import { useState } from "react";
 import { useSession } from "next-auth/react";
+import Map from "@/Components/Map/Map";
 
 interface AdvertisementFormProps {
   setNewPhotos: (photos: File[]) => void;
@@ -648,7 +649,7 @@ export default function AdvertisementForm({
           </div>
         </div>
       </div>
-      <div className="grid gap-10 xl:grid-cols-2">
+      <div className="grid gap-10 ">
         <div className="flex flex-col gap-8 ">
           <h2 className=" title title--small">{t("enter-price")}</h2>
           <div className="flex flex-col gap-5">
@@ -822,52 +823,20 @@ export default function AdvertisementForm({
         </div>
         <div className="flex flex-col gap-8 ">
           <h2 className="contact-dashboard__title title title--small">
+            {t("location")}
+          </h2>
+          <div className="flex flex-col gap-5">
+            <div className="aspect-video ">
+              <Map />
+            </div>
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-8 ">
+          <h2 className="contact-dashboard__title title title--small">
             {t("information")}
           </h2>
           <div className="flex flex-col gap-5">
-            {/* 
-              <div className="input-block">
-                <p>{t("name")}*</p>
-                <input
-                  autoComplete="off"
-                  type="text"
-                  placeholder=""
-                  className={`input ${errors.name ? "input--error" : ""}`}
-                  {...register("name")}
-                  // value={
-                  //   userInformation?.first_name
-                  //     ? userInformation?.first_name
-                  //     : ""
-                  // }
-                  // onChange={(e) =>
-                  //   setUserInformation((prev) =>
-                  //     prev ? { ...prev, name: e.target.value } : null
-                  //   )
-                  // }
-                />
-              </div>
-              <div className="input-block">
-                <p>{t("phone")}*</p>
-                <input
-                  autoComplete="off"
-                  type="number"
-                  placeholder=""
-                  className={`input ${
-                    errors.phone_number ? "input--error" : ""
-                  }`}
-                  {...register("phone_number")}
-                  // value={
-                  //   userInformation?.phone_number
-                  //     ? userInformation?.phone_number
-                  //     : ""
-                  // }
-                  // onChange={(e) =>
-                  //   setUserInformation((prev) =>
-                  //     prev ? { ...prev, phone_number: e.target.value } : null
-                  //   )
-                  // }
-                />
-              </div> */}
             <div className="input-block">
               <p>{t("company-name")}</p>
               <input
@@ -892,7 +861,7 @@ export default function AdvertisementForm({
                 // }
               />
             </div>
-            <div className="input-block">
+            {/* <div className="input-block">
               <p>{t("address")}</p>
               <input
                 autoComplete="off"
@@ -941,7 +910,7 @@ export default function AdvertisementForm({
                 //   )
                 // }
               />
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
