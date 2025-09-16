@@ -12,7 +12,7 @@ import {
   UseFormWatch,
 } from "react-hook-form";
 import { useTranslations } from "next-intl";
-import { Category, PriceType, ProductType } from "@/types/types";
+import { Category, MapSelectData, PriceType, ProductType } from "@/types/types";
 import { Select, SelectItem } from "@heroui/react";
 import Image from "next/image";
 import { ChevronRight } from "lucide-react";
@@ -20,6 +20,8 @@ import { toast } from "sonner";
 import { useState } from "react";
 import { useSession } from "next-auth/react";
 import Map from "@/Components/Map/Map";
+import { useSearchParams } from "next/navigation";
+import { useRouter } from "@/i18n/routing";
 
 interface AdvertisementFormProps {
   setNewPhotos: (photos: File[]) => void;
@@ -68,6 +70,8 @@ export default function AdvertisementForm({
   const [arrangement, setArrangement] = useState<boolean>(false);
   //   const [typePrice, setTypePrice] = useState<PriceType>({ type: "for_kg" });
   const [categoryId, setCategoryId] = useState<number>(1);
+  const searchParams = useSearchParams();
+  const router = useRouter();
 
   const MAX_FILE_SIZE_MB = 100;
 
@@ -100,6 +104,22 @@ export default function AdvertisementForm({
 
     // Сброс input, чтобы можно было загрузить те же файлы повторно
     event.target.value = "";
+  };
+
+  const updateSearchParams = (params: Record<string, string | null>) => {
+    // Создаём новый объект параметров
+    const newParams = new URLSearchParams(searchParams.toString());
+
+    Object.entries(params).forEach(([key, value]) => {
+      if (value === null) {
+        newParams.delete(key);
+      } else {
+        newParams.set(key, value);
+      }
+    });
+
+    // Обновляем URL без перезагрузки страницы
+    router.replace(`?${newParams.toString()}`);
   };
 
   const handleDeleteActivePhoto = async () => {
@@ -178,31 +198,34 @@ export default function AdvertisementForm({
     }
   };
 
+  const handleAdvertTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setValue("advertType", e.target.value as "sell" | "buy"); // обновляем react-hook-form
+    updateSearchParams({ type: e.target.value }); // обновляем только advertType в URL
+  };
+
   const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     clearErrors();
-    // reset(
-    //   {
-    //     // type: "",
-    //     polymer: "",
-    //   },
-    //   {
-    //     keepErrors: false, // ошибки тоже будут сброшены
-    //   }
-    // );
+    const newCategoryId = e.target.value;
+
     setValue("polymer", "");
-    setCategoryId(Number(e.target.value));
-    setValue("mainCategory", e.target.value);
+    setCategoryId(Number(newCategoryId));
+    setValue("mainCategory", newCategoryId);
+
+    updateSearchParams({
+      category: newCategoryId,
+      subCategory: null,
+    });
+
     if (Number(e.target.value) === 1 || Number(e.target.value) === 2) {
       setValue("type_price", "for_kg");
-      //   setTypePrice({
-      //     type: "for_kg",
-      //   });
     } else if (Number(e.target.value) === 3 || Number(e.target.value) === 5) {
       setValue("type_price", "for_piece");
-      //   setTypePrice({
-      //     type: "for_piece",
-      //   });
     }
+  };
+
+  const handleTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setValue("type", e.target.value); // обновляем react-hook-form
+    updateSearchParams({ subCategory: e.target.value }); // обновляем только advertType в URL
   };
 
   const handleCheckboxChange = (checkbox: "arrangement" | "fixed") => {
@@ -228,6 +251,14 @@ export default function AdvertisementForm({
       //     type: selectedUnit.key as PriceType["type"],
       //   });
     }
+  };
+
+  const handleMapSelect = (data: MapSelectData) => {
+    setValue("latitude", data.lat.toString());
+    setValue("longitude", data.lng.toString());
+    setValue("address", data.address.formatted);
+    setValue("city", data.address.city);
+    setValue("area", data.address.region);
   };
 
   const deleteFiles = () => {
@@ -278,7 +309,8 @@ export default function AdvertisementForm({
                   }}
                   // defaultSelectedKeys={[advertType]}
                   selectedKeys={[watch("advertType")?.toString() || ""]}
-                  {...register("advertType")}
+                  onChange={handleAdvertTypeChange}
+                  // {...register("advertType")}
                   // onChange={(selectedKey) => handleChangeType(selectedKey)}
                 >
                   {advertTypes.map((type) => (
@@ -385,8 +417,8 @@ export default function AdvertisementForm({
                     //     ?.id?.toString() || "",
                     // ]}
                     selectedKeys={[watch("type")?.toString() || ""]}
-                    {...register("type")}
-                    // onChange={handleTypeChange}
+                    // {...register("type")}
+                    onChange={handleTypeChange}
                   >
                     {categories
                       .filter(
@@ -827,7 +859,7 @@ export default function AdvertisementForm({
           </h2>
           <div className="flex flex-col gap-5">
             <div className="aspect-video ">
-              <Map />
+              <Map onSelect={handleMapSelect} />
             </div>
           </div>
         </div>

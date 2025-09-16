@@ -114,6 +114,8 @@ export interface ProductType {
   created_at: string;
   updated_at: string;
   is_liked: boolean;
+  latitude: string;
+  longitude: string;
   categories: ProductCategory[];
   author: Author;
   photos: Photo[];
@@ -289,3 +291,29 @@ export type NotificationType = {
   updated_at: string;
   should_be_shown_in: string;
 };
+
+export interface IMessageItem {
+  id: number;
+  from_user_id: number;
+  content: string;
+  chat_id: number;
+  created_at: string;
+  updated_at: string;
+  from_user: User;
+}
+
+export interface MapSelectData {
+  lat: number;
+  lng: number;
+  address: {
+    formatted: string;
+    country: string;
+    region: string;
+    district: string;
+    city: string;
+    sublocality: string;
+    street: string;
+    houseNumber: string;
+    postalCode: string;
+  };
+}

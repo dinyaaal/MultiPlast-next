@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 import { number, z } from "zod";
 
 export const RegistrationFormSchema = z
@@ -141,11 +142,11 @@ export const AdvertismentSchema = z
       .min(1, { message: "Описание обязательно" })
       .max(1000, { message: "Максимальная длина 1000 символов" }),
 
-    city: z.string().min(1, "Введите ваш город"),
-    address: z.string(),
+    city: z.string().optional(),
+    address: z.string().optional(),
     name_of_enterprise: z.string().optional(),
 
-    area: z.string().min(1, "Введите вашу область"),
+    area: z.string().optional(),
 
     contact_data: z
       .array(ContactSchema)
@@ -153,7 +154,8 @@ export const AdvertismentSchema = z
 
     price: z.string().optional(),
     type_price: z.string().optional().default("for_kg"),
-
+    latitude: z.string().min(1, "Введите вашу широту"),
+    longitude: z.string().min(1, "Введите вашу долготу"),
     volume: z.string().optional(),
     volume_price: z.string().optional(),
     arrangement: z.boolean(),

@@ -34,9 +34,6 @@ export default function Advertisement({ categories }: SellProps) {
   );
   const { data: session, status } = useSession();
   const [product, setProduct] = useState<ProductType | null>(null);
-  const [categoryId, setCategoryId] = useState<number>(1);
-  const [advertType, setAdvertType] = useState<"sell" | "buy">("sell");
-  const [arrangement, setArrangement] = useState<boolean>(false);
 
   const [photos, setPhotos] = useState<File[]>([]);
   const [files, setFiles] = useState<File[] | null>(null);
@@ -129,66 +126,12 @@ export default function Advertisement({ categories }: SellProps) {
 
   useEffect(() => {
     if (userInfo && !editId) {
-      // setValue("name", userInfo?.first_name ? userInfo?.first_name : "");
-      // setValue(
-      //   "name_of_enterprise",
-      //   userInfo?.name_of_enterprise ? userInfo?.name_of_enterprise : ""
-      // );
-      setValue("city", userInfo?.city ? userInfo?.city : "");
-      setValue("address", userInfo?.address ? userInfo?.address : "");
-      setValue("area", userInfo?.area ? userInfo?.area : "");
-      // setValue(
-      //   "phone_number",
-      //   userInfo?.phone_number ? userInfo?.phone_number : ""
-      // );
+      setValue(
+        "name_of_enterprise",
+        userInfo?.name_of_enterprise ? userInfo?.name_of_enterprise : ""
+      );
     }
   }, [userInfo]);
-
-  // useEffect(() => {
-  //   if (product) {
-  //     // setCategoryId(
-  //     //   Number(
-  //     //     product?.categories.find((category) => category.parent_id === null)
-  //     //       ?.id
-  //     //   )
-  //     // );
-  //     setValue(
-  //       "mainCategory",
-  //       product?.categories
-  //         .find((category) => category.parent_id === null)
-  //         ?.id?.toString() || ""
-  //     );
-  //     setValue("title", product?.title);
-
-  //     setValue("text", product?.text);
-  //     setValue("address", product?.contact.address || "");
-  //     // setValue("name", product?.contact.name || "");
-  //     setValue("area", product?.contact.area || "");
-  //     setValue("city", product?.contact.city || "");
-  //     // setValue("name_of_enterprise", product?.contact.name_of_enterprise || "");
-  //     // setValue("phone_number", product?.contact.phone_number || "");
-  //     setValue("price", product.price?.toString() || "");
-  //     setArrangement(product.type_price === "by_arrangement");
-  //     setValue("volume", product?.volume);
-  //     setValue("volume_price", product?.price_per_volume);
-  //     setValue("title", product?.title);
-
-  //     setValue("advertType", product?.type_of_product || "");
-  //     setValue(
-  //       "polymer",
-  //       product?.categories
-  //         .find((category) => category.type === "Полімер")
-  //         ?.id?.toString() || ""
-  //     );
-  //     setValue(
-  //       "type",
-  //       product?.categories
-  //         .find((category) => category.type === "Сировина")
-  //         ?.id?.toString() || ""
-  //     );
-  //     // setPhotos(product.photos);
-  //   }
-  // }, [product]);
 
   useEffect(() => {
     if (product) {
@@ -213,7 +156,8 @@ export default function Advertisement({ categories }: SellProps) {
       setValue("title", product.title);
       setValue("text", product.text);
       setValue("price", product.price?.toString() || "");
-      setArrangement(product.type_price === "by_arrangement");
+      // setArrangement(product.type_price === "by_arrangement");
+      setValue("arrangement", product.type_price === "by_arrangement");
       setValue("volume", product.volume || "");
       setValue("volume_price", product.price_per_volume || "");
       setValue("advertType", product.type_of_product || "");
@@ -261,12 +205,20 @@ export default function Advertisement({ categories }: SellProps) {
     const typeParam = searchType;
     const newAdvertType =
       typeParam === "sell" || typeParam === "buy" ? typeParam : "sell";
-    setCategoryId(Number(newCategoryId));
-    setAdvertType(newAdvertType);
+    // setCategoryId(Number(newCategoryId));
+
+    // setAdvertType(newAdvertType);
+
     setValue("mainCategory", newCategoryId);
     setValue("advertType", newAdvertType);
     setValue("type", searchSubCategory || "");
   }, [searchCategory, searchSubCategory, searchType]);
+
+  // useEffect(() => {
+  //   if (Object.keys(errors).length > 0) {
+  //     toast.error(t("Errors.fill-fields"));
+  //   }
+  // }, [errors, toast, t]);
 
   const processForm: SubmitHandler<AdvertisementInputs> = async (data) => {
     if (!session?.user.access_token && !session?.user.id) {
@@ -283,6 +235,8 @@ export default function Advertisement({ categories }: SellProps) {
       address,
       city,
       area,
+      latitude,
+      longitude,
       name_of_enterprise,
       mainCategory,
       type,
@@ -320,9 +274,15 @@ export default function Advertisement({ categories }: SellProps) {
       }
 
       // Можно добавить поля адреса для каждого контакта, если нужно
-      formData.append(`contact_data[${index}][city]`, city);
-      formData.append(`contact_data[${index}][address]`, address);
-      formData.append(`contact_data[${index}][area]`, area);
+      if (city) {
+        formData.append(`contact_data[${index}][city]`, city);
+      }
+      if (address) {
+        formData.append(`contact_data[${index}][address]`, address);
+      }
+      if (area) {
+        formData.append(`contact_data[${index}][area]`, area);
+      }
       if (name_of_enterprise)
         formData.append(
           `contact_data[${index}][name_of_enterprise]`,
@@ -338,6 +298,8 @@ export default function Advertisement({ categories }: SellProps) {
 
     // Основные поля объявления
     formData.append("title", title);
+    formData.append("latitude", latitude);
+    formData.append("longitude", longitude);
     if (text) formData.append("text", text);
     formData.append("type_of_product", data.advertType);
     formData.append(

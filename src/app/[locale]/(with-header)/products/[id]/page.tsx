@@ -14,6 +14,7 @@ import { Link } from "@/i18n/routing";
 import { ProductActions } from "./components/ProductActions";
 import { ProductPhotos } from "./components/ProductPhotos";
 import { SocialsNetwork } from "./components/SocialsNetworks";
+import ProductMap from "./components/ProductMap";
 
 type Params = Promise<{ id: string }>;
 
@@ -190,8 +191,8 @@ export default async function Product(props: { params: Params }) {
                 <a href="#" className="info-body-product__link">
                   www.polymer.com.ua
                 </a> */}
-                {product.contacts[0]?.city && product.contacts[0]?.area && (
-                  <div className="info-body-product__location location-info-body-product">
+                <div className="info-body-product__location location-info-body-product">
+                  {product.contacts[0]?.city && product.contacts[0]?.area && (
                     <div className="location-info-body-product__block">
                       <p className="location-info-body-product__text">
                         Місцезнаходження:
@@ -202,8 +203,9 @@ export default async function Product(props: { params: Params }) {
                         )} область`}
                       </div>
                     </div>
-                    <div className="location-info-body-product__map">
-                      <iframe
+                  )}
+                  <div className="location-info-body-product__map">
+                    {/* <iframe
                         src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d2136.316975280789!2d30.524308983010492!3d50.449978484175695!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40d4ce517313ffff%3A0xa447b8f0aa513128!2z0JPQu9C-0LHRg9GB!5e0!3m2!1sru!2sua!4v1716397247674!5m2!1sru!2sua"
                         width="600"
                         height="450"
@@ -211,10 +213,13 @@ export default async function Product(props: { params: Params }) {
                         allowFullScreen
                         loading="lazy"
                         referrerPolicy="no-referrer-when-downgrade"
-                      ></iframe>
-                    </div>
+                      ></iframe> */}
+                    <ProductMap
+                      latitude={product.latitude}
+                      longitude={product.longitude}
+                    />
                   </div>
-                )}
+                </div>
 
                 {/* {isHasUser && (
                 )} */}

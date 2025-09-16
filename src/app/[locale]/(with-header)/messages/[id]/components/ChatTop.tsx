@@ -1,0 +1,273 @@
+"use client";
+import React, { useState } from "react";
+import { Tooltip } from "@heroui/tooltip";
+import { useSession } from "next-auth/react";
+import { toast } from "sonner";
+import { Popover, PopoverContent, PopoverTrigger } from "@heroui/react";
+import { Link, useRouter } from "@/i18n/routing";
+import { useTranslations } from "next-intl";
+import { Ellipsis } from "lucide-react";
+import Image from "next/image";
+
+export default function ChatTop({ id }: { id: string }) {
+  const t = useTranslations("Messages");
+  const { data: session } = useSession();
+  const router = useRouter();
+  const [isBlocked, setIsBlocked] = useState<boolean>(false);
+
+  const handleChatDelete = async () => {
+    if (!session?.user.access_token || !id) {
+      return;
+    }
+
+    try {
+      const deleteResponse = await fetch(`/api/chats/delete`, {
+        method: "DELETE",
+        headers: {
+          token: session?.user.access_token,
+          id: id.toString(),
+        },
+      });
+      if (deleteResponse.ok) {
+        toast.success(t("toast.deleteSuccess"));
+        router.push("/messages");
+        // onDelete(chat.id);
+      } else {
+        throw new Error(t("toast.deleteError"));
+      }
+    } catch (error) {
+      console.error(t("toast.deleteError"), error);
+      toast.error(t("toast.deleteError"));
+    }
+  };
+
+  const handleChatBlock = async () => {
+    if (!session?.user.access_token || !id) {
+      return;
+    }
+
+    try {
+      const blockResponse = await fetch(`/api/chats/block`, {
+        method: "POST",
+        headers: {
+          token: session?.user.access_token,
+          id: id.toString(),
+        },
+      });
+      if (blockResponse.ok) {
+        toast.success(t("toast.blockSuccess"));
+        // setIsBlocked(true);
+      } else {
+        throw new Error(t("toast.blockError"));
+      }
+    } catch (error) {
+      console.error(t("toast.blockError"), error);
+      toast.error(t("toast.blockError"));
+    }
+  };
+
+  const handleChatUnblock = async () => {
+    if (!session?.user.access_token || !id) {
+      return;
+    }
+
+    try {
+      const blockResponse = await fetch(`/api/chats/unblock`, {
+        method: "POST",
+        headers: {
+          token: session?.user.access_token,
+          id: id.toString(),
+        },
+      });
+      if (blockResponse.ok) {
+        toast.success(t("toast.unblockSuccess"));
+        // setIsBlocked(false);
+      } else {
+        throw new Error(t("toast.unblockError"));
+      }
+    } catch (error) {
+      console.error(t("toast.unblockError"), error);
+      toast.error(t("toast.unblockError"));
+    }
+  };
+
+  return (
+    <div className="body-chat__top chat-top">
+      <div className="chat-top__block">
+        <Link href="/messages" className="chat-top__back">
+          <svg
+            width="7"
+            height="12"
+            viewBox="0 0 7 12"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M0.46967 5.46967C0.176777 5.76256 0.176777 6.23744 0.46967 6.53033L5.24264 11.3033C5.53553 11.5962 6.01041 11.5962 6.3033 11.3033C6.59619 11.0104 6.59619 10.5355 6.3033 10.2426L2.06066 6L6.3033 1.75736C6.59619 1.46447 6.59619 0.989593 6.3033 0.696699C6.01041 0.403806 5.53553 0.403806 5.24264 0.696699L0.46967 5.46967ZM1 6.75H2V5.25H1V6.75Z"
+              fill="#0E274D"
+            />
+          </svg>
+        </Link>
+        <div className="chat-top__user user-chat">
+          <div className="user-chat__image item-block-chat__image"></div>
+          <div className="user-chat__name">Дмитро Вишнивецький</div>
+        </div>
+      </div>
+      <div className="chat-top__actions-menu actions-menu">
+        <Popover
+          placement="bottom-end"
+          className="item-block-chat__actions actions-menu"
+          classNames={{
+            content: ["p-0"],
+          }}
+        >
+          <PopoverTrigger>
+            <button
+              onClick={(e) => e.preventDefault()}
+              className="actions-menu__icon"
+            >
+              <Ellipsis />
+            </button>
+          </PopoverTrigger>
+          <PopoverContent>
+            <div className="actions-menu__body body-actions-menu">
+              <menu className="body-actions-menu__list">
+                <button
+                  onClick={(e) => e.preventDefault()}
+                  className="body-actions-menu__item"
+                >
+                  {t("actions.report")}
+                </button>
+                {isBlocked ? (
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleChatUnblock();
+                    }}
+                    className="body-actions-menu__item"
+                  >
+                    {t("actions.unblock")}
+                  </button>
+                ) : (
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleChatBlock();
+                    }}
+                    className="body-actions-menu__item"
+                  >
+                    {t("actions.block")}
+                  </button>
+                )}
+
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    toast(t("toast.deleteConfirm"), {
+                      action: {
+                        label: t("toast.delete"),
+                        onClick: () => handleChatDelete(),
+                      },
+                    });
+                  }}
+                  className="body-actions-menu__item body-actions-menu__item--red"
+                >
+                  {t("actions.delete")}
+                </button>
+              </menu>
+            </div>
+          </PopoverContent>
+        </Popover>
+        {/* <div className="actions-menu__body body-actions-menu">
+              <ul className="body-actions-menu__list">
+                <li className="body-actions-menu__item">
+                  <a href="#" className="body-actions-menu__button">
+                    Поскаржитися
+                  </a>
+                </li>
+                <li className="body-actions-menu__item">
+                  <a href="#" className="body-actions-menu__button">
+                    Заблокувати
+                  </a>
+                </li>
+                <li className="body-actions-menu__item body-actions-menu__item--red">
+                  <a href="#" className="body-actions-menu__button">
+                    Видалити
+                  </a>
+                </li>
+              </ul>
+            </div> */}
+      </div>
+      <div className="chat-top__actions actions-chat-top">
+        <Tooltip
+          content={
+            <div className="actions-menu__body body-actions-menu">
+              <menu className="body-actions-menu__list">
+                <button
+                  onClick={(e) => e.preventDefault()}
+                  className="body-actions-menu__item"
+                >
+                  Поскаржитися
+                </button>
+              </menu>
+            </div>
+          }
+          classNames={{
+            content: ["p-0 "],
+          }}
+        >
+          <div className="actions-menu__icon">
+            <Image
+              src="/icons/complain.png"
+              alt="Image"
+              width={100}
+              height={100}
+            />
+          </div>
+        </Tooltip>
+        <Tooltip
+          content={
+            <div className="actions-menu__body body-actions-menu">
+              <menu className="body-actions-menu__list">
+                <button
+                  onClick={(e) => e.preventDefault()}
+                  className="body-actions-menu__item"
+                >
+                  Заблокувати
+                </button>
+              </menu>
+            </div>
+          }
+          classNames={{
+            content: ["p-0 "],
+          }}
+        >
+          <div className="actions-menu__icon">
+            <Image src="/icons/ban.png" alt="Image" width={100} height={100} />
+          </div>
+        </Tooltip>
+        <Tooltip
+          content={
+            <div className="actions-menu__body body-actions-menu">
+              <menu className="body-actions-menu__list">
+                <button
+                  onClick={(e) => e.preventDefault()}
+                  className="body-actions-menu__item body-actions-menu__item--red"
+                >
+                  Видалити
+                </button>
+              </menu>
+            </div>
+          }
+          classNames={{
+            content: ["p-0 "],
+          }}
+        >
+          <div className="actions-menu__icon">
+            <Image src="/icons/bin.png" alt="Image" width={100} height={100} />
+          </div>
+        </Tooltip>
+      </div>
+    </div>
+  );
+}

@@ -10,11 +10,12 @@ import {
 import { Input } from "@heroui/react";
 import { SearchIcon } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
+import { MapSelectData } from "@/types/types";
 
 interface MapProps {
   lat?: number;
   lng?: number;
-  onSelect?: (coords: { lat: number; lng: number; address?: string }) => void;
+  onSelect?: (data: MapSelectData) => void;
 }
 
 const containerStyle = { width: "100%", height: "100%" };
@@ -37,7 +38,6 @@ export default function Map({ lat, lng, onSelect }: MapProps) {
   const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null);
   const [geocoder, setGeocoder] = useState<google.maps.Geocoder | null>(null);
 
-  // Инициализация Geocoder после загрузки карты
   const handleMapLoad = () => {
     if (!geocoder) setGeocoder(new google.maps.Geocoder());
   };
@@ -55,16 +55,33 @@ export default function Map({ lat, lng, onSelect }: MapProps) {
     if (!geocoder) return;
     geocoder.geocode({ location: coords }, (results, status) => {
       if (status === "OK" && results && results[0]) {
-        console.log("Адрес:", results[0].formatted_address);
-        if (onSelect)
-          onSelect({ ...coords, address: results[0].formatted_address });
+        const components = results[0].address_components;
+
+        const getComponent = (type: string) =>
+          components.find((c) => c.types.includes(type))?.long_name || "";
+
+        const addressData = {
+          formatted: results[0].formatted_address,
+          country: getComponent("country"),
+          region: getComponent("administrative_area_level_1"),
+          district: getComponent("administrative_area_level_2"),
+          city: getComponent("locality"),
+          sublocality:
+            getComponent("sublocality") || getComponent("sublocality_level_1"),
+          street: getComponent("route"),
+          houseNumber: getComponent("street_number"),
+          postalCode: getComponent("postal_code"),
+        };
+
+        console.log("Координаты + адрес:", coords, addressData);
+
+        if (onSelect) onSelect({ ...coords, address: addressData });
       }
     });
   };
 
   const updatePosition = (coords: { lat: number; lng: number }) => {
     setMarkerPos(coords);
-    console.log("Координаты:", coords);
     fetchAddress(coords);
   };
 
@@ -91,9 +108,30 @@ export default function Map({ lat, lng, onSelect }: MapProps) {
       };
       setMarkerPos(coords);
       setMapCenter(coords);
-      const address = place.formatted_address || "";
-      console.log("Координаты + адрес:", coords, address);
-      if (onSelect) onSelect({ ...coords, address });
+
+      if (place.address_components) {
+        const components = place.address_components;
+
+        const getComponent = (type: string) =>
+          components.find((c) => c.types.includes(type))?.long_name || "";
+
+        const addressData = {
+          formatted: place.formatted_address || "",
+          country: getComponent("country"),
+          region: getComponent("administrative_area_level_1"),
+          district: getComponent("administrative_area_level_2"),
+          city: getComponent("locality"),
+          sublocality:
+            getComponent("sublocality") || getComponent("sublocality_level_1"),
+          street: getComponent("route"),
+          houseNumber: getComponent("street_number"),
+          postalCode: getComponent("postal_code"),
+        };
+
+        console.log("Координаты + адрес:", coords, addressData);
+
+        if (onSelect) onSelect({ ...coords, address: addressData });
+      }
     }
   };
 
@@ -137,7 +175,7 @@ export default function Map({ lat, lng, onSelect }: MapProps) {
           zoom={12}
           options={mapOptions}
           onClick={handleMapClick}
-          onLoad={handleMapLoad} // <-- инициализация Geocoder
+          onLoad={handleMapLoad}
         >
           {markerPos && (
             <Marker
@@ -146,7 +184,10 @@ export default function Map({ lat, lng, onSelect }: MapProps) {
               position={markerPos}
               onDragEnd={(e) => {
                 if (e.latLng) {
-                  const coords = { lat: e.latLng.lat(), lng: e.latLng.lng() };
+                  const coords = {
+                    lat: e.latLng.lat(),
+                    lng: e.latLng.lng(),
+                  };
                   updatePosition(coords);
                 }
               }}

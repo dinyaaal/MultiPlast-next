@@ -70,7 +70,7 @@ export default function ChatItems() {
                 />
               ))
           ) : (
-            <p>{t("Messages.noChats")}</p>
+            <p>{t("noChats")}</p>
           )}
         </div>
       </div>
