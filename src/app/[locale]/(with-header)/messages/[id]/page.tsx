@@ -1,15 +1,17 @@
 "use client";
 
 import Image from "next/image";
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState, useMemo, useRef } from "react";
 import { useSession } from "next-auth/react";
 import { useLocale, useTranslations } from "next-intl";
 import ChatTop from "./components/ChatTop";
 import ChatBottom from "./components/ChatBottom";
 import { toast } from "sonner";
-import { IMessageItem } from "@/types/types";
+import { IMessageItem, User } from "@/types/types";
 import MessageItem from "@/Components/Messages/MessageItem";
 import { getLocale } from "@/utils/locale";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store/store";
 
 export default function ChatBody({
   params,
@@ -23,7 +25,11 @@ export default function ChatBody({
   const token = session?.user.access_token;
   const [messages, setMessages] = useState<IMessageItem[]>([]);
   const locale = useLocale();
+  const scrollRef = useRef<HTMLDivElement | null>(null);
 
+  const { data: userInfo, error } = useSelector(
+    (state: RootState) => state.userInfo
+  );
   const fetchMessages = async () => {
     if (!token || !id) return;
     try {
@@ -47,6 +53,22 @@ export default function ChatBody({
     fetchMessages();
   }, [id, token]);
 
+  const handleSend = (message: string) => {
+    if (!session?.user.id || !userInfo) return;
+    setMessages((prevMessages) => [
+      ...prevMessages,
+      {
+        id: prevMessages[prevMessages.length - 1]?.id + 1 || 1,
+        content: message,
+        created_at: new Date().toISOString(),
+        from_user_id: session.user.id,
+        chat_id: Number(id), // <-- тут исправили
+        updated_at: new Date().toISOString(),
+        from_user: userInfo as User, // <-- привели к User
+      },
+    ]);
+  };
+
   // --- группировка сообщений по датам ---
   const groupedMessages = useMemo(() => {
     return messages.reduce((acc: Record<string, IMessageItem[]>, msg) => {
@@ -57,11 +79,17 @@ export default function ChatBody({
     }, {});
   }, [messages]);
 
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
+  }, [messages]);
+
   return (
     <div className="chat__body body-chat">
       <div className="body-chat__content">
         <ChatTop id={id} />
-        <div className="body-chat__block block-body-chat">
+        <div ref={scrollRef} className="body-chat__block block-body-chat">
           <div className="block-body-chat__wrapper">
             {Object.entries(groupedMessages).map(([date, msgs]) => (
               <div key={date} className="block-body-chat__block">
@@ -89,7 +117,7 @@ export default function ChatBody({
           </div>
         </div>
       </div>
-      <ChatBottom id={id} />
+      <ChatBottom id={id} onSend={handleSend} />
     </div>
   );
 }

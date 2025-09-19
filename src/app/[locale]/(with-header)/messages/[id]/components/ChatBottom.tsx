@@ -3,7 +3,12 @@ import { useTranslations } from "next-intl";
 import React, { useState } from "react";
 import { toast } from "sonner";
 
-export default function ChatBottom({ id }: { id: string }) {
+interface ChatBottomProps {
+  id: string;
+  onSend: (message: string) => void;
+}
+
+export default function ChatBottom({ id, onSend }: ChatBottomProps) {
   const t = useTranslations("Messages");
   const [message, setMessage] = useState("");
   const { data: session, status } = useSession();
@@ -13,6 +18,8 @@ export default function ChatBottom({ id }: { id: string }) {
   const handleSubmit = async (e?: React.FormEvent | React.MouseEvent) => {
     e?.preventDefault();
     if (!message.trim()) return;
+    setMessage("");
+
     setIsLoading(true);
     try {
       const response = await fetch(`/api/chats/messages/send`, {
@@ -29,7 +36,7 @@ export default function ChatBottom({ id }: { id: string }) {
       }
 
       const data = await response.json();
-      setMessage("");
+      onSend(message);
     } catch (error) {
       console.error("Error fetching data:", error);
       toast.error(t("toast.sendError"));
@@ -65,7 +72,11 @@ export default function ChatBottom({ id }: { id: string }) {
           value={message}
           onChange={(e) => setMessage(e.target.value)}
         />
-        <button type="submit" className="message-input__write button">
+        <button
+          disabled={isLoading}
+          type="submit"
+          className="message-input__write button"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="22"
@@ -90,6 +101,7 @@ export default function ChatBottom({ id }: { id: string }) {
         onChange={(e) => setMessage(e.target.value)}
       ></textarea>
       <button
+        disabled={isLoading}
         // type="button"
         // onClick={handleSubmit}
         type="submit"

@@ -9,6 +9,7 @@ import { useSession } from "next-auth/react";
 import { toast } from "sonner";
 import { Ellipsis } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { useParams } from "next/navigation";
 
 interface ChatItemProps {
   chat: ChatItemData;
@@ -17,6 +18,10 @@ interface ChatItemProps {
 
 export const ChatItem: React.FC<ChatItemProps> = ({ chat, onDelete }) => {
   const t = useTranslations("Messages");
+  const params = useParams();
+  const currentChatId = params?.id;
+
+  const isActive = Number(currentChatId) === chat.id;
   const { data: session, status } = useSession();
   const formattedDate = new Date(chat.updated_at).toLocaleDateString();
   const [isBlocked, setIsBlocked] = useState<boolean>(
@@ -101,7 +106,7 @@ export const ChatItem: React.FC<ChatItemProps> = ({ chat, onDelete }) => {
   return (
     <Link
       href={`/messages/${chat.id}`}
-      className="block-chat__item item-block-chat"
+      className={`block-chat__item item-block-chat ${isActive ? "active" : ""}`}
     >
       <div className="item-block-chat__message">
         <div className="item-block-chat__image">
