@@ -171,55 +171,57 @@ export default function Notifications() {
           "notifications__body body-notifications " + (isOpen ? "active" : "")
         }
       >
-        <div className="body-notifications__items">
-          {notificationsList.length > 0 ? (
-            <>
-              <button
-                disabled={!notificationsCount}
-                onClick={handleRead}
-                className="login-user__link link-login-user login-user__log-in"
-              >
-                {t("readAll")}
-              </button>
-
-              {notificationsList.map((item) => (
-                <div
-                  key={item.id}
-                  className={
-                    "body-notifications__item item-body-notifications " +
-                    (!item.is_read ? "new" : "")
-                  }
+        <div className="body-notifications__content">
+          <div className="body-notifications__items">
+            {notificationsList.length > 0 ? (
+              <>
+                <button
+                  disabled={!notificationsCount}
+                  onClick={handleRead}
+                  className="button button--fw"
                 >
-                  <div className="item-body-notifications__content">
-                    <strong>{item.title}</strong>
-                    <p className="item-body-notifications__text">
-                      {item.content}
-                    </p>
-                  </div>
-                  <button
-                    className={item.is_read == 0 ? "" : "hidden"}
-                    onClick={(_) => handleReadItem(item.id)}
+                  {t("readAll")}
+                </button>
+
+                {notificationsList.map((item) => (
+                  <div
+                    key={item.id}
+                    className={
+                      "body-notifications__item item-body-notifications " +
+                      (!item.is_read ? "new" : "")
+                    }
                   >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
+                    <div className="item-body-notifications__content">
+                      <strong>{item.title}</strong>
+                      <p className="item-body-notifications__text">
+                        {item.content}
+                      </p>
+                    </div>
+                    <button
+                      className={item.is_read == 0 ? "" : "hidden"}
+                      onClick={(_) => handleReadItem(item.id)}
                     >
-                      <path
-                        fill="currentColor"
-                        d="M10.89 1.767a2.25 2.25 0 0 1 2.22 0l9.75 5.525A2.25 2.25 0 0 1 24 9.249v9.501A2.25 2.25 0 0 1 21.75 21H2.25A2.25 2.25 0 0 1 0 18.75v-9.5c0-.81.435-1.558 1.14-1.958Zm1.48 1.305a.75.75 0 0 0-.74 0l-9.316 5.28l7.41 4.233a3.75 3.75 0 0 1 4.553 0l7.41-4.234zM20.65 19.5l-7.26-5.704a2.25 2.25 0 0 0-2.78 0L3.35 19.5Zm1.85-9.886l-6.95 3.971l6.663 5.236q.135.107.21.26a.75.75 0 0 0 .077-.331ZM8.45 13.585L1.5 9.614v9.136q.002.18.076.33a.74.74 0 0 1 .21-.259Z"
-                      />
-                    </svg>
-                  </button>
-                </div>
-              ))}
-            </>
-          ) : (
-            <h3 className="item-body-notifications__text">
-              {t("noNotifications")}
-            </h3>
-          )}
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          fill="currentColor"
+                          d="M10.89 1.767a2.25 2.25 0 0 1 2.22 0l9.75 5.525A2.25 2.25 0 0 1 24 9.249v9.501A2.25 2.25 0 0 1 21.75 21H2.25A2.25 2.25 0 0 1 0 18.75v-9.5c0-.81.435-1.558 1.14-1.958Zm1.48 1.305a.75.75 0 0 0-.74 0l-9.316 5.28l7.41 4.233a3.75 3.75 0 0 1 4.553 0l7.41-4.234zM20.65 19.5l-7.26-5.704a2.25 2.25 0 0 0-2.78 0L3.35 19.5Zm1.85-9.886l-6.95 3.971l6.663 5.236q.135.107.21.26a.75.75 0 0 0 .077-.331ZM8.45 13.585L1.5 9.614v9.136q.002.18.076.33a.74.74 0 0 1 .21-.259Z"
+                        />
+                      </svg>
+                    </button>
+                  </div>
+                ))}
+              </>
+            ) : (
+              <h3 className="item-body-notifications__text">
+                {t("noNotifications")}
+              </h3>
+            )}
+          </div>
         </div>
       </div>
     </div>

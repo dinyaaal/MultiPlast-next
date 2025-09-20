@@ -1113,23 +1113,27 @@ button:disabled {
 .notifications.active {
   @apply bg-border;
 }
-.notifications.active .body-notifications__items {
+/* .notifications.active .body-notifications__items {
   @apply !translate-y-0;
-}
+} */
 
 .body-notifications {
   @apply absolute z-99 w-full h-fit top-full right-0 overflow-hidden pointer-events-none md:w-[412px] md:h-fit md:top-[calc(100%+15px)];
 }
 
-.body-notifications.active .body-notifications__items {
+.body-notifications.active .body-notifications__content {
   @apply !translate-y-0;
 }
+.body-notifications__content {
+  @apply w-full flex -translate-y-[200%] min-h-[100px] transition-all duration-300  p-2 rounded-b-lg bg-white border border-border overflow-auto pointer-events-auto max-h-[500px];
+}
+
 .body-notifications__items {
-  @apply flex min-h-[100px] flex-col items-center justify-center gap-1.5 transition-all duration-300 -translate-y-[200%] p-[7px] rounded-b-lg bg-white border border-border overflow-auto pointer-events-auto max-h-[500px];
+  @apply flex  w-full h-fit flex-col items-center justify-center gap-1.5;
 }
 
 .item-body-notifications {
-  @apply flex justify-between gap-[15px] p-[7px] transition-all duration-300;
+  @apply w-full flex justify-between gap-[15px] p-[7px] transition-all duration-300;
 }
 .item-body-notifications__content {
   @apply flex flex-col gap-[15px];
