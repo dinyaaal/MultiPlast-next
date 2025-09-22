@@ -1,23 +1,25 @@
 "use client";
 
 import Image from "next/image";
-import React, { useEffect, useState, useMemo, useRef } from "react";
+import React, { useEffect, useState, useMemo, useRef, Suspense } from "react";
 import { useSession } from "next-auth/react";
 import { useLocale, useTranslations } from "next-intl";
 import ChatTop from "./components/ChatTop";
 import ChatBottom from "./components/ChatBottom";
 import { toast } from "sonner";
-import { IMessageItem, User } from "@/types/types";
+import { ChatItemData, IMessageItem, User } from "@/types/types";
 import MessageItem from "@/Components/Messages/MessageItem";
 import { getLocale } from "@/utils/locale";
-import { useSelector } from "react-redux";
-import { RootState } from "@/store/store";
+
+import { useRouter } from "@/i18n/routing";
+import { Spinner } from "@heroui/react";
 
 export default function ChatBody({
   params,
 }: {
   params: Promise<{ id: string }>;
 }) {
+  const router = useRouter();
   const t = useTranslations("Messages");
   const unwrappedParams = React.use(params);
   const id = unwrappedParams.id;
@@ -26,10 +28,8 @@ export default function ChatBody({
   const [messages, setMessages] = useState<IMessageItem[]>([]);
   const locale = useLocale();
   const scrollRef = useRef<HTMLDivElement | null>(null);
+  const [chat, setChat] = useState<ChatItemData | null>(null);
 
-  const { data: userInfo, error } = useSelector(
-    (state: RootState) => state.userInfo
-  );
   const fetchMessages = async () => {
     if (!token || !id) return;
     try {
@@ -49,12 +49,32 @@ export default function ChatBody({
     }
   };
 
+  const fetchChat = async () => {
+    if (!token || !id) return;
+    try {
+      const response = await fetch(`/api/chats/chat`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          id: id.toString(),
+        },
+      });
+      if (!response.ok) throw new Error("Network response was not ok");
+      const data = await response.json();
+      setChat(data.data || []);
+    } catch (error) {
+      console.error("Error fetching messages:", error);
+      toast.error(t("toast.getChatError"));
+    }
+  };
+
   useEffect(() => {
+    fetchChat();
     fetchMessages();
   }, [id, token]);
 
   const handleSend = (message: string) => {
-    if (!session?.user.id || !userInfo) return;
+    if (!session?.user.id) return;
     setMessages((prevMessages) => [
       ...prevMessages,
       {
@@ -64,7 +84,11 @@ export default function ChatBody({
         from_user_id: session.user.id,
         chat_id: Number(id), // <-- тут исправили
         updated_at: new Date().toISOString(),
-        from_user: userInfo as User, // <-- привели к User
+        from_user: {
+          id: session.user.id,
+          first_name: session.user.first_name,
+          last_name: session.user.last_name,
+        },
       },
     ]);
   };
@@ -85,10 +109,25 @@ export default function ChatBody({
     }
   }, [messages]);
 
+  // useEffect(() => {
+  //   if (chat === null) {
+  //     router.push("/messages");
+  //   }
+  // }, [chat, router]);
+
+  // В render просто условно рендерим
+  if (chat === null) {
+    return (
+      <div className="h-full w-full flex items-center justify-center">
+        <Spinner size="lg" />
+      </div>
+    ); // или null
+  }
+
   return (
     <div className="chat__body body-chat">
       <div className="body-chat__content">
-        <ChatTop id={id} />
+        <ChatTop chat={chat} />
         <div ref={scrollRef} className="body-chat__block block-body-chat">
           <div className="block-body-chat__wrapper">
             {Object.entries(groupedMessages).map(([date, msgs]) => (

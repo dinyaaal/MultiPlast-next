@@ -299,7 +299,24 @@ export interface IMessageItem {
   chat_id: number;
   created_at: string;
   updated_at: string;
-  from_user: User;
+  from_user: {
+    id: number; // Уникальный идентификатор пользователя
+    first_name: string; // Имя
+    last_name: string; // Фамилия
+    middle_name?: string | null; // Отчество (может быть null)
+  };
+}
+
+export interface ChatItemData {
+  id: number;
+  from_user_id: number;
+  to_user_id: number;
+  is_deleted: number;
+  blocked_by_user_id: number | null;
+  reported_by_user_id: number | null;
+  report_reason: string | null;
+  created_at: string;
+  updated_at: string;
 }
 
 export interface MapSelectData {

@@ -70,7 +70,7 @@ export default function ChatItems() {
                 />
               ))
           ) : (
-            <p>{t("noChats")}</p>
+            <p className="p-5 text-center self-center">{t("noChats")}</p>
           )}
         </div>
       </div>

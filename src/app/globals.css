@@ -2212,7 +2212,7 @@ button:disabled {
   @apply underline uppercase text-[17px] xl:text-xl;
 }
 .block-chat__section-items {
-  @apply flex flex-col gap-[30px];
+  @apply flex flex-col;
 }
 .block-chat__title {
   @apply uppercase font-medium leading-none text-[17px] xl:text-xl;

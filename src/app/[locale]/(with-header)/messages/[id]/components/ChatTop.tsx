@@ -7,16 +7,16 @@ import { Popover, PopoverContent, PopoverTrigger } from "@heroui/react";
 import { Link, useRouter } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
 import { Ban, Ellipsis, Trash, TriangleAlert } from "lucide-react";
-import Image from "next/image";
+import { ChatItemData } from "@/types/types";
 
-export default function ChatTop({ id }: { id: string }) {
+export default function ChatTop({ chat }: { chat: ChatItemData }) {
   const t = useTranslations("Messages");
   const { data: session } = useSession();
   const router = useRouter();
   const [isBlocked, setIsBlocked] = useState<boolean>(false);
 
   const handleChatDelete = async () => {
-    if (!session?.user.access_token || !id) {
+    if (!session?.user.access_token || !chat.id) {
       return;
     }
 
@@ -25,7 +25,7 @@ export default function ChatTop({ id }: { id: string }) {
         method: "DELETE",
         headers: {
           token: session?.user.access_token,
-          id: id.toString(),
+          id: chat.id.toString(),
         },
       });
       if (deleteResponse.ok) {
@@ -42,7 +42,7 @@ export default function ChatTop({ id }: { id: string }) {
   };
 
   const handleChatBlock = async () => {
-    if (!session?.user.access_token || !id) {
+    if (!session?.user.access_token || !chat.id) {
       return;
     }
 
@@ -51,7 +51,7 @@ export default function ChatTop({ id }: { id: string }) {
         method: "POST",
         headers: {
           token: session?.user.access_token,
-          id: id.toString(),
+          id: chat.id.toString(),
         },
       });
       if (blockResponse.ok) {
@@ -67,7 +67,7 @@ export default function ChatTop({ id }: { id: string }) {
   };
 
   const handleChatUnblock = async () => {
-    if (!session?.user.access_token || !id) {
+    if (!session?.user.access_token || !chat.id) {
       return;
     }
 
@@ -76,7 +76,7 @@ export default function ChatTop({ id }: { id: string }) {
         method: "POST",
         headers: {
           token: session?.user.access_token,
-          id: id.toString(),
+          id: chat.id.toString(),
         },
       });
       if (blockResponse.ok) {
