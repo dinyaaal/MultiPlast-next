@@ -2238,7 +2238,7 @@ button:disabled {
   @apply cursor-pointer w-full h-fit flex gap-[10px];
 }
 .item-block-chat__image {
-  @apply relative flex items-center justify-center rounded-[7px] bg-[#C4DBFF] relative  before:size-[30px] before:bg-[url('/icons/user.svg')] before:bg-center before:bg-no-repeat;
+  @apply relative flex items-center justify-center rounded-[7px] bg-[#C4DBFF] relative;
 }
 .item-block-chat__image img {
   @apply w-full h-full object-cover relative z-2;

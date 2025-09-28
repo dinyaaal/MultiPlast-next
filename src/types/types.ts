@@ -95,7 +95,7 @@ export interface ProductContact {
   product_id: number;
   name_of_enterprise: string | null;
   name: string;
-  phone_number: string;
+  phones: string;
   address: string | null;
   city: string;
   area: string;
@@ -229,6 +229,7 @@ export interface ChatItemData {
   updated_at: string;
   from_user: ChatUser;
   to_user: ChatUser;
+  user: ChatUser;
 }
 
 export interface CommentType {
@@ -289,18 +290,6 @@ export interface IMessageItem {
     last_name: string; // Фамилия
     middle_name?: string | null; // Отчество (может быть null)
   };
-}
-
-export interface ChatItemData {
-  id: number;
-  from_user_id: number;
-  to_user_id: number;
-  is_deleted: number;
-  blocked_by_user_id: number | null;
-  reported_by_user_id: number | null;
-  report_reason: string | null;
-  created_at: string;
-  updated_at: string;
 }
 
 export interface MapSelectData {

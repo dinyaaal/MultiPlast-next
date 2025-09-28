@@ -863,8 +863,6 @@ export default function AdvertisementForm({
           </h2>
           <div className="flex flex-col gap-5">
             <div className="aspect-video ">
-              <p>{watch("latitude")}</p>
-              <p>{watch("latitude")}</p>
               <Map
                 lat={Number(watch("latitude"))}
                 lng={Number(watch("longitude"))}

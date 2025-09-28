@@ -8,6 +8,7 @@ import { Link, useRouter } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
 import { Ban, Ellipsis, Trash, TriangleAlert } from "lucide-react";
 import { ChatItemData } from "@/types/types";
+import Image from "next/image";
 
 export default function ChatTop({ chat }: { chat: ChatItemData }) {
   const t = useTranslations("Messages");
@@ -109,8 +110,30 @@ export default function ChatTop({ chat }: { chat: ChatItemData }) {
           </svg>
         </Link>
         <div className="chat-top__user user-chat">
-          <div className="user-chat__image item-block-chat__image"></div>
-          <div className="user-chat__name">Дмитро Вишнивецький</div>
+          <div className="user-chat__image item-block-chat__image">
+            {chat.user.avatar ? (
+              <Image
+                src={chat.user.avatar}
+                className="ibg"
+                alt="Icon"
+                width={100}
+                height={100}
+              />
+            ) : (
+              <div className="account-body-user__icon">
+                <Image
+                  src={"/icons/user.svg"}
+                  alt="Icon"
+                  width={100}
+                  height={100}
+                />
+              </div>
+            )}
+          </div>
+
+          <div className="user-chat__name">
+            {chat.user.first_name} {chat.user.last_name}
+          </div>
         </div>
       </div>
       <div className="chat-top__actions-menu actions-menu">

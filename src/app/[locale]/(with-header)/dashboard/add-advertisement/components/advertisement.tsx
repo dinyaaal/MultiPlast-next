@@ -56,7 +56,7 @@ export default function Advertisement({ categories }: SellProps) {
     resolver: zodResolver(AdvertismentSchema),
     defaultValues: {
       contact_data: [
-        { name: "", position: "", phone_numbers: [""] }, // минимум один контакт с телефоном
+        { name: "", position: "", phones: [""] }, // минимум один контакт с телефоном
       ],
     },
   });
@@ -135,57 +135,50 @@ export default function Advertisement({ categories }: SellProps) {
 
   useEffect(() => {
     if (product) {
-      // Категории
-      setValue(
-        "mainCategory",
-        product.categories.find((c) => c.parent_id === null)?.id?.toString() ||
-          ""
-      );
-      setValue(
-        "polymer",
-        product.categories.find((c) => c.type === "Полімер")?.id?.toString() ||
-          ""
-      );
-      setValue(
-        "type",
-        product.categories.find((c) => c.type === "Сировина")?.id?.toString() ||
-          ""
-      );
+      reset({
+        advertType: product.type_of_product || "",
+        mainCategory:
+          product.categories
+            .find((c) => c.parent_id === null)
+            ?.id?.toString() || "",
+        polymer:
+          product.categories
+            .find((c) => c.type === "Полімер")
+            ?.id?.toString() || "",
+        type:
+          product.categories
+            .find((c) => c.type === "Сировина")
+            ?.id?.toString() || "",
 
-      // Основные поля объявления
-      setValue("title", product.title);
-      setValue("text", product.text);
-      console.log(product.latitude, product.longitude);
-      setValue("latitude", product.latitude);
-      setValue("longitude", product.longitude);
-      setValue("price", product.price?.toString() || "");
-      // setArrangement(product.type_price === "by_arrangement");
-      setValue("arrangement", product.type_price === "by_arrangement");
-      setValue("volume", product.volume || "");
-      setValue("volume_price", product.price_per_volume || "");
-      setValue("advertType", product.type_of_product || "");
-      setValue("address", product.contacts[0].address || "");
-      setValue("city", product.contacts[0].city || "");
-      setValue("area", product.contacts[0].area || "");
-      setValue(
-        "name_of_enterprise",
-        product.contacts[0].name_of_enterprise || ""
-      );
+        title: product.title,
+        text: product.text,
+        latitude: product.latitude?.toString() || "",
+        longitude: product.longitude?.toString() || "",
+        price: product.price?.toString() || "",
+        arrangement: product.type_price === "by_arrangement",
+        volume: product.volume?.toString() || "",
+        volume_price: product.price_per_volume?.toString() || "",
+        address: product.contacts[0]?.address || "",
+        city: product.contacts[0]?.city || "",
+        area: product.contacts[0]?.area || "",
+        name_of_enterprise: product.contacts[0]?.name_of_enterprise || "",
 
-      // Заполняем массив контактов
-      if (Array.isArray(product.contacts) && product.contacts.length > 0) {
-        reset({
-          contact_data: product.contacts.map((c) => ({
-            name: c.name,
-
-            position: c.position || "", // если есть поле position, добавь в интерфейс и сюда
-          })),
-        });
-      } else {
-        reset({ contact_data: [] });
-      }
+        contact_data: Array.isArray(product.contacts)
+          ? product.contacts.map((c) => ({
+              name: c.name,
+              position: c.position || "",
+              phones:
+                Array.isArray(c.phones) && c.phones.length > 0
+                  ? c.phones
+                  : [""], // хотя бы один инпут, чтобы соответствовать .nonempty()
+            }))
+          : [],
+      });
     }
-  }, [product]);
+  }, [product, reset]);
+
+  const watchedValues = watch(); // все значения
+  console.log(watchedValues);
 
   useEffect(() => {
     reset(
@@ -255,15 +248,15 @@ export default function Advertisement({ categories }: SellProps) {
 
     // Контакты
     (contact_data || []).forEach((contact, index) => {
-      const { phone_numbers, name, position } = contact;
+      const { phones, name, position } = contact;
 
       formData.append(`contact_data[${index}][name]`, name);
       if (position)
         formData.append(`contact_data[${index}][position]`, position);
-      if (phone_numbers && phone_numbers.length > 0) {
-        phone_numbers.forEach((phone, phoneIndex) => {
+      if (phones && phones.length > 0) {
+        phones.forEach((phone, phoneIndex) => {
           formData.append(
-            `contact_data[${index}][phone_numbers][${phoneIndex}]`,
+            `contact_data[${index}][phones][${phoneIndex}]`,
             phone
           );
         });

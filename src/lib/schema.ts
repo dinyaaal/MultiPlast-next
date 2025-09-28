@@ -115,7 +115,7 @@ export const UserSecuritySchema = z
   });
 
 export const ContactSchema = z.object({
-  phone_numbers: z
+  phones: z
     .array(
       z
         .string()

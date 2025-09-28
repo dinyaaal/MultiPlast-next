@@ -40,16 +40,16 @@ export default function ContactsSection({
       <div className="contact-dashboard__body">
         <div className="flex flex-col gap-8 w-full">
           {fields.map((field, index) => {
-            const phones = watch(`contact_data.${index}.phone_numbers`) || [""];
+            const phones = watch(`contact_data.${index}.phones`) || [""];
 
             const addPhone = () =>
-              setValue(`contact_data.${index}.phone_numbers`, [...phones, ""]);
+              setValue(`contact_data.${index}.phones`, [...phones, ""]);
 
             const removePhone = (phoneIndex: number) => {
               if (phones.length <= 1) return; // нельзя удалить последний
               const newPhones = phones.filter((_, i) => i !== phoneIndex);
               setValue(
-                `contact_data.${index}.phone_numbers`,
+                `contact_data.${index}.phones`,
                 newPhones as [string, ...string[]]
               );
             };
@@ -129,10 +129,10 @@ export default function ContactsSection({
                             <input
                               type="tel"
                               {...register(
-                                `contact_data.${index}.phone_numbers.${phoneIndex}`
+                                `contact_data.${index}.phones.${phoneIndex}`
                               )}
                               className={`input ${
-                                errors.contact_data?.[index]?.phone_numbers?.[
+                                errors.contact_data?.[index]?.phones?.[
                                   phoneIndex
                                 ]
                                   ? "input--error"

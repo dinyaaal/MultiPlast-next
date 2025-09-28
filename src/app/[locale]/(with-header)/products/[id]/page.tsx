@@ -241,18 +241,17 @@ export default async function Product(props: { params: Params }) {
                     {product.contacts.map((contact) => (
                       <div
                         key={contact.id}
-                        className="flex w-full flex-col gap-4"
+                        className="flex w-full flex-col gap-4 border border-border rounded-lg p-5"
                       >
                         <div className="flex flex-col w-full gap-2">
                           <div className="">{contact.name}</div>
-                          <p className="">{contact.position}</p>
+                          {contact.position && (
+                            <p className="">{contact.position}</p>
+                          )}
                         </div>
-                        {contact.phone_number && (
-                          <Link
-                            href={`tel:${contact.phone_number}`}
-                            className="link"
-                          >
-                            {contact.phone_number}
+                        {contact.phones && (
+                          <Link href={`tel:${contact.phones}`} className="link">
+                            {contact.phones}
                           </Link>
                         )}
                       </div>

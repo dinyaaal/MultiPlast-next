@@ -109,10 +109,30 @@ export const ChatItem: React.FC<ChatItemProps> = ({ chat, onDelete }) => {
       className={`block-chat__item item-block-chat ${isActive ? "active" : ""}`}
     >
       <div className="item-block-chat__message">
-        <div className="item-block-chat__image">
+        {/* <div className="item-block-chat__image">
           <div className="notification-value">
             <span className="notification-value__number">99</span>
           </div>
+        </div> */}
+        <div className="item-block-chat__image">
+          {chat.user.avatar ? (
+            <Image
+              src={chat.user.avatar}
+              className="ibg"
+              alt="Icon"
+              width={100}
+              height={100}
+            />
+          ) : (
+            <div className="account-body-user__icon">
+              <Image
+                src={"/icons/user.svg"}
+                alt="Icon"
+                width={100}
+                height={100}
+              />
+            </div>
+          )}
         </div>
         <div className="item-block-chat__body">
           <div className="item-block-chat__info">
