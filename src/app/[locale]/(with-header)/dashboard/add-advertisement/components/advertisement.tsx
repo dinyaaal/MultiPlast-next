@@ -155,6 +155,9 @@ export default function Advertisement({ categories }: SellProps) {
       // Основные поля объявления
       setValue("title", product.title);
       setValue("text", product.text);
+      console.log(product.latitude, product.longitude);
+      setValue("latitude", product.latitude);
+      setValue("longitude", product.longitude);
       setValue("price", product.price?.toString() || "");
       // setArrangement(product.type_price === "by_arrangement");
       setValue("arrangement", product.type_price === "by_arrangement");
@@ -174,7 +177,6 @@ export default function Advertisement({ categories }: SellProps) {
         reset({
           contact_data: product.contacts.map((c) => ({
             name: c.name,
-            phone_number: c.phone_number,
 
             position: c.position || "", // если есть поле position, добавь в интерфейс и сюда
           })),
@@ -213,12 +215,6 @@ export default function Advertisement({ categories }: SellProps) {
     setValue("advertType", newAdvertType);
     setValue("type", searchSubCategory || "");
   }, [searchCategory, searchSubCategory, searchType]);
-
-  // useEffect(() => {
-  //   if (Object.keys(errors).length > 0) {
-  //     toast.error(t("Errors.fill-fields"));
-  //   }
-  // }, [errors, toast, t]);
 
   const processForm: SubmitHandler<AdvertisementInputs> = async (data) => {
     if (!session?.user.access_token && !session?.user.id) {

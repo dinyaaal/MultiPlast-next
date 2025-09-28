@@ -158,7 +158,7 @@ export const AdvertismentSchema = z
     longitude: z.string().min(1, "Введите вашу долготу"),
     volume: z.string().optional(),
     volume_price: z.string().optional(),
-    arrangement: z.boolean(),
+    arrangement: z.boolean().default(false),
   })
   .refine(
     (data) => {

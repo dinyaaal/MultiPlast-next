@@ -139,22 +139,6 @@ export interface PriceType {
   type: "by_arrangement" | "for_minute" | "for_hour" | "for_piece" | "for_kg";
 }
 
-// export interface ProductType {
-//   id: number;
-//   title: string;
-//   text: string;
-//   type_price: string;
-//   price: number;
-//   type_of_product: string;
-//   user_id: number;
-//   created_at: string;
-//   updated_at: string;
-//   categories: ProductCategory[];
-//   author: Author;
-//   photos: Photo[];
-//   files: any[];
-// }
-
 export interface Author {
   id: number;
   first_name: string | null;

@@ -254,6 +254,7 @@ export default function AdvertisementForm({
   };
 
   const handleMapSelect = (data: MapSelectData) => {
+    console.log(data);
     setValue("latitude", data.lat.toString());
     setValue("longitude", data.lng.toString());
     setValue("address", data.address.formatted);
@@ -707,8 +708,8 @@ export default function AdvertisementForm({
                         type="checkbox"
                         className="real-checkbox"
                         {...register("arrangement")}
-                        checked={arrangement}
-                        onChange={() => handleCheckboxChange("arrangement")}
+                        // checked={arrangement}
+                        // onChange={() => handleCheckboxChange("arrangement")}
                       />
                       <span className="custom-checkbox"></span>
                       {t("negotiated-price")}
@@ -719,8 +720,10 @@ export default function AdvertisementForm({
                       <input
                         type="checkbox"
                         className="real-checkbox"
-                        checked={!arrangement} // второй чекбокс активен, когда arrangement = false
-                        onChange={() => handleCheckboxChange("fixed")}
+                        checked={!watch("arrangement")} // второй чекбокс активен, когда arrangement = false
+                        onChange={() =>
+                          setValue("arrangement", !watch("arrangement"))
+                        }
                       />
                       <span className="custom-checkbox"></span>
                       Фіксована ціна
@@ -729,7 +732,7 @@ export default function AdvertisementForm({
                 </div>
               </div>
               <div className="block-row">
-                {!arrangement && (
+                {!watch("arrangement") && (
                   <div className="block-row__item">
                     <div className="input-block">
                       <p>{t("fixed-price")}</p>
@@ -752,53 +755,54 @@ export default function AdvertisementForm({
                     </div>
                   </div>
                 )}
-                {!arrangement && Number(watch("mainCategory")) === 4 && (
-                  <div className="block-row__item">
-                    <div className="input-block">
-                      <p>{t("price-type")}</p>
+                {!watch("arrangement") &&
+                  Number(watch("mainCategory")) === 4 && (
+                    <div className="block-row__item">
+                      <div className="input-block">
+                        <p>{t("price-type")}</p>
 
-                      <Select
-                        isDisabled={arrangement}
-                        disallowEmptySelection
-                        placeholder={t("select-category")}
-                        className="w-full"
-                        classNames={{
-                          trigger: `min-h-[45px] text-black px-[12px] bg-[#F8FBFF] rounded-[5px] outline-offset-0 outline-[1px] outline-[#B0BFD7]`,
+                        <Select
+                          isDisabled={arrangement}
+                          disallowEmptySelection
+                          placeholder={t("select-category")}
+                          className="w-full"
+                          classNames={{
+                            trigger: `min-h-[45px] text-black px-[12px] bg-[#F8FBFF] rounded-[5px] outline-offset-0 outline-[1px] outline-[#B0BFD7]`,
 
-                          popoverContent:
-                            "bg-[#F8FBFF] p-0 rounded-[5px] outline-offset-0 outline-[1px] outline-[#B0BFD7]",
-                          listbox: "p-0",
-                        }}
-                        listboxProps={{
-                          itemClasses: {
-                            base: [
-                              "min-h-[39px]",
-                              "px-[15px]",
-                              "py-[5px]",
-                              "rounded-none",
-                              "bg-transparent",
-                              "transition-colors",
+                            popoverContent:
+                              "bg-[#F8FBFF] p-0 rounded-[5px] outline-offset-0 outline-[1px] outline-[#B0BFD7]",
+                            listbox: "p-0",
+                          }}
+                          listboxProps={{
+                            itemClasses: {
+                              base: [
+                                "min-h-[39px]",
+                                "px-[15px]",
+                                "py-[5px]",
+                                "rounded-none",
+                                "bg-transparent",
+                                "transition-colors",
 
-                              "data-[hover=true]:bg-[#c4dbff]",
-                              "data-[selectable=true]:focus:bg-[#c4dbff]",
-                            ],
-                          },
-                        }}
-                        defaultSelectedKeys={["for_hour"]}
-                        onChange={(selectedKey) =>
-                          handleChangeTypePrice(selectedKey)
-                        }
-                      >
-                        {units.map((unit) => (
-                          <SelectItem key={unit.key}>{unit.label}</SelectItem>
-                        ))}
-                      </Select>
+                                "data-[hover=true]:bg-[#c4dbff]",
+                                "data-[selectable=true]:focus:bg-[#c4dbff]",
+                              ],
+                            },
+                          }}
+                          defaultSelectedKeys={["for_hour"]}
+                          onChange={(selectedKey) =>
+                            handleChangeTypePrice(selectedKey)
+                          }
+                        >
+                          {units.map((unit) => (
+                            <SelectItem key={unit.key}>{unit.label}</SelectItem>
+                          ))}
+                        </Select>
+                      </div>
                     </div>
-                  </div>
-                )}
+                  )}
               </div>
             </div>
-            {!arrangement &&
+            {!watch("arrangement") &&
               (Number(watch("mainCategory")) === 1 ||
                 Number(watch("mainCategory")) === 2) && (
                 <button
@@ -811,7 +815,7 @@ export default function AdvertisementForm({
                     : t("price-with-discount")}
                 </button>
               )}
-            {!arrangement &&
+            {!watch("arrangement") &&
               showDiscount &&
               (Number(watch("mainCategory")) === 1 ||
                 Number(watch("mainCategory")) === 2) && (
@@ -859,7 +863,13 @@ export default function AdvertisementForm({
           </h2>
           <div className="flex flex-col gap-5">
             <div className="aspect-video ">
-              <Map onSelect={handleMapSelect} />
+              <p>{watch("latitude")}</p>
+              <p>{watch("latitude")}</p>
+              <Map
+                lat={Number(watch("latitude"))}
+                lng={Number(watch("longitude"))}
+                onSelect={handleMapSelect}
+              />
             </div>
           </div>
         </div>
