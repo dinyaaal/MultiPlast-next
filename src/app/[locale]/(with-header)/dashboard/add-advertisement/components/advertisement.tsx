@@ -39,7 +39,6 @@ export default function Advertisement({ categories }: SellProps) {
   const [files, setFiles] = useState<File[] | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingRequest, setIsLoadingRequest] = useState(false);
-  const [productError, setProductError] = useState<string | null>(null);
 
   const {
     register,
@@ -89,7 +88,7 @@ export default function Advertisement({ categories }: SellProps) {
       console.log(data.photos[0]);
       setProduct(data);
     } catch (err) {
-      setProductError("Ошибка при загрузке продукта");
+      console.log("error");
     } finally {
       setIsLoading(false);
     }
@@ -109,14 +108,14 @@ export default function Advertisement({ categories }: SellProps) {
         },
       });
       if (deleteResponse.ok) {
-        toast.success("Удалено!");
+        toast.success(t("toast.delete-success"));
         router.push("/products");
       } else {
         throw new Error("Ошибка обновления информации пользователя");
       }
     } catch (error) {
       console.error("Ошибка при отправке данных:", error);
-      toast.error("Ошибка удаления");
+      toast.success(t("toast.delete-error"));
     }
   };
 
@@ -396,7 +395,18 @@ export default function Advertisement({ categories }: SellProps) {
           {editId && product && (
             <button
               type="button"
-              onClick={handleAdvertDelete}
+              onClick={(e) => {
+                e.preventDefault();
+                toast(t("toast.delete-confirm"), {
+                  classNames: {
+                    actionButton: "bg-red-600 p-4",
+                  },
+                  action: {
+                    label: t("delete-ad"),
+                    onClick: () => handleAdvertDelete(),
+                  },
+                });
+              }}
               className="actions-dashboard__delete button button--secondary"
             >
               {t("delete-ad")}

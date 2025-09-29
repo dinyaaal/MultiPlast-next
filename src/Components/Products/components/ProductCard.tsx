@@ -45,35 +45,6 @@ export const ProductCard: React.FC<{
     }
   }, [liked, status, product]);
 
-  // const handleFavoriteInCookies = (action: "add" | "remove") => {
-  //   const cookies = document.cookie
-  //     .split("; ")
-  //     .find((row) => row.startsWith("favorites="));
-
-  //   let favorites = cookies
-  //     ? JSON.parse(decodeURIComponent(cookies.split("=")[1]))
-  //     : [];
-
-  //   if (action === "add") {
-  //     if (!favorites.some((item: any) => item.id === product.id)) {
-  //       favorites.push(product);
-  //       document.cookie = `favorites=${encodeURIComponent(
-  //         JSON.stringify(favorites)
-  //       )}; path=/; max-age=${365 * 24 * 60 * 60}`;
-  //       toast.success("Товар добавлен в избранное");
-  //       setIsLiked(true);
-  //     }
-  //   } else {
-  //     favorites = favorites.filter((item: any) => item.id !== product.id);
-  //     document.cookie = `favorites=${encodeURIComponent(
-  //       JSON.stringify(favorites)
-  //     )}; path=/; max-age=${365 * 24 * 60 * 60}`;
-  //     toast.success("Товар убран из избранного");
-  //     setIsLiked(false);
-  //     onUnlike?.(product.id);
-  //   }
-  // };
-
   const handleFavoriteInCookies = (action: "add" | "remove") => {
     const cookies = document.cookie
       .split("; ")
@@ -108,14 +79,12 @@ export const ProductCard: React.FC<{
           .find((row) => row.startsWith("favorites="));
 
         if (!updatedCookies || !updatedCookies.includes(encoded)) {
-          toast.error(
-            "Не удалось сохранить товар в избранное (превышен лимит куки)"
-          );
+          toast.error(t("toast.favorites-add-error"));
           setIsLiked(false);
           return;
         }
 
-        toast.success("Товар добавлен в избранное");
+        toast.success(t("toast.favorites-add-success"));
         setIsLiked(true);
       }
     } else {
@@ -131,12 +100,11 @@ export const ProductCard: React.FC<{
         .find((row) => row.startsWith("favorites="));
 
       if (!updatedCookies || !updatedCookies.includes(encoded)) {
-        toast.error("Не удалось убрать товар из избранного");
+        toast.error(t("toast.favorites-remove-error"));
         setIsLiked(true);
         return;
       }
-
-      toast.success("Товар убран из избранного");
+      toast.success(t("toast.favorites-remove-success"));
       setIsLiked(false);
       onUnlike?.(product.id);
     }
@@ -161,11 +129,11 @@ export const ProductCard: React.FC<{
 
           const data = await response.json();
           setIsLiked(true);
-          toast.success("Товар добавлен в избранное");
+          toast.success(t("toast.favorites-add-success"));
           // dispatch(addFavorite(product.id));
         } catch (error) {
           console.error("Error adding to favorites:", error);
-          toast.error("Error adding to favorites");
+          toast.error(t("toast.favorites-add-error"));
         }
       } else {
         try {
@@ -185,9 +153,9 @@ export const ProductCard: React.FC<{
           const data = await response.json();
           setIsLiked(false);
           onUnlike?.(product.id);
-          toast.success("Товар убран из избранного");
+          toast.success(t("toast.favorites-remove-success"));
         } catch (error) {
-          toast.error("Failed to remove from favorites");
+          toast.error(t("toast.favorites-remove-error"));
         }
         setIsLiked(false);
       }

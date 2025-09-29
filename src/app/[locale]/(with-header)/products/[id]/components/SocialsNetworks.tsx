@@ -9,6 +9,11 @@ interface ISocialsNetworkProps {
 }
 
 export const SocialsNetwork: React.FC<ISocialsNetworkProps> = ({ product }) => {
+  const { fb_link, yt_link, tg_link, ig_link } = product.author;
+
+  // Если нет ни одной ссылки, ничего не рендерим
+  if (!fb_link && !yt_link && !tg_link && !ig_link) return null;
+
   return (
     <div className="actions-body-product__socials socials">
       <p className="socials__text">Контакт у соц. мережах:</p>

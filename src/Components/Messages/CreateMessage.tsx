@@ -50,6 +50,10 @@ export default function CreateMessage({ id }: CreateMessageProps) {
     }
   };
 
+  if (session?.user.id === id) {
+    return;
+  }
+
   return (
     <button
       onClick={() => {

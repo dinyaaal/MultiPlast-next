@@ -14,6 +14,7 @@ type StepOneInputs = z.infer<typeof ForgotPasswordSchema>;
 
 export default function ForgotPassword() {
   const t = useTranslations("Auth.forgot-password");
+  const [isSend, setIsSend] = useState(false);
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -45,10 +46,12 @@ export default function ForgotPassword() {
         return;
       }
 
-      toast.success(t("send-instructions"));
+      // toast.success(t("send-instructions"));
+      setIsSend(true);
       // setEmail(data.email);
     } catch (err) {
       toast.error(t("send-error"));
+      setIsSend(false);
     } finally {
       setIsLoading(false);
     }
@@ -63,30 +66,39 @@ export default function ForgotPassword() {
         <h2 className="login__title title">{t("title")}</h2>
         <p className="entry-login__text">{t("subtitle")}</p>
       </div>
-
-      <form
-        onSubmit={handleSubmitStep1(handleEmailSubmit)}
-        className="login__form form-login"
-      >
-        <div className="form-login__block">
-          <div className="input-block">
-            <p>{t("email")}</p>
-            <input
-              type="email"
-              placeholder={t("email")}
-              className={`form-login__input input ${
-                errors1.email ? "input--error" : ""
-              }`}
-              {...registerStep1("email")}
-            />
+      {isSend ? (
+        <p className=" text-center title title--small text-green-500">
+          {t("send-instructions")}
+        </p>
+      ) : (
+        <form
+          onSubmit={handleSubmitStep1(handleEmailSubmit)}
+          className="login__form form-login"
+        >
+          <div className="form-login__block">
+            <div className="input-block">
+              <p>{t("email")}</p>
+              <input
+                type="email"
+                placeholder={t("email")}
+                className={`form-login__input input ${
+                  errors1.email ? "input--error" : ""
+                }`}
+                {...registerStep1("email")}
+              />
+            </div>
           </div>
-        </div>
 
-        <button type="submit" className="form-login__button button">
-          {t("button")}
-          {isLoading && <Spinner color="current" size="sm" />}
-        </button>
-      </form>
+          <button
+            type="submit"
+            disabled={isLoading}
+            className="form-login__button button"
+          >
+            {t("button")}
+            {isLoading && <Spinner color="current" size="sm" />}
+          </button>
+        </form>
+      )}
     </>
   );
 }

@@ -119,7 +119,7 @@ export default function Profile() {
       });
       if (editResponse.ok) {
         const editResult = await editResponse.json();
-        toast.success("Данные успешно изменены");
+        toast.success(t("toast.change-success"));
 
         if (editResult) {
           dispatch(setUserInfoData(editResult));
@@ -131,7 +131,7 @@ export default function Profile() {
       }
     } catch (error) {
       console.error("Ошибка при отправке данных:", error);
-      toast.error("Ошибка обновления информации пользователя");
+      toast.error(t("toast.change-error"));
     } finally {
       setIsLoadingRequest(false);
     }

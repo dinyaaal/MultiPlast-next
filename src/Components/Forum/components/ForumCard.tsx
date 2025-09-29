@@ -3,6 +3,7 @@
 import { Link } from "@/i18n/routing";
 import { ForumPost } from "@/types/types";
 import { useSession } from "next-auth/react";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 import React from "react";
 import { toast } from "sonner";
@@ -17,9 +18,10 @@ export const ForumCard: React.FC<ForumCardProps> = ({
   small = false,
   onDelete,
 }) => {
+  const t = useTranslations("Forum");
   const { data: session, status } = useSession();
 
-  const handleChatDelete = async () => {
+  const handleForumDelete = async () => {
     if (!session?.user.access_token || !post.id) {
       return;
     }
@@ -33,14 +35,14 @@ export const ForumCard: React.FC<ForumCardProps> = ({
         },
       });
       if (deleteResponse.ok) {
-        toast.success("Пост удален!");
+        toast.success(t("toast.delete-success"));
         onDelete?.(post.id);
       } else {
-        throw new Error("Ошибка обновления информации пользователя");
+        throw new Error("Delete error");
       }
     } catch (error) {
       console.error("Ошибка при отправке данных:", error);
-      toast.error("Ошибка удаления");
+      toast.error(t("toast.delete-error"));
     }
   };
 
@@ -77,14 +79,14 @@ export const ForumCard: React.FC<ForumCardProps> = ({
         <div className="body-forum__item item-forum">
           {session?.user.id === post.author_id && (
             <button
-              onClick={(e) => {
-                toast("Вы уверены что хотите удалить пост?", {
+              onClick={() => {
+                toast(t("toast.delete-confirm"), {
                   classNames: {
                     actionButton: "bg-red-600 p-4",
                   },
                   action: {
-                    label: "Удалить",
-                    onClick: () => handleChatDelete(),
+                    label: t("toast.delete-confirm-action"),
+                    onClick: () => handleForumDelete(),
                   },
                 });
               }}

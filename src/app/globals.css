@@ -2830,3 +2830,7 @@ button:disabled {
 .words-forum-topic__item {
   @apply rounded-[5px] bg-bg-lite py-[10px] px-[15px];
 }
+
+.map {
+  @apply aspect-video rounded-[6px] overflow-hidden border border-border;
+}

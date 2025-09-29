@@ -1,6 +1,6 @@
 "use client";
 
-import { LoginFormSchema, RegistrationFormSchema } from "@/lib/schema";
+import { LoginFormSchema } from "@/lib/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signIn } from "next-auth/react";
 import { useTranslations } from "next-intl";
@@ -12,7 +12,6 @@ import React, { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { toast } from "sonner";
-import Language from "@/Components/Language/Language";
 
 type Inputs = z.infer<typeof LoginFormSchema>;
 
@@ -49,12 +48,9 @@ export default function Login() {
     });
 
     if (res?.error) {
-      // toast.error("Ошибка входа");
       toast.error(res.error);
-      // console.error("Ошибка входа:", res.error);
-      // setError("Неверный логин или пароль");
     } else {
-      toast.success("Успешный вход");
+      toast.success(t("toast.login-success"));
 
       setError(null);
       router.push("/");

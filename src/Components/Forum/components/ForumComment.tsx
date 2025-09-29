@@ -2,6 +2,7 @@
 
 import { CommentType } from "@/types/types";
 import { useSession } from "next-auth/react";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -24,6 +25,7 @@ export const ForumComment: React.FC<ForumCommentProps> = ({
   const [replies, setReplies] = useState<CommentType[]>([]);
   const [isLiked, setIsLiked] = useState<boolean>(comment.is_liked);
   const { data: session, status } = useSession();
+  const t = useTranslations("Forum");
 
   const formattedDate = new Date(comment.created_at).toLocaleDateString(
     "uk-UA",
@@ -120,14 +122,13 @@ export const ForumComment: React.FC<ForumCommentProps> = ({
         }
 
         const data = await response.json();
-        // console.log("Favorite added:", data);
         setIsLiked(!isLiked);
       } catch (error) {
         console.error("Failed to like comment", error);
-        toast.error("Failed to like comment");
+        toast.error(t("toast.like-error"));
       }
     } else if (status === "unauthenticated") {
-      toast.info("Что бы проголосовать за данный ответ - авторизируйтесь");
+      toast.info(t("toast.like-login"));
     }
   };
 

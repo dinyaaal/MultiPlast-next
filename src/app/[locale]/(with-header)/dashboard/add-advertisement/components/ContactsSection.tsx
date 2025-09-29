@@ -122,7 +122,7 @@ export default function ContactsSection({
                       {phones.map((phone, phoneIndex) => (
                         <div key={phoneIndex} className="input-block">
                           <p>
-                            {t("contacts.phone")} №{phoneIndex + 1}
+                            {t("contacts.phone")}* №{phoneIndex + 1}
                           </p>
 
                           <div className="flex gap-2 items-center w-full ">

@@ -52,7 +52,7 @@ export default function Registration() {
         setCities(data);
       } catch (error) {
         console.error("Failed to load cities:", error);
-        toast.error("Не удалось загрузить города");
+        toast.error(t("toast.cities-error"));
       } finally {
         setIsLoading(false);
       }

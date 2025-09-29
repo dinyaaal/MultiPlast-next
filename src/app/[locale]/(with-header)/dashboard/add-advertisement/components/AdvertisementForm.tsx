@@ -93,7 +93,7 @@ export default function AdvertisementForm({
     });
 
     if (invalidFiles.length > 0) {
-      toast.error(`Файлы превышающие 1 МБ не были добавлены`);
+      toast.error(t("toast.photo-size-error"));
     }
 
     if (validFiles.length > 0) {
@@ -175,10 +175,10 @@ export default function AdvertisementForm({
         // Обновляем индекс активного слайда
         setActivePhotoIndex((prev) => Math.max(prev - 1, 0));
 
-        toast.success("Фото успешно удалено");
+        toast.success(t("toast.photo-delete-success"));
       } catch (err) {
         console.error("Ошибка при удалении:", err);
-        toast.error("Ошибка при удалении фото");
+        toast.error(t("toast.photo-delete-error"));
       }
     } else {
       // фото из локальных загруженных photos
@@ -862,7 +862,11 @@ export default function AdvertisementForm({
             {t("location")}
           </h2>
           <div className="flex flex-col gap-5">
-            <div className="aspect-video ">
+            <div
+              className={`map ${
+                errors.latitude || errors.longitude ? "input--error" : ""
+              }`}
+            >
               <Map
                 lat={Number(watch("latitude"))}
                 lng={Number(watch("longitude"))}
@@ -901,56 +905,6 @@ export default function AdvertisementForm({
                 // }
               />
             </div>
-            {/* <div className="input-block">
-              <p>{t("address")}</p>
-              <input
-                autoComplete="off"
-                type="text"
-                placeholder=""
-                className={`input ${errors.address ? "input--error" : ""}`}
-                {...register("address")}
-                // value={
-                //   userInformation?.address ? userInformation?.address : ""
-                // }
-                // onChange={(e) =>
-                //   setUserInformation((prev) =>
-                //     prev ? { ...prev, address: e.target.value } : null
-                //   )
-                // }
-              />
-            </div>
-            <div className="input-block">
-              <p>{t("city")}*</p>
-              <input
-                autoComplete="off"
-                type="text"
-                placeholder=""
-                className={`input ${errors.city ? "input--error" : ""}`}
-                {...register("city")}
-                // value={userInformation?.city ? userInformation?.city : ""}
-                // onChange={(e) =>
-                //   setUserInformation((prev) =>
-                //     prev ? { ...prev, city: e.target.value } : null
-                //   )
-                // }
-              />
-            </div>
-            <div className="input-block">
-              <p>{t("region")}*</p>
-              <input
-                autoComplete="off"
-                type="text"
-                placeholder=""
-                className={`input ${errors.area ? "input--error" : ""}`}
-                {...register("area")}
-                // value={userInformation?.area ? userInformation?.area : ""}
-                // onChange={(e) =>
-                //   setUserInformation((prev) =>
-                //     prev ? { ...prev, area: e.target.value } : null
-                //   )
-                // }
-              />
-            </div> */}
           </div>
         </div>
       </div>

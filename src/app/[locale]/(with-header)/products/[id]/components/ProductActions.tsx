@@ -7,8 +7,10 @@ import { Link } from "@/i18n/routing";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { saveToRecentProducts } from "@/utils/saveToRecentProducts";
+import { useTranslations } from "next-intl";
 
 export function ProductActions({ product }: { product: ProductType }) {
+  const t = useTranslations("Product");
   const [isLiked, setIsLiked] = useState(false);
   const { data: session, status } = useSession();
 
@@ -88,14 +90,13 @@ export function ProductActions({ product }: { product: ProductType }) {
             .find((row) => row.startsWith("favorites="));
 
           if (!updatedCookies || !updatedCookies.includes(encoded)) {
-            toast.error(
-              "Не удалось сохранить товар в избранное (превышен лимит куки)"
-            );
+            toast.error(t("toast.favorites-add-error"));
             setIsLiked(false);
             return;
           }
 
-          toast.success("Товар добавлен в избранное");
+          toast.success(t("toast.favorites-add-success"));
+
           setIsLiked(true);
         }
       } else {
@@ -111,12 +112,14 @@ export function ProductActions({ product }: { product: ProductType }) {
           .find((row) => row.startsWith("favorites="));
 
         if (!updatedCookies || !updatedCookies.includes(encoded)) {
-          toast.error("Не удалось убрать товар из избранного");
+          toast.success(t("toast.favorites-remove-error"));
+
           setIsLiked(true);
           return;
         }
 
-        toast.success("Товар убран из избранного");
+        toast.success(t("toast.favorites-remove-success"));
+
         setIsLiked(false);
       }
     };
@@ -142,12 +145,13 @@ export function ProductActions({ product }: { product: ProductType }) {
           const data = await response.json();
           console.log("Favorite added:", data);
           setIsLiked(true);
-          toast.success("Товар добавлен в избранное");
+          toast.error(t("toast.favorites-add-success"));
+
           setIsLiked(!isLiked);
           // dispatch(addFavorite(product.id));
         } catch (error) {
           console.error("Error adding to favorites:", error);
-          toast.error("Error adding to favorites");
+          toast.error(t("toast.favorites-add-error"));
         }
       } else {
         try {
@@ -169,9 +173,9 @@ export function ProductActions({ product }: { product: ProductType }) {
           const data = await response.json();
           setIsLiked(!isLiked);
           // onUnlike?.(product.id);
-          toast.success("Товар убран из избранного");
+          toast.success(t("toast.favorites-remove-success"));
         } catch (error) {
-          toast.error("Failed to remove from favorites");
+          toast.success(t("toast.favorites-remove-error"));
         }
         setIsLiked(false);
       }
