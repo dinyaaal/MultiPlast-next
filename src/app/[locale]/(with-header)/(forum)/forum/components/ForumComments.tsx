@@ -1,6 +1,6 @@
 "use client";
 
-import { ForumComment } from "@/Components/Forum/components/ForumComment";
+import { ForumComment } from "@/components/Forum/components/ForumComment";
 import { CommentType } from "@/types/types";
 import { Spinner } from "@heroui/react";
 import { useSession } from "next-auth/react";

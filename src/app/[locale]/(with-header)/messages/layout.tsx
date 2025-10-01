@@ -1,4 +1,4 @@
-import ChatItems from "@/Components/Messages/ChatItems";
+import ChatItems from "@/components/Messages/ChatItems";
 import React from "react";
 
 export default function MessagesLayout({

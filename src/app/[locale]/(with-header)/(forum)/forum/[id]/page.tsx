@@ -1,9 +1,10 @@
 import notFound from "@/app/[locale]/not-found";
-import ModalContact from "@/Components/Modals/ModalContact";
+import ModalContact from "@/components/Modals/ModalContact";
 import { ForumPost } from "@/types/types";
 import React from "react";
-import Gallery from "@/Components/Gallery";
+import Gallery from "@/components/Gallery";
 import ForumComments from "../components/ForumComments";
+import ForumActions from "./components/ForumActions";
 
 type Params = Promise<{ id: string }>;
 
@@ -50,7 +51,8 @@ export default async function ForumTopicPage(props: { params: Params }) {
         <div className="forum-topic__body body-forum-topic">
           <div className="body-forum-topic__top top-body-forum-topic">
             <h2 className="top-body-forum-topic__title title">{post.title}</h2>
-            <div className="top-product__actions actions-top">
+            <ForumActions id={params.id} />
+            {/* <div className="top-product__actions actions-top">
               <a href="#" className="actions-top__item edit">
                 <svg
                   width="30"
@@ -79,21 +81,17 @@ export default async function ForumTopicPage(props: { params: Params }) {
                   ></path>
                 </svg>
               </a>
-            </div>
+            </div> */}
           </div>
 
           <div className="body-forum-topic__image">
-            <Gallery src={"/product/01.jpg"} thumb={"/product/01.jpg"} />
-            {/* <Image
-              src="/product/01.jpg"
-              alt="Image"
-              width={1000}
-              height={1000}
-            /> */}
+            {/* <Gallery src={"/product/01.jpg"} thumb={"/product/01.jpg"} /> */}
           </div>
-          <div className="body-forum-topic__description">
-            <p>{post.text}</p>
-          </div>
+
+          <div
+            className="body-forum-topic__description"
+            dangerouslySetInnerHTML={{ __html: post.text }}
+          />
           <ForumComments postId={post.id} />
           {/* <div className="forum-comments">
             <ForumCommentInput postId={post.id} />

@@ -60,9 +60,6 @@ export default function ForgotPassword() {
   return (
     <>
       <div className="login__top">
-        {/* <Link href="/" className="body-header__logo logo">
-          <Image src="/logo.svg" alt="Logo" width={100} height={100} />
-        </Link> */}
         <h2 className="login__title title">{t("title")}</h2>
         <p className="entry-login__text">{t("subtitle")}</p>
       </div>

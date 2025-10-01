@@ -1,10 +1,10 @@
-import ModalContact from "@/Components/Modals/ModalContact";
 import React from "react";
 
 import ForumLayout from "../forum/components/ForumLayout";
 import { getTranslations } from "next-intl/server";
 import ForumBody from "./components/ForumBody";
 import { ForumCategory, ForumCategoryMinimal } from "@/types/types";
+import ModalContact from "@/components/Modals/ModalContact";
 
 async function fetchForumCategories() {
   try {

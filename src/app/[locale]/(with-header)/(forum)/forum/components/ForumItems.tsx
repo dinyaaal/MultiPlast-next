@@ -3,7 +3,7 @@ import { ForumPost } from "@/types/types";
 import React, { useEffect, useState } from "react";
 import { Pagination, Spinner } from "@heroui/react";
 
-import { ForumCard } from "@/Components/Forum/components/ForumCard";
+import { ForumCard } from "@/components/Forum/components/ForumCard";
 import { useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 

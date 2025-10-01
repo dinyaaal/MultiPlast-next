@@ -1,5 +1,5 @@
 "use client";
-import { ProductCard } from "@/Components/Products/components/ProductCard";
+import { ProductCard } from "@/components/Products/components/ProductCard";
 import { MinimalProduct } from "@/types/types";
 import { useSession } from "next-auth/react";
 import { useState, useEffect } from "react";

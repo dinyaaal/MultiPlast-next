@@ -1,10 +1,10 @@
 "use client";
 import { Pagination } from "@heroui/pagination";
-import { ProductCard } from "@/Components/Products/components/ProductCard";
+import { ProductCard } from "@/components/Products/components/ProductCard";
 import { Category, MinimalProduct, Page } from "@/types/types";
 
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { Filters } from "@/Components/Products/components/Filters";
+import { Filters } from "@/components/Products/components/Filters";
 import { useSearchParams } from "next/navigation";
 import { Spinner } from "@heroui/react";
 import { useSession } from "next-auth/react";

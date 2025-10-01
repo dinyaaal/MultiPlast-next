@@ -1,6 +1,6 @@
-import HomeForum from "@/Components/Forum/HomeForum";
-import Hero from "@/Components/Hero/Hero";
-import Adverts from "@/Components/Products/Adverts";
+import HomeForum from "@/components/Forum/HomeForum";
+import Hero from "@/components/Hero/Hero";
+import Adverts from "@/components/Products/Adverts";
 import React from "react";
 
 export default function page() {

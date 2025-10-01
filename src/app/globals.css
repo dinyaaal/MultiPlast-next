@@ -5,6 +5,9 @@
 /* Note: You may need to change the path to fit your project structure */
 @source '../../node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}';
 
+@import "../styles/_variables.scss";
+@import "../styles/_keyframe-animations.scss";
+
 @custom-variant dark (&:is(.dark *));
 
 @theme {
@@ -669,7 +672,7 @@ input::-webkit-inner-spin-button {
 }
 
 .editor {
-  @apply gap-[10px] max-w-[847px] w-full;
+  @apply gap-[10px] flex flex-col w-full;
 }
 .editor .editor-toolbar {
   @apply border border-border rounded-[5px] h-[220px] min-h-[220px];
@@ -2833,4 +2836,17 @@ button:disabled {
 
 .map {
   @apply aspect-video rounded-[6px] overflow-hidden border border-border;
+}
+
+/* .simple-editor-content .tiptap.ProseMirror.simple-editor {
+  @apply p-4;
+} */
+.simple-editor-wrapper {
+  @apply min-h-[215px] rounded-md  border border-border bg-[#f8fbff];
+}
+.simple-editor-content {
+  @apply w-full overflow-hidden p-[14px] text-[14px];
+}
+.tiptap-toolbar {
+  @apply !border-b !border-border;
 }

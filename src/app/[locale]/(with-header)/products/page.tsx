@@ -1,8 +1,8 @@
 import React from "react";
 import { ProductsBody } from "./components/ProductsBody";
 import { getTranslations } from "next-intl/server";
-import { BreadcrumbsClient } from "@/Components/Breadcrumbs";
-import AdvertsWatched from "@/Components/Products/AdvertsWatched";
+import { BreadcrumbsClient } from "@/components/Breadcrumbs";
+import AdvertsWatched from "@/components/Products/AdvertsWatched";
 
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
 

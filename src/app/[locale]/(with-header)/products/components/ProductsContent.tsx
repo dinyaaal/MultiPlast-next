@@ -1,5 +1,5 @@
 import React from "react";
-import { ProductCard } from "@/Components/Products/components/ProductCard";
+import { ProductCard } from "@/components/Products/components/ProductCard";
 import { Pagination } from "@heroui/pagination";
 
 interface ContentTradeProps {

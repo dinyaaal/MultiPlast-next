@@ -1,5 +1,5 @@
 import { Link } from "@/i18n/routing";
-import Language from "@/Components/Language/Language";
+import Language from "@/components/Language/Language";
 import Image from "next/image";
 import React from "react";
 

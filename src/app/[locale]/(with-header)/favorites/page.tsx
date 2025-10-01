@@ -1,6 +1,6 @@
 import React from "react";
 import FavoritesBody from "./components/FavoritesBody";
-import AdvertsWatched from "@/Components/Products/AdvertsWatched";
+import AdvertsWatched from "@/components/Products/AdvertsWatched";
 import { getTranslations } from "next-intl/server";
 
 export default async function Favorite() {

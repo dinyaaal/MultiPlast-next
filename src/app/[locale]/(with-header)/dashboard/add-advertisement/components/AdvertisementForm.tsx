@@ -19,7 +19,7 @@ import { ChevronRight } from "lucide-react";
 import { toast } from "sonner";
 import { useState } from "react";
 import { useSession } from "next-auth/react";
-import Map from "@/Components/Map/Map";
+import Map from "@/components/Map/Map";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "@/i18n/routing";
 

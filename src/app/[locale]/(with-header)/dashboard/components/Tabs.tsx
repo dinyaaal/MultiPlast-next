@@ -5,7 +5,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import "swiper/css";
 
-import AdvertismentTab from "@/Components/Advertisment/AdvertismentTab";
+import AdvertismentTab from "@/components/Advertisment/AdvertismentTab";
 import { useTranslations } from "next-intl";
 
 export default function Tabs() {

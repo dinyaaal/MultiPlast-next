@@ -1,5 +1,5 @@
 "use client";
-import { ProductCard } from "@/Components/Products/components/ProductCard";
+import { ProductCard } from "@/components/Products/components/ProductCard";
 import { ProductType } from "@/types/types";
 import { Pagination, Spinner } from "@heroui/react";
 import { useSession } from "next-auth/react";

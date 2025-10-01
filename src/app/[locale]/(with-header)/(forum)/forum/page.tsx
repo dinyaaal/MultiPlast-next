@@ -1,6 +1,6 @@
 "use client";
 
-import Sections from "@/Components/Forum/components/Sections";
+import Sections from "@/components/Forum/components/Sections";
 import React, { useState } from "react";
 import { useTranslations } from "next-intl";
 

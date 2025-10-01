@@ -1,7 +1,7 @@
-import Footer from "@/Components/Footer/Footer";
-import Header from "@/Components/Header/Header";
-import PagePreloader from "@/Components/PagePreloader";
-import UserProvider from "@/Components/UserProvider";
+import Footer from "@/components/Footer/Footer";
+import Header from "@/components/Header/Header";
+import PagePreloader from "@/components/PagePreloader";
+import UserProvider from "@/components/UserProvider";
 
 import React from "react";
 

@@ -9,11 +9,10 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { toast } from "sonner";
 import { useSession } from "next-auth/react";
-import { MDXEditorMethods } from "@mdxeditor/editor";
-import { ForwardRefEditor } from "@/Components/ForwardRefEditor";
 import { Select, SelectItem, Spinner } from "@heroui/react";
 import { ForumCategoryMinimal } from "@/types/types";
 import { Link } from "@/i18n/routing";
+import { SimpleEditor } from "@/components/tiptap-templates/simple/simple-editor";
 
 type Inputs = z.infer<typeof ForumAddSchema>;
 
@@ -24,7 +23,7 @@ interface ForumBodyProps {
 export default function ForumBody({ categories }: ForumBodyProps) {
   const t = useTranslations("Forum.forumAdd");
   const { data: session, status } = useSession();
-  const editorRef = useRef<MDXEditorMethods>(null);
+  const token = session?.user.access_token;
   const [content, setContent] = useState<string>("");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -43,6 +42,7 @@ export default function ForumBody({ categories }: ForumBodyProps) {
   const changeText = (text: string) => {
     setContent(text);
     setValue("text", text);
+    console.log(text);
   };
 
   const processForm: SubmitHandler<Inputs> = async (data) => {
@@ -50,7 +50,6 @@ export default function ForumBody({ categories }: ForumBodyProps) {
       return;
     }
     setIsLoading(true);
-
     const token = session.user.access_token;
 
     const formData = new FormData();
@@ -62,6 +61,8 @@ export default function ForumBody({ categories }: ForumBodyProps) {
     // if (data.keywords) {
     //   formData.append("keywords", data.keywords);
     // }
+
+    console.log(formData);
 
     try {
       const forumAddResponse = await fetch(`/api/forum/add`, {
@@ -94,6 +95,14 @@ export default function ForumBody({ categories }: ForumBodyProps) {
         <Link href="/login" className="button">
           Авторизуватися
         </Link>
+      </div>
+    );
+  }
+
+  if (status === "loading") {
+    return (
+      <div className="flex w-full h-full flex-auto items-center justify-center">
+        <Spinner size="lg" />
       </div>
     );
   }
@@ -153,25 +162,17 @@ export default function ForumBody({ categories }: ForumBodyProps) {
 
       <div className="input-block ">
         <p>{t("enter-description")}</p>
-        <div className={`editor ${errors.text ? "editor--error" : ""}`}>
-          <ForwardRefEditor
+        <div
+          className={`editor relative ${errors.text ? "editor--error" : ""}`}
+        >
+          {/* <ForwardRefEditor
             markdown={content}
             onChange={changeText}
             ref={editorRef}
             placeholder={t("enter-description")}
-          />
+          /> */}
+          <SimpleEditor token={token} onChange={changeText} />
         </div>
-        {/* <button type="button" onClick={(e) => console.log(content)}>
-                    otpravit
-                  </button> */}
-        {/* <textarea
-                    id="editor"
-                    placeholder={t("descriptionPlaceholder")}
-                    className={`description__input input ${
-                      errors.text ? "input--error" : ""
-                    }`}
-                    {...register("text")}
-                  ></textarea> */}
       </div>
 
       <label className="check">

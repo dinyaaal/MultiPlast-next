@@ -3,7 +3,7 @@ import { Rubik } from "next/font/google";
 import "../globals.css";
 import { HeroUIProvider } from "@heroui/system";
 import { setRequestLocale } from "next-intl/server";
-import { AuthProviders } from "@/Components/AuthProviders";
+import { AuthProviders } from "@/components/AuthProviders";
 
 import { ReduxProvider } from "@/store/provider";
 import { Toaster } from "sonner";
@@ -11,7 +11,7 @@ import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import "@mdxeditor/editor/style.css";
-import Preloader from "@/Components/Preloader";
+import Preloader from "@/components/Preloader";
 
 const rubikFont = Rubik({
   subsets: ["latin"],

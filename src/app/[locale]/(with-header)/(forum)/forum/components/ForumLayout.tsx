@@ -1,9 +1,9 @@
-// import Breadcrumbs from "@/Components/Breadcrumbs";
-import SelectTabs from "@/Components/Select/SelectTabs";
+// import Breadcrumbs from "@/components/Breadcrumbs";
+import SelectTabs from "@/components/Select/SelectTabs";
 import React from "react";
 import { useTranslations } from "next-intl";
-import { ForumSearch } from "@/Components/Forum/components/ForumSearch";
-import { BreadcrumbsClient } from "@/Components/Breadcrumbs";
+import { ForumSearch } from "@/components/Forum/components/ForumSearch";
+import { BreadcrumbsClient } from "@/components/Breadcrumbs";
 
 export default function ForumLayout({
   children,
