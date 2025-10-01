@@ -63,7 +63,6 @@ import { LinkIcon } from "@/components/tiptap-icons/link-icon";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useWindowSize } from "@/hooks/use-window-size";
 import { useCursorVisibility } from "@/hooks/use-cursor-visibility";
-
 // --- Components ---
 import { ThemeToggle } from "@/components/tiptap-templates/simple/theme-toggle";
 
@@ -192,7 +191,7 @@ interface SimpleEditorProps {
 
 export function SimpleEditor({ token, onChange }: SimpleEditorProps) {
   const { data: session, status } = useSession();
-  const t = useTranslations("Forum.forumAdd");
+  const t = useTranslations("Editor");
   const handleImageUpload = React.useCallback(
     async (
       file: File,
@@ -286,7 +285,7 @@ export function SimpleEditor({ token, onChange }: SimpleEditorProps) {
       Subscript,
       Selection,
       Placeholder.configure({
-        placeholder: t("enter-description"), // перевод из next-intl
+        placeholder: t("placeholder"), // перевод из next-intl
       }),
       ImageUploadNode.configure({
         accept: "image/*",
