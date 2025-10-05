@@ -1,22 +1,24 @@
 import { NextRequest, NextResponse } from "next/server";
 
-export async function DELETE(request: NextRequest) {
+export async function POST(request: NextRequest) {
+  const body = await request.json();
+  const id = request.headers.get("id");
   const authHeader = request.headers.get("authorization");
 
-  const id = request.headers.get("id");
-
-  if (!authHeader || !id) {
-    return NextResponse.json({ error: "Missing id or token" }, { status: 400 });
+  if (!id || !authHeader) {
+    return NextResponse.json({ error: "Missing id" }, { status: 400 });
   }
 
   try {
     const res = await fetch(
-      `https://multiplast-api.web-hub.online/api/remove-file/${id}`,
+      `https://multiplast-api.web-hub.online/api/chats/report/${id}`,
       {
-        method: "DELETE",
+        method: "POST",
         headers: {
+          "Content-Type": "application/json",
           Authorization: `${authHeader}`,
         },
+        body: JSON.stringify(body),
       }
     );
 

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 
 import { ForumAddSchema } from "@/lib/schema";
@@ -10,9 +10,10 @@ import { z } from "zod";
 import { toast } from "sonner";
 import { useSession } from "next-auth/react";
 import { Select, SelectItem, Spinner } from "@heroui/react";
-import { ForumCategoryMinimal } from "@/types/types";
+import { ForumCategoryMinimal, ForumPost } from "@/types/types";
 import { Link } from "@/i18n/routing";
 import { SimpleEditor } from "@/components/tiptap-templates/simple/simple-editor";
+import { useSearchParams } from "next/navigation";
 
 type Inputs = z.infer<typeof ForumAddSchema>;
 
@@ -26,6 +27,11 @@ export default function ForumBody({ categories }: ForumBodyProps) {
   const token = session?.user.access_token;
   const [content, setContent] = useState<string>("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingRequest, setIsLoadingRequest] = useState(false);
+  const searchParams = useSearchParams();
+  const editId = searchParams.get("edit");
+
+  const [post, setPost] = useState<ForumPost | null>(null);
 
   const {
     register,
@@ -39,6 +45,44 @@ export default function ForumBody({ categories }: ForumBodyProps) {
     resolver: zodResolver(ForumAddSchema),
   });
 
+  const fetchPost = async () => {
+    if (!editId) return;
+    setIsLoading(true);
+    try {
+      const response = await fetch(`/api/forum/post?id=${editId}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`Ошибка загрузки: ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      setPost(data);
+    } catch (err) {
+      console.log("error");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchPost();
+  }, [editId]);
+
+  useEffect(() => {
+    if (post) {
+      reset({
+        title: post.title || "",
+        text: post.text || "",
+      });
+    }
+  }, [post, reset]);
+
   const changeText = (text: string) => {
     setContent(text);
     setValue("text", text);
@@ -49,7 +93,7 @@ export default function ForumBody({ categories }: ForumBodyProps) {
     if (!session?.user.access_token) {
       return;
     }
-    setIsLoading(true);
+    setIsLoadingRequest(true);
     const token = session.user.access_token;
 
     const formData = new FormData();
@@ -82,7 +126,7 @@ export default function ForumBody({ categories }: ForumBodyProps) {
       console.error("Ошибка при отправке данных:", error);
       toast.error("Ошибка создания темы");
     } finally {
-      setIsLoading(false);
+      setIsLoadingRequest(false);
     }
   };
 
@@ -99,7 +143,7 @@ export default function ForumBody({ categories }: ForumBodyProps) {
     );
   }
 
-  if (status === "loading") {
+  if (status === "loading" || isLoading) {
     return (
       <div className="flex w-full h-full flex-auto items-center justify-center">
         <Spinner size="lg" />
@@ -155,6 +199,7 @@ export default function ForumBody({ categories }: ForumBodyProps) {
           autoComplete="off"
           type="text"
           placeholder={t("enter-title")}
+          value={watch("title") || ""}
           className={` input ${errors.title ? "input--error" : ""}`}
           {...register("title")}
         />
@@ -171,7 +216,11 @@ export default function ForumBody({ categories }: ForumBodyProps) {
             ref={editorRef}
             placeholder={t("enter-description")}
           /> */}
-          <SimpleEditor token={token} onChange={changeText} />
+          <SimpleEditor
+            token={token}
+            onChange={changeText}
+            initialContent={post?.text}
+          />
         </div>
       </div>
 
@@ -183,11 +232,11 @@ export default function ForumBody({ categories }: ForumBodyProps) {
       <div className="add-forum__actions">
         <button
           type="submit"
-          disabled={isLoading}
+          disabled={isLoadingRequest}
           className="add-forum__add button"
         >
           {t("publish")}
-          {isLoading && <Spinner size="sm" />}
+          {isLoadingRequest && <Spinner size="sm" />}
         </button>
         {/* <button className="add-forum__delete button button--secondary">
                   {t("delete")}

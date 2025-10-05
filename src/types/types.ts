@@ -228,6 +228,7 @@ export interface ChatItemData {
   created_at: string;
   updated_at: string;
   from_user: ChatUser;
+  last_message: IMessageItem | null;
   to_user: ChatUser;
   user: ChatUser;
 }

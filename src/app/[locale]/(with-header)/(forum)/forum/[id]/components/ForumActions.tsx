@@ -1,3 +1,4 @@
+import { Link } from "@/i18n/routing";
 import React from "react";
 
 interface ForumActionsProps {
@@ -7,7 +8,7 @@ interface ForumActionsProps {
 export default function ForumActions({ id }: ForumActionsProps) {
   return (
     <div className="top-product__actions actions-top">
-      <a href="#" className="actions-top__item edit">
+      <Link href={`/forum-add?edit=${id}`} className="actions-top__item edit">
         <svg
           width="30"
           height="30"
@@ -20,8 +21,8 @@ export default function ForumActions({ id }: ForumActionsProps) {
             fill="#B0BFD7"
           />
         </svg>
-      </a>
-      <a href="#" className="actions-top__item share">
+      </Link>
+      <Link href="#" className="actions-top__item share">
         <svg
           width="27"
           height="30"
@@ -34,7 +35,7 @@ export default function ForumActions({ id }: ForumActionsProps) {
             fill="#1858B8"
           ></path>
         </svg>
-      </a>
+      </Link>
     </div>
   );
 }

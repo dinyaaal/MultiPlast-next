@@ -10,6 +10,8 @@ import { toast } from "sonner";
 import { Ellipsis } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useParams } from "next/navigation";
+import { useDisclosure } from "@heroui/react";
+import ReportModal from "./ReportModal";
 
 interface ChatItemProps {
   chat: ChatItemData;
@@ -20,13 +22,14 @@ export const ChatItem: React.FC<ChatItemProps> = ({ chat, onDelete }) => {
   const t = useTranslations("Messages");
   const params = useParams();
   const currentChatId = params?.id;
-
   const isActive = Number(currentChatId) === chat.id;
   const { data: session, status } = useSession();
   const formattedDate = new Date(chat.updated_at).toLocaleDateString();
   const [isBlocked, setIsBlocked] = useState<boolean>(
     !!chat.blocked_by_user_id
   );
+  const [isOpenPopover, setIsOpenPopover] = useState(false);
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   const handleChatDelete = async () => {
     if (!session?.user.access_token || !chat.id) {
@@ -104,114 +107,138 @@ export const ChatItem: React.FC<ChatItemProps> = ({ chat, onDelete }) => {
   };
 
   return (
-    <Link
-      href={`/messages/${chat.id}`}
-      className={`block-chat__item item-block-chat ${isActive ? "active" : ""}`}
-    >
-      <div className="item-block-chat__message">
-        {/* <div className="item-block-chat__image">
+    <>
+      <Link
+        href={`/messages/${chat.id}`}
+        className={`block-chat__item item-block-chat ${
+          isActive ? "active" : ""
+        }`}
+      >
+        <div className="item-block-chat__message">
+          {/* <div className="item-block-chat__image">
           <div className="notification-value">
             <span className="notification-value__number">99</span>
           </div>
         </div> */}
-        <div className="item-block-chat__image">
-          {chat.user.avatar ? (
-            <Image
-              src={chat.user.avatar}
-              className="ibg"
-              alt="Icon"
-              width={100}
-              height={100}
-            />
-          ) : (
-            <div className="account-body-user__icon">
+          <div className="item-block-chat__image">
+            {chat?.user?.avatar ? (
               <Image
-                src={"/icons/user.svg"}
+                src={chat.user.avatar}
+                className="ibg"
                 alt="Icon"
                 width={100}
                 height={100}
               />
-            </div>
-          )}
-        </div>
-        <div className="item-block-chat__body">
-          <div className="item-block-chat__info">
-            <div className="item-block-chat__block">
-              <div className="item-block-chat__name">
-                {`${chat.to_user.first_name} ${chat.to_user.last_name}`}
+            ) : (
+              <div className="account-body-user__icon">
+                <Image
+                  src={"/icons/user.svg"}
+                  alt="Icon"
+                  width={100}
+                  height={100}
+                />
               </div>
-              <span className="item-block-chat__date">{formattedDate}</span>
-            </div>
-            <Popover
-              placement="bottom-end"
-              className="item-block-chat__actions actions-menu"
-              classNames={{
-                content: ["p-0"],
-              }}
-            >
-              <PopoverTrigger>
-                <button
-                  onClick={(e) => e.preventDefault()}
-                  className="actions-menu__icon"
-                >
-                  <Ellipsis />
-                </button>
-              </PopoverTrigger>
-              <PopoverContent>
-                <div className="actions-menu__body body-actions-menu">
-                  <menu className="body-actions-menu__list">
-                    <button
-                      onClick={(e) => e.preventDefault()}
-                      className="body-actions-menu__item"
-                    >
-                      {t("actions.report")}
-                    </button>
-                    {isBlocked ? (
-                      <button
-                        onClick={(e) => {
-                          e.preventDefault();
-                          handleChatUnblock();
-                        }}
-                        className="body-actions-menu__item"
-                      >
-                        {t("actions.unblock")}
-                      </button>
-                    ) : (
-                      <button
-                        onClick={(e) => {
-                          e.preventDefault();
-                          handleChatBlock();
-                        }}
-                        className="body-actions-menu__item"
-                      >
-                        {t("actions.block")}
-                      </button>
-                    )}
-
-                    <button
-                      onClick={(e) => {
-                        e.preventDefault();
-                        toast(t("toast.deleteConfirm"), {
-                          action: {
-                            label: t("toast.delete"),
-                            onClick: () => handleChatDelete(),
-                          },
-                        });
-                      }}
-                      className="body-actions-menu__item body-actions-menu__item--red"
-                    >
-                      {t("actions.delete")}
-                    </button>
-                  </menu>
-                </div>
-              </PopoverContent>
-            </Popover>
+            )}
           </div>
-          <p className="item-block-chat__text">
-            Вітаю! Потрібна допомога в здісненні платежу....
-          </p>
+          <div className="item-block-chat__body">
+            <div className="item-block-chat__info">
+              <div className="item-block-chat__block">
+                <div className="item-block-chat__name">
+                  {`${chat.to_user.first_name} ${chat.to_user.last_name}`}
+                </div>
+                <span className="item-block-chat__date">{formattedDate}</span>
+              </div>
+              <Popover
+                isOpen={isOpenPopover}
+                onOpenChange={(open) => setIsOpenPopover(open)}
+                placement="bottom-end"
+                className="item-block-chat__actions actions-menu"
+                classNames={{
+                  content: ["p-0"],
+                }}
+              >
+                <PopoverTrigger>
+                  <button
+                    onClick={(e) => e.preventDefault()}
+                    className="actions-menu__icon"
+                  >
+                    <Ellipsis />
+                  </button>
+                </PopoverTrigger>
+                <PopoverContent>
+                  <div className="actions-menu__body body-actions-menu">
+                    <menu className="body-actions-menu__list">
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          // e.preventDefault();
+                          setIsOpenPopover(false);
+                          onOpen();
+                        }}
+                        className="body-actions-menu__item"
+                      >
+                        {t("actions.report")}
+                      </button>
+                      {isBlocked ? (
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setIsOpenPopover(false);
+                            handleChatUnblock();
+                          }}
+                          className="body-actions-menu__item"
+                        >
+                          {t("actions.unblock")}
+                        </button>
+                      ) : (
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setIsOpenPopover(false);
+                            handleChatBlock();
+                          }}
+                          className="body-actions-menu__item"
+                        >
+                          {t("actions.block")}
+                        </button>
+                      )}
+
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setIsOpenPopover(false);
+                          toast(t("toast.deleteConfirm"), {
+                            action: {
+                              label: t("toast.delete"),
+                              onClick: () => handleChatDelete(),
+                            },
+                          });
+                        }}
+                        className="body-actions-menu__item body-actions-menu__item--red"
+                      >
+                        {t("actions.delete")}
+                      </button>
+                    </menu>
+                  </div>
+                </PopoverContent>
+              </Popover>
+            </div>
+
+            <p className="item-block-chat__text">
+              {chat.last_message?.content || t("noMessage")}
+            </p>
+          </div>
         </div>
-      </div>
-    </Link>
+      </Link>
+
+      <ReportModal
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        id={chat.id.toString()}
+      />
+    </>
   );
 };

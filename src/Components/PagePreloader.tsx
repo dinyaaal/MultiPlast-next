@@ -2,6 +2,7 @@
 
 import { usePathname } from "@/i18n/routing";
 import { useState, useEffect } from "react";
+import Image from "next/image";
 
 export default function GlobalLoader() {
   const [loading, setLoading] = useState(false);
@@ -32,7 +33,7 @@ export default function GlobalLoader() {
           : "opacity-0 pointer-events-none"
       }`}
     >
-      <img
+      <Image
         src="/preloader/logo.svg"
         alt="Logo"
         className={`w-full max-w-[40vw] transition-transform duration-300 ${

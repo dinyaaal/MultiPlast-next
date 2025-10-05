@@ -259,4 +259,8 @@ export const ContactFormSchema = z.object({
   message: z.string().min(1, "Введите Ваше сообщение"),
 });
 
+export const ReportFormSchema = z.object({
+  text: z.string().min(1, "Введите Ваше сообщение"),
+});
+
 export type AdvertisementInputs = z.infer<typeof AdvertismentSchema>;

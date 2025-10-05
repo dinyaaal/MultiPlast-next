@@ -6,6 +6,7 @@ import { Spinner } from "@heroui/react";
 import { useSession } from "next-auth/react";
 import React, { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
+import Image from "next/image";
 
 interface ForumCommentInputProps {
   postId: number;
@@ -182,7 +183,7 @@ export default function ForumComments({ postId }: ForumCommentInputProps) {
                   onClick={(e) => setReplyData(null)}
                   className="chat-input-reply__clear"
                 >
-                  <img src="/icons/close.svg" alt="Icon" />
+                  <Image src="/icons/close.svg" alt="Icon" />
                 </button>
               </div>
             )}
@@ -225,7 +226,7 @@ export default function ForumComments({ postId }: ForumCommentInputProps) {
                     key={index}
                     onClick={() => handleRemoveImage(index)}
                   >
-                    <img src={URL.createObjectURL(file)} alt="preview" />
+                    <Image src={URL.createObjectURL(file)} alt="preview" />
                   </div>
                 ))}
               </div>

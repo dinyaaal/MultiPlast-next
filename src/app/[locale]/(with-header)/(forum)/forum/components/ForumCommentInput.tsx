@@ -3,6 +3,7 @@
 import { useSession } from "next-auth/react";
 import React, { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
+import Image from "next/image";
 
 interface ForumCommentInputProps {
   postId: number;
@@ -84,7 +85,7 @@ export default function ForumCommentInput({ postId }: ForumCommentInputProps) {
                   key={index}
                   onClick={() => handleRemoveImage(index)}
                 >
-                  <img src={URL.createObjectURL(file)} alt="preview" />
+                  <Image src={URL.createObjectURL(file)} alt="preview" />
                 </div>
               ))}
             </div>

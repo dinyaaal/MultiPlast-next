@@ -5,6 +5,14 @@ import React from "react";
 import Gallery from "@/components/Gallery";
 import ForumComments from "../components/ForumComments";
 import ForumActions from "./components/ForumActions";
+import "@/components/tiptap-node/blockquote-node/blockquote-node.scss";
+import "@/components/tiptap-node/code-block-node/code-block-node.scss";
+import "@/components/tiptap-node/horizontal-rule-node/horizontal-rule-node.scss";
+import "@/components/tiptap-node/list-node/list-node.scss";
+import "@/components/tiptap-node/image-node/image-node.scss";
+import "@/components/tiptap-node/heading-node/heading-node.scss";
+import "@/components/tiptap-node/paragraph-node/paragraph-node.scss";
+import "@/components/tiptap-templates/simple/simple-editor.scss";
 
 type Params = Promise<{ id: string }>;
 
@@ -84,14 +92,15 @@ export default async function ForumTopicPage(props: { params: Params }) {
             </div> */}
           </div>
 
-          <div className="body-forum-topic__image">
-            {/* <Gallery src={"/product/01.jpg"} thumb={"/product/01.jpg"} /> */}
+          {/* <div className="body-forum-topic__image">
+            <Gallery src={"/product/01.jpg"} thumb={"/product/01.jpg"} />
+          </div> */}
+          <div className="simple-editor-content !p-0">
+            <div
+              className=" tiptap ProseMirror simple-editor"
+              dangerouslySetInnerHTML={{ __html: post.text }}
+            />
           </div>
-
-          <div
-            className="body-forum-topic__description"
-            dangerouslySetInnerHTML={{ __html: post.text }}
-          />
           <ForumComments postId={post.id} />
           {/* <div className="forum-comments">
             <ForumCommentInput postId={post.id} />

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import Image from "next/image";
 
 export default function Preloader() {
   const [visible, setVisible] = useState(true);
@@ -46,12 +47,14 @@ export default function Preloader() {
           : "opacity-0 pointer-events-none"
       }`}
     >
-      <img
+      <Image
         src="/preloader/logo.svg"
         alt="Logo"
         className={`w-full max-w-[30vw] transition-transform duration-500 ${
           visible ? "scale-100" : "scale-0"
         }`}
+        width={400}
+        height={400}
       />
     </div>
   );

@@ -7,6 +7,7 @@ import { Button } from "@/components/tiptap-ui-primitive/button";
 import { CloseIcon } from "@/components/tiptap-icons/close-icon";
 import "@/components/tiptap-node/image-upload-node/image-upload-node.scss";
 import { focusNextNode, isValidPosition } from "@/lib/tiptap-utils";
+import { useTranslations } from "next-intl";
 
 export interface FileItem {
   /**
@@ -415,27 +416,33 @@ const ImageUploadPreview: React.FC<ImageUploadPreviewProps> = ({
 const DropZoneContent: React.FC<{ maxSize: number; limit: number }> = ({
   maxSize,
   limit,
-}) => (
-  <>
-    <div className="tiptap-image-upload-dropzone">
-      <FileIcon />
-      <FileCornerIcon />
-      <div className="tiptap-image-upload-icon-container">
-        <CloudUploadIcon />
-      </div>
-    </div>
+}) => {
+  const t = useTranslations("Editor"); // или нужный namespace
 
-    <div className="tiptap-image-upload-content">
-      <span className="tiptap-image-upload-text">
-        <em>Click to upload</em> or drag and drop
-      </span>
-      <span className="tiptap-image-upload-subtext">
-        Maximum {limit} file{limit === 1 ? "" : "s"}, {maxSize / 1024 / 1024}MB
-        each.
-      </span>
-    </div>
-  </>
-);
+  return (
+    <>
+      <div className="tiptap-image-upload-dropzone">
+        <FileIcon />
+        <FileCornerIcon />
+        <div className="tiptap-image-upload-icon-container">
+          <CloudUploadIcon />
+        </div>
+      </div>
+
+      <div className="tiptap-image-upload-content">
+        <span className="tiptap-image-upload-text">
+          <em>{t("clickToUpload")}</em> {t("orDragDrop")}
+        </span>
+        <span className="tiptap-image-upload-subtext">
+          {t("maximumFiles", {
+            limit,
+            sizeMb: (maxSize / 1024 / 1024).toFixed(2),
+          })}
+        </span>
+      </div>
+    </>
+  );
+};
 
 export const ImageUploadNode: React.FC<NodeViewProps> = (props) => {
   const { accept, limit, maxSize } = props.node.attrs;

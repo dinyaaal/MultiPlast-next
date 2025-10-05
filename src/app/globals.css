@@ -2845,7 +2845,7 @@ button:disabled {
   @apply min-h-[215px] rounded-md  border border-border bg-[#f8fbff];
 }
 .simple-editor-content {
-  @apply w-full overflow-hidden p-[14px] text-[14px];
+  @apply w-full overflow-hidden p-[14px] text-lg;
 }
 .tiptap-toolbar {
   @apply !border-b !border-border;

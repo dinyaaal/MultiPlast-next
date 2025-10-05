@@ -52,7 +52,6 @@ import {
 } from "@/components/tiptap-ui/link-popover";
 import { MarkButton } from "@/components/tiptap-ui/mark-button";
 import { TextAlignButton } from "@/components/tiptap-ui/text-align-button";
-import { UndoRedoButton } from "@/components/tiptap-ui/undo-redo-button";
 
 // --- Icons ---
 import { ArrowLeftIcon } from "@/components/tiptap-icons/arrow-left-icon";
@@ -64,7 +63,6 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { useWindowSize } from "@/hooks/use-window-size";
 import { useCursorVisibility } from "@/hooks/use-cursor-visibility";
 // --- Components ---
-import { ThemeToggle } from "@/components/tiptap-templates/simple/theme-toggle";
 
 // --- Lib ---
 import { MAX_FILE_SIZE } from "@/lib/tiptap-utils";
@@ -72,7 +70,6 @@ import { MAX_FILE_SIZE } from "@/lib/tiptap-utils";
 // --- Styles ---
 import "@/components/tiptap-templates/simple/simple-editor.scss";
 
-import content from "@/components/tiptap-templates/simple/data/content.json";
 import { useSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
 
@@ -89,15 +86,15 @@ const MainToolbarContent = ({
     <>
       <Spacer />
 
-      <ToolbarGroup>
+      {/* <ToolbarGroup>
         <UndoRedoButton action="undo" />
         <UndoRedoButton action="redo" />
       </ToolbarGroup>
 
-      <ToolbarSeparator />
+      <ToolbarSeparator /> */}
 
       <ToolbarGroup>
-        <HeadingDropdownMenu levels={[1, 2, 3, 4]} portal={isMobile} />
+        <HeadingDropdownMenu levels={[2, 3, 4]} portal={isMobile} />
         <ListDropdownMenu
           types={["bulletList", "orderedList", "taskList"]}
           portal={isMobile}
@@ -141,7 +138,7 @@ const MainToolbarContent = ({
       <ToolbarSeparator />
 
       <ToolbarGroup>
-        <ImageUploadButton text="Add" />
+        <ImageUploadButton />
       </ToolbarGroup>
 
       <Spacer />
@@ -187,11 +184,18 @@ const MobileToolbarContent = ({
 interface SimpleEditorProps {
   token: string | undefined;
   onChange?: (value: string) => void;
+  initialContent?: string;
 }
 
-export function SimpleEditor({ token, onChange }: SimpleEditorProps) {
+export function SimpleEditor({
+  token,
+  onChange,
+  initialContent,
+}: SimpleEditorProps) {
   const { data: session, status } = useSession();
   const t = useTranslations("Editor");
+  const prevImagesRef = React.useRef<string[]>([]);
+
   const handleImageUpload = React.useCallback(
     async (
       file: File,
@@ -200,8 +204,6 @@ export function SimpleEditor({ token, onChange }: SimpleEditorProps) {
     ): Promise<string> => {
       if (!file) throw new Error("No file provided");
 
-      const token = session?.user.access_token;
-      console.log(token);
       if (!token) throw new Error("Нет токена авторизации");
 
       if (file.size > MAX_FILE_SIZE) {
@@ -237,12 +239,18 @@ export function SimpleEditor({ token, onChange }: SimpleEditorProps) {
       if (onProgress) onProgress({ progress: 100 });
 
       const data = await res.json();
-      const url = data?.data?.url;
+      const urlFromBackend = data.data.url; // оригинальный URL
+      const idParam = data.data.id; // например, айди, который хочешь добавить
 
-      if (!url)
+      const separator = urlFromBackend?.includes("?") ? "&" : "?";
+      const urlWithId = `${urlFromBackend}${separator}id=${encodeURIComponent(
+        idParam
+      )}`;
+
+      if (!urlWithId)
         throw new Error("Не удалось получить URL загруженного изображения");
 
-      return url;
+      return urlWithId;
     },
     [session] // <- зависимость от session
   );
@@ -295,10 +303,43 @@ export function SimpleEditor({ token, onChange }: SimpleEditorProps) {
         onError: (error) => console.error("Upload failed:", error),
       }),
     ],
-    // content,
+    content: initialContent || "",
+    // onUpdate: ({ editor }) => {
+    //   const html = editor.getHTML();
+    //   onChange?.(html); // передаем изменения родителю
+
+    // },
     onUpdate: ({ editor }) => {
       const html = editor.getHTML();
-      onChange?.(html); // передаем изменения родителю
+      onChange?.(html);
+
+      // --- проверка удаления изображений ---
+      const currentImages = Array.from(editor.getJSON().content || []).flatMap(
+        (block: any) => (block.type === "image" ? [block.attrs.src] : [])
+      );
+
+      const removedImages = prevImagesRef.current.filter(
+        (src) => !currentImages.includes(src)
+      );
+
+      removedImages.forEach(async (url) => {
+        try {
+          const fileId = new URL(url).searchParams.get("id");
+          if (!fileId) return;
+
+          const token = session?.user.access_token;
+          if (!token) return;
+
+          await fetch(`/api/files/delete`, {
+            method: "DELETE",
+            headers: { Authorization: `Bearer ${token}`, id: fileId },
+          });
+        } catch (err) {
+          console.error("Failed to delete image:", err);
+        }
+      });
+
+      prevImagesRef.current = currentImages;
     },
   });
 
