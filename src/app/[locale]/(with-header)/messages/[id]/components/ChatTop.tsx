@@ -251,12 +251,6 @@ export default function ChatTop({ chat }: { chat: ChatItemData }) {
               }}
               className="actions-menu__icon"
             >
-              {/* <Image
-              src="/icons/complain.png"
-              alt="Image"
-              width={100}
-              height={100}
-            /> */}
               <TriangleAlert />
             </button>
           </Tooltip>
@@ -341,7 +335,6 @@ export default function ChatTop({ chat }: { chat: ChatItemData }) {
               }}
               className="actions-menu__icon"
             >
-              {/* <Image src="/icons/bin.png" alt="Image" width={100} height={100} /> */}
               <Trash className="text-red-700" />
             </button>
           </Tooltip>

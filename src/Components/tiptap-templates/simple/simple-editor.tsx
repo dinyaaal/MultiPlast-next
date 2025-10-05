@@ -185,12 +185,14 @@ interface SimpleEditorProps {
   token: string | undefined;
   onChange?: (value: string) => void;
   initialContent?: string;
+  onImagesRemoved?: (id: string) => void;
 }
 
 export function SimpleEditor({
   token,
   onChange,
   initialContent,
+  onImagesRemoved,
 }: SimpleEditorProps) {
   const { data: session, status } = useSession();
   const t = useTranslations("Editor");
@@ -255,6 +257,22 @@ export function SimpleEditor({
     [session] // <- зависимость от session
   );
 
+  function extractImageUrls(content: any): string[] {
+    if (!content) return [];
+    let urls: string[] = [];
+
+    for (const node of content) {
+      if (node.type === "image" && node.attrs?.src) {
+        urls.push(node.attrs.src);
+      }
+      if (node.content) {
+        urls = urls.concat(extractImageUrls(node.content));
+      }
+    }
+
+    return urls;
+  }
+
   const isMobile = useIsMobile();
   const { height } = useWindowSize();
   const [mobileView, setMobileView] = React.useState<
@@ -304,40 +322,44 @@ export function SimpleEditor({
       }),
     ],
     content: initialContent || "",
-    // onUpdate: ({ editor }) => {
-    //   const html = editor.getHTML();
-    //   onChange?.(html); // передаем изменения родителю
 
-    // },
-    onUpdate: ({ editor }) => {
+    onUpdate: async ({ editor }) => {
       const html = editor.getHTML();
       onChange?.(html);
 
-      // --- проверка удаления изображений ---
-      const currentImages = Array.from(editor.getJSON().content || []).flatMap(
-        (block: any) => (block.type === "image" ? [block.attrs.src] : [])
-      );
+      const json = editor.getJSON();
+
+      // ✅ теперь собираем все изображения, даже если они глубоко
+      const currentImages = extractImageUrls(json.content);
 
       const removedImages = prevImagesRef.current.filter(
         (src) => !currentImages.includes(src)
       );
 
-      removedImages.forEach(async (url) => {
-        try {
-          const fileId = new URL(url).searchParams.get("id");
-          if (!fileId) return;
+      if (removedImages.length > 0) {
+        for (const url of removedImages) {
+          try {
+            const fileId = new URL(url).searchParams.get("id");
+            if (!fileId) {
+              console.warn("⚠️ У изображения нет ID:", url);
+              continue;
+            }
 
-          const token = session?.user.access_token;
-          if (!token) return;
+            // 🔹 Всегда отдаём ID наружу при редактировании
+            onImagesRemoved?.(fileId);
 
-          await fetch(`/api/files/delete`, {
-            method: "DELETE",
-            headers: { Authorization: `Bearer ${token}`, id: fileId },
-          });
-        } catch (err) {
-          console.error("Failed to delete image:", err);
+            // 🔹 Только при создании реально удаляем с бэка
+            if (!initialContent && token) {
+              await fetch(`/api/files/delete`, {
+                method: "DELETE",
+                headers: { Authorization: `Bearer ${token}`, id: fileId },
+              });
+            }
+          } catch (err) {
+            console.error("❌ Ошибка при обработке удаления:", err);
+          }
         }
-      });
+      }
 
       prevImagesRef.current = currentImages;
     },

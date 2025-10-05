@@ -30,7 +30,7 @@ export default function ForumBody({ categories }: ForumBodyProps) {
   const [isLoadingRequest, setIsLoadingRequest] = useState(false);
   const searchParams = useSearchParams();
   const editId = searchParams.get("edit");
-
+  const [removedImageIds, setRemovedImageIds] = useState<string[]>([]);
   const [post, setPost] = useState<ForumPost | null>(null);
 
   const {
@@ -89,6 +89,15 @@ export default function ForumBody({ categories }: ForumBodyProps) {
     console.log(text);
   };
 
+  const onImagesRemoved = (id: string) => {
+    setRemovedImageIds((prev) => {
+      // если id уже есть — просто вернуть старый массив
+      if (prev.includes(id)) return prev;
+      // иначе добавить новый id
+      return [...prev, id];
+    });
+  };
+
   const processForm: SubmitHandler<Inputs> = async (data) => {
     if (!session?.user.access_token) {
       return;
@@ -107,26 +116,57 @@ export default function ForumBody({ categories }: ForumBodyProps) {
     // }
 
     console.log(formData);
+    if (editId && post) {
+      try {
+        const forumEditResponse = await fetch(`/api/forum/edit`, {
+          method: "POST",
+          headers: {
+            token: token,
+          },
+          body: formData,
+        });
 
-    try {
-      const forumAddResponse = await fetch(`/api/forum/add`, {
-        method: "POST",
-        headers: {
-          token: token,
-        },
-        body: formData,
-      });
-      if (forumAddResponse.ok) {
-        const editResult = await forumAddResponse.json();
-        toast.success("Тема добавлена");
-      } else {
-        throw new Error("Ошибка обновления информации пользователя");
+        if (forumEditResponse.ok) {
+          const editResult = await forumEditResponse.json();
+          toast.success(t("toast.update-success"));
+        } else {
+          throw new Error("Ошибка обновления информации пользователя");
+        }
+
+        const deleteResponse = await fetch(`/api/files/delete-files`, {
+          method: "POST",
+          headers: {
+            token: token,
+          },
+          body: JSON.stringify({ file_ids: removedImageIds }), // 👈 сюда сам вставишь нужные данные
+        });
+      } catch (error) {
+        console.error("Ошибка при отправке данных:", error);
+        toast.error(t("toast.update-error"));
+      } finally {
+        setIsLoadingRequest(false);
       }
-    } catch (error) {
-      console.error("Ошибка при отправке данных:", error);
-      toast.error("Ошибка создания темы");
-    } finally {
-      setIsLoadingRequest(false);
+    } else {
+      try {
+        const forumAddResponse = await fetch(`/api/forum/add`, {
+          method: "POST",
+          headers: {
+            token: token,
+          },
+          body: formData,
+        });
+        if (forumAddResponse.ok) {
+          const editResult = await forumAddResponse.json();
+          toast.success(t("toast.create-success"));
+        } else {
+          throw new Error("Ошибка обновления информации пользователя");
+        }
+      } catch (error) {
+        console.error("Ошибка при отправке данных:", error);
+        toast.error(t("toast.create-error"));
+      } finally {
+        setIsLoadingRequest(false);
+      }
     }
   };
 
@@ -220,6 +260,7 @@ export default function ForumBody({ categories }: ForumBodyProps) {
             token={token}
             onChange={changeText}
             initialContent={post?.text}
+            onImagesRemoved={onImagesRemoved}
           />
         </div>
       </div>
