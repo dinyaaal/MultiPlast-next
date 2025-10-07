@@ -12,8 +12,8 @@ import { useSession } from "next-auth/react";
 import { Select, SelectItem, Spinner } from "@heroui/react";
 import { ForumCategoryMinimal, ForumPost } from "@/types/types";
 import { Link } from "@/i18n/routing";
-import { SimpleEditor } from "@/components/tiptap-templates/simple/simple-editor";
 import { useSearchParams } from "next/navigation";
+import { SimpleEditor } from "@/components/tiptap-templates/simple/simple-editor";
 
 type Inputs = z.infer<typeof ForumAddSchema>;
 
