@@ -1,3 +1,4 @@
+// import Breadcrumbs from "@/components/Breadcrumbs";
 import React from "react";
 import { useTranslations } from "next-intl";
 import { BreadcrumbsClient } from "@/components/Breadcrumbs";
