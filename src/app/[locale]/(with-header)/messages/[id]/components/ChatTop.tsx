@@ -120,7 +120,7 @@ export default function ChatTop({ chat }: { chat: ChatItemData }) {
           </Link>
           <div className="chat-top__user user-chat">
             <div className="user-chat__image item-block-chat__image">
-              {chat.user.avatar ? (
+              {chat?.user?.avatar ? (
                 <Image
                   src={chat.user.avatar}
                   className="ibg"
@@ -141,7 +141,7 @@ export default function ChatTop({ chat }: { chat: ChatItemData }) {
             </div>
 
             <div className="user-chat__name">
-              {chat.user.first_name} {chat.user.last_name}
+              {chat.user?.first_name} {chat.user?.last_name}
             </div>
           </div>
         </div>

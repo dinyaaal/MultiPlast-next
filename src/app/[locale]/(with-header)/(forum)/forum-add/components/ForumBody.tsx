@@ -22,7 +22,7 @@ interface ForumBodyProps {
 }
 
 export default function ForumBody({ categories }: ForumBodyProps) {
-  const t = useTranslations("Forum.forumAdd");
+  const t = useTranslations("Forum");
   const { data: session, status } = useSession();
   const token = session?.user.access_token;
   const [content, setContent] = useState<string>("");
@@ -77,6 +77,7 @@ export default function ForumBody({ categories }: ForumBodyProps) {
   useEffect(() => {
     if (post) {
       reset({
+        category: post.categories[0].id.toString() || "",
         title: post.title || "",
         text: post.text || "",
       });
@@ -173,11 +174,9 @@ export default function ForumBody({ categories }: ForumBodyProps) {
   if (status === "unauthenticated") {
     return (
       <div className="flex flex-col gap-10">
-        <h3 className="title title--small">
-          Для створення теми, необхідно авторизуватися
-        </h3>
+        <h3 className="title title--small">{t("forumAdd.auth-required")}</h3>
         <Link href="/login" className="button">
-          Авторизуватися
+          {t("forumAdd.auth-button")}
         </Link>
       </div>
     );
@@ -194,10 +193,10 @@ export default function ForumBody({ categories }: ForumBodyProps) {
   return (
     <form onSubmit={handleSubmit(processForm)} className="add-forum__block">
       <div className="input-block">
-        <p>{t("select-category")}</p>
+        <p>{t("forumAdd.select-category")}</p>
 
         <Select
-          placeholder={t("select-category")}
+          placeholder={t("forumAdd.select-category")}
           disallowEmptySelection
           classNames={{
             trigger: `min-h-[45px] text-black px-[12px] bg-[#F8FBFF] rounded-[5px] outline-offset-0 outline-[1px]  ${
@@ -234,11 +233,11 @@ export default function ForumBody({ categories }: ForumBodyProps) {
         </Select>
       </div>
       <div className="input-block">
-        <p>{t("enter-title")}</p>
+        <p>{t("forumAdd.enter-title")}</p>
         <input
           autoComplete="off"
           type="text"
-          placeholder={t("enter-title")}
+          placeholder={t("forumAdd.enter-title")}
           value={watch("title") || ""}
           className={` input ${errors.title ? "input--error" : ""}`}
           {...register("title")}
@@ -246,16 +245,10 @@ export default function ForumBody({ categories }: ForumBodyProps) {
       </div>
 
       <div className="input-block ">
-        <p>{t("enter-description")}</p>
+        <p>{t("forumAdd.enter-description")}</p>
         <div
           className={`editor relative ${errors.text ? "editor--error" : ""}`}
         >
-          {/* <ForwardRefEditor
-            markdown={content}
-            onChange={changeText}
-            ref={editorRef}
-            placeholder={t("enter-description")}
-          /> */}
           <SimpleEditor
             token={token}
             onChange={changeText}
@@ -268,7 +261,7 @@ export default function ForumBody({ categories }: ForumBodyProps) {
       <label className="check">
         <input type="checkbox" name="incognito" className="real-checkbox" />
         <span className="custom-checkbox"></span>
-        {t("incognito")}
+        {t("forumAdd.incognito")}
       </label>
       <div className="add-forum__actions">
         <button
@@ -276,12 +269,9 @@ export default function ForumBody({ categories }: ForumBodyProps) {
           disabled={isLoadingRequest}
           className="add-forum__add button"
         >
-          {t("publish")}
+          {t("forumAdd.publish")}
           {isLoadingRequest && <Spinner size="sm" />}
         </button>
-        {/* <button className="add-forum__delete button button--secondary">
-                  {t("delete")}
-                </button> */}
       </div>
     </form>
   );
