@@ -3,9 +3,9 @@ import { ForumPost } from "@/types/types";
 import React, { useEffect, useState } from "react";
 import { Pagination, Spinner } from "@heroui/react";
 
-import { ForumCard } from "@/components/Forum/components/ForumCard";
 import { useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
+import { ForumCard } from "@/components/Forum/components/ForumCard";
 
 interface ForumItemsProps {
   activeSectionId: number | null;
