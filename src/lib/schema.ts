@@ -1,5 +1,4 @@
-import { useTranslations } from "next-intl";
-import { number, z } from "zod";
+import { z } from "zod";
 
 export const RegistrationFormSchema = z
   .object({

@@ -65,7 +65,7 @@ export default function AdvertisementForm({
   const [activePhotoIndex, setActivePhotoIndex] = useState(0);
   const [showDiscount, setShowDiscount] = useState(false);
   const [photos, setPhotos] = useState<File[]>([]);
-  const [files, setFiles] = useState<File[] | null>(null);
+  const [files, setFiles] = useState<File[]>([]);
   const { data: session, status } = useSession();
   const [arrangement, setArrangement] = useState<boolean>(false);
   //   const [typePrice, setTypePrice] = useState<PriceType>({ type: "for_kg" });
@@ -195,6 +195,7 @@ export default function AdvertisementForm({
     const files = event.target.files;
     if (files) {
       setFiles(Array.from(files));
+      setNewFiles(Array.from(files));
     }
   };
 

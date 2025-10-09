@@ -115,11 +115,7 @@ export const ChatItem: React.FC<ChatItemProps> = ({ chat, onDelete }) => {
         }`}
       >
         <div className="item-block-chat__message">
-          {/* <div className="item-block-chat__image">
-          <div className="notification-value">
-            <span className="notification-value__number">99</span>
-          </div>
-        </div> */}
+       
           <div className="item-block-chat__image">
             {chat?.user?.avatar ? (
               <Image
@@ -144,7 +140,7 @@ export const ChatItem: React.FC<ChatItemProps> = ({ chat, onDelete }) => {
             <div className="item-block-chat__info">
               <div className="item-block-chat__block">
                 <div className="item-block-chat__name">
-                  {`${chat.to_user.first_name} ${chat.to_user.last_name}`}
+                  {`${chat.to_user?.first_name} ${chat.to_user?.last_name}`}
                 </div>
                 <span className="item-block-chat__date">{formattedDate}</span>
               </div>

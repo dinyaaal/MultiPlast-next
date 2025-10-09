@@ -38,7 +38,7 @@ export default function HeaderNavigation({
                 pathname === "/dashboard/add-advertisement" ? "active" : ""
               }`}
             >
-              <span className="truncate">
+              <span className="menu__link-text">
                 {tNavigation("addAdvertisement")}
               </span>
               {categories.length > 0 && (
@@ -82,7 +82,7 @@ export default function HeaderNavigation({
                               href={`/dashboard/add-advertisement?type=sell&category=${category.id}`}
                               className="sub-menu__link menu__link"
                             >
-                              <span className="truncate">
+                              <span className="menu__link-text">
                                 {category.translations.name[
                                   locale as keyof typeof category.translations.name
                                 ] || category.name}
@@ -108,7 +108,7 @@ export default function HeaderNavigation({
                                       href={`/dashboard/add-advertisement?type=sell&category=${subCategory.parent_id}&subCategory=${subCategory.id}`}
                                       className="sub-menu__link"
                                     >
-                                      <span className="truncate">
+                                      <span className="menu__link-text">
                                         {subCategory.translations.name[
                                           locale as keyof typeof subCategory.translations.name
                                         ] || subCategory.name}
@@ -123,7 +123,7 @@ export default function HeaderNavigation({
                             href={`/dashboard/add-advertisement?type=sell&category=${category.id}`}
                             className="sub-menu__link"
                           >
-                            <span className="truncate">
+                            <span className="menu__link-text">
                               {category.translations.name[
                                 locale as keyof typeof category.translations.name
                               ] || category.name}
@@ -162,7 +162,7 @@ export default function HeaderNavigation({
                               href={`/dashboard/add-advertisement?type=buy&category=${category.id}`}
                               className="sub-menu__link menu__link"
                             >
-                              <span className="truncate">
+                              <span className="menu__link-text">
                                 {category.translations.name[
                                   locale as keyof typeof category.translations.name
                                 ] || category.name}
@@ -188,7 +188,7 @@ export default function HeaderNavigation({
                                       href={`/dashboard/add-advertisement?type=buy&category=${subCategory.parent_id}&subCategory=${subCategory.id}`}
                                       className="sub-menu__link"
                                     >
-                                      <span className="truncate">
+                                      <span className="menu__link-text">
                                         {subCategory.translations.name[
                                           locale as keyof typeof subCategory.translations.name
                                         ] || subCategory.name}
@@ -203,7 +203,7 @@ export default function HeaderNavigation({
                             href={`/dashboard/add-advertisement?type=buy&category=${category.id}`}
                             className="sub-menu__link"
                           >
-                            <span className="truncate">
+                            <span className="menu__link-text">
                               {" "}
                               {category.translations.name[
                                 locale as keyof typeof category.translations.name

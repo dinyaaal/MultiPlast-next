@@ -36,7 +36,7 @@ export default function Advertisement({ categories }: SellProps) {
   const [product, setProduct] = useState<ProductType | null>(null);
 
   const [photos, setPhotos] = useState<File[]>([]);
-  const [files, setFiles] = useState<File[] | null>(null);
+  const [files, setFiles] = useState<File[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingRequest, setIsLoadingRequest] = useState(false);
 
@@ -177,7 +177,6 @@ export default function Advertisement({ categories }: SellProps) {
   }, [product, reset]);
 
   const watchedValues = watch(); // все значения
-  console.log(watchedValues);
 
   useEffect(() => {
     reset(
@@ -207,6 +206,8 @@ export default function Advertisement({ categories }: SellProps) {
     setValue("advertType", newAdvertType);
     setValue("type", searchSubCategory || "");
   }, [searchCategory, searchSubCategory, searchType]);
+
+  console.log(files);
 
   const processForm: SubmitHandler<AdvertisementInputs> = async (data) => {
     if (!session?.user.access_token && !session?.user.id) {
@@ -280,9 +281,9 @@ export default function Advertisement({ categories }: SellProps) {
 
     // Файлы и фото
     photos.forEach((photo) => formData.append("photos[]", photo));
-    if (files && files.length > 0) {
-      files.forEach((file) => formData.append("files[]", file));
-    }
+    // if (files && files.length > 0) {
+    // }
+    files.forEach((file) => formData.append("files[]", file));
 
     // Основные поля объявления
     formData.append("title", title);
@@ -301,6 +302,9 @@ export default function Advertisement({ categories }: SellProps) {
       formData.append("volume", volume);
       formData.append("price_per_volume", volume_price);
     }
+
+  
+    
 
     if (editId && product) {
       try {

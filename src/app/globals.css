@@ -1197,8 +1197,13 @@ button:disabled {
 }
 
 .sub-menu__list .sub-menu__link {
-  @apply truncate w-full max-w-[300px];
+  @apply w-full   max-w-[300px] ;
 }
+
+.menu__link-text{
+  @apply  line-clamp-2 w-full
+}
+
 .menu__list a {
   @apply transition-all duration-300 hover:text-blueColor;
 }

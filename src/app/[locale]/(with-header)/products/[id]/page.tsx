@@ -53,13 +53,7 @@ export default async function Product(props: { params: Params }) {
   const t = await getTranslations("Product");
   const tb = await getTranslations("Breadcrumbs");
 
-  // const [product, t, tb] = await Promise.all([
-  //   getProduct(params.id, session?.user.access_token || ""),
-  //   getTranslations("Product"),
-  //   getTranslations("Breadcrumbs"),
-  // ]);
-
-  // await new Promise((resolve) => setTimeout(resolve, 2000));
+  
 
   function isEmpty(string: string | null | undefined) {
     return string ?? "";
@@ -226,11 +220,14 @@ export default async function Product(props: { params: Params }) {
                             <p className="">{contact.position}</p>
                           )}
                         </div>
+                        <div className="flex flex-col gap-3">
+
                         {contact.phones && (
                           <Link href={`tel:${contact.phones}`} className="link">
                             {contact.phones}
                           </Link>
                         )}
+                        </div>
                       </div>
                     ))}
                   </div>
