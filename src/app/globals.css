@@ -1196,12 +1196,12 @@ button:disabled {
   @apply text-black relative  flex-col flex items-center justify-center text-center xl:flex-row;
 }
 
-.sub-menu__list .sub-menu__link {
-  @apply w-full   max-w-[300px] ;
+.bottom-header__list  .sub-menu__link {
+  @apply w-[250px] ;
 }
 
 .menu__link-text{
-  @apply  line-clamp-2 w-full
+  @apply  line-clamp-2 w-full whitespace-normal break-words
 }
 
 .menu__list a {
