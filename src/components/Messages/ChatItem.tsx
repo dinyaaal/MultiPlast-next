@@ -5,6 +5,7 @@ import React, { useState } from "react";
 import { Popover, PopoverTrigger, PopoverContent } from "@heroui/popover";
 import { Link } from "@/i18n/routing";
 import { ChatItemData } from "@/types/types";
+import { stripHtml } from "@/utils/stripHtml";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
 import { Ellipsis } from "lucide-react";
@@ -30,6 +31,8 @@ export const ChatItem: React.FC<ChatItemProps> = ({ chat, onDelete }) => {
   );
   const [isOpenPopover, setIsOpenPopover] = useState(false);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
+  console.log(chat);
 
   const handleChatDelete = async () => {
     if (!session?.user.access_token || !chat.id) {
@@ -115,7 +118,6 @@ export const ChatItem: React.FC<ChatItemProps> = ({ chat, onDelete }) => {
         }`}
       >
         <div className="item-block-chat__message">
-       
           <div className="item-block-chat__image">
             {chat?.user?.avatar ? (
               <Image
@@ -224,7 +226,7 @@ export const ChatItem: React.FC<ChatItemProps> = ({ chat, onDelete }) => {
             </div>
 
             <p className="item-block-chat__text">
-              {chat.last_message?.content || t("noMessage")}
+              {chat.last_message?.content ? stripHtml(chat.last_message.content) : t("noMessage")}
             </p>
           </div>
         </div>

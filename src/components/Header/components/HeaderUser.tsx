@@ -24,9 +24,9 @@ export default function HeaderUser() {
             className="body-user__account account-body-user"
           >
             <div className="account-body-user__icon-body">
-              {userInfo?.photo ? (
+              {userInfo?.photos[0]?.url ? (
                 <Image
-                  src={userInfo?.photo.url}
+                  src={userInfo?.photos[0].url}
                   className="ibg"
                   alt="Icon"
                   width={100}

@@ -1,5 +1,5 @@
 import { IMessageItem } from "@/types/types";
-
+import { stripHtml } from "@/utils/stripHtml";
 import React from "react";
 
 interface MessageItemProps {
@@ -25,7 +25,7 @@ export default function MessageItem({ message, isFromUser }: MessageItemProps) {
         </div>
       )}
       <div className="message-body__content">
-        <p>{message.content}</p>
+        <p>{stripHtml(message.content)}</p>
         <span className="message-body__time">{time}</span>
       </div>
     </div>

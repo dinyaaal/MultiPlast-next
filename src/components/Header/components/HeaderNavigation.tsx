@@ -82,11 +82,9 @@ export default function HeaderNavigation({
                               href={`/dashboard/add-advertisement?type=sell&category=${category.id}`}
                               className="sub-menu__link menu__link"
                             >
-                              <span className="menu__link-text">
-                                {category.translations.name[
+                              <span className="menu__link-text" dangerouslySetInnerHTML={{ __html: category.translations.name[
                                   locale as keyof typeof category.translations.name
-                                ] || category.name}
-                              </span>
+                                ] || category.name || "" }} />
                               <div className="sub-sub-menu__arrow menu__arrow">
                                 <Image
                                   src="/icons/dropdown-arrow.svg"
@@ -108,11 +106,9 @@ export default function HeaderNavigation({
                                       href={`/dashboard/add-advertisement?type=sell&category=${subCategory.parent_id}&subCategory=${subCategory.id}`}
                                       className="sub-menu__link"
                                     >
-                                      <span className="menu__link-text">
-                                        {subCategory.translations.name[
-                                          locale as keyof typeof subCategory.translations.name
-                                        ] || subCategory.name}
-                                      </span>
+                                      <span className="menu__link-text" dangerouslySetInnerHTML={{ __html: subCategory.translations.name[
+                                        locale as keyof typeof subCategory.translations.name
+                                      ] || subCategory.name || "" }} />
                                     </Link>
                                   </li>
                                 ))}
@@ -123,11 +119,9 @@ export default function HeaderNavigation({
                             href={`/dashboard/add-advertisement?type=sell&category=${category.id}`}
                             className="sub-menu__link"
                           >
-                            <span className="menu__link-text">
-                              {category.translations.name[
-                                locale as keyof typeof category.translations.name
-                              ] || category.name}
-                            </span>
+                            <span className="menu__link-text" dangerouslySetInnerHTML={{ __html: category.translations.name[
+                              locale as keyof typeof category.translations.name
+                            ] || category.name || "" }} />
                           </Link>
                         )}
                       </li>
@@ -162,11 +156,9 @@ export default function HeaderNavigation({
                               href={`/dashboard/add-advertisement?type=buy&category=${category.id}`}
                               className="sub-menu__link menu__link"
                             >
-                              <span className="menu__link-text">
-                                {category.translations.name[
-                                  locale as keyof typeof category.translations.name
-                                ] || category.name}
-                              </span>
+                              <span className="menu__link-text" dangerouslySetInnerHTML={{ __html: category.translations.name[
+                                locale as keyof typeof category.translations.name
+                              ] || category.name || "" }} />
                               <div className="sub-sub-menu__arrow menu__arrow">
                                 <Image
                                   src="/icons/dropdown-arrow.svg"
@@ -188,11 +180,9 @@ export default function HeaderNavigation({
                                       href={`/dashboard/add-advertisement?type=buy&category=${subCategory.parent_id}&subCategory=${subCategory.id}`}
                                       className="sub-menu__link"
                                     >
-                                      <span className="menu__link-text">
-                                        {subCategory.translations.name[
-                                          locale as keyof typeof subCategory.translations.name
-                                        ] || subCategory.name}
-                                      </span>
+                                      <span className="menu__link-text" dangerouslySetInnerHTML={{ __html: subCategory.translations.name[
+                                        locale as keyof typeof subCategory.translations.name
+                                      ] || subCategory.name || "" }} />
                                     </Link>
                                   </li>
                                 ))}
@@ -203,12 +193,9 @@ export default function HeaderNavigation({
                             href={`/dashboard/add-advertisement?type=buy&category=${category.id}`}
                             className="sub-menu__link"
                           >
-                            <span className="menu__link-text">
-                              {" "}
-                              {category.translations.name[
-                                locale as keyof typeof category.translations.name
-                              ] || category.name}
-                            </span>
+                            <span className="menu__link-text" dangerouslySetInnerHTML={{ __html: category.translations.name[
+                              locale as keyof typeof category.translations.name
+                            ] || category.name || "" }} />
                           </Link>
                         )}
                       </li>

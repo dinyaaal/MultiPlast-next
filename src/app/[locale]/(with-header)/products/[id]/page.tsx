@@ -53,7 +53,7 @@ export default async function Product(props: { params: Params }) {
   const t = await getTranslations("Product");
   const tb = await getTranslations("Breadcrumbs");
 
-  
+  console.log(product);
 
   function isEmpty(string: string | null | undefined) {
     return string ?? "";
@@ -203,6 +203,9 @@ export default async function Product(props: { params: Params }) {
                       product?.author?.last_name
                     )}`}
                   </p>
+                  {product?.author?.web_site && <a href={isEmpty(product?.author?.web_site)} target="_blank" className="contact-info-body-product__text text-sm underline text-blue-500 hover:text-blue-600 hover:no-underline">
+                    Website
+                  </a>}
                 </div>
               </div>
               <div className="body-product__actions actions-body-product">
@@ -214,16 +217,13 @@ export default async function Product(props: { params: Params }) {
                         key={contact.id}
                         className="flex w-full flex-col gap-4 border border-border rounded-lg p-5"
                       >
-                        <div className="flex flex-col w-full gap-2">
-                          <div className="">{contact.name}</div>
+                        <div className="flex w-full gap-2">
+                          <div className="">{contact.name}</div> |
                           {contact.position && (
                             <p className="">{contact.position}</p>
-                          )}
-                        </div>
-                        <div className="flex flex-col gap-3">
-
-                        {contact.phones && (
-                          <Link href={`tel:${contact.phones}`} className="link">
+                          )} |
+                          {contact.phones && (
+                          <Link href={`tel:${contact.phones}`} className="link !leading-6">
                             {contact.phones}
                           </Link>
                         )}
@@ -235,13 +235,12 @@ export default async function Product(props: { params: Params }) {
                   <CreateMessage id={product.author.id} />
                   {product.files && product.files.length > 0 && (
                     <Link
-                      href="#"
+                      href={product.files[0].url}
+                      target="_blank"
+                      download={product.files[0].name}
                       className="actions-body-product__download button button--secondary"
                     >
-                      <p>
-                        Завантажити прекріпленні файли:{" "}
-                        <span>{product.files.length}</span>
-                      </p>
+                      Завантажити прекріпленні файли: {product.files.length}
                     </Link>
                   )}
                 </div>

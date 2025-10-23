@@ -161,9 +161,36 @@ export default function Profile() {
     }
   };
 
-  // if (status === "unauthenticated") {
-  //   router.push("/");
-  // }
+  const handleDeletePhoto = async () => {
+    if (!session?.user.access_token) {
+      return;
+    }
+
+    try {
+      const deleteResponse = await fetch(`/api/users/delete-photo`, {
+        method: "DELETE",
+        headers: {
+          token: session?.user.access_token,
+          id: userInformation?.photos[0]?.id?.toString() || "",
+        },
+      });
+      if (deleteResponse.ok) {
+        toast.success(t("toast.photo-delete-success"));
+        let _userInformation = {
+          ...userInformation!,
+          id: userInformation?.id!,
+          photos: []
+        };
+        setUserInformation(_userInformation);
+        dispatch(setUserInfoData(_userInformation));
+      } else {
+        throw new Error("Unknown error occurred");
+      }
+    } catch (error) {
+      console.error("Ошибка при отправке данных:", error);
+      toast.error(t("toast.delete-photo-error"));
+    }
+  }
 
   if (!userInformation) {
     return (
@@ -205,7 +232,7 @@ export default function Profile() {
                       ) : (
                         <Image
                           src={
-                            userInformation?.photo?.url || "/icons/image.svg"
+                            userInformation?.photos[0]?.url || "/icons/image.svg"
                           }
                           className="ibg"
                           alt="User image"
@@ -222,6 +249,9 @@ export default function Profile() {
                         onChange={handlePhotoChange}
                       />
                     </label>
+                    {userInformation?.photos[0]?.id && <button type="button" onClick={handleDeletePhoto} className="dashboard-contacts__delete button button--danger">
+                      Delete photo
+                    </button>}
                   </div>
                 </div>
               </div>

@@ -385,7 +385,9 @@
         "delete-success": "Акаунт успішно видалено",
         "delete-error": "Не вдалося видалити акаунт",
         "delete-confirm": "Ви впевнені, що хочете видалити акаунт?",
-        "delete-account": "Видалити акаунт"
+        "delete-account": "Видалити акаунт",
+        "photo-delete-success": "Фото успішно видалено",
+        "photo-delete-error": "Помилка при видаленні фото"
       },
       "contact-details": {
         "title": "Контактні дані",

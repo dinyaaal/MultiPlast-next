@@ -2,6 +2,7 @@
 
 import { Link } from "@/i18n/routing";
 import { ForumPost } from "@/types/types";
+import { stripHtml } from "@/utils/stripHtml";
 import { useSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
@@ -56,7 +57,7 @@ export const ForumCard: React.FC<ForumCardProps> = ({
           <div className="item-forum__body w-full h-full">
             <div className="item-forum__block">
               <h4 className="item-forum__title">{post.title}</h4>
-              <p className="item-forum__text">{post.text}</p>
+              <p className="item-forum__text">{stripHtml(post.text)}</p>
             </div>
             <button className="item-forum__more">
               <span>Детальніше</span>
@@ -99,7 +100,7 @@ export const ForumCard: React.FC<ForumCardProps> = ({
           <Link href={`/forum/${post.id}`} className="item-forum__body">
             <div className="item-forum__block">
               <h4 className="item-forum__title">{post.title}</h4>
-              <p className="item-forum__text">{post.text}</p>
+              <p className="item-forum__text">{stripHtml(post.text)}</p>
             </div>
             <div className="item-forum__block">
               <div className="item-forum__info info-item-forum">
