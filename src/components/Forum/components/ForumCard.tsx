@@ -56,7 +56,7 @@ export const ForumCard: React.FC<ForumCardProps> = ({
         >
           <div className="item-forum__body w-full h-full">
             <div className="item-forum__block">
-              <h4 className="item-forum__title">{post.title}</h4>
+              <h4 className="item-forum__title">{post.id} {post.title}</h4>
               <p className="item-forum__text">{stripHtml(post.text)}</p>
             </div>
             <button className="item-forum__more">
@@ -99,7 +99,7 @@ export const ForumCard: React.FC<ForumCardProps> = ({
 
           <Link href={`/forum/${post.id}`} className="item-forum__body">
             <div className="item-forum__block">
-              <h4 className="item-forum__title">{post.title}</h4>
+              <h4 className="item-forum__title"><span className="text-base text-gray-500">ID: {post.id}</span> {post.title}</h4>
               <p className="item-forum__text">{stripHtml(post.text)}</p>
             </div>
             <div className="item-forum__block">

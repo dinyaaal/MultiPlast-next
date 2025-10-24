@@ -57,6 +57,14 @@ export interface User {
   photos: Photo[];
 }
 
+export interface StaticData {
+  id: number;
+  key: string;
+  value: string;
+  created_at: string;
+  updated_at: string;
+}
+
 export interface Photo {
   id: number;
   name: string;
@@ -149,6 +157,7 @@ export interface Author {
   fb_link?: string;
   yt_link?: string;
   tg_link?: string;
+  web_site?: string;
 }
 
 export interface Page {
@@ -245,7 +254,7 @@ export interface CommentType {
   comments_count: number;
   is_liked: boolean;
   author: Author;
-  photos: string[];
+  photos: Photo[];
   replies?: Comment[];
 }
 

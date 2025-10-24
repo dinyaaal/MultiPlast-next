@@ -77,19 +77,33 @@ export default function ChatBottom({ id, onSend }: ChatBottomProps) {
 
     setIsLoading(true);
     try {
+      const formData = new FormData();
+      
+      // Добавляем текстовое сообщение
+      formData.append('message_content', messageToSend);
+      
+      // Добавляем файлы
+      filesToSend.forEach((uploadedFile) => {
+        formData.append('files', uploadedFile.file);
+      });
+      
+      // Логируем содержимое FormData для отладки
+      console.log('Sending FormData:');
+      console.log('Message:', messageToSend);
+      console.log('Files count:', filesToSend.length);
+      filesToSend.forEach((file, index) => {
+        console.log(`File ${index + 1}:`, {
+          name: file.file.name,
+          size: file.file.size,
+          type: file.file.type
+        });
+      });
+      
       const response = await fetch(`/api/chats/messages/send`, {
         method: "POST",
-        body: JSON.stringify({
-          message_content: messageToSend,
-          files: filesToSend.map((f) => ({
-            name: f.file.name,
-            size: f.file.size,
-            type: f.file.type,
-          })),
-        }),
+        body: formData,
         headers: {
           id: id.toString(),
-          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
       });
@@ -118,7 +132,10 @@ export default function ChatBottom({ id, onSend }: ChatBottomProps) {
             <div className="text-sm text-gray-500">Загруженные файлы:</div>
             <div className="flex flex-wrap gap-2 w-full">
               {uploadedFiles.map((uploadedFile) => (
-                <div key={uploadedFile.id} className="flex items-center gap-2 border p-2 rounded-2xl border-[#b0bfd7]">
+                <div
+                  key={uploadedFile.id}
+                  className="flex items-center gap-2 border p-2 rounded-2xl border-[#b0bfd7]"
+                >
                   {uploadedFile.preview ? (
                     <div className="w-20 h-20 rounded-md overflow-hidden">
                       <Image
@@ -233,7 +250,7 @@ export default function ChatBottom({ id, onSend }: ChatBottomProps) {
             className="bottom-body-chat__message-textarea input"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
-          ></textarea>
+          />
           <button
             disabled={
               isLoading || (!message.trim() && uploadedFiles.length === 0)

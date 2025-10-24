@@ -1,8 +1,8 @@
 import notFound from "@/app/[locale]/not-found";
-import ModalContact from "@/components/Modals/ModalContact";
+import ModalContact from "@/Components/Modals/ModalContact";
 import { ForumPost } from "@/types/types";
 import React from "react";
-import Gallery from "@/components/Gallery";
+import Gallery from "@/Components/Gallery";
 import ForumComments from "../components/ForumComments";
 import ForumActions from "./components/ForumActions";
 import "@/components/tiptap-node/blockquote-node/blockquote-node.scss";
@@ -58,7 +58,7 @@ export default async function ForumTopicPage(props: { params: Params }) {
       <div className="forum-topic__container main-container">
         <div className="forum-topic__body body-forum-topic">
           <div className="body-forum-topic__top top-body-forum-topic">
-            <h2 className="top-body-forum-topic__title title">{post.title}</h2>
+            <h2 className="top-body-forum-topic__title title"><span className="text-base text-gray-500">ID: {post.id}</span> {post.title}</h2>
             <ForumActions id={params.id} />
             {/* <div className="top-product__actions actions-top">
               <a href="#" className="actions-top__item edit">

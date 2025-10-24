@@ -130,6 +130,28 @@ export default function ChatBody({
         <ChatTop chat={chat} />
         <div ref={scrollRef} className="body-chat__block block-body-chat">
           <div className="block-body-chat__wrapper">
+            <div className="block-body-chat__block">
+              <div className="block-body-chat__info">
+                <div className="block-body-chat__date">5 вересня 2024</div>
+                <div className="item-block-chat__topic topic-message">
+                  <div className="topic-message__block">
+                    <p className="topic-message__title">
+                      Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+                      Quibusdam dolorum libero odit sed fugit consequatur
+                      obcaecati vero repellat eius fuga.
+                    </p>
+                  </div>
+                  <div className="topic-message__image">
+                    <Image
+                      src="/advert/01.jpg"
+                      alt="Image"
+                      width={100}
+                      height={100}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
             {Object.entries(groupedMessages).map(([date, msgs]) => (
               <div key={date} className="block-body-chat__block">
                 {/* Дата */}

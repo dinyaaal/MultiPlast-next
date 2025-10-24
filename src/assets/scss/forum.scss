@@ -649,7 +649,6 @@
   // .body-comment__content
   &__content {
     display: flex;
-    flex-direction: column;
     gap: toRem(5);
     p {
       line-height: 162.5%; /* 26/16 */

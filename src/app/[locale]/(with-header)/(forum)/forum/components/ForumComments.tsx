@@ -6,7 +6,7 @@ import { useSession } from "next-auth/react";
 import React, { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import Image from "next/image";
-import { ForumComment } from "@/components/Forum/components/ForumComment";
+import { ForumComment } from "@/Components/Forum/components/ForumComment";
 
 interface ForumCommentInputProps {
   postId: number;
@@ -183,7 +183,7 @@ export default function ForumComments({ postId }: ForumCommentInputProps) {
                   onClick={(e) => setReplyData(null)}
                   className="chat-input-reply__clear"
                 >
-                  <Image src="/icons/close.svg" alt="Icon" />
+                  <Image src="/icons/close.svg" width={20} height={20} alt="Icon" />
                 </button>
               </div>
             )}
@@ -219,14 +219,14 @@ export default function ForumComments({ postId }: ForumCommentInputProps) {
               </label>
             </div>
             {images.length > 0 && (
-              <div className="chat-input__images">
+              <div className="chat-input__images flex gap-2 flex-wrap">
                 {images.map((file, index) => (
                   <div
                     className="chat-input__image-wrapper"
                     key={index}
                     onClick={() => handleRemoveImage(index)}
                   >
-                    <Image src={URL.createObjectURL(file)} alt="preview" />
+                    <Image width={100} height={100} src={URL.createObjectURL(file)} alt="preview" />
                   </div>
                 ))}
               </div>

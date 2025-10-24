@@ -2855,3 +2855,7 @@ button:disabled {
 .tiptap-toolbar {
   @apply !border-b !border-border;
 }
+
+.comment-message-button {
+  @apply h-fit p-0 bg-transparent text-blueColor underline min-h-0 min-w-0 w-auto text-sm hover:bg-transparent hover:!no-underline;
+}
