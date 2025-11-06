@@ -295,6 +295,8 @@ export interface IMessageItem {
   chat_id: number;
   created_at: string;
   updated_at: string;
+  // Добавлено: массив файлов, прикрепленных к сообщению
+  files?: Photo[];
   from_user: {
     id: number; // Уникальный идентификатор пользователя
     first_name: string; // Имя

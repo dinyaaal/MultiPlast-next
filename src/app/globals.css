@@ -1510,6 +1510,30 @@ button:disabled {
   @apply flex flex-col gap-[15px] text-base xl:text-lg leading-[144.444444%];
 }
 
+.about__body h1 {
+  @apply text-[clamp(24px,5vw,40px)] leading-[116.666667%] font-bold;
+}
+
+.about__body h2 {
+  @apply text-[clamp(20px,5vw,30px)] leading-[116.666667%] font-bold;
+}
+
+.about__body h3 {
+  @apply text-[clamp(18px,5vw,24px)] leading-[116.666667%] font-bold;
+}
+
+.about__body h4 {
+  @apply text-[clamp(16px,5vw,20px)] leading-[116.666667%] font-bold;
+}
+
+.about__body h5 {
+  @apply text-[clamp(14px,5vw,18px)] leading-[116.666667%] font-bold;
+}
+
+.about__body h6 {
+  @apply text-[clamp(12px,5vw,16px)] leading-[116.666667%];
+}
+
 .about__block ol {
   counter-reset: list-counter;
 }

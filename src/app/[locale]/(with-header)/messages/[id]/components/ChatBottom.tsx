@@ -1,3 +1,4 @@
+import { Photo } from "@/types/types";
 import { useSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
@@ -12,7 +13,7 @@ interface UploadedFile {
 
 interface ChatBottomProps {
   id: string;
-  onSend: (message: string) => void;
+  onSend: (message: { text: string, files: Photo[] }) => void;
 }
 
 export default function ChatBottom({ id, onSend }: ChatBottomProps) {
@@ -82,9 +83,9 @@ export default function ChatBottom({ id, onSend }: ChatBottomProps) {
       // Добавляем текстовое сообщение
       formData.append('message_content', messageToSend);
       
-      // Добавляем файлы
+      // Добавляем файлы как массив: files[]
       filesToSend.forEach((uploadedFile) => {
-        formData.append('files', uploadedFile.file);
+        formData.append('files[]', uploadedFile.file, uploadedFile.file.name);
       });
       
       // Логируем содержимое FormData для отладки
@@ -112,7 +113,12 @@ export default function ChatBottom({ id, onSend }: ChatBottomProps) {
       }
 
       const data = await response.json();
-      onSend(messageToSend);
+
+      console.log(data);
+      console.log(data.data);
+      console.log(messageToSend);
+
+      onSend({ text: messageToSend, files: data.data.files });
     } catch (error) {
       console.error("Error fetching data:", error);
       toast.error(t("toast.sendError"));

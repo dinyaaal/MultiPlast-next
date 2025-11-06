@@ -7,8 +7,8 @@ import { useLocale, useTranslations } from "next-intl";
 import ChatTop from "./components/ChatTop";
 import ChatBottom from "./components/ChatBottom";
 import { toast } from "sonner";
-import { ChatItemData, IMessageItem, User } from "@/types/types";
-import MessageItem from "@/components/Messages/MessageItem";
+import { ChatItemData, IMessageItem, Photo, User } from "@/types/types";
+import MessageItem from "@/Components/Messages/MessageItem";
 import { getLocale } from "@/utils/locale";
 
 import { useRouter } from "@/i18n/routing";
@@ -73,13 +73,14 @@ export default function ChatBody({
     fetchMessages();
   }, [id, token]);
 
-  const handleSend = (message: string) => {
+  const handleSend = (message: { text: string, files: Photo[] }) => {
     if (!session?.user.id) return;
     setMessages((prevMessages) => [
       ...prevMessages,
       {
         id: prevMessages[prevMessages.length - 1]?.id + 1 || 1,
-        content: message,
+        content: message.text,
+        files: message.files,
         created_at: new Date().toISOString(),
         from_user_id: session.user.id,
         chat_id: Number(id), // <-- тут исправили

@@ -1,9 +1,44 @@
+"use client";
+
 import Image from "next/image";
-import React from "react";
-import { useTranslations } from "next-intl";
+import React, { useEffect, useMemo, useState } from "react";
+import { useLocale, useTranslations } from "next-intl";
+import { StaticData } from "@/types/types";
 
 export default function About() {
   const t = useTranslations("About");
+  const locale = useLocale();
+  const [staticData, setStaticData] = useState<StaticData | null>(null);
+
+  useEffect(() => {
+    async function fetchStaticData() {
+      const res = await fetch("/api/static", {
+        headers: {
+          id: "3",
+        },
+      });
+      const data = await res.json();
+      setStaticData(data);
+    }
+    fetchStaticData();
+  }, []);
+
+  const localizedHtml = useMemo(() => {
+    if (!staticData) return "";
+    const anyData = staticData as any;
+    const translations = anyData?.translations as Array<{
+      locale: string;
+      value: string;
+    }> | undefined;
+
+    if (!translations || translations.length === 0) {
+      return staticData.value || "";
+    }
+
+    const byLocale = translations.find((t) => t.locale === locale);
+    const byEn = translations.find((t) => t.locale === "en");
+    return byLocale?.value || byEn?.value || translations[0]?.value || staticData.value || "";
+  }, [staticData, locale]);
 
   return (
     <>
@@ -18,31 +53,8 @@ export default function About() {
               height={1000}
             />
           </div>
-          <h2 className="about__title title">{t("title")}</h2>
-          <div className="about__body">
-            <div className="about__block">
-              <p>
-                <strong>Multi Plast</strong> - {t("introText")}
-              </p>
-            </div>
-            <div className="about__block">
-              <ol>
-                <li>{t("listItem1")}</li>
-                <li>{t("listItem2")}</li>
-                <li>{t("listItem3")}</li>
-              </ol>
-            </div>
-            <div className="about__block">
-              <p>{t("services")}</p>
-              <ol>
-                <li>{t("servicesItem1")}</li>
-                <li>{t("servicesItem2")}</li>
-                <li>{t("servicesItem3")}</li>
-                <li>{t("servicesItem4")}</li>
-              </ol>
-              <p>{t("freeServices")}</p>
-            </div>
-          </div>
+          {/* <h2 className="about__title title">{t("title")}</h2> */}
+          <div className="about__body" dangerouslySetInnerHTML={{ __html: localizedHtml }} />
           <div className="about__decor about__decor--02">
             <Image
               src="/decor/molecules-02.png"
