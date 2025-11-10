@@ -8,7 +8,7 @@ import ChatTop from "./components/ChatTop";
 import ChatBottom from "./components/ChatBottom";
 import { toast } from "sonner";
 import { ChatItemData, IMessageItem, Photo, User } from "@/types/types";
-import MessageItem from "@/Components/Messages/MessageItem";
+import MessageItem from "@/components/Messages/MessageItem";
 import { getLocale } from "@/utils/locale";
 
 import { useRouter } from "@/i18n/routing";

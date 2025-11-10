@@ -6,7 +6,7 @@ import { useSession } from "next-auth/react";
 import React, { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import Image from "next/image";
-import { ForumComment } from "@/Components/Forum/components/ForumComment";
+import { ForumComment } from "@/components/Forum/components/ForumComment";
 
 interface ForumCommentInputProps {
   postId: number;

@@ -1,8 +1,8 @@
 import notFound from "@/app/[locale]/not-found";
-import ModalContact from "@/Components/Modals/ModalContact";
+import ModalContact from "@/components/Modals/ModalContact";
 import { ForumPost } from "@/types/types";
 import React from "react";
-import Gallery from "@/Components/Gallery";
+import Gallery from "@/components/Gallery";
 import ForumComments from "../components/ForumComments";
 import ForumActions from "./components/ForumActions";
 import "@/components/tiptap-node/blockquote-node/blockquote-node.scss";

@@ -154,7 +154,7 @@ export default function Notifications() {
                     <div
                       key={item.id}
                       onClick={(e) => {
-                        handleOpenNotification(item.id, item.root_id);
+                        handleOpenNotification(item.id, item.root_id ?? 0);
                       }}
                       className={
                         "body-notifications__item item-body-notifications cursor-pointer " +

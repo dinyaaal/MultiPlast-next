@@ -1,6 +1,6 @@
 "use client";
 
-import CreateMessage from "@/Components/Messages/CreateMessage";
+import CreateMessage from "@/components/Messages/CreateMessage";
 import { CommentType, Photo } from "@/types/types";
 import LightGallery from "lightgallery/react";
 import lgZoom from "lightgallery/plugins/zoom";
