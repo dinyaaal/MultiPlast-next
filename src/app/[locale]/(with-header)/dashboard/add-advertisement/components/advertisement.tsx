@@ -155,7 +155,7 @@ export default function Advertisement({ categories }: SellProps) {
         longitude: product.longitude?.toString() || "",
         price: product.price?.toString() || "",
         arrangement: product.type_price === "by_arrangement",
-        volume: product.volume?.toString() || "",
+        // volume: product.volume?.toString() || "",
         volume_price: product.price_per_volume?.toString() || "",
         address: product.contacts[0]?.address || "",
         city: product.contacts[0]?.city || "",
@@ -233,7 +233,7 @@ export default function Advertisement({ categories }: SellProps) {
       title,
       text,
       price,
-      volume,
+      // volume,
       volume_price,
       arrangement,
       contact_data, // <- ожидаем, что это массив контактов
@@ -298,13 +298,10 @@ export default function Advertisement({ categories }: SellProps) {
     );
 
     if (!arrangement && price) formData.append("price", price);
-    if (volume && volume_price) {
-      formData.append("volume", volume);
+    if (volume_price) {
+      // formData.append("volume", volume);
       formData.append("price_per_volume", volume_price);
     }
-
-  
-    
 
     if (editId && product) {
       try {

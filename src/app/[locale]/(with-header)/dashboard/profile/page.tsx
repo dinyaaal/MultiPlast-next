@@ -179,7 +179,7 @@ export default function Profile() {
         let _userInformation = {
           ...userInformation!,
           id: userInformation?.id!,
-          photos: []
+          photos: [],
         };
         setUserInformation(_userInformation);
         dispatch(setUserInfoData(_userInformation));
@@ -190,7 +190,7 @@ export default function Profile() {
       console.error("Ошибка при отправке данных:", error);
       toast.error(t("toast.delete-photo-error"));
     }
-  }
+  };
 
   if (!userInformation) {
     return (
@@ -232,7 +232,8 @@ export default function Profile() {
                       ) : (
                         <Image
                           src={
-                            userInformation?.photos[0]?.url || "/icons/image.svg"
+                            userInformation?.photos[0]?.url ||
+                            "/icons/image.svg"
                           }
                           className="ibg"
                           alt="User image"
@@ -249,9 +250,15 @@ export default function Profile() {
                         onChange={handlePhotoChange}
                       />
                     </label>
-                    {userInformation?.photos[0]?.id && <button type="button" onClick={handleDeletePhoto} className="dashboard-contacts__delete button button--danger">
-                      Delete photo
-                    </button>}
+                    {userInformation?.photos[0]?.id && (
+                      <button
+                        type="button"
+                        onClick={handleDeletePhoto}
+                        className="dashboard-contacts__delete button button--danger"
+                      >
+                        Delete photo
+                      </button>
+                    )}
                   </div>
                 </div>
               </div>
@@ -560,56 +567,7 @@ export default function Profile() {
                     </div>
                   </div>
                 </div>
-                <div className="block-row">
-                  <div className="block-row__item">
-                    <div className="input-block">
-                      <p>{t("contact-details.name-of-enterprise")}</p>
-                      <input
-                        type="text"
-                        {...register("name_of_enterprise")}
-                        placeholder={t("contact-details.name-of-enterprise")}
-                        className={` input ${
-                          errors.name_of_enterprise ? "input--error" : ""
-                        }`}
-                        value={
-                          userInformation?.name_of_enterprise
-                            ? userInformation?.name_of_enterprise
-                            : ""
-                        }
-                        onChange={(e) =>
-                          setUserInformation((prev) =>
-                            prev
-                              ? { ...prev, name_of_enterprise: e.target.value }
-                              : null
-                          )
-                        }
-                      />
-                    </div>
-                  </div>
-                  <div className="block-row__item">
-                    <div className="input-block">
-                      <p>{t("contact-details.website-link")}</p>
-                      <input
-                        type="text"
-                        {...register("web_site")}
-                        placeholder={t("contact-details.website-link")}
-                        className={` input ${
-                          errors.web_site ? "input--error" : ""
-                        }`}
-                        value={
-                          userInformation?.web_site
-                            ? userInformation?.web_site
-                            : ""
-                        }
-                        onChange={(e) =>
-                          setUserInformation((prev) =>
-                            prev ? { ...prev, web_site: e.target.value } : null
-                          )
-                        }
-                      />
-                    </div>
-                  </div>
-                </div>
+
                 <div className="block-row">
                   <div className="block-row__item">
                     <div className="input-block">

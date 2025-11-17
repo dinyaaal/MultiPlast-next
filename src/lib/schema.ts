@@ -155,7 +155,7 @@ export const AdvertismentSchema = z
     type_price: z.string().optional().default("for_kg"),
     latitude: z.string().min(1, "Введите вашу широту"),
     longitude: z.string().min(1, "Введите вашу долготу"),
-    volume: z.string().optional(),
+    // volume: z.string().optional(),
     volume_price: z.string().optional(),
     arrangement: z.boolean().default(false),
   })

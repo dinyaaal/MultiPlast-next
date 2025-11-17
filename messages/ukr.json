@@ -115,7 +115,13 @@
       "favorites-add-error": "Не вдалося зберегти товар до обраного",
       "favorites-remove-success": "Товар прибрано з обраного",
       "favorites-remove-error": "Не вдалося прибрати товар з обраного"
-    }
+    },
+    "info": {
+      "contacts": "Контакти",
+      "location": "Місцезнаходження",
+      "website": "Сайт продавця"
+    },
+    "downloadFiles": "Завантажити прекріпленні файли"
   },
 
   "Forum": {
@@ -309,14 +315,16 @@
       "select-raw-material": "Виберіть сировину:*",
       "select-polymer": "Виберіть полімер:",
       "price-per-kg": "Вкажіть ціну:",
+      "price-per-kg-with-discount": "Вкажіть оптову ціну за кг:",
+      "or": "або",
       "negotiated-price": "За домовленістю",
       "fixed-price": "Фіксована ціна:",
       "price-type": "Тип ціни:",
       "enter-volume": "При обʼємі",
       "enter-price": "Ціна",
       "main-photo": "Первая загруженная фотография будет главной",
-      "price-without-discount": "Ціна без знижки",
-      "price-with-discount": "Ціна зі знижкою",
+      "price-without-discount": "Сховати оптову ціну",
+      "price-with-discount": "Додати оптову ціну",
       "enter-title": "Введіть заголовок обʼяви",
       "enter-description": "Введіть опис:",
       "upload-photo": "Завантажити фото",

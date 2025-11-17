@@ -115,7 +115,13 @@
       "favorites-add-error": "Не удалось сохранить товар в избранное",
       "favorites-remove-success": "Товар убран из избранного",
       "favorites-remove-error": "Не удалось убрать товар из избранного"
-    }
+    },
+    "info": {
+      "contacts": "Представитель",
+      "location": "Местоположение",
+      "website": "Сайт продавца"
+    },
+    "downloadFiles": "Скачать прикрепленные файлы"
   },
 
   "Forum": {
@@ -309,14 +315,16 @@
       "select-raw-material": "Выберите сырьё:*",
       "select-polymer": "Выберите полимер:",
       "price-per-kg": "Укажите цену:",
+      "price-per-kg-with-discount": "Укажите оптовую цену за кг:",
+      "or": "или",
       "negotiated-price": "По договорённости",
       "fixed-price": "Фиксированная цена:",
       "price-type": "Тип цены:",
       "enter-volume": "При объёме",
       "enter-price": "Цена",
       "main-photo": "Первая загруженная фотография будет главной",
-      "price-without-discount": "Цена без скидки",
-      "price-with-discount": "Цена со скидкой",
+      "price-without-discount": "Скрыть оптовую цену",
+      "price-with-discount": "Добавить оптовую цену",
       "enter-title": "Введите заголовок объявления",
       "enter-description": "Введите описание:",
       "upload-photo": "Загрузить фото",

@@ -166,7 +166,7 @@ export default async function Product(props: { params: Params }) {
                   {product.contacts[0]?.city && product.contacts[0]?.area && (
                     <div className="location-info-body-product__block">
                       <p className="location-info-body-product__text">
-                        Місцезнаходження:
+                        {t(`info.location`)}:
                       </p>
                       <div className="location-info-body-product__place">
                         {`${isEmpty(product?.contacts[0]?.city)}, ${isEmpty(
@@ -195,38 +195,52 @@ export default async function Product(props: { params: Params }) {
                 {/* {isHasUser && (
                 )} */}
                 <div className="info-body-product__contact contact-info-body-product">
-                  <div className="contact-info-body-product__title">
+                  {/* <div className="contact-info-body-product__title">
                     Контактна особа:
                   </div>
                   <p className="contact-info-body-product__text">
                     {`${isEmpty(product?.author?.first_name)} ${isEmpty(
                       product?.author?.last_name
                     )}`}
-                  </p>
-                  {product?.author?.web_site && <a href={isEmpty(product?.author?.web_site)} target="_blank" className="contact-info-body-product__text text-sm underline text-blue-500 hover:text-blue-600 hover:no-underline">
-                    Website
-                  </a>}
+                  </p> */}
+                  <div className="contact-info-body-product__title">
+                    {t(`info.website`)}:
+                  </div>
+                  {product?.author?.web_site && (
+                    <a
+                      href={isEmpty(product?.author?.web_site)}
+                      target="_blank"
+                      className="contact-info-body-product__text text-sm underline text-blue-500 hover:text-blue-600 hover:no-underline"
+                    >
+                      Website
+                    </a>
+                  )}
                 </div>
               </div>
               <div className="body-product__actions actions-body-product">
                 <div className="actions-body-product__block">
                   <div className="flex flex-col gap-5 w-full">
-                    <h4 className="title title--small">Контакти:</h4>
+                    <h4 className="title title--small">
+                      {t(`info.contacts`)}:
+                    </h4>
                     {product.contacts.map((contact) => (
                       <div
                         key={contact.id}
                         className="flex w-full flex-col gap-4 border border-border rounded-lg p-5"
                       >
-                        <div className="flex w-full gap-2">
-                          <div className="">{contact.name}</div> |
+                        <div className="flex flex-col w-full gap-2">
+                          <div className="">{contact.name}</div>
                           {contact.position && (
-                            <p className="">{contact.position}</p>
-                          )} |
+                            <p className="">({contact.position})</p>
+                          )}
                           {contact.phones && (
-                          <Link href={`tel:${contact.phones}`} className="link !leading-6">
-                            {contact.phones}
-                          </Link>
-                        )}
+                            <Link
+                              href={`tel:${contact.phones}`}
+                              className="link "
+                            >
+                              {contact.phones}
+                            </Link>
+                          )}
                         </div>
                       </div>
                     ))}
@@ -240,7 +254,7 @@ export default async function Product(props: { params: Params }) {
                       download={product.files[0].name}
                       className="actions-body-product__download button button--secondary"
                     >
-                      Завантажити прекріпленні файли: {product.files.length}
+                      {t(`downloadFiles`)}: {product.files.length}
                     </Link>
                   )}
                 </div>
