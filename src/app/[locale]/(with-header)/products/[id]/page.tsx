@@ -233,14 +233,15 @@ export default async function Product(props: { params: Params }) {
                           {contact.position && (
                             <p className="">({contact.position})</p>
                           )}
-                          {contact.phones && (
+                          {contact.phones.map((phone) => (
                             <Link
-                              href={`tel:${contact.phones}`}
+                              key={phone}
+                              href={`tel:${phone}`}
                               className="link "
                             >
-                              {contact.phones}
+                              {phone}
                             </Link>
-                          )}
+                          ))}
                         </div>
                       </div>
                     ))}

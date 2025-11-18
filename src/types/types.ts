@@ -104,7 +104,7 @@ export interface ProductContact {
   product_id: number;
   name_of_enterprise: string | null;
   name: string;
-  phones: string;
+  phones: string[];
   address: string | null;
   city: string;
   area: string;
@@ -142,6 +142,8 @@ export interface MinimalProduct {
   is_liked: boolean;
   volume: string | null;
   price_per_volume: string | null;
+  city: string;
+  updated_at: string;
 }
 
 export interface PriceType {

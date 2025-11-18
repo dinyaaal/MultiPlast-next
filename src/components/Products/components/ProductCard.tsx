@@ -4,7 +4,7 @@ import { useSession } from "next-auth/react";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { MinimalProduct, ProductType } from "@/types/types";
+import { MinimalProduct } from "@/types/types";
 import { Link, useRouter } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
 
@@ -191,12 +191,20 @@ export const ProductCard: React.FC<{
       </div>
       <div className="item-advert__body">
         <div className="item-advert__content">
-          <div className="item-advert__name">{product.title}</div>
           {/* <div className="item-advert__value">{product.volume}</div> */}
+          <div className="flex flex-col">
+            <div className="item-advert__name">{product.title}</div>
+            <div className="">
+              <span>{product.city}</span> -{" "}
+              <span>
+                {new Date(product.updated_at).toLocaleDateString("uk-UA")}
+              </span>
+            </div>
+          </div>
         </div>
         <div className="item-advert__bottom">
           {product.type_price === "by_arrangement" ? (
-            <p>По договорённости</p>
+            <p>{t("price-types.by_arrangement")}</p>
           ) : (
             <div className="item-advert__price">
               <span>
