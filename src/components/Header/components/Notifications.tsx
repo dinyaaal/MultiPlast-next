@@ -164,7 +164,10 @@ export default function Notifications() {
                       <div className="item-body-notifications__content">
                         <strong>{item.title}</strong>
                         <p className="item-body-notifications__text">
-                          {item.content}
+                          {/* {item.content} */}
+                          {item.type === 1
+                            ? t("newMessageChat")
+                            : t("newMessageForum")}
                         </p>
                       </div>
                       <button
@@ -200,7 +203,10 @@ export default function Notifications() {
                       <div className="item-body-notifications__content">
                         <strong>{item.title}</strong>
                         <p className="item-body-notifications__text">
-                          {item.content}
+                          {/* {item.content} */}
+                          {item.type === 1
+                            ? t("newMessageChat")
+                            : t("newMessageForum")}
                         </p>
                       </div>
                       <button

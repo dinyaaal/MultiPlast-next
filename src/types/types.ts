@@ -129,6 +129,7 @@ export interface ProductType {
   author: Author;
   photos: Photo[];
   files: any[];
+  city: string;
   contacts: ProductContact[]; // <-- Массив, а не объект
 }
 

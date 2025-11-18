@@ -1,6 +1,6 @@
 "use client";
 import { ProductCard } from "@/components/Products/components/ProductCard";
-import { ProductType } from "@/types/types";
+import { MinimalProduct } from "@/types/types";
 import { Pagination, Spinner } from "@heroui/react";
 import { useSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
@@ -8,7 +8,7 @@ import React, { useEffect, useState } from "react";
 
 export default function page() {
   const { data: session, status } = useSession();
-  const [products, setProducts] = useState<ProductType[]>([]);
+  const [products, setProducts] = useState<MinimalProduct[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [lastPage, setLastPage] = useState<number>();

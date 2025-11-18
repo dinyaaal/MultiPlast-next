@@ -25,6 +25,8 @@ export function ProductActions({ product }: { product: ProductType }) {
       is_liked: product.is_liked,
       volume: product.volume,
       price_per_volume: product.price_per_volume,
+      city: product.city,
+      updated_at: product.updated_at,
     };
 
     saveToRecentProducts(minimalProduct);

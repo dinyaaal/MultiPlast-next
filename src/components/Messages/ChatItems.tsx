@@ -62,6 +62,11 @@ export default function ChatItems() {
           {chats.length > 0 ? (
             chats
               .filter((chat) => chat.is_deleted !== 1)
+              .sort(
+                (a, b) =>
+                  new Date(b.updated_at).getTime() -
+                  new Date(a.updated_at).getTime()
+              )
               .map((chat) => (
                 <ChatItem
                   key={chat.id}

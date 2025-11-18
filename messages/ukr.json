@@ -234,6 +234,8 @@
   "Notifications": {
     "noNotifications": "Немає повідомлень",
     "readAll": "Прочитати всі",
+    "newMessageChat": "Нове повідомлення в чаті",
+    "newMessageForum": "Нове повідомлення в форумі",
     "toast": {
       "readAllSuccess": "Всі повідомлення успішно прочитані",
       "readAllError": "Не вдалося позначити всі повідомлення як прочитані",

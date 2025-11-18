@@ -1,6 +1,6 @@
 "use client";
 import { ProductCard } from "@/components/Products/components/ProductCard";
-import { ProductType } from "@/types/types";
+import { MinimalProduct } from "@/types/types";
 import { Pagination, Spinner } from "@heroui/react";
 import { useSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
@@ -8,26 +8,65 @@ import React, { useEffect, useState } from "react";
 
 export default function page() {
   const { data: session, status } = useSession();
-  const [products, setProducts] = useState<ProductType[]>([]);
+  const [products, setProducts] = useState<MinimalProduct[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [lastPage, setLastPage] = useState<number>();
   const t = useTranslations("Dashboard.MyBuy");
+
+  // const fetchProducts = async () => {
+  //   setIsLoading(true);
+  //   const queryParams = new URLSearchParams();
+
+  //   queryParams.append("page", currentPage.toString());
+  //   queryParams.append("token", session?.user.access_token || "");
+  //   queryParams.append("perPage", "12");
+  //   queryParams.append("status", "1");
+
+  //   const queryString = queryParams.toString()
+  //     ? `?${queryParams.toString()}`
+  //     : "";
+
+  //   try {
+  //     const res = await fetch(`/api/products/my${queryString}`);
+  //     if (!res.ok) {
+  //       throw new Error("Network response was not ok");
+  //     }
+
+  //     const data = await res.json();
+  //     if (data) {
+  //       console.log(data.data);
+  //       setProducts(data.data);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error fetching order status:", error);
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
   const fetchProducts = async () => {
+    const token = session?.user.access_token;
+    if (!token) {
+      return;
+    }
+
     setIsLoading(true);
+
     const queryParams = new URLSearchParams();
 
     queryParams.append("page", currentPage.toString());
-    queryParams.append("token", session?.user.access_token || "");
     queryParams.append("perPage", "12");
     queryParams.append("status", "1");
-
     const queryString = queryParams.toString()
       ? `?${queryParams.toString()}`
       : "";
 
     try {
-      const res = await fetch(`/api/products/my${queryString}`);
+      const res = await fetch(`/api/products/my${queryString}`, {
+        headers: {
+          token: token,
+        },
+      });
       if (!res.ok) {
         throw new Error("Network response was not ok");
       }
