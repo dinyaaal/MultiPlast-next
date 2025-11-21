@@ -244,6 +244,7 @@ export interface ChatItemData {
   last_message: IMessageItem | null;
   to_user: ChatUser;
   user: ChatUser;
+  reasonable: MinimalProduct;
 }
 
 export interface CommentType {

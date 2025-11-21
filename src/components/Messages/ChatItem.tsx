@@ -142,7 +142,7 @@ export const ChatItem: React.FC<ChatItemProps> = ({ chat, onDelete }) => {
             <div className="item-block-chat__info">
               <div className="item-block-chat__block">
                 <div className="item-block-chat__name">
-                  {`${chat.to_user?.first_name} ${chat.to_user?.last_name}`}
+                  {`${chat.user?.first_name} ${chat.user?.last_name}`}
                 </div>
                 <span className="item-block-chat__date">{formattedDate}</span>
               </div>
@@ -226,7 +226,9 @@ export const ChatItem: React.FC<ChatItemProps> = ({ chat, onDelete }) => {
             </div>
 
             <p className="item-block-chat__text">
-              {chat.last_message?.content ? stripHtml(chat.last_message.content) : t("noMessage")}
+              {chat.last_message?.content
+                ? stripHtml(chat.last_message.content)
+                : t("noMessage")}
             </p>
           </div>
         </div>

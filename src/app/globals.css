@@ -1196,12 +1196,12 @@ button:disabled {
   @apply text-black relative  flex-col flex items-center justify-center text-center xl:flex-row;
 }
 
-.bottom-header__list  .sub-menu__link {
-  @apply w-[250px] ;
+.bottom-header__list .sub-menu__link {
+  @apply w-[250px];
 }
 
-.menu__link-text{
-  @apply  line-clamp-2 w-full whitespace-normal break-words
+.menu__link-text {
+  @apply line-clamp-2 w-full whitespace-normal break-words;
 }
 
 .menu__list a {
@@ -2317,19 +2317,26 @@ button:disabled {
 }
 
 .topic-message {
-  @apply flex items-center gap-[10px] w-full max-w-full overflow-hidden p-[5px] border-5 border-blueColor rounded-[12px];
+  @apply flex items-center justify-between gap-5 w-full max-w-full h-20 overflow-hidden p-1  border-b border-border;
 }
 .topic-message__block {
-  @apply flex flex-col gap-[5px] flex-1 min-w-0 leading-[120%] text-[14px];
+  @apply flex flex-col gap-1 flex-1 min-w-0 leading-[120%] text-[14px];
 }
 .topic-message__title {
-  @apply whitespace-nowrap overflow-hidden text-ellipsis block w-full underline;
+  @apply block w-full line-clamp-1;
+}
+.topic-message__content {
+  @apply flex items-center gap-[10px] w-fit h-full  overflow-hidden p-1 border-2 border-blueColor rounded-xl;
+}
+
+.topic-message__close {
+  @apply cursor-pointer size-6 shrink-0 hover:scale-105 transition-all duration-300;
 }
 .topic-message__user {
   @apply shrink-0;
 }
 .topic-message__image {
-  @apply shrink-0 size-[51px] sm:size-[63px];
+  @apply shrink-0 size-10;
 }
 
 .topic-message__image img {
@@ -2439,13 +2446,13 @@ button:disabled {
   @apply h-full w-full overflow-y-auto;
 }
 .block-body-chat__wrapper {
-  @apply w-full h-fit p-[15px] flex flex-col items-end justify-end self-end gap-[20px];
+  @apply relative w-full  h-fit p-[15px] flex flex-col items-end justify-end self-end gap-[20px];
 }
 .block-body-chat__block {
   @apply w-full h-fit;
 }
 .block-body-chat__info {
-  @apply grid gap-[10px] items-center justify-center mx-auto mb-[15px] xl:mb-[40px] sm:max-w-[80%];
+  @apply absolute top-0 left-0 w-full flex w-full h-fit bg-white;
 }
 
 .block-body-chat__date {

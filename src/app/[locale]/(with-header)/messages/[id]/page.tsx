@@ -1,25 +1,25 @@
 "use client";
 
 import Image from "next/image";
-import React, { useEffect, useState, useMemo, useRef, Suspense } from "react";
+import React, { useEffect, useState, useMemo, useRef } from "react";
 import { useSession } from "next-auth/react";
 import { useLocale, useTranslations } from "next-intl";
 import ChatTop from "./components/ChatTop";
 import ChatBottom from "./components/ChatBottom";
 import { toast } from "sonner";
-import { ChatItemData, IMessageItem, Photo, User } from "@/types/types";
+import { ChatItemData, IMessageItem, Photo } from "@/types/types";
 import MessageItem from "@/components/Messages/MessageItem";
 import { getLocale } from "@/utils/locale";
 
-import { useRouter } from "@/i18n/routing";
 import { Spinner } from "@heroui/react";
+import { X } from "lucide-react";
+import { Link } from "@/i18n/routing";
 
 export default function ChatBody({
   params,
 }: {
   params: Promise<{ id: string }>;
 }) {
-  const router = useRouter();
   const t = useTranslations("Messages");
   const unwrappedParams = React.use(params);
   const id = unwrappedParams.id;
@@ -29,6 +29,7 @@ export default function ChatBody({
   const locale = useLocale();
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const [chat, setChat] = useState<ChatItemData | null>(null);
+  const [isOpenReason, setIsOpenReason] = useState(true);
 
   const fetchMessages = async () => {
     if (!token || !id) return;
@@ -73,7 +74,7 @@ export default function ChatBody({
     fetchMessages();
   }, [id, token]);
 
-  const handleSend = (message: { text: string, files: Photo[] }) => {
+  const handleSend = (message: { text: string; files: Photo[] }) => {
     if (!session?.user.id) return;
     setMessages((prevMessages) => [
       ...prevMessages,
@@ -130,29 +131,51 @@ export default function ChatBody({
       <div className="body-chat__content">
         <ChatTop chat={chat} />
         <div ref={scrollRef} className="body-chat__block block-body-chat">
-          <div className="block-body-chat__wrapper">
-            <div className="block-body-chat__block">
+          <div
+            className={`block-body-chat__wrapper ${
+              isOpenReason ? "!pt-30" : ""
+            }`}
+          >
+            {chat.reasonable && isOpenReason && (
               <div className="block-body-chat__info">
-                <div className="block-body-chat__date">5 вересня 2024</div>
                 <div className="item-block-chat__topic topic-message">
-                  <div className="topic-message__block">
-                    <p className="topic-message__title">
-                      Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                      Quibusdam dolorum libero odit sed fugit consequatur
-                      obcaecati vero repellat eius fuga.
-                    </p>
-                  </div>
-                  <div className="topic-message__image">
-                    <Image
-                      src="/advert/01.jpg"
-                      alt="Image"
-                      width={100}
-                      height={100}
-                    />
-                  </div>
+                  <Link
+                    href={`/products/${chat.reasonable.id}`}
+                    className="topic-message__content"
+                  >
+                    {chat.reasonable.photos.length > 0 && (
+                      <div className="topic-message__image">
+                        <Image
+                          src={chat.reasonable.photos[0].url}
+                          alt="Image"
+                          width={100}
+                          height={100}
+                        />
+                      </div>
+                    )}
+                    <div className="topic-message__block">
+                      <h4 className="topic-message__title title title--small">
+                        {chat.reasonable.title}
+                      </h4>
+                      <div className="">
+                        <span>{chat.reasonable.city}</span> -{" "}
+                        <span>
+                          {new Date(
+                            chat.reasonable.updated_at
+                          ).toLocaleDateString("uk-UA")}
+                        </span>
+                      </div>
+                    </div>
+                  </Link>
+                  <button
+                    onClick={() => setIsOpenReason(false)}
+                    className="topic-message__close"
+                  >
+                    <X className="size-full " />
+                  </button>
                 </div>
               </div>
-            </div>
+            )}
             {Object.entries(groupedMessages).map(([date, msgs]) => (
               <div key={date} className="block-body-chat__block">
                 {/* Дата */}
