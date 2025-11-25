@@ -19,7 +19,6 @@ export default function ForumComments({ postId }: ForumCommentInputProps) {
   const { data: session, status } = useSession();
 
   const [comments, setComments] = useState<CommentType[]>([]);
-  const [visibleComments, setVisibleComments] = useState<CommentType[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isLoadingSubmit, setIsLoadingSubmit] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -90,18 +89,6 @@ export default function ForumComments({ postId }: ForumCommentInputProps) {
     setReplyData(replyData); // Присваиваем объект с id
     forumCommentsRef.current?.scrollIntoView({ behavior: "smooth" });
   };
-
-  // const toggleComments = () => {
-  //   setCurrentPage((prevPage) => {
-  //     if (!lastPage) return prevPage; // если `lastPage` ещё не известна — ничего не делаем
-  //     if (prevPage < lastPage) {
-  //       return prevPage + 1;
-  //     } else {
-  //       setComments([]);
-  //       return 1;
-  //     }
-  //   });
-  // };
 
   useEffect(() => {
     const textarea = textareaRef.current;
@@ -183,7 +170,12 @@ export default function ForumComments({ postId }: ForumCommentInputProps) {
                   onClick={(e) => setReplyData(null)}
                   className="chat-input-reply__clear"
                 >
-                  <Image src="/icons/close.svg" width={20} height={20} alt="Icon" />
+                  <Image
+                    src="/icons/close.svg"
+                    width={20}
+                    height={20}
+                    alt="Icon"
+                  />
                 </button>
               </div>
             )}
@@ -226,7 +218,12 @@ export default function ForumComments({ postId }: ForumCommentInputProps) {
                     key={index}
                     onClick={() => handleRemoveImage(index)}
                   >
-                    <Image width={100} height={100} src={URL.createObjectURL(file)} alt="preview" />
+                    <Image
+                      width={100}
+                      height={100}
+                      src={URL.createObjectURL(file)}
+                      alt="preview"
+                    />
                   </div>
                 ))}
               </div>

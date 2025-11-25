@@ -144,7 +144,11 @@ export const AdvertismentSchema = z
     city: z.string().optional(),
     address: z.string().optional(),
     name_of_enterprise: z.string().optional(),
-    web_site: z.string().url("Введите корректный URL").optional(),
+    web_site: z
+      .string()
+      .url("Введите корректный URL")
+      .or(z.literal("")) // ← разрешаем пустую строку
+      .optional(),
     area: z.string().optional(),
 
     contact_data: z

@@ -58,8 +58,11 @@ export default async function ForumTopicPage(props: { params: Params }) {
       <div className="forum-topic__container main-container">
         <div className="forum-topic__body body-forum-topic">
           <div className="body-forum-topic__top top-body-forum-topic">
-            <h2 className="top-body-forum-topic__title title"><span className="text-base text-gray-500">ID: {post.id}</span> {post.title}</h2>
-            <ForumActions id={params.id} />
+            <h2 className="top-body-forum-topic__title title">
+              {/* <span className="text-base text-gray-500">ID: {post.id}</span>{" "} */}
+              {post.title}
+            </h2>
+            <ForumActions id={post.id} author_id={post.author_id} />
             {/* <div className="top-product__actions actions-top">
               <a href="#" className="actions-top__item edit">
                 <svg
