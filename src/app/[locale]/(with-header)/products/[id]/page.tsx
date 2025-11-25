@@ -203,17 +203,19 @@ export default async function Product(props: { params: Params }) {
                       product?.author?.last_name
                     )}`}
                   </p> */}
-                  <div className="contact-info-body-product__title">
-                    {t(`info.website`)}:
-                  </div>
-                  {product?.author?.web_site && (
-                    <a
-                      href={isEmpty(product?.author?.web_site)}
-                      target="_blank"
-                      className="contact-info-body-product__text text-sm underline text-blue-500 hover:text-blue-600 hover:no-underline"
-                    >
-                      Website
-                    </a>
+                  {product.web_site && (
+                    <>
+                      <div className="contact-info-body-product__title">
+                        {t(`info.website`)}:
+                      </div>
+                      <Link
+                        href={product.web_site}
+                        target="_blank"
+                        className="contact-info-body-product__text text-sm link"
+                      >
+                        {product.web_site}
+                      </Link>
+                    </>
                   )}
                 </div>
               </div>
@@ -228,20 +230,24 @@ export default async function Product(props: { params: Params }) {
                         key={contact.id}
                         className="flex w-full flex-col gap-4 border border-border rounded-lg p-5"
                       >
-                        <div className="flex flex-col w-full gap-2">
-                          <div className="">{contact.name}</div>
-                          {contact.position && (
-                            <p className="">({contact.position})</p>
-                          )}
-                          {contact.phones.map((phone) => (
-                            <Link
-                              key={phone}
-                              href={`tel:${phone}`}
-                              className="link "
-                            >
-                              {phone}
-                            </Link>
-                          ))}
+                        <div className="flex flex-col w-full gap-5">
+                          <div className="flex flex-col">
+                            <div className="">{contact.name}</div>
+                            {contact.position && (
+                              <p className="">({contact.position})</p>
+                            )}
+                          </div>
+                          <div className="flex flex-col gap-4">
+                            {contact.phones.map((phone) => (
+                              <Link
+                                key={phone}
+                                href={`tel:${phone}`}
+                                className="link text-base"
+                              >
+                                {phone}
+                              </Link>
+                            ))}
+                          </div>
                         </div>
                       </div>
                     ))}

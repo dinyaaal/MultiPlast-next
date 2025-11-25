@@ -75,8 +75,32 @@ export default function BurgerMenu() {
                 {tNavigation("marketplace")}
               </Link>
             </li>
+
             {status === "authenticated" && (
               <>
+                <li className="menu__item">
+                  <Link
+                    onClick={closeMenu}
+                    href="/dashboard/profile"
+                    className={`menu__link  ${
+                      pathname === "/dashboard/profile" ? "active" : ""
+                    }`}
+                  >
+                    {tNavigation("personalAccount")}
+                  </Link>
+                </li>
+                <li className="menu__item">
+                  <Link
+                    onClick={closeMenu}
+                    href="/messages"
+                    className={`menu__link ${
+                      pathname === "/messages" ? "active" : ""
+                    }`}
+                  >
+                    {tNavigation("myMessages")}
+                  </Link>
+                </li>
+
                 <li className="menu__item">
                   <Link
                     onClick={closeMenu}
@@ -90,20 +114,43 @@ export default function BurgerMenu() {
                     {tNavigation("addAdvertisement")}
                   </Link>
                 </li>
+                <li className="menu__item">
+                  <Link
+                    onClick={closeMenu}
+                    href="/dashboard/my-sell"
+                    className={`menu__link ${
+                      pathname === "/dashboard/my-sell" ? "active" : ""
+                    }`}
+                  >
+                    {tNavigation("mySellAds")}
+                  </Link>
+                </li>
+                <li className="menu__item">
+                  <Link
+                    onClick={closeMenu}
+                    href="/dashboard/my-buy"
+                    className={`menu__link ${
+                      pathname === "/dashboard/my-buy" ? "active" : ""
+                    }`}
+                  >
+                    {tNavigation("myBuyAds")}
+                  </Link>
+                </li>
 
                 <li className="menu__item">
                   <Link
                     onClick={closeMenu}
-                    href="/messages"
+                    href="/dashboard/security"
                     className={`menu__link ${
-                      pathname === "/messages" ? "active" : ""
+                      pathname === "/dashboard/security" ? "active" : ""
                     }`}
                   >
-                    {tNavigation("myMessages")}
+                    {tNavigation("changePassword")}
                   </Link>
                 </li>
               </>
             )}
+
             <li className="menu__item">
               <Link
                 onClick={closeMenu}
@@ -115,8 +162,44 @@ export default function BurgerMenu() {
                 {tNavigation("forum")}
               </Link>
             </li>
+            <li className="menu__item">
+              <Link
+                onClick={closeMenu}
+                href="/about"
+                className={`menu__link ${
+                  pathname === "/about" ? "active" : ""
+                }`}
+              >
+                {tNavigation("aboutProject")}
+              </Link>
+            </li>
+            <li className="menu__item">
+              <Link
+                onClick={closeMenu}
+                href="/user-agreement"
+                className={`menu__link ${
+                  pathname === "/user-agreement" ? "active" : ""
+                }`}
+              >
+                {tNavigation("userAgreement")}
+              </Link>
+            </li>
+            <li className="menu__item">
+              <Link
+                onClick={closeMenu}
+                href="/how-to-trade"
+                className={`menu__link ${
+                  pathname === "/how-to-trade" ? "active" : ""
+                }`}
+              >
+                {tNavigation("howToSellBuy")}
+              </Link>
+            </li>
           </ul>
-          <div className="body-header__user user user--mobile">
+          <div
+            onClick={closeMenu}
+            className="body-header__user user user--mobile"
+          >
             <HeaderUser />
           </div>
         </div>

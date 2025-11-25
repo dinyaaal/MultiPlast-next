@@ -773,7 +773,7 @@ button:disabled {
 }
 
 .link {
-  @apply text-blueColor underline text-sm;
+  @apply underline text-blue-500 hover:text-blue-600 hover:no-underline;
 }
 
 .input-block {
@@ -986,7 +986,7 @@ button:disabled {
 }
 
 .bottom-header {
-  @apply bg-secondaryColor py-[12px];
+  @apply bg-secondaryColor py-[12px] hidden md:block;
 }
 .bottom-header__container {
   @apply w-full flex items-center justify-between gap-2.5 sm:gap-[20px];
@@ -1080,7 +1080,7 @@ button:disabled {
   @apply relative top-[0.5px] text-white text-[10px];
 }
 .menu-bottom-header {
-  @apply relative z-9 bg-blueColor rounded-md flex items-center justify-center gap-2.5 w-full max-w-[305px] min-w-[180px] py-[14px] leading-none px-[5px] cursor-pointer transition-all duration-300 hover:bg-blueColor-hover;
+  @apply relative z-9 bg-blueColor rounded-md hidden md:flex items-center justify-center gap-2.5 w-full max-w-[305px] min-w-[180px] py-[14px] leading-none px-[5px] cursor-pointer transition-all duration-300 hover:bg-blueColor-hover;
 }
 
 .menu-bottom-header.active .menu-bottom-header__items {

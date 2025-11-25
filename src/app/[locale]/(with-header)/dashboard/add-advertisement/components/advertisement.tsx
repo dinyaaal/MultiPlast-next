@@ -40,6 +40,19 @@ export default function Advertisement({ categories }: SellProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingRequest, setIsLoadingRequest] = useState(false);
 
+  useEffect(() => {
+    fetchProduct();
+  }, [editId]);
+
+  useEffect(() => {
+    if (userInfo && !editId) {
+      setValue(
+        "name_of_enterprise",
+        userInfo?.name_of_enterprise ? userInfo?.name_of_enterprise : ""
+      );
+    }
+  }, [userInfo]);
+
   const {
     register,
     handleSubmit,
@@ -119,94 +132,6 @@ export default function Advertisement({ categories }: SellProps) {
     }
   };
 
-  useEffect(() => {
-    fetchProduct();
-  }, [editId]);
-
-  useEffect(() => {
-    if (userInfo && !editId) {
-      setValue(
-        "name_of_enterprise",
-        userInfo?.name_of_enterprise ? userInfo?.name_of_enterprise : ""
-      );
-    }
-  }, [userInfo]);
-
-  useEffect(() => {
-    if (product) {
-      reset({
-        advertType: product.type_of_product || "",
-        mainCategory:
-          product.categories
-            .find((c) => c.parent_id === null)
-            ?.id?.toString() || "",
-        polymer:
-          product.categories
-            .find((c) => c.type === "Полімер")
-            ?.id?.toString() || "",
-        type:
-          product.categories
-            .find((c) => c.type === "Сировина")
-            ?.id?.toString() || "",
-
-        title: product.title,
-        text: product.text,
-        latitude: product.latitude?.toString() || "",
-        longitude: product.longitude?.toString() || "",
-        price: product.price?.toString() || "",
-        arrangement: product.type_price === "by_arrangement",
-        // volume: product.volume?.toString() || "",
-        volume_price: product.price_per_volume?.toString() || "",
-        address: product.contacts[0]?.address || "",
-        city: product.contacts[0]?.city || "",
-        area: product.contacts[0]?.area || "",
-        name_of_enterprise: product.contacts[0]?.name_of_enterprise || "",
-
-        contact_data: Array.isArray(product.contacts)
-          ? product.contacts.map((c) => ({
-              name: c.name,
-              position: c.position || "",
-              phones:
-                Array.isArray(c.phones) && c.phones.length > 0
-                  ? c.phones
-                  : [""], // хотя бы один инпут, чтобы соответствовать .nonempty()
-            }))
-          : [],
-      });
-    }
-  }, [product, reset]);
-
-  const watchedValues = watch(); // все значения
-
-  useEffect(() => {
-    reset(
-      {
-        type: "",
-        polymer: "",
-      },
-      {
-        keepErrors: false, // ошибки тоже будут сброшены
-      }
-    );
-  }, [searchParams]);
-
-  useEffect(() => {
-    // reset();
-    const newCategoryId = searchCategory || "1";
-    // const newSubCategoryId = searchSubCategory || "1";
-
-    const typeParam = searchType;
-    const newAdvertType =
-      typeParam === "sell" || typeParam === "buy" ? typeParam : "sell";
-    // setCategoryId(Number(newCategoryId));
-
-    // setAdvertType(newAdvertType);
-
-    setValue("mainCategory", newCategoryId);
-    setValue("advertType", newAdvertType);
-    setValue("type", searchSubCategory || "");
-  }, [searchCategory, searchSubCategory, searchType]);
-
   console.log(files);
 
   const processForm: SubmitHandler<AdvertisementInputs> = async (data) => {
@@ -227,12 +152,14 @@ export default function Advertisement({ categories }: SellProps) {
       latitude,
       longitude,
       name_of_enterprise,
+      web_site,
       mainCategory,
       type,
       polymer,
       title,
       text,
       price,
+      type_price,
       // volume,
       volume_price,
       arrangement,
@@ -290,10 +217,12 @@ export default function Advertisement({ categories }: SellProps) {
     formData.append("latitude", latitude);
     formData.append("longitude", longitude);
     if (text) formData.append("text", text);
+    if (web_site) formData.append("web_site", web_site);
     formData.append("type_of_product", data.advertType);
+
     formData.append(
       "type_price",
-      data.arrangement ? "by_arrangement" : data.type_price || ""
+      data.arrangement ? "by_arrangement" : type_price || ""
       // arrangement ? "by_arrangement" : typePrice.type
     );
 
@@ -374,6 +303,7 @@ export default function Advertisement({ categories }: SellProps) {
           watch={watch}
           errors={errors}
           setValue={setValue}
+          reset={reset}
         />
         <ContactsSection
           register={register}

@@ -144,7 +144,7 @@ export const AdvertismentSchema = z
     city: z.string().optional(),
     address: z.string().optional(),
     name_of_enterprise: z.string().optional(),
-
+    web_site: z.string().url("Введите корректный URL").optional(),
     area: z.string().optional(),
 
     contact_data: z
@@ -187,66 +187,6 @@ export const AdvertismentSchema = z
     message: "Price is required when arrangement is false.",
     path: ["price"],
   });
-
-// export const AdvertismentSchema = z
-//   .object({
-//     advertType: z.enum(["sell", "buy"]),
-//     // advertType: z.enum(["sell", "buy"]),
-//     mainCategory: z.string().min(1),
-//     polymer: z.string().optional(),
-//     type: z.string().optional(),
-//     title: z
-//       .string()
-//       .min(1, { message: "Заголовок обязателен" })
-//       .max(150, { message: "Максимальная длина 150 символов" }),
-//     text: z
-//       .string()
-//       .min(1, { message: "Описание обязательно" })
-//       .max(1000, { message: "Максимальная длина 1000 символов" }),
-
-//     name_of_enterprise: z.string().optional(),
-//     city: z.string().min(1, "Введите ваш город"),
-//     address: z.string(),
-//     area: z.string().min(1, "Введите вашу область"),
-//     phone_number: z
-//       .string()
-//       .min(10, "Номер телефона должен содержать минимум 10 символов")
-//       .max(15, "Номер телефона не может быть длиннее 15 символов"),
-//     name: z.string().min(1, "Введите ваше имя"),
-//     price: z.string().optional(),
-//     volume: z.string().optional(),
-//     volume_price: z.string().optional(),
-//     arrangement: z.boolean(),
-//     // arrangement: z.enum(["negotiated", "fixed"]),
-//   })
-//   .refine(
-//     (data) => {
-//       if (["1", "2"].includes(data.mainCategory) && !data.polymer) {
-//         return false;
-//       }
-//       return true;
-//     },
-//     {
-//       message: "Поле polymer обязательно для категорий 1 и 2",
-//       path: ["polymer"],
-//     }
-//   )
-//   .refine(
-//     (data) => {
-//       if (["2", "3", "4", "5"].includes(data.mainCategory) && !data.type) {
-//         return false;
-//       }
-//       return true;
-//     },
-//     {
-//       message: "Поле type обязательно для категорий 2, 3, 4 и 5",
-//       path: ["type"],
-//     }
-//   )
-//   .refine((data) => data.arrangement || data.price, {
-//     message: "Price is required when arrangement is false.",
-//     path: ["price"],
-//   });
 
 export const ContactFormSchema = z.object({
   email: z

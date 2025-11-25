@@ -88,7 +88,7 @@ export default async function Header() {
             <HeaderNavigation categories={categories} />
           </div>
 
-          <div className="bottom-header__actions">
+          <div className="bottom-header__actions ">
             <div className="hidden md:flex">
               <Link href="/favorites" className="btn-icon btn-icon--favorites">
                 <div className="btn-icon__image">

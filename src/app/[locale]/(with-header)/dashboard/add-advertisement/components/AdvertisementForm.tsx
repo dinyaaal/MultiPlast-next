@@ -8,6 +8,7 @@ import {
   FieldErrors,
   UseFormClearErrors,
   UseFormRegister,
+  UseFormReset,
   UseFormSetValue,
   UseFormWatch,
 } from "react-hook-form";
@@ -17,7 +18,7 @@ import { Select, SelectItem } from "@heroui/react";
 import Image from "next/image";
 import { ChevronRight } from "lucide-react";
 import { toast } from "sonner";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import Map from "@/components/Map/Map";
 import { useSearchParams } from "next/navigation";
@@ -34,6 +35,7 @@ interface AdvertisementFormProps {
   watch: UseFormWatch<AdvertisementInputs>;
   clearErrors: UseFormClearErrors<AdvertisementInputs>;
   setProduct: (product: ProductType) => void;
+  reset: UseFormReset<AdvertisementInputs>;
 }
 
 const units = [
@@ -60,6 +62,7 @@ export default function AdvertisementForm({
   errors,
   setValue,
   watch,
+  reset,
 }: AdvertisementFormProps) {
   const t = useTranslations("Dashboard.Sell");
   const [activePhotoIndex, setActivePhotoIndex] = useState(0);
@@ -72,8 +75,98 @@ export default function AdvertisementForm({
   const [categoryId, setCategoryId] = useState<number>(1);
   const searchParams = useSearchParams();
   const router = useRouter();
-
+  // const router = useRouter();
+  const editId = searchParams.get("edit");
+  const searchCategory = searchParams.get("category");
+  const searchType = searchParams.get("type");
+  const searchSubCategory = searchParams.get("subCategory");
   const MAX_FILE_SIZE_MB = 100;
+
+  useEffect(() => {
+    if (product) {
+      reset({
+        advertType: product.type_of_product || "",
+        mainCategory:
+          product.categories
+            .find((c) => c.parent_id === null)
+            ?.id?.toString() || "",
+        polymer:
+          product.categories
+            .find((c) => c.type === "Полімер")
+            ?.id?.toString() || "",
+        type:
+          product.categories
+            .find((c) => c.type === "Сировина")
+            ?.id?.toString() || "",
+
+        title: product.title,
+        text: product.text,
+        latitude: product.latitude?.toString() || "",
+        longitude: product.longitude?.toString() || "",
+        price: product.price?.toString() || "",
+        arrangement: product.type_price === "by_arrangement",
+        // volume: product.volume?.toString() || "",
+        volume_price: product.price_per_volume?.toString() || "",
+        address: product.contacts[0]?.address || "",
+        city: product.contacts[0]?.city || "",
+        area: product.contacts[0]?.area || "",
+        name_of_enterprise: product.contacts[0]?.name_of_enterprise || "",
+
+        contact_data: Array.isArray(product.contacts)
+          ? product.contacts.map((c) => ({
+              name: c.name,
+              position: c.position || "",
+              phones:
+                Array.isArray(c.phones) && c.phones.length > 0
+                  ? c.phones
+                  : [""], // хотя бы один инпут, чтобы соответствовать .nonempty()
+            }))
+          : [],
+      });
+    }
+  }, [product, reset]);
+
+  // useEffect(() => {
+  //   reset(
+  //     {
+  //       type: "",
+  //       polymer: "",
+  //     },
+  //     {
+  //       keepErrors: false, // ошибки тоже будут сброшены
+  //     }
+  //   );
+  // }, [searchParams]);
+
+  useEffect(() => {
+    // reset();
+    const newCategoryId = searchCategory || "1";
+    // const newSubCategoryId = searchSubCategory || "1";
+
+    const typeParam = searchType;
+    const newAdvertType =
+      typeParam === "sell" || typeParam === "buy" ? typeParam : "sell";
+    // setCategoryId(Number(newCategoryId));
+
+    // setAdvertType(newAdvertType);
+
+    setValue("mainCategory", newCategoryId);
+    setValue("advertType", newAdvertType);
+    setValue("type", searchSubCategory || "");
+  }, [searchCategory, searchSubCategory, searchType]);
+
+  // Следим за выбранной категорией
+  useEffect(() => {
+    const mainCategory = Number(watch("mainCategory"));
+
+    if (!mainCategory) return;
+
+    if (mainCategory === 1 || mainCategory === 2) {
+      setValue("type_price", "for_kg");
+    } else if (mainCategory === 3 || mainCategory === 5) {
+      setValue("type_price", "for_piece");
+    }
+  }, [watch("mainCategory"), setValue]);
 
   const handlePhotosChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
@@ -217,11 +310,11 @@ export default function AdvertisementForm({
       subCategory: null,
     });
 
-    if (Number(e.target.value) === 1 || Number(e.target.value) === 2) {
-      setValue("type_price", "for_kg");
-    } else if (Number(e.target.value) === 3 || Number(e.target.value) === 5) {
-      setValue("type_price", "for_piece");
-    }
+    // if (Number(e.target.value) === 1 || Number(e.target.value) === 2) {
+    //   setValue("type_price", "for_kg");
+    // } else if (Number(e.target.value) === 3 || Number(e.target.value) === 5) {
+    //   setValue("type_price", "for_piece");
+    // }
   };
 
   const handleTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -890,18 +983,16 @@ export default function AdvertisementForm({
                   errors.name_of_enterprise ? "input--error" : ""
                 }`}
                 {...register("name_of_enterprise")}
-                // value={
-                //   userInformation?.name_of_enterprise
-                //     ? userInformation?.name_of_enterprise
-                //     : ""
-                // }
-                // onChange={(e) =>
-                //   setUserInformation((prev) =>
-                //     prev
-                //       ? { ...prev, name_of_enterprise: e.target.value }
-                //       : null
-                //   )
-                // }
+              />
+            </div>
+            <div className="input-block">
+              <p>{t("company-site")}</p>
+              <input
+                autoComplete="off"
+                type="text"
+                placeholder=""
+                className={`input ${errors.web_site ? "input--error" : ""}`}
+                {...register("web_site")}
               />
             </div>
           </div>
