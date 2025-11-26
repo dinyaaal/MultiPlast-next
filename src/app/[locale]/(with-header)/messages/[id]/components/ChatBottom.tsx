@@ -13,7 +13,7 @@ interface UploadedFile {
 
 interface ChatBottomProps {
   id: string;
-  onSend: (message: { text: string, files: Photo[] }) => void;
+  onSend: (message: { text: string; files: Photo[] }) => void;
 }
 
 export default function ChatBottom({ id, onSend }: ChatBottomProps) {
@@ -24,82 +24,89 @@ export default function ChatBottom({ id, onSend }: ChatBottomProps) {
   const { data: session, status } = useSession();
   const token = session?.user.access_token;
   const [isLoading, setIsLoading] = useState(false);
+  const [images, setImages] = useState<File[]>([]);
+  const tToast = useTranslations("Toast");
 
-  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const files = event.target.files;
-    if (files) {
-      const newFiles: UploadedFile[] = Array.from(files).map((file) => {
-        const id = Math.random().toString(36).substr(2, 9);
-        let preview: string | undefined;
+  // const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   const files = event.target.files;
+  //   if (files) {
+  //     const newFiles: UploadedFile[] = Array.from(files).map((file) => {
+  //       const id = Math.random().toString(36).substr(2, 9);
+  //       let preview: string | undefined;
 
-        // Создаем превью для изображений
-        if (file.type.startsWith("image/")) {
-          preview = URL.createObjectURL(file);
-        }
+  //       // Создаем превью для изображений
+  //       if (file.type.startsWith("image/")) {
+  //         preview = URL.createObjectURL(file);
+  //       }
 
-        return {
-          id,
-          file,
-          preview,
-        };
-      });
+  //       return {
+  //         id,
+  //         file,
+  //         preview,
+  //       };
+  //     });
 
-      setUploadedFiles((prev) => [...prev, ...newFiles]);
-    }
+  //     setUploadedFiles((prev) => [...prev, ...newFiles]);
+  //   }
+  // };
+
+  // const removeFile = (id: string) => {
+  //   setUploadedFiles((prev) => {
+  //     const fileToRemove = prev.find((f) => f.id === id);
+  //     if (fileToRemove?.preview) {
+  //       URL.revokeObjectURL(fileToRemove.preview);
+  //     }
+  //     return prev.filter((f) => f.id !== id);
+  //   });
+  // };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files) return;
+
+    const maxSize = 2 * 1024 * 1024; // 2 MB
+    const selectedFiles = Array.from(e.target.files);
+
+    const filteredFiles = selectedFiles.filter((file) => {
+      if (file.size > maxSize) {
+        toast.error(tToast("file-size-error", { file: file.name, size: 2 }));
+        return false;
+      }
+      return true;
+    });
+
+    setImages((prev) => [...prev, ...filteredFiles]);
+
+    e.target.value = ""; // Чтобы можно было выбрать тот же файл снова
   };
 
-  const removeFile = (id: string) => {
-    setUploadedFiles((prev) => {
-      const fileToRemove = prev.find((f) => f.id === id);
-      if (fileToRemove?.preview) {
-        URL.revokeObjectURL(fileToRemove.preview);
-      }
-      return prev.filter((f) => f.id !== id);
-    });
+  const handleRemoveImage = (index: number) => {
+    setImages((prev) => prev.filter((_, i) => i !== index));
   };
 
   const handleSubmit = async (e?: React.FormEvent | React.MouseEvent) => {
     e?.preventDefault();
-    if (!message.trim() && uploadedFiles.length === 0) return;
+    if (!message.trim() && images.length === 0) {
+      // toast.error("Пожалуйста, добавьте текст или изображение.");
+      return;
+    }
 
     const messageToSend = message;
-    const filesToSend = [...uploadedFiles];
 
     // Очищаем состояние
     setMessage("");
     setUploadedFiles([]);
 
-    // Очищаем превью файлов
-    filesToSend.forEach((file) => {
-      if (file.preview) {
-        URL.revokeObjectURL(file.preview);
-      }
-    });
-
     setIsLoading(true);
     try {
       const formData = new FormData();
-      
+
       // Добавляем текстовое сообщение
-      formData.append('message_content', messageToSend);
-      
-      // Добавляем файлы как массив: files[]
-      filesToSend.forEach((uploadedFile) => {
-        formData.append('files[]', uploadedFile.file, uploadedFile.file.name);
+      formData.append("message_content", messageToSend);
+
+      images.forEach((image) => {
+        formData.append("files[]", image);
       });
-      
-      // Логируем содержимое FormData для отладки
-      console.log('Sending FormData:');
-      console.log('Message:', messageToSend);
-      console.log('Files count:', filesToSend.length);
-      filesToSend.forEach((file, index) => {
-        console.log(`File ${index + 1}:`, {
-          name: file.file.name,
-          size: file.file.size,
-          type: file.file.type
-        });
-      });
-      
+
       const response = await fetch(`/api/chats/messages/send`, {
         method: "POST",
         body: formData,
@@ -133,7 +140,7 @@ export default function ChatBottom({ id, onSend }: ChatBottomProps) {
         onSubmit={handleSubmit}
         className="body-chat__bottom bottom-body-chat flex-col"
       >
-        {uploadedFiles.length > 0 && (
+        {/* {uploadedFiles.length > 0 && (
           <div className="flex flex-col gap-2 w-full">
             <div className="text-sm text-gray-500">Загруженные файлы:</div>
             <div className="flex flex-wrap gap-2 w-full">
@@ -197,77 +204,97 @@ export default function ChatBottom({ id, onSend }: ChatBottomProps) {
               ))}
             </div>
           </div>
-        )}
-        <div className="form__bottom w-full flex items-start justify-between gap-8">
-          <label className="bottom-body-chat__add-file ml-auto">
-            <input
-              ref={fileInputRef}
-              type="file"
-              multiple
-              onChange={handleFileUpload}
-              style={{ display: "none" }}
-            />
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="20"
-              viewBox="0 0 16 16"
-            >
-              <path
-                fill="currentColor"
-                d="M9.84 2.019L3.046 8.57c-.987.952-1.133 2.517-.199 3.516c.951 1.021 2.58 1.106 3.64.19c.034-.03.068-.061.1-.092l5.655-5.452a.484.484 0 0 0 0-.703a.53.53 0 0 0-.729 0L5.92 11.421c-.572.551-1.505.657-2.131.163a1.455 1.455 0 0 1-.118-2.211l6.899-6.651a2.646 2.646 0 0 1 3.644 0a2.422 2.422 0 0 1 0 3.513L7.3 12.901c-1.333 1.285-3.497 1.493-4.95.336c-1.54-1.22-1.764-3.411-.5-4.897a3.33 3.33 0 0 1 .238-.252l5.78-5.572a.484.484 0 0 0 0-.703a.53.53 0 0 0-.73 0l-5.78 5.572a4.36 4.36 0 0 0 0 6.324c2.188 2.109 5.202 1.31 6.66-.095l6.925-6.676a3.39 3.39 0 0 0 0-4.92C13.534.66 11.25.66 9.841 2.019z"
-              />
-            </svg>
-          </label>
-          <div className="bottom-body-chat__message-input message-input input">
-            <input
-              autoComplete="off"
-              type="text"
-              placeholder={t("ChatBottom.write")}
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-            />
-            <button
-              disabled={
-                isLoading || (!message.trim() && uploadedFiles.length === 0)
-              }
-              type="submit"
-              className="message-input__write button"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="22"
-                height="22"
-                viewBox="0 0 32 32"
-              >
-                <path
-                  fill="none"
-                  stroke="#fff"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M29 3L3 15l12 2.5M29 3L19 29l-4-11.5M29 3L15 17.5"
+        )} */}
+        <div className="flex flex-col w-full gap-3">
+          {images.length > 0 && (
+            <div className="chat-input__images flex gap-2 flex-wrap">
+              {images.map((file, index) => (
+                <div
+                  className="chat-input__image-wrapper"
+                  key={index}
+                  onClick={() => handleRemoveImage(index)}
+                >
+                  <Image
+                    width={100}
+                    height={100}
+                    src={URL.createObjectURL(file)}
+                    alt="preview"
+                  />
+                </div>
+              ))}
+            </div>
+          )}
+          <div className="form__bottom w-full flex items-start justify-between gap-8">
+            <div className="flex w-full gap-3">
+              <label className="bottom-body-chat__add-file">
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  multiple
+                  onChange={handleFileChange}
+                  style={{ display: "none" }}
                 />
-              </svg>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 16 16"
+                >
+                  <path
+                    fill="currentColor"
+                    d="M9.84 2.019L3.046 8.57c-.987.952-1.133 2.517-.199 3.516c.951 1.021 2.58 1.106 3.64.19c.034-.03.068-.061.1-.092l5.655-5.452a.484.484 0 0 0 0-.703a.53.53 0 0 0-.729 0L5.92 11.421c-.572.551-1.505.657-2.131.163a1.455 1.455 0 0 1-.118-2.211l6.899-6.651a2.646 2.646 0 0 1 3.644 0a2.422 2.422 0 0 1 0 3.513L7.3 12.901c-1.333 1.285-3.497 1.493-4.95.336c-1.54-1.22-1.764-3.411-.5-4.897a3.33 3.33 0 0 1 .238-.252l5.78-5.572a.484.484 0 0 0 0-.703a.53.53 0 0 0-.73 0l-5.78 5.572a4.36 4.36 0 0 0 0 6.324c2.188 2.109 5.202 1.31 6.66-.095l6.925-6.676a3.39 3.39 0 0 0 0-4.92C13.534.66 11.25.66 9.841 2.019z"
+                  />
+                </svg>
+              </label>
+              <div className="bottom-body-chat__message-input message-input input">
+                <input
+                  autoComplete="off"
+                  type="text"
+                  placeholder={t("ChatBottom.write")}
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
+                />
+                <button
+                  disabled={
+                    isLoading || (!message.trim() && images.length === 0)
+                  }
+                  type="submit"
+                  className="message-input__write button"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="22"
+                    height="22"
+                    viewBox="0 0 32 32"
+                  >
+                    <path
+                      fill="none"
+                      stroke="#fff"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M29 3L3 15l12 2.5M29 3L19 29l-4-11.5M29 3L15 17.5"
+                    />
+                  </svg>
+                </button>
+              </div>
+              <textarea
+                placeholder={t("ChatBottom.write")}
+                className="bottom-body-chat__message-textarea input"
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+              />
+            </div>
+            <button
+              disabled={isLoading || (!message.trim() && images.length === 0)}
+              // type="button"
+              // onClick={handleSubmit}
+              type="submit"
+              className="bottom-body-chat__write button"
+            >
+              {t("ChatBottom.send")}
             </button>
           </div>
-          <textarea
-            placeholder={t("ChatBottom.write")}
-            className="bottom-body-chat__message-textarea input"
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-          />
-          <button
-            disabled={
-              isLoading || (!message.trim() && uploadedFiles.length === 0)
-            }
-            // type="button"
-            // onClick={handleSubmit}
-            type="submit"
-            className="bottom-body-chat__write button"
-          >
-            {t("ChatBottom.send")}
-          </button>
         </div>
       </form>
     </>

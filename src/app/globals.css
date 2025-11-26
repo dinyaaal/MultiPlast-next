@@ -2498,7 +2498,7 @@ button:disabled {
 }
 
 .bottom-body-chat__message-textarea {
-  @apply max-w-[480px] h-[126px] hidden xl:block;
+  @apply h-[126px] hidden xl:block;
 }
 
 .bottom-body-chat__write {

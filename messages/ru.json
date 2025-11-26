@@ -475,5 +475,8 @@
     "clickToUpload": "Нажмите, чтобы загрузить",
     "orDragDrop": "или перетащите файл",
     "maximumFiles": "Максимум {limit} файл(ов), {sizeMb} MB каждый"
+  },
+  "Toast": {
+    "file-size-error": "Файл {file} превышает {size}МБ"
   }
 }

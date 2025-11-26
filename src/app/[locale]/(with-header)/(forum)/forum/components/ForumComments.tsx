@@ -7,6 +7,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import Image from "next/image";
 import { ForumComment } from "@/components/Forum/components/ForumComment";
+import { useTranslations } from "next-intl";
 
 interface ForumCommentInputProps {
   postId: number;
@@ -17,7 +18,7 @@ export default function ForumComments({ postId }: ForumCommentInputProps) {
   const [images, setImages] = useState<File[]>([]);
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const { data: session, status } = useSession();
-
+  const tToast = useTranslations("Toast");
   const [comments, setComments] = useState<CommentType[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isLoadingSubmit, setIsLoadingSubmit] = useState<boolean>(false);
@@ -98,11 +99,30 @@ export default function ForumComments({ postId }: ForumCommentInputProps) {
     textarea.style.height = `${Math.min(textarea.scrollHeight, 100)}px`;
   }, [text]);
 
+  // const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   if (!e.target.files) return;
+  //   const newFiles = Array.from(e.target.files);
+  //   setImages((prev) => [...prev, ...newFiles]);
+  //   e.target.value = ""; // сбрасываем input, чтобы можно было загрузить ту же картинку снова
+  // };
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
-    const newFiles = Array.from(e.target.files);
-    setImages((prev) => [...prev, ...newFiles]);
-    e.target.value = ""; // сбрасываем input, чтобы можно было загрузить ту же картинку снова
+
+    const maxSize = 2 * 1024 * 1024; // 2 MB
+    const selectedFiles = Array.from(e.target.files);
+
+    const filteredFiles = selectedFiles.filter((file) => {
+      if (file.size > maxSize) {
+        toast.error(tToast("file-size-error", { file: file.name, size: 2 }));
+        return false;
+      }
+      return true;
+    });
+
+    setImages((prev) => [...prev, ...filteredFiles]);
+
+    e.target.value = ""; // Чтобы можно было выбрать тот же файл снова
   };
 
   const handleRemoveImage = (index: number) => {
@@ -111,7 +131,7 @@ export default function ForumComments({ postId }: ForumCommentInputProps) {
 
   const handleSubmit = async () => {
     if (!text.trim() && images.length === 0) {
-      toast.error("Пожалуйста, добавьте текст или изображение.");
+      // toast.error("Пожалуйста, добавьте текст или изображение.");
       return;
     }
     setIsLoadingSubmit(true);
