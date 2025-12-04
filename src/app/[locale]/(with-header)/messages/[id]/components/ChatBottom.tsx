@@ -27,48 +27,32 @@ export default function ChatBottom({ id, onSend }: ChatBottomProps) {
   const [images, setImages] = useState<File[]>([]);
   const tToast = useTranslations("Toast");
 
-  // const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   const files = event.target.files;
-  //   if (files) {
-  //     const newFiles: UploadedFile[] = Array.from(files).map((file) => {
-  //       const id = Math.random().toString(36).substr(2, 9);
-  //       let preview: string | undefined;
-
-  //       // Создаем превью для изображений
-  //       if (file.type.startsWith("image/")) {
-  //         preview = URL.createObjectURL(file);
-  //       }
-
-  //       return {
-  //         id,
-  //         file,
-  //         preview,
-  //       };
-  //     });
-
-  //     setUploadedFiles((prev) => [...prev, ...newFiles]);
-  //   }
-  // };
-
-  // const removeFile = (id: string) => {
-  //   setUploadedFiles((prev) => {
-  //     const fileToRemove = prev.find((f) => f.id === id);
-  //     if (fileToRemove?.preview) {
-  //       URL.revokeObjectURL(fileToRemove.preview);
-  //     }
-  //     return prev.filter((f) => f.id !== id);
-  //   });
-  // };
-
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
 
-    const maxSize = 2 * 1024 * 1024; // 2 MB
+    const maxSize = 10 * 1024 * 1024; // 10 MB
+    const allowedTypes = [
+      "image/png",
+      "image/jpg",
+      "image/jpeg",
+      "application/pdf",
+    ];
     const selectedFiles = Array.from(e.target.files);
 
+    // Проверяем количество файлов
+    if (images.length + selectedFiles.length > 10) {
+      toast.error(tToast("Максимум 10 файлов"));
+      e.target.value = "";
+      return;
+    }
+
     const filteredFiles = selectedFiles.filter((file) => {
+      if (!allowedTypes.includes(file.type)) {
+        toast.error(tToast("file-type-error", { file: file.name }));
+        return false;
+      }
       if (file.size > maxSize) {
-        toast.error(tToast("file-size-error", { file: file.name, size: 2 }));
+        toast.error(tToast("file-size-error", { file: file.name }));
         return false;
       }
       return true;
@@ -83,61 +67,96 @@ export default function ChatBottom({ id, onSend }: ChatBottomProps) {
     setImages((prev) => prev.filter((_, i) => i !== index));
   };
 
-  const handleSubmit = async (e?: React.FormEvent | React.MouseEvent) => {
-    e?.preventDefault();
+  // const handleSubmit = async (e?: React.FormEvent | React.MouseEvent) => {
+  //   e?.preventDefault();
+  //   if (!message.trim() && images.length === 0) {
+  //     // toast.error("Пожалуйста, добавьте текст или изображение.");
+  //     return;
+  //   }
+
+  //   const messageToSend = message;
+
+  //   // Очищаем состояние
+  //   setMessage("");
+  //   setUploadedFiles([]);
+
+  //   setIsLoading(true);
+  //   try {
+  //     const formData = new FormData();
+
+  //     // Добавляем текстовое сообщение
+
+  //     formData.append("message_content", "");
+
+  //     images.forEach((image) => {
+  //       formData.append("files[]", image);
+  //     });
+
+  //     const response = await fetch(`/api/chats/messages/send`, {
+  //       method: "POST",
+  //       body: formData,
+  //       headers: {
+  //         id: id.toString(),
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //     });
+  //     if (!response.ok) {
+  //       throw new Error("Ошибка при создании чата");
+  //     }
+
+  //     const data = await response.json();
+
+  //     console.log(data);
+  //     console.log(data.data);
+  //     console.log(messageToSend);
+
+  //     onSend({ text: messageToSend, files: data.data.files });
+  //   } catch (error) {
+  //     console.error("Error fetching data:", error);
+  //     toast.error(t("toast.sendError"));
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
+
+  const handleSubmit = async () => {
     if (!message.trim() && images.length === 0) {
-      // toast.error("Пожалуйста, добавьте текст или изображение.");
+      toast.error("Пожалуйста, добавьте текст или изображение.");
       return;
     }
 
-    const messageToSend = message;
+    const formData = new FormData();
+    formData.append("message_content", message || "");
 
-    // Очищаем состояние
-    setMessage("");
-    setUploadedFiles([]);
+    images.forEach((image) => {
+      formData.append("files[]", image);
+    });
 
-    setIsLoading(true);
     try {
-      const formData = new FormData();
-
-      // Добавляем текстовое сообщение
-      formData.append("message_content", messageToSend);
-
-      images.forEach((image) => {
-        formData.append("files[]", image);
-      });
-
       const response = await fetch(`/api/chats/messages/send`, {
         method: "POST",
-        body: formData,
         headers: {
+          Authorization: `Bearer ${session?.user.access_token}`,
           id: id.toString(),
-          Authorization: `Bearer ${token}`,
         },
+        body: formData,
       });
+
       if (!response.ok) {
-        throw new Error("Ошибка при создании чата");
+        throw new Error("Не вдалося надіслати коментар");
       }
 
-      const data = await response.json();
-
-      console.log(data);
-      console.log(data.data);
-      console.log(messageToSend);
-
-      onSend({ text: messageToSend, files: data.data.files });
+      setMessage("");
+      setImages([]);
     } catch (error) {
-      console.error("Error fetching data:", error);
-      toast.error(t("toast.sendError"));
-    } finally {
-      setIsLoading(false);
+      console.error("Ошибка при отправке:", error);
     }
   };
 
   return (
     <>
-      <form
-        onSubmit={handleSubmit}
+      <div
+        // onSubmit={handleSubmit}
         className="body-chat__bottom bottom-body-chat flex-col"
       >
         {/* {uploadedFiles.length > 0 && (
@@ -258,7 +277,7 @@ export default function ChatBottom({ id, onSend }: ChatBottomProps) {
                   disabled={
                     isLoading || (!message.trim() && images.length === 0)
                   }
-                  type="submit"
+                  onClick={handleSubmit}
                   className="message-input__write button"
                 >
                   <svg
@@ -289,14 +308,14 @@ export default function ChatBottom({ id, onSend }: ChatBottomProps) {
               disabled={isLoading || (!message.trim() && images.length === 0)}
               // type="button"
               // onClick={handleSubmit}
-              type="submit"
+              onClick={handleSubmit}
               className="bottom-body-chat__write button"
             >
               {t("ChatBottom.send")}
             </button>
           </div>
         </div>
-      </form>
+      </div>
     </>
   );
 }

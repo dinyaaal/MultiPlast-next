@@ -477,6 +477,7 @@
     "maximumFiles": "Максимум {limit} файл(ов), {sizeMb} MB каждый"
   },
   "Toast": {
-    "file-size-error": "Файл {file} превышает {size}МБ"
+    "file-size-error": "Файл {file} превышает {size}МБ",
+    "file-type-error": "Неверный формат файла"
   }
 }
