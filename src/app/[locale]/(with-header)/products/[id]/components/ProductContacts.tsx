@@ -9,12 +9,7 @@ import { useTranslations } from "next-intl";
 export default function ProductContacts({ product }: { product: ProductType }) {
   const t = useTranslations("Product");
   return (
-    <Accordion
-      selectionMode="single"
-      //   keepContentMounted
-      showDivider={false}
-      //   defaultExpandedKeys={["1"]}
-    >
+    <Accordion selectionMode="single" showDivider={false}>
       <AccordionItem
         classNames={{
           base: "p-5 border border-border rounded-lg w-full",
@@ -24,7 +19,7 @@ export default function ProductContacts({ product }: { product: ProductType }) {
           content: "p-0 pt-5",
         }}
         indicator={<ChevronDownIcon />}
-        key="1"
+        key="contacts"
         aria-label={t(`info.contacts.title`)}
         title={t(`info.contacts.title`)}
       >
