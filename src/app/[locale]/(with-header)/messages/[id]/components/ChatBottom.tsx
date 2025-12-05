@@ -41,7 +41,7 @@ export default function ChatBottom({ id, onSend }: ChatBottomProps) {
 
     // Проверяем количество файлов
     if (images.length + selectedFiles.length > 10) {
-      toast.error(tToast("Максимум 10 файлов"));
+      toast.error(tToast("max-files"));
       e.target.value = "";
       return;
     }

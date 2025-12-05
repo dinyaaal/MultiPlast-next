@@ -104,7 +104,7 @@ export interface ProductContact {
   product_id: number;
   name_of_enterprise: string | null;
   name: string;
-  phones: string[];
+  phones?: string[];
   address: string | null;
   city: string;
   area: string;

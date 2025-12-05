@@ -80,8 +80,8 @@ export default function AdvertisementForm({
   const searchCategory = searchParams.get("category");
   const searchType = searchParams.get("type");
   const searchSubCategory = searchParams.get("subCategory");
-  const MAX_FILE_SIZE_MB = 100;
-
+  // const MAX_FILE_SIZE_MB = 100;
+  const tToast = useTranslations("Toast");
   useEffect(() => {
     if (product) {
       reset({
@@ -105,7 +105,7 @@ export default function AdvertisementForm({
         longitude: product.longitude?.toString() || "",
         price: product.price?.toString() || "",
         arrangement: product.type_price === "by_arrangement",
-        // volume: product.volume?.toString() || "",
+        volume: product.volume?.toString() || "",
         volume_price: product.price_per_volume?.toString() || "",
         address: product.contacts[0]?.address || "",
         city: product.contacts[0]?.city || "",
@@ -168,34 +168,80 @@ export default function AdvertisementForm({
     }
   }, [watch("mainCategory"), setValue]);
 
-  const handlePhotosChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const files = event.target.files;
-    if (!files) return;
+  // const handlePhotosChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   const files = event.target.files;
+  //   if (!files) return;
 
-    const maxSize = MAX_FILE_SIZE_MB * 1024 * 1024; // 1 МБ в байтах
+  //   const maxSize = MAX_FILE_SIZE_MB * 1024 * 1024; // 1 МБ в байтах
+
+  //   const validFiles: File[] = [];
+  //   const invalidFiles: File[] = [];
+
+  //   Array.from(files).forEach((file) => {
+  //     if (file.size <= maxSize) {
+  //       validFiles.push(file);
+  //     } else {
+  //       invalidFiles.push(file);
+  //     }
+  //   });
+
+  //   if (invalidFiles.length > 0) {
+  //     toast.error(t("toast.photo-size-error"));
+  //   }
+
+  //   if (validFiles.length > 0) {
+  //     const updatedPhotos = [...photos, ...validFiles];
+  //     setPhotos((prevPhotos) => [...prevPhotos, ...validFiles]);
+  //     setNewPhotos(updatedPhotos);
+  //   }
+
+  //   // Сброс input, чтобы можно было загрузить те же файлы повторно
+  //   event.target.value = "";
+  // };
+
+  const handlePhotosChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (!event.target.files) return;
+
+    const selectedFiles = Array.from(event.target.files);
+    const maxSize = 10 * 1024 * 1024;
+
+    // Разрешённые типы
+    const allowedTypes = ["image/png", "image/jpeg", "image/jpg"];
+
+    // Лимит количества фото
+    if (photos.length + selectedFiles.length > 10) {
+      toast.error(tToast("max-files")); // сделай текст в переводах
+      event.target.value = "";
+      return;
+    }
 
     const validFiles: File[] = [];
     const invalidFiles: File[] = [];
 
-    Array.from(files).forEach((file) => {
-      if (file.size <= maxSize) {
-        validFiles.push(file);
-      } else {
+    selectedFiles.forEach((file) => {
+      if (!allowedTypes.includes(file.type)) {
+        toast.error(tToast("file-type-error", { file: file.name }));
         invalidFiles.push(file);
+        return;
       }
-    });
 
-    if (invalidFiles.length > 0) {
-      toast.error(t("toast.photo-size-error"));
-    }
+      if (file.size > maxSize) {
+        toast.error(tToast("file-size-error", { file: file.name }));
+        invalidFiles.push(file);
+        return;
+      }
+
+      validFiles.push(file);
+    });
 
     if (validFiles.length > 0) {
       const updatedPhotos = [...photos, ...validFiles];
-      setPhotos((prevPhotos) => [...prevPhotos, ...validFiles]);
+
+      setPhotos((prev) => [...prev, ...validFiles]);
       setNewPhotos(updatedPhotos);
     }
 
-    // Сброс input, чтобы можно было загрузить те же файлы повторно
+    // Сбрасываем значение input, чтобы можно было выбрать снова те же файлы
     event.target.value = "";
   };
 
@@ -284,12 +330,64 @@ export default function AdvertisementForm({
     }
   };
 
+  // const handleFilesChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   const files = event.target.files;
+  //   if (files) {
+  //     setFiles(Array.from(files));
+  //     setNewFiles(Array.from(files));
+  //   }
+  // };
   const handleFilesChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const files = event.target.files;
-    if (files) {
-      setFiles(Array.from(files));
-      setNewFiles(Array.from(files));
+    if (!event.target.files) return;
+
+    const selectedFiles = Array.from(event.target.files);
+
+    const maxSize = 10 * 1024 * 1024; // например 10 МБ
+    const maxFiles = 10;
+
+    // Разрешённые типы
+    const allowedTypes = [
+      "image/png",
+      "image/jpeg",
+      "image/jpg",
+      "application/pdf",
+    ];
+
+    // Проверка общего кол-ва файлов
+    if (files.length + selectedFiles.length > maxFiles) {
+      toast.error(tToast("max-files")); // Добавь текст в локали
+      event.target.value = "";
+      return;
     }
+
+    const validFiles: File[] = [];
+    const invalidFiles: File[] = [];
+
+    selectedFiles.forEach((file) => {
+      if (!allowedTypes.includes(file.type)) {
+        toast.error(tToast("file-type-error", { file: file.name }));
+        invalidFiles.push(file);
+        return;
+      }
+
+      if (file.size > maxSize) {
+        toast.error(tToast("file-size-error", { file: file.name }));
+        invalidFiles.push(file);
+        return;
+      }
+
+      validFiles.push(file);
+    });
+
+    if (validFiles.length > 0) {
+      const updatedFiles = [...files, ...validFiles];
+
+      setFiles((prev) => [...prev, ...validFiles]);
+      setNewFiles(updatedFiles);
+    }
+
+    // Сброс input (чтобы можно было выбирать те же файлы)
+    event.target.value = "";
   };
 
   const handleAdvertTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -322,16 +420,16 @@ export default function AdvertisementForm({
     updateSearchParams({ subCategory: e.target.value }); // обновляем только advertType в URL
   };
 
-  const handleCheckboxChange = (checkbox: "arrangement" | "fixed") => {
-    if (checkbox === "arrangement") {
-      const newValue = !arrangement;
-      setArrangement(newValue);
-      setValue("arrangement", newValue);
-    } else {
-      setArrangement(false);
-      setValue("arrangement", false);
-    }
-  };
+  // const handleCheckboxChange = (checkbox: "arrangement" | "fixed") => {
+  //   if (checkbox === "arrangement") {
+  //     const newValue = !arrangement;
+  //     setArrangement(newValue);
+  //     setValue("arrangement", newValue);
+  //   } else {
+  //     setArrangement(false);
+  //     setValue("arrangement", false);
+  //   }
+  // };
 
   const handleChangeTypePrice = (
     event: React.ChangeEvent<HTMLSelectElement>
@@ -898,6 +996,7 @@ export default function AdvertisementForm({
                 <div className="block-row__item">
                   <button
                     type="button"
+                    disabled={!!watch("arrangement")}
                     onClick={() => setShowDiscount((prev) => !prev)}
                     className=" button button--secondary   button--fw"
                   >
@@ -912,12 +1011,12 @@ export default function AdvertisementForm({
               (Number(watch("mainCategory")) === 1 ||
                 Number(watch("mainCategory")) === 2) && (
                 <div className="block-row">
-                  {/* <div className="block-row__item">
+                  <div className="block-row__item">
                     <div className="input-block">
                       <p>{t("enter-volume")}</p>
                       <label className="input-body input">
                         <input
-                          disabled={arrangement}
+                          disabled={!!watch("arrangement")}
                           autoComplete="off"
                           type="number"
                           placeholder=""
@@ -927,7 +1026,7 @@ export default function AdvertisementForm({
                         <div className="input-body__item">кг</div>
                       </label>
                     </div>
-                  </div> */}
+                  </div>
 
                   <div className="block-row__item">
                     <div className="input-block">

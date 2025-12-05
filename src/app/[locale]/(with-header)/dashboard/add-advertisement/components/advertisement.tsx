@@ -160,7 +160,7 @@ export default function Advertisement({ categories }: SellProps) {
       text,
       price,
       type_price,
-      // volume,
+      volume,
       volume_price,
       arrangement,
       contact_data, // <- ожидаем, что это массив контактов
@@ -178,16 +178,28 @@ export default function Advertisement({ categories }: SellProps) {
       const { phones, name, position } = contact;
 
       formData.append(`contact_data[${index}][name]`, name);
-      if (position)
+      if (position) {
         formData.append(`contact_data[${index}][position]`, position);
-      if (phones && phones.length > 0) {
-        phones.forEach((phone, phoneIndex) => {
+      }
+
+      const cleanPhones = (phones || []).filter((p) => p && p.trim() !== "");
+
+      if (cleanPhones.length > 0) {
+        cleanPhones.forEach((phone, phoneIndex) => {
           formData.append(
             `contact_data[${index}][phones][${phoneIndex}]`,
             phone
           );
         });
       }
+      // if (phones && phones.length > 0) {
+      //   phones.forEach((phone, phoneIndex) => {
+      //     formData.append(
+      //       `contact_data[${index}][phones][${phoneIndex}]`,
+      //       phone
+      //     );
+      //   });
+      // }
 
       // Можно добавить поля адреса для каждого контакта, если нужно
       if (city) {
@@ -227,8 +239,8 @@ export default function Advertisement({ categories }: SellProps) {
     );
 
     if (!arrangement && price) formData.append("price", price);
-    if (volume_price) {
-      // formData.append("volume", volume);
+    if (volume_price && volume) {
+      formData.append("volume", volume);
       formData.append("price_per_volume", volume_price);
     }
 

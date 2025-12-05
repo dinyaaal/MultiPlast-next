@@ -73,18 +73,23 @@ export default function HeaderNavigation({
                   <ul className="sub-sub-menu__list">
                     {categories.map((category) => (
                       <li key={category.id}>
-                        {category.categories &&
-                        category.categories.filter(
-                          (subCategory) => subCategory.type === "Сировина"
-                        ).length > 0 ? (
+                        {category.categories ? (
                           <>
                             <Link
                               href={`/dashboard/add-advertisement?type=sell&category=${category.id}`}
                               className="sub-menu__link menu__link"
                             >
-                              <span className="menu__link-text" dangerouslySetInnerHTML={{ __html: category.translations.name[
-                                  locale as keyof typeof category.translations.name
-                                ] || category.name || "" }} />
+                              <span
+                                className="menu__link-text"
+                                dangerouslySetInnerHTML={{
+                                  __html:
+                                    category.translations.name[
+                                      locale as keyof typeof category.translations.name
+                                    ] ||
+                                    category.name ||
+                                    "",
+                                }}
+                              />
                               <div className="sub-sub-menu__arrow menu__arrow">
                                 <Image
                                   src="/icons/dropdown-arrow.svg"
@@ -96,22 +101,36 @@ export default function HeaderNavigation({
                             </Link>
                             <ul className="sub-sub-sub-menu__list">
                               {category.categories
-                                .filter(
-                                  (subCategory) =>
+                                // .filter(
+                                //   (subCategory) =>
+                                //     subCategory.type === "Сировина"
+                                // )
+                                .map((subCategory) => {
+                                  const subCategoryLink =
                                     subCategory.type === "Сировина"
-                                )
-                                .map((subCategory) => (
-                                  <li key={subCategory.id}>
-                                    <Link
-                                      href={`/dashboard/add-advertisement?type=sell&category=${subCategory.parent_id}&subCategory=${subCategory.id}`}
-                                      className="sub-menu__link"
-                                    >
-                                      <span className="menu__link-text" dangerouslySetInnerHTML={{ __html: subCategory.translations.name[
-                                        locale as keyof typeof subCategory.translations.name
-                                      ] || subCategory.name || "" }} />
-                                    </Link>
-                                  </li>
-                                ))}
+                                      ? `/dashboard/add-advertisement?type=sell&category=${subCategory.parent_id}&subCategory=${subCategory.id}`
+                                      : `/dashboard/add-advertisement?type=sell&category=${subCategory.parent_id}&polymer=${subCategory.id}`;
+                                  return (
+                                    <li key={subCategory.id}>
+                                      <Link
+                                        href={subCategoryLink}
+                                        className="sub-menu__link"
+                                      >
+                                        <span
+                                          className="menu__link-text"
+                                          dangerouslySetInnerHTML={{
+                                            __html:
+                                              subCategory.translations.name[
+                                                locale as keyof typeof subCategory.translations.name
+                                              ] ||
+                                              subCategory.name ||
+                                              "",
+                                          }}
+                                        />
+                                      </Link>
+                                    </li>
+                                  );
+                                })}
                             </ul>
                           </>
                         ) : (
@@ -119,9 +138,17 @@ export default function HeaderNavigation({
                             href={`/dashboard/add-advertisement?type=sell&category=${category.id}`}
                             className="sub-menu__link"
                           >
-                            <span className="menu__link-text" dangerouslySetInnerHTML={{ __html: category.translations.name[
-                              locale as keyof typeof category.translations.name
-                            ] || category.name || "" }} />
+                            <span
+                              className="menu__link-text"
+                              dangerouslySetInnerHTML={{
+                                __html:
+                                  category.translations.name[
+                                    locale as keyof typeof category.translations.name
+                                  ] ||
+                                  category.name ||
+                                  "",
+                              }}
+                            />
                           </Link>
                         )}
                       </li>
@@ -147,18 +174,23 @@ export default function HeaderNavigation({
                   <ul className="sub-sub-menu__list">
                     {categories.map((category) => (
                       <li key={category.id}>
-                        {category.categories &&
-                        category.categories.filter(
-                          (subCategory) => subCategory.type === "Сировина"
-                        ).length > 0 ? (
+                        {category.categories ? (
                           <>
                             <Link
                               href={`/dashboard/add-advertisement?type=buy&category=${category.id}`}
                               className="sub-menu__link menu__link"
                             >
-                              <span className="menu__link-text" dangerouslySetInnerHTML={{ __html: category.translations.name[
-                                locale as keyof typeof category.translations.name
-                              ] || category.name || "" }} />
+                              <span
+                                className="menu__link-text"
+                                dangerouslySetInnerHTML={{
+                                  __html:
+                                    category.translations.name[
+                                      locale as keyof typeof category.translations.name
+                                    ] ||
+                                    category.name ||
+                                    "",
+                                }}
+                              />
                               <div className="sub-sub-menu__arrow menu__arrow">
                                 <Image
                                   src="/icons/dropdown-arrow.svg"
@@ -170,22 +202,36 @@ export default function HeaderNavigation({
                             </Link>
                             <ul className="sub-sub-sub-menu__list">
                               {category.categories
-                                .filter(
-                                  (subCategory) =>
+                                // .filter(
+                                //   (subCategory) =>
+                                //     subCategory.type === "Сировина"
+                                // )
+                                .map((subCategory) => {
+                                  const subCategoryLink =
                                     subCategory.type === "Сировина"
-                                )
-                                .map((subCategory) => (
-                                  <li key={subCategory.id}>
-                                    <Link
-                                      href={`/dashboard/add-advertisement?type=buy&category=${subCategory.parent_id}&subCategory=${subCategory.id}`}
-                                      className="sub-menu__link"
-                                    >
-                                      <span className="menu__link-text" dangerouslySetInnerHTML={{ __html: subCategory.translations.name[
-                                        locale as keyof typeof subCategory.translations.name
-                                      ] || subCategory.name || "" }} />
-                                    </Link>
-                                  </li>
-                                ))}
+                                      ? `/dashboard/add-advertisement?type=buy&category=${subCategory.parent_id}&subCategory=${subCategory.id}`
+                                      : `/dashboard/add-advertisement?type=buy&category=${subCategory.parent_id}&polymer=${subCategory.id}`;
+                                  return (
+                                    <li key={subCategory.id}>
+                                      <Link
+                                        href={subCategoryLink}
+                                        className="sub-menu__link"
+                                      >
+                                        <span
+                                          className="menu__link-text"
+                                          dangerouslySetInnerHTML={{
+                                            __html:
+                                              subCategory.translations.name[
+                                                locale as keyof typeof subCategory.translations.name
+                                              ] ||
+                                              subCategory.name ||
+                                              "",
+                                          }}
+                                        />
+                                      </Link>
+                                    </li>
+                                  );
+                                })}
                             </ul>
                           </>
                         ) : (
@@ -193,9 +239,17 @@ export default function HeaderNavigation({
                             href={`/dashboard/add-advertisement?type=buy&category=${category.id}`}
                             className="sub-menu__link"
                           >
-                            <span className="menu__link-text" dangerouslySetInnerHTML={{ __html: category.translations.name[
-                              locale as keyof typeof category.translations.name
-                            ] || category.name || "" }} />
+                            <span
+                              className="menu__link-text"
+                              dangerouslySetInnerHTML={{
+                                __html:
+                                  category.translations.name[
+                                    locale as keyof typeof category.translations.name
+                                  ] ||
+                                  category.name ||
+                                  "",
+                              }}
+                            />
                           </Link>
                         )}
                       </li>

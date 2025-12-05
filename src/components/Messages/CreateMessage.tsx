@@ -11,7 +11,10 @@ interface CreateMessageProps {
   isComment?: boolean;
 }
 
-export default function CreateMessage({ id, isComment = false }: CreateMessageProps) {
+export default function CreateMessage({
+  id,
+  isComment = false,
+}: CreateMessageProps) {
   const { data: session, status } = useSession();
   const token = session?.user.access_token;
   const router = useRouter();
@@ -33,7 +36,11 @@ export default function CreateMessage({ id, isComment = false }: CreateMessagePr
     try {
       const response = await fetch(`/api/chats/create`, {
         method: "POST",
-        body: JSON.stringify({ to_user_id: id, chat_reason: isComment ? "forum" : "product", reason_id: id }),
+        body: JSON.stringify({
+          to_user_id: id,
+          chat_reason: isComment ? "forum" : "product",
+          reason_id: id,
+        }),
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
@@ -60,7 +67,7 @@ export default function CreateMessage({ id, isComment = false }: CreateMessagePr
       onClick={() => {
         createMessage();
       }}
-      className="actions-body-product__message button comment-message-button"
+      className="button button--secondary"
     >
       {t("createMessage")}
     </button>

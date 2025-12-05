@@ -117,8 +117,17 @@
       "favorites-remove-error": "Не удалось убрать товар из избранного"
     },
     "info": {
-      "contacts": "Представитель",
-      "location": "Местоположение",
+      "contacts": {
+        "title": "Представитель",
+        "position": "Должность",
+        "name": "Имя",
+        "phone-number": "Номер телефона"
+      },
+      "location": {
+        "title": "Местоположение",
+        "city": "Город",
+        "region": "Область"
+      },
       "website": "Сайт продавца"
     },
     "downloadFiles": "Скачать прикрепленные файлы"
@@ -478,6 +487,7 @@
   },
   "Toast": {
     "file-size-error": "Файл {file} превышает {size}МБ",
-    "file-type-error": "Неверный формат файла"
+    "file-type-error": "Неверный формат файла",
+    "max-files": "Максимум 10 файлов"
   }
 }

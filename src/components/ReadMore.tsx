@@ -17,7 +17,7 @@ const ReadMore: React.FC<ReadMoreProps> = ({ children, className }) => {
 
     const el = textRef.current;
     const lineHeight = parseFloat(getComputedStyle(el).lineHeight);
-    const maxHeight = lineHeight * 2; // высота 2 строк
+    const maxHeight = lineHeight * 3; // высота 3 строк
 
     // Если высота текста больше чем высота двух строк — показываем кнопку
     setShowButton(el.scrollHeight > maxHeight);

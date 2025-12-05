@@ -114,14 +114,25 @@ export const UserSecuritySchema = z
   });
 
 export const ContactSchema = z.object({
+  // phones: z
+  //   .array(
+  //     z
+  //       .string()
+  //       .min(10, "Номер телефона должен содержать минимум 10 символов")
+  //       .max(15, "Номер телефона не может быть длиннее 15 символов")
+  //   )
+  //   .nonempty("Укажите хотя бы один номер телефона"),
   phones: z
     .array(
       z
         .string()
-        .min(10, "Номер телефона должен содержать минимум 10 символов")
-        .max(15, "Номер телефона не может быть длиннее 15 символов")
+        .trim()
+        .refine(
+          (value) => value === "" || (value.length >= 10 && value.length <= 15),
+          "Номер должен содержать от 10 до 15 символов"
+        )
     )
-    .nonempty("Укажите хотя бы один номер телефона"),
+    .optional(),
   position: z.string().optional(),
   name: z.string().min(3, "Введите ваше имя"),
 });
@@ -139,7 +150,7 @@ export const AdvertismentSchema = z
     text: z
       .string()
       .min(1, { message: "Описание обязательно" })
-      .max(1000, { message: "Максимальная длина 1000 символов" }),
+      .max(3000, { message: "Максимальная длина 3000 символов" }),
 
     city: z.string().optional(),
     address: z.string().optional(),
@@ -159,7 +170,7 @@ export const AdvertismentSchema = z
     type_price: z.string().optional().default("for_kg"),
     latitude: z.string().min(1, "Введите вашу широту"),
     longitude: z.string().min(1, "Введите вашу долготу"),
-    // volume: z.string().optional(),
+    volume: z.string().optional(),
     volume_price: z.string().optional(),
     arrangement: z.boolean().default(false),
   })

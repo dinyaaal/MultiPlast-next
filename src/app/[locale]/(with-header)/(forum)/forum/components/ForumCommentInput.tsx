@@ -4,6 +4,7 @@ import { useSession } from "next-auth/react";
 import React, { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 
 interface ForumCommentInputProps {
   postId: number;
@@ -14,7 +15,7 @@ export default function ForumCommentInput({ postId }: ForumCommentInputProps) {
   const [images, setImages] = useState<File[]>([]);
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const { data: session, status } = useSession();
-
+  const tToast = useTranslations("Toast");
   useEffect(() => {
     const textarea = textareaRef.current;
     if (!textarea) return;
@@ -23,11 +24,57 @@ export default function ForumCommentInput({ postId }: ForumCommentInputProps) {
     textarea.style.height = `${Math.min(textarea.scrollHeight, 100)}px`;
   }, [text]);
 
+  // const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   if (!e.target.files) return;
+  //   const newFiles = Array.from(e.target.files);
+  //   setImages((prev) => [...prev, ...newFiles]);
+  //   e.target.value = ""; // сбрасываем input, чтобы можно было загрузить ту же картинку снова
+  // };
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
-    const newFiles = Array.from(e.target.files);
-    setImages((prev) => [...prev, ...newFiles]);
-    e.target.value = ""; // сбрасываем input, чтобы можно было загрузить ту же картинку снова
+
+    const selectedFiles = Array.from(e.target.files);
+
+    const maxSize = 10 * 1024 * 1024; // 10 MB
+    const maxFiles = 10;
+    const allowedTypes = [
+      "image/png",
+      "image/jpeg",
+      "image/jpg",
+      "application/pdf",
+    ];
+
+    // Проверка на общее количество
+    if (images.length + selectedFiles.length > maxFiles) {
+      toast.error(tToast("max-files"));
+      e.target.value = "";
+      return;
+    }
+
+    const validFiles: File[] = [];
+    const invalidFiles: File[] = [];
+
+    selectedFiles.forEach((file) => {
+      if (!allowedTypes.includes(file.type)) {
+        toast.error(tToast("file-type-error", { file: file.name }));
+        invalidFiles.push(file);
+        return;
+      }
+
+      if (file.size > maxSize) {
+        toast.error(tToast("file-size-error", { file: file.name }));
+        invalidFiles.push(file);
+        return;
+      }
+
+      validFiles.push(file);
+    });
+
+    if (validFiles.length > 0) {
+      setImages((prev) => [...prev, ...validFiles]);
+    }
+
+    e.target.value = ""; // сброс input, чтобы можно было загружать те же файлы снова
   };
 
   const handleRemoveImage = (index: number) => {
@@ -36,7 +83,7 @@ export default function ForumCommentInput({ postId }: ForumCommentInputProps) {
 
   const handleSubmit = async () => {
     if (!text.trim() && images.length === 0) {
-      toast.error("Пожалуйста, добавьте текст или изображение.");
+      // toast.error("Пожалуйста, добавьте текст или изображение.");
       return;
     }
 

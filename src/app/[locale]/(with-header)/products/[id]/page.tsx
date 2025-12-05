@@ -15,6 +15,7 @@ import { ProductActions } from "./components/ProductActions";
 import { ProductPhotos } from "./components/ProductPhotos";
 import { SocialsNetwork } from "./components/SocialsNetworks";
 import ProductMap from "./components/ProductMap";
+import ProductContacts from "./components/ProductContacts";
 
 type Params = Promise<{ id: string }>;
 
@@ -87,7 +88,7 @@ export default async function Product(props: { params: Params }) {
                   {new Date(product.created_at).toLocaleDateString("uk-UA")}
                 </span>
               </div>
-              <div className="top-product__body">
+              {/* <div className="top-product__body">
                 <div className="top-product__block">
                   <h2 className="top-product__title title">{product.title}</h2>
                   <div className="top-product__actions">
@@ -107,14 +108,50 @@ export default async function Product(props: { params: Params }) {
                     )}
                   </div>
                 </div>
+              </div> */}
+              <div className="top-product__body">
+                <div className="w-full flex flex-col gap-5">
+                  <div className="flex w-full justify-between gap-5 ">
+                    <div className="top-product__actions">
+                      <ProductActions product={product} />
+                    </div>
+                    <div className="flex flex-col gap-3">
+                      <div className="top-product__price price-product">
+                        <div className="price-product__text title">
+                          {product.type_price === "by_arrangement" ? (
+                            <p>{t(`price-types.by_arrangement`)}</p>
+                          ) : (
+                            <>
+                              <p>
+                                {product.price} грн/
+                                {getPriceUnit(product.type_price)}
+                              </p>
+                            </>
+                          )}
+                        </div>
+                      </div>
+                      {product.volume && (
+                        <div className=" price-product self-end w-fit">
+                          {product.price_per_volume && (
+                            <div className="price-product__text title title--small">
+                              От {product.volume} кг -{" "}
+                              {product.price_per_volume} грн
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                  <h2 className="top-product__title title">{product.title}</h2>
+                </div>
               </div>
-              <div className=" price-product self-end w-fit">
+              {/* <div className=" price-product self-end w-fit">
                 {product.volume && product.price_per_volume && (
                   <div className="price-product__text title title--small">
                     От {product.volume} кг - {product.price_per_volume} грн
                   </div>
                 )}
-              </div>
+              </div> */}
             </div>
           </div>
           <div className="product__body body-product">
@@ -166,12 +203,21 @@ export default async function Product(props: { params: Params }) {
                   {product.contacts[0]?.city && product.contacts[0]?.area && (
                     <div className="location-info-body-product__block">
                       <p className="location-info-body-product__text">
-                        {t(`info.location`)}:
+                        {t(`info.location.title`)}
                       </p>
-                      <div className="location-info-body-product__place">
-                        {`${isEmpty(product?.contacts[0]?.city)}, ${isEmpty(
-                          product?.contacts[0]?.area
-                        )} область`}
+                      <div className="flex flex-col gap-2">
+                        <div className="location-info-body-product__place">
+                          <span className="font-medium">
+                            {t(`info.location.city`)}:{" "}
+                          </span>
+                          <span>{isEmpty(product?.contacts[0]?.city)}</span>
+                        </div>
+                        <div className="location-info-body-product__place">
+                          <span className="font-medium">
+                            {t(`info.location.region`)}:{" "}
+                          </span>
+                          <span>{isEmpty(product?.contacts[0]?.area)}</span>
+                        </div>
                       </div>
                     </div>
                   )}
@@ -221,37 +267,7 @@ export default async function Product(props: { params: Params }) {
               </div>
               <div className="body-product__actions actions-body-product">
                 <div className="actions-body-product__block">
-                  <div className="flex flex-col gap-5 w-full">
-                    <h4 className="title title--small">
-                      {t(`info.contacts`)}:
-                    </h4>
-                    {product.contacts.map((contact) => (
-                      <div
-                        key={contact.id}
-                        className="flex w-full flex-col gap-4 border border-border rounded-lg p-5"
-                      >
-                        <div className="flex flex-col w-full gap-5">
-                          <div className="flex flex-col">
-                            <div className="">{contact.name}</div>
-                            {contact.position && (
-                              <p className="">({contact.position})</p>
-                            )}
-                          </div>
-                          <div className="flex flex-col gap-4">
-                            {contact.phones.map((phone) => (
-                              <Link
-                                key={phone}
-                                href={`tel:${phone}`}
-                                className="link text-base"
-                              >
-                                {phone}
-                              </Link>
-                            ))}
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
+                  <ProductContacts product={product} />
 
                   <CreateMessage id={product.author.id} />
                   {product.files && product.files.length > 0 && (
