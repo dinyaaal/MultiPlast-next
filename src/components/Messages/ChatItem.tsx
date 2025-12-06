@@ -32,8 +32,6 @@ export const ChatItem: React.FC<ChatItemProps> = ({ chat, onDelete }) => {
   const [isOpenPopover, setIsOpenPopover] = useState(false);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
-  console.log(chat);
-
   const handleChatDelete = async () => {
     if (!session?.user.access_token || !chat.id) {
       return;

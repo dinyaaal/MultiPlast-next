@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import { useState } from "react";
 import { Tooltip } from "@heroui/tooltip";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";

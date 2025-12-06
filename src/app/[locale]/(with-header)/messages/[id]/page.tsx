@@ -93,6 +93,7 @@ export default function ChatBody({
         },
       },
     ]);
+    console.log(message);
   };
 
   // --- группировка сообщений по датам ---
@@ -111,11 +112,38 @@ export default function ChatBody({
     }
   }, [messages]);
 
-  // useEffect(() => {
-  //   if (chat === null) {
-  //     router.push("/messages");
-  //   }
-  // }, [chat, router]);
+  useEffect(() => {
+    if (!token || !id) return;
+
+    const interval = setInterval(async () => {
+      try {
+        const response = await fetch(`/api/chats/messages/get`, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            id: id.toString(),
+          },
+        });
+        if (!response.ok) throw new Error("Network response was not ok");
+        const data = await response.json();
+        const fetchedMessages: IMessageItem[] = data.data || [];
+
+        // Получаем ID последнего сообщения
+        const lastFetchedId = fetchedMessages[fetchedMessages.length - 1]?.id;
+        const lastCurrentId = messages[messages.length - 1]?.id;
+
+        // Обновляем только если есть новые
+        if (lastFetchedId && lastFetchedId !== lastCurrentId) {
+          setMessages(fetchedMessages);
+        }
+      } catch (error) {
+        console.error("Error fetching messages:", error);
+        toast.error(t("toast.getError"));
+      }
+    }, Math.floor(Math.random() * 5000) + 5000); // 5-10 секунд рандом
+
+    return () => clearInterval(interval);
+  }, [token, id, messages, t]);
 
   // В render просто условно рендерим
   if (chat === null) {

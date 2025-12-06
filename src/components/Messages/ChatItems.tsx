@@ -57,11 +57,10 @@ export default function ChatItems() {
   return (
     <div className="block-chat__items">
       <div className="block-chat__section">
-        {/* <div className="block-chat__section-title">Оголошення</div> */}
         <div className="block-chat__section-items">
           {chats.length > 0 ? (
             chats
-              .filter((chat) => chat.is_deleted !== 1)
+              .filter((chat) => Number(chat.is_deleted) !== 1)
               .sort(
                 (a, b) =>
                   new Date(b.updated_at).getTime() -

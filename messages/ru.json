@@ -264,6 +264,7 @@
   },
 
   "Messages": {
+    "title": "Сообщения",
     "CreateMessage": {
       "toast": {
         "auth-required": "Для создания сообщения, необходимо авторизоваться",
