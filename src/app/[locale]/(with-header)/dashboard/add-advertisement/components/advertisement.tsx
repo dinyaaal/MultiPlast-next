@@ -249,7 +249,7 @@ export default function Advertisement({ categories }: SellProps) {
         const editResponse = await fetch(`/api/products/edit`, {
           method: "POST",
           headers: {
-            token: token,
+            Authorization: `Bearer ${token}`,
             id: editId,
           },
           body: formData,
@@ -272,7 +272,7 @@ export default function Advertisement({ categories }: SellProps) {
         const postResponse = await fetch(`/api/products/add`, {
           method: "POST",
           headers: {
-            token: token,
+            Authorization: `Bearer ${token}`,
           },
           body: formData,
         });

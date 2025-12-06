@@ -3,10 +3,10 @@ import { NextRequest, NextResponse } from "next/server";
 export async function POST(request: NextRequest) {
   const formData = await request.formData();
 
-  const token = request.headers.get("token");
+  const authHeader = request.headers.get("authorization");
   const id = request.headers.get("id");
 
-  if (!token && !id) {
+  if (!authHeader && !id) {
     return NextResponse.json({ error: "Missing id or token" }, { status: 400 });
   }
 
@@ -16,7 +16,7 @@ export async function POST(request: NextRequest) {
       {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `${authHeader}`,
         },
         body: formData,
       }
