@@ -140,7 +140,7 @@ export default function ChatBody({
         console.error("Error fetching messages:", error);
         toast.error(t("toast.getError"));
       }
-    }, Math.floor(Math.random() * 5000) + 5000); // 5-10 секунд рандом
+    }, 10000);
 
     return () => clearInterval(interval);
   }, [token, id, messages, t]);
