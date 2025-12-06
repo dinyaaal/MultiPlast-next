@@ -1,8 +1,5 @@
-"use server";
-
 import { ProductType } from "@/types/types";
 
-import React, { Suspense } from "react";
 import notFound from "@/app/[locale]/not-found";
 import { getServerSession } from "next-auth";
 import { getTranslations } from "next-intl/server";
@@ -16,6 +13,8 @@ import { ProductPhotos } from "./components/ProductPhotos";
 import { SocialsNetwork } from "./components/SocialsNetworks";
 import ProductMap from "./components/ProductMap";
 import ProductContacts from "./components/ProductContacts";
+import { DownloadAllFiles } from "./components/DownloadAllFiles";
+import Adverts from "@/components/Products/Adverts";
 
 type Params = Promise<{ id: string }>;
 
@@ -77,7 +76,7 @@ export default async function Product(props: { params: Params }) {
   return (
     <>
       <BreadcrumbsClient items={crumbs} />
-      <section className="product">
+      <section className="product pb-20">
         <div className="product__container main-container">
           <div className="product__top top-product">
             <div className="w-full flex flex-col gap-2 ">
@@ -271,14 +270,10 @@ export default async function Product(props: { params: Params }) {
 
                   <CreateMessage id={product.author.id} />
                   {product.files && product.files.length > 0 && (
-                    <Link
-                      href={product.files[0].url}
-                      target="_blank"
-                      download={product.files[0].name}
-                      className="actions-body-product__download button button--secondary"
-                    >
-                      {t(`downloadFiles`)}: {product.files.length}
-                    </Link>
+                    <DownloadAllFiles
+                      files={product.files}
+                      label={t(`downloadFiles`)}
+                    />
                   )}
                 </div>
 
@@ -288,7 +283,7 @@ export default async function Product(props: { params: Params }) {
           </div>
         </div>
       </section>
-      {/* <Adverts /> */}
+      <Adverts />
     </>
   );
 }
