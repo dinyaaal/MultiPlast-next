@@ -10,9 +10,14 @@ import "lightgallery/css/lg-zoom.css";
 interface MessageItemProps {
   message: IMessageItem;
   isFromUser: boolean;
+  avatar: string;
 }
 
-export default function MessageItem({ message, isFromUser }: MessageItemProps) {
+export default function MessageItem({
+  message,
+  isFromUser,
+  avatar,
+}: MessageItemProps) {
   const time = new Date(message.created_at).toLocaleTimeString("uk-UA", {
     hour: "2-digit",
     minute: "2-digit",
@@ -27,7 +32,21 @@ export default function MessageItem({ message, isFromUser }: MessageItemProps) {
     >
       {!isFromUser && (
         <div className="message-body__user">
-          <div className="message-body__image item-block-chat__image"></div>
+          <div className="message-body__image item-block-chat__image">
+            {avatar ? (
+              <Image src={avatar} width={100} height={100} alt="Image" />
+            ) : (
+              <div className="account-body-user__icon">
+                <Image
+                  src={"/icons/user.svg"}
+                  width={100}
+                  height={100}
+                  alt="Image"
+                  objectFit="contain"
+                />
+              </div>
+            )}
+          </div>
         </div>
       )}
       <div className="message-body__content">

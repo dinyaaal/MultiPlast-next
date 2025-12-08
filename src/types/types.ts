@@ -205,30 +205,17 @@ export interface ForumPost {
 
 interface ChatUser {
   id: number;
-  name: string | null;
   first_name: string;
   last_name: string;
-  phone_number: string;
-  email: string;
-  city: string;
   avatar: string;
-  verify_cookie: number;
-  email_verified_at: string | null;
-  created_at: string;
+}
+
+export interface Reasonable {
+  id: number;
+  title: string;
   updated_at: string;
-  role_id: number;
-  name_of_enterprise: string | null;
-  address: string | null;
-  area: string | null;
-  web_site: string | null;
-  country: string | null;
-  ig_link: string | null;
-  fb_link: string | null;
-  yt_link: string | null;
-  tg_link: string | null;
-  gender: string | null;
-  birthday: string | null;
-  middle_name: string | null;
+  created_at: string;
+  image?: string;
 }
 
 export interface ChatItemData {
@@ -244,8 +231,7 @@ export interface ChatItemData {
   from_user: ChatUser;
   last_message: IMessageItem | null;
   to_user: ChatUser;
-  user: ChatUser;
-  reasonable: MinimalProduct;
+  reasonable: Reasonable;
 }
 
 export interface CommentType {
@@ -258,16 +244,16 @@ export interface CommentType {
   updated_at: string;
   comments_count: number;
   is_liked: boolean;
-  author: Author;
+  author: ChatUser;
   photos: Photo[];
-  replies?: Comment[];
+  // replies?: Comment[];
 }
 
-export interface MessageType {
-  message_content: string;
-  from_user: User;
-  chat_id: number;
-}
+// export interface MessageType {
+//   message_content: string;
+//   from_user: User;
+//   chat_id: number;
+// }
 
 export interface ForumCategory {
   id: number;
@@ -295,19 +281,12 @@ export type NotificationType = {
 
 export interface IMessageItem {
   id: number;
-  from_user_id: number;
   content: string;
   chat_id: number;
   created_at: string;
   updated_at: string;
-  // Добавлено: массив файлов, прикрепленных к сообщению
   files?: Photo[];
-  from_user: {
-    id: number; // Уникальный идентификатор пользователя
-    first_name: string; // Имя
-    last_name: string; // Фамилия
-    middle_name?: string | null; // Отчество (может быть null)
-  };
+  from_user: ChatUser;
 }
 
 export interface MapSelectData {

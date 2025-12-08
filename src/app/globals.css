@@ -936,15 +936,7 @@ button:disabled {
 .account-body-user {
   @apply flex items-center gap-5;
 }
-.account-body-user__icon-body {
-  @apply shrink-0 w-11 h-11 rounded-sm overflow-hidden bg-secondaryColor flex items-center justify-center;
-}
-.account-body-user__icon {
-  @apply shrink-0 size-5;
-}
-.account-body-user__icon img {
-  @apply size-full;
-}
+
 .account-body-user__name {
   @apply whitespace-nowrap flex items-center gap-2;
 }
@@ -2703,7 +2695,7 @@ button:disabled {
 }
 
 .top-body-forum-topic {
-  @apply flex flex-col items-center gap-[20px] justify-between text-center md:flex-row;
+  @apply flex flex-col items-start gap-[20px] justify-between text-center md:flex-row;
 }
 
 .forum-comments {
@@ -2889,4 +2881,14 @@ button:disabled {
 
 .comment-message-button {
   @apply h-fit p-0 bg-transparent text-blueColor underline min-h-0 min-w-0 w-auto text-sm hover:bg-transparent hover:!no-underline;
+}
+
+.account-body-user__icon-body {
+  @apply shrink-0 w-11 h-11 rounded-sm overflow-hidden bg-secondaryColor flex items-center justify-center;
+}
+.account-body-user__icon {
+  @apply shrink-0 size-5;
+}
+.account-body-user__icon img {
+  @apply size-full object-contain;
 }

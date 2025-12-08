@@ -152,7 +152,26 @@ export const ForumComment: React.FC<ForumCommentProps> = ({
         }))}
       />
       <div className="comment__user user-chat">
-        <div className="user-chat__image item-block-chat__image"></div>
+        <div className="user-chat__image item-block-chat__image">
+          {comment.author.avatar ? (
+            <Image
+              src={comment.author.avatar}
+              className="ibg"
+              alt="Icon"
+              width={100}
+              height={100}
+            />
+          ) : (
+            <div className="account-body-user__icon">
+              <Image
+                src={"/icons/user.svg"}
+                alt="Icon"
+                width={100}
+                height={100}
+              />
+            </div>
+          )}
+        </div>
         <div className="user-chat__name">{`${comment.author.first_name} ${
           comment.author.last_name || ""
         }`}</div>
@@ -289,49 +308,6 @@ export const ForumComment: React.FC<ForumCommentProps> = ({
             )}
           </>
         )}
-        {/* {!isAnswer && (
-          <>
-            {replies.length > 0 && (
-              <button
-                onClick={toggleAnswers}
-                className={`comment-show-replies ${
-                  isAnswersOpen ? "active" : ""
-                }`}
-              >
-                <svg
-                  className="comment-show-replies__arrow"
-                  width="12"
-                  height="7"
-                  viewBox="0 0 12 7"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M5.46967 6.53033C5.76256 6.82322 6.23744 6.82322 6.53033 6.53033L11.3033 1.75736C11.5962 1.46447 11.5962 0.989592 11.3033 0.696699C11.0104 0.403806 10.5355 0.403806 10.2426 0.696699L6 4.93934L1.75736 0.696699C1.46447 0.403806 0.989592 0.403806 0.696699 0.696699C0.403806 0.989593 0.403806 1.46447 0.696699 1.75736L5.46967 6.53033ZM5.25 5L5.25 6L6.75 6L6.75 5L5.25 5Z"
-                    fill="#0E274D"
-                  />
-                </svg>
-                <span>
-                  {comment.comments_count}{" "}
-                  {getReplyWord(comment.comments_count)}
-                </span>
-              </button>
-            )}
-            {isAnswersOpen && replies && (
-              <div className="comment__answers answers-comment">
-                {replies.map((reply) => (
-                  <ForumComment
-                    isAnswer={true}
-                    key={reply.id}
-                    postId={postId}
-                    comment={reply}
-                    onReply={onReply}
-                  />
-                ))}
-              </div>
-            )}
-          </>
-        )} */}
       </div>
     </div>
   );

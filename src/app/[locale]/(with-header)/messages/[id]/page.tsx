@@ -90,6 +90,7 @@ export default function ChatBody({
           id: session.user.id,
           first_name: session.user.first_name,
           last_name: session.user.last_name,
+          avatar: session.user.avatar,
         },
       },
     ]);
@@ -171,10 +172,10 @@ export default function ChatBody({
                     href={`/products/${chat.reasonable.id}`}
                     className="topic-message__content"
                   >
-                    {chat.reasonable.photos.length > 0 && (
+                    {chat.reasonable.image && (
                       <div className="topic-message__image">
                         <Image
-                          src={chat.reasonable.photos[0].url}
+                          src={chat.reasonable.image}
                           alt="Image"
                           width={100}
                           height={100}
@@ -186,7 +187,7 @@ export default function ChatBody({
                         {chat.reasonable.title}
                       </h4>
                       <div className="">
-                        <span>{chat.reasonable.city}</span> -{" "}
+                        {/* <span>{chat.reasonable.city}</span> -{" "} */}
                         <span>
                           {new Date(
                             chat.reasonable.updated_at
@@ -221,7 +222,8 @@ export default function ChatBody({
                     <MessageItem
                       key={m.id}
                       message={m}
-                      isFromUser={m.from_user_id === session?.user.id}
+                      isFromUser={m.from_user.id === session?.user.id}
+                      avatar={m.from_user.avatar}
                     />
                   ))}
                 </div>

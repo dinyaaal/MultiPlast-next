@@ -107,6 +107,9 @@ export const ChatItem: React.FC<ChatItemProps> = ({ chat, onDelete }) => {
     }
   };
 
+  const chatUser =
+    chat.from_user.id === session?.user.id ? chat.to_user : chat.from_user;
+
   return (
     <>
       <Link
@@ -117,9 +120,9 @@ export const ChatItem: React.FC<ChatItemProps> = ({ chat, onDelete }) => {
       >
         <div className="item-block-chat__message">
           <div className="item-block-chat__image">
-            {chat?.user?.avatar ? (
+            {chatUser?.avatar ? (
               <Image
-                src={chat.user.avatar}
+                src={chatUser.avatar}
                 className="ibg"
                 alt="Icon"
                 width={100}
@@ -140,7 +143,7 @@ export const ChatItem: React.FC<ChatItemProps> = ({ chat, onDelete }) => {
             <div className="item-block-chat__info">
               <div className="item-block-chat__block">
                 <div className="item-block-chat__name">
-                  {`${chat.user?.first_name} ${chat.user?.last_name}`}
+                  {`${chatUser?.first_name} ${chatUser?.last_name}`}
                 </div>
                 <span className="item-block-chat__date">{formattedDate}</span>
               </div>
