@@ -349,6 +349,8 @@ export default function AdvertisementForm({
     const allowedTypes = [
       "image/png",
       "image/jpeg",
+      "image/webp",
+
       "image/jpg",
       "application/pdf",
     ];

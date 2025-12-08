@@ -41,6 +41,7 @@ export default function ForumCommentInput({ postId }: ForumCommentInputProps) {
       "image/png",
       "image/jpeg",
       "image/jpg",
+      "image/webp",
       "application/pdf",
     ];
 

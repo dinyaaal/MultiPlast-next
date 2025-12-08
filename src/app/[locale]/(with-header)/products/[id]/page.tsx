@@ -268,7 +268,7 @@ export default async function Product(props: { params: Params }) {
                 <div className="actions-body-product__block">
                   <ProductContacts product={product} />
 
-                  <CreateMessage id={product.author.id} />
+                  <CreateMessage id={product.author.id} reasonId={product.id} />
                   {product.files && product.files.length > 0 && (
                     <DownloadAllFiles
                       files={product.files}

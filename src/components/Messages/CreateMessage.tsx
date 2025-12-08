@@ -9,11 +9,13 @@ import { toast } from "sonner";
 interface CreateMessageProps {
   id: number;
   isComment?: boolean;
+  reasonId: number;
 }
 
 export default function CreateMessage({
   id,
   isComment = false,
+  reasonId,
 }: CreateMessageProps) {
   const { data: session, status } = useSession();
   const token = session?.user.access_token;
@@ -39,7 +41,7 @@ export default function CreateMessage({
         body: JSON.stringify({
           to_user_id: id,
           chat_reason: isComment ? "forum" : "product",
-          reason_id: id,
+          reason_id: reasonId,
         }),
         headers: {
           "Content-Type": "application/json",

@@ -34,6 +34,7 @@ export default function ChatBottom({ id, onSend }: ChatBottomProps) {
       "image/png",
       "image/jpg",
       "image/jpeg",
+      "image/webp",
       "application/pdf",
     ];
     const selectedFiles = Array.from(e.target.files);

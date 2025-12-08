@@ -142,15 +142,15 @@ export const ForumComment: React.FC<ForumCommentProps> = ({
   return (
     <div className="forum-comments__comment comment comment-main">
       <LightGallery
-          onInit={(ref) => (galleryRef.current = ref.instance)}
-          dynamic
-          plugins={[lgZoom]}
-          dynamicEl={comment.photos.map((item: Photo) => ({
-            src: item.url,
-            thumb: item.url,
-            subHtml: `<h4>${comment.text}</h4>`,
-          }))}
-        />
+        onInit={(ref) => (galleryRef.current = ref.instance)}
+        dynamic
+        plugins={[lgZoom]}
+        dynamicEl={comment.photos.map((item: Photo) => ({
+          src: item.url,
+          thumb: item.url,
+          subHtml: `<h4>${comment.text}</h4>`,
+        }))}
+      />
       <div className="comment__user user-chat">
         <div className="user-chat__image item-block-chat__image"></div>
         <div className="user-chat__name">{`${comment.author.first_name} ${
@@ -162,12 +162,23 @@ export const ForumComment: React.FC<ForumCommentProps> = ({
           <div className="body-comment__content">
             <div className="flex items-start justify-between gap-2">
               <p>{comment.text}</p>
-              <p className="text-base text-gray-500 ml-auto whitespace-nowrap">ID: {comment.id}</p>
+              <p className="text-base text-gray-500 ml-auto whitespace-nowrap">
+                ID: {comment.id}
+              </p>
             </div>
             <div data-popup="#popup-images" className="body-comment__images">
               {comment.photos.map((photo, index) => (
-                <div className="body-comment__image cursor-pointer" key={photo.id}>
-                  <Image src={photo.url} width={100} height={100} alt="Image" onClick={() => galleryRef.current.openGallery(index)} />
+                <div
+                  className="body-comment__image cursor-pointer"
+                  key={photo.id}
+                >
+                  <Image
+                    src={photo.url}
+                    width={100}
+                    height={100}
+                    alt="Image"
+                    onClick={() => galleryRef.current.openGallery(index)}
+                  />
                 </div>
               ))}
             </div>
@@ -183,7 +194,11 @@ export const ForumComment: React.FC<ForumCommentProps> = ({
                   Відповісти
                 </button>
               </div>
-              <CreateMessage id={comment.author.id} isComment={true} />
+              <CreateMessage
+                id={comment.author.id}
+                reasonId={comment.id}
+                isComment={true}
+              />
             </div>
             <div className="bottom-body-comment__block">
               <div className="bottom-body-comment__info info-item-forum">
