@@ -2315,7 +2315,7 @@ button:disabled {
   @apply flex flex-col gap-1 flex-1 min-w-0 leading-[120%] text-[14px];
 }
 .topic-message__title {
-  @apply block w-full line-clamp-1;
+  @apply line-clamp-1;
 }
 .topic-message__content {
   @apply flex items-center gap-[10px] w-fit h-full  overflow-hidden p-1 border-2 border-blueColor rounded-xl;

@@ -146,6 +146,20 @@ export default function ChatBody({
     return () => clearInterval(interval);
   }, [token, id, messages, t]);
 
+  const chatReason = useMemo(() => {
+    if (chat?.reason_meta) {
+      return chat.reason_meta.type;
+    }
+    return null;
+  }, [chat]);
+
+  const chatReasonLink = useMemo(() => {
+    if (chatReason === "forum") {
+      return `/forum/${chat?.reasonable.id}`;
+    }
+    return `/products/${chat?.reasonable.id}`;
+  }, [chatReason]);
+
   // В render просто условно рендерим
   if (chat === null) {
     return (
@@ -169,7 +183,7 @@ export default function ChatBody({
               <div className="block-body-chat__info">
                 <div className="item-block-chat__topic topic-message">
                   <Link
-                    href={`/products/${chat.reasonable.id}`}
+                    href={chatReasonLink}
                     className="topic-message__content"
                   >
                     {chat.reasonable.image && (

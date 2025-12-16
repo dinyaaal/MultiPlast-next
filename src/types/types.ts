@@ -218,6 +218,11 @@ export interface Reasonable {
   image?: string;
 }
 
+export interface ReasonableMeta {
+  type: "forum" | "product";
+  title: string;
+}
+
 export interface ChatItemData {
   id: number;
   from_user_id: number;
@@ -231,6 +236,7 @@ export interface ChatItemData {
   from_user: ChatUser;
   last_message: IMessageItem | null;
   to_user: ChatUser;
+  reason_meta: ReasonableMeta;
   reasonable: Reasonable;
 }
 

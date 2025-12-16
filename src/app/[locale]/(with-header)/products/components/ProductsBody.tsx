@@ -9,6 +9,7 @@ import { useSearchParams } from "next/navigation";
 import { Spinner } from "@heroui/react";
 import { useSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
+import { useRouter } from "@/i18n/routing";
 
 interface ProductsProps {
   categories: Category[];
@@ -19,10 +20,15 @@ export function ProductsBody({ categories }: ProductsProps) {
   const t = useTranslations("Products");
   const [products, setProducts] = useState<MinimalProduct[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [currentPage, setCurrentPage] = useState<number>(1);
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const pageFromUrl = Number(searchParams.get("page")) || 1;
+
+  const [currentPage, setCurrentPage] = useState<number>(pageFromUrl);
+  // const [currentPage, setCurrentPage] = useState<number>(1);
   const [links, setLinks] = useState<Page[]>([]);
   const [lastPage, setLastPage] = useState<number>();
-  const searchParams = useSearchParams();
   const search = useMemo(() => searchParams.get("search"), [searchParams]);
   const accessToken = session?.user.access_token;
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
@@ -40,60 +46,6 @@ export function ProductsBody({ categories }: ProductsProps) {
     setSelectedSubCategories(subCategories);
     setSelectedOptions(options);
   };
-
-  // const fetchProducts = async () => {
-  //   setIsLoading(true);
-  //   const queryParams = new URLSearchParams();
-
-  //   if (selectedCategory) {
-  //     queryParams.append("category_id", selectedCategory);
-  //   }
-
-  //   if (selectedSubCategories.length > 0) {
-  //     queryParams.append("type_id", selectedSubCategories.join(","));
-  //   }
-
-  //   if (selectedOptions.length > 0) {
-  //     queryParams.append("type_of_product", selectedOptions.join(","));
-  //   }
-
-  //   queryParams.append("page", `${currentPage}`);
-
-  //   queryParams.append("perPage", "12");
-
-  //   if (search) {
-  //     queryParams.append("search", search);
-  //   }
-
-  //   const queryString = queryParams.toString()
-  //     ? `?${queryParams.toString()}`
-  //     : "";
-  //   session?.user.access_token;
-  //   try {
-  //     const res = await fetch(`/api/products/get${queryString}`, {
-  //       method: "GET",
-  //       headers: {
-  //         ...(accessToken && {
-  //           token: accessToken,
-  //         }),
-  //       },
-  //     });
-  //     if (!res.ok) {
-  //       throw new Error("Network response was not ok");
-  //     }
-
-  //     const data = await res.json();
-  //     if (data) {
-  //       setProducts(data.data);
-  //       setLinks(data.links);
-  //       setLastPage(data.last_page);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error fetching order status:", error);
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
 
   const fetchProducts = useCallback(async () => {
     setIsLoading(true);
@@ -138,35 +90,26 @@ export function ProductsBody({ categories }: ProductsProps) {
     search,
   ]);
 
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("page", page.toString());
+
+    router.replace(`?${params.toString()}`, { scroll: true });
+  };
+
   useEffect(() => {
     if (status !== "loading") {
       fetchProducts();
     }
   }, [fetchProducts, status]);
 
-  // useEffect(() => {
-  //   if (status === "loading") return;
-
-  //   fetchProducts();
-  // }, [
-  //   accessToken,
-  //   currentPage,
-  //   selectedCategory,
-  //   selectedSubCategories,
-  //   selectedOptions,
-  //   search,
-  // ]);
-
   return (
     <>
       <div className="trade__body">
         <Filters categories={categories} onSelectionConfirm={handleSelection} />
-        {/* <ContentTrade
-          products={products}
-          currentPage={currentPage}
-          lastPage={lastPage}
-          setCurrentPage={setCurrentPage}
-        /> */}
+
         <div className="trade__content content-trade">
           {isLoading && (
             <div className="flex w-full h-full flex-auto items-center justify-center">
@@ -191,9 +134,7 @@ export function ProductsBody({ categories }: ProductsProps) {
                 className={`pages__arrow pages__arrow-prev ${
                   currentPage === 1 ? "disabled" : ""
                 } `}
-                onClick={() =>
-                  setCurrentPage((prev) => (prev > 1 ? prev - 1 : prev))
-                }
+                onClick={() => handlePageChange(currentPage - 1)}
               >
                 <svg
                   width="41"
@@ -220,7 +161,7 @@ export function ProductsBody({ categories }: ProductsProps) {
 
               <Pagination
                 page={currentPage}
-                onChange={setCurrentPage}
+                onChange={handlePageChange}
                 classNames={{
                   base: " flex justify-center ",
                   wrapper:
@@ -239,9 +180,7 @@ export function ProductsBody({ categories }: ProductsProps) {
                 className={`pages__arrow pages__arrow-next ${
                   currentPage === lastPage ? "disabled" : ""
                 } `}
-                onClick={() =>
-                  setCurrentPage((prev) => (prev < 10 ? prev + 1 : prev))
-                }
+                onClick={() => handlePageChange(currentPage + 1)}
               >
                 <svg
                   width="41"

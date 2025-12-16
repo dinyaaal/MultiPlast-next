@@ -920,14 +920,20 @@ export default function AdvertisementForm({
                 </div>
               </div>
               <div className="flex justify-center items-center gap-3">
-                <div className="w-full h-[1px] bg-[#B0BFD7]"></div>
+                <div className="w-full h-px bg-[#B0BFD7]"></div>
                 <span>{t("or")}</span>
-                <div className="w-full h-[1px] bg-[#B0BFD7]"></div>
+                <div className="w-full h-px bg-[#B0BFD7]"></div>
               </div>
               <div className="block-row">
                 <div className="block-row__item">
                   <div className="input-block">
-                    <p>{t("fixed-price")}</p>
+                    {/* <p>{t("fixed-price")}</p> */}
+                    <p>
+                      {Number(watch("mainCategory")) === 1 ||
+                      Number(watch("mainCategory")) === 2
+                        ? t("fixed-price-kg")
+                        : t("fixed-price")}
+                    </p>
 
                     <label
                       className={`input-body input ${
