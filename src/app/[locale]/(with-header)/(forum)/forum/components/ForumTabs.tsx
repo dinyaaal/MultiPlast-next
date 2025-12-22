@@ -23,7 +23,7 @@ export default function ForumTabs({ categories }: ForumTabsProps) {
         classNames={{
           //   tab: "text-2xl font-bold text-black",
           tabList: "p-4 bg-secondaryColor overflow-hidden",
-          tabContent: "text-2xl font-bold text-black",
+          tabContent: "text-xl xl:text-2xl font-bold text-black",
         }}
       >
         <Tab key="forum" title={t("forumTab")}>
