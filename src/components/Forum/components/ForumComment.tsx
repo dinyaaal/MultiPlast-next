@@ -208,7 +208,7 @@ export const ForumComment: React.FC<ForumCommentProps> = ({
                 <button
                   type="button"
                   onClick={handleReplyClick}
-                  className="answer-button__text"
+                  className="link text-sm"
                 >
                   Відповісти
                 </button>
@@ -217,6 +217,7 @@ export const ForumComment: React.FC<ForumCommentProps> = ({
                 id={comment.author.id}
                 reasonId={comment.id}
                 isComment={true}
+                isSmall={true}
               />
             </div>
             <div className="bottom-body-comment__block">

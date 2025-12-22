@@ -1,29 +1,43 @@
-"use client";
+import { ForumCategoryMinimal } from "@/types/types";
+import ForumTabs from "./components/ForumTabs";
 
-import Sections from "@/components/Forum/components/Sections";
-import React, { useState } from "react";
-import { useTranslations } from "next-intl";
+async function fetchForumCategories() {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/forum/categories`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        // cache: "force-cache",
+        // кеш оставляем (по умолчанию cache: 'force-cache')
+      }
+    );
 
-import ForumItems from "./components/ForumItems";
-import ForumLayout from "./components/ForumLayout";
+    if (!res.ok) {
+      throw new Error("Network response was not ok");
+    }
 
-export default function Forum() {
-  const t = useTranslations("Forum");
-  const [activeSectionId, setActiveSectionId] = useState<number | null>(null);
-  // const [search, setSearch] = useState<string>("");
+    const data = await res.json();
+    const sorted = [...data.data].sort(
+      (a: ForumCategoryMinimal, b: ForumCategoryMinimal) =>
+        a.position - b.position
+    );
+
+    return sorted;
+  } catch (error) {
+    console.error("Error fetching forum categories:", error);
+    return null;
+  }
+}
+
+export default async function Page() {
+  const categories = await fetchForumCategories();
 
   return (
-    <>
-      <ForumLayout>
-        <div className="body-forum__container main-container">
-          <div className="body-forum__content">
-            <Sections onChangeSectionId={setActiveSectionId} />
-
-            <p className="body-forum__text">{t("selectTopic")}</p>
-            <ForumItems activeSectionId={activeSectionId} />
-          </div>
-        </div>
-      </ForumLayout>
-    </>
+    <div className="main-container">
+      <ForumTabs categories={categories || []} />
+    </div>
   );
 }

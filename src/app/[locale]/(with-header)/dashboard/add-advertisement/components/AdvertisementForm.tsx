@@ -465,7 +465,10 @@ export default function AdvertisementForm({
     <>
       <div className=" wrapper-dashboard">
         <h2 className="wrapper-dashboard__title title title--small">
-          {t("fill-ad-title")}
+          {/* {t("fill-ad-title")} */}
+          {watch("advertType") === "sell"
+            ? t("fill-ad-title-sell")
+            : t("fill-ad-title-buy")}
         </h2>
         <div className="wrapper-dashboard__body body-dashboard">
           <div className="body-dashboard__wrapper">
@@ -998,24 +1001,26 @@ export default function AdvertisementForm({
                 )}
               </div>
             </div>
-            {(Number(watch("mainCategory")) === 1 ||
-              Number(watch("mainCategory")) === 2) && (
-              <div className="block-row">
-                <div className="block-row__item">
-                  <button
-                    type="button"
-                    disabled={!!watch("arrangement")}
-                    onClick={() => setShowDiscount((prev) => !prev)}
-                    className=" button button--secondary   button--fw"
-                  >
-                    {showDiscount
-                      ? t("price-without-discount")
-                      : t("price-with-discount")}
-                  </button>
+            {watch("advertType") === "sell" &&
+              (Number(watch("mainCategory")) === 1 ||
+                Number(watch("mainCategory")) === 2) && (
+                <div className="block-row">
+                  <div className="block-row__item">
+                    <button
+                      type="button"
+                      disabled={!!watch("arrangement")}
+                      onClick={() => setShowDiscount((prev) => !prev)}
+                      className=" button button--secondary   button--fw"
+                    >
+                      {showDiscount
+                        ? t("price-without-discount")
+                        : t("price-with-discount")}
+                    </button>
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
             {showDiscount &&
+              watch("advertType") === "sell" &&
               (Number(watch("mainCategory")) === 1 ||
                 Number(watch("mainCategory")) === 2) && (
                 <div className="block-row">

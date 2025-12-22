@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 
 import { ForumAddSchema } from "@/lib/schema";
@@ -17,11 +17,11 @@ import { SimpleEditor } from "@/components/tiptap-templates/simple/simple-editor
 
 type Inputs = z.infer<typeof ForumAddSchema>;
 
-interface ForumBodyProps {
+interface ForumAddBodyProps {
   categories: ForumCategoryMinimal[];
 }
 
-export default function ForumBody({ categories }: ForumBodyProps) {
+export default function ForumAddBody({ categories }: ForumAddBodyProps) {
   const t = useTranslations("Forum");
   const { data: session, status } = useSession();
   const token = session?.user.access_token;

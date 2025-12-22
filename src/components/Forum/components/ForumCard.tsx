@@ -47,6 +47,8 @@ export const ForumCard: React.FC<ForumCardProps> = ({
     }
   };
 
+  console.log(post);
+
   return (
     <>
       {small ? (
@@ -104,6 +106,9 @@ export const ForumCard: React.FC<ForumCardProps> = ({
                 {post.title}
               </h4>
               <p className="item-forum__text">{stripHtml(post.text)}</p>
+              <span className="item-forum__author">
+                {post.author.first_name} {post.author.last_name || ""}
+              </span>
             </div>
             <div className="item-forum__block">
               <div className="item-forum__info info-item-forum">

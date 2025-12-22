@@ -3,19 +3,20 @@
 import { useRouter } from "@/i18n/routing";
 import { useSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
-import React from "react";
 import { toast } from "sonner";
 
 interface CreateMessageProps {
   id: number;
   isComment?: boolean;
   reasonId: number;
+  isSmall?: boolean;
 }
 
 export default function CreateMessage({
   id,
   isComment = false,
   reasonId,
+  isSmall = false,
 }: CreateMessageProps) {
   const { data: session, status } = useSession();
   const token = session?.user.access_token;
@@ -65,13 +66,16 @@ export default function CreateMessage({
   }
 
   return (
-    <button
-      onClick={() => {
-        createMessage();
-      }}
-      className="button button--secondary"
-    >
-      {t("createMessage")}
-    </button>
+    <>
+      {isSmall ? (
+        <button onClick={createMessage} className="link text-sm">
+          {t("createMessage")}
+        </button>
+      ) : (
+        <button onClick={createMessage} className="button button--secondary">
+          {t("createMessage")}
+        </button>
+      )}
+    </>
   );
 }

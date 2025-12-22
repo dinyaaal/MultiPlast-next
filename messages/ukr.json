@@ -316,7 +316,8 @@
     "Sell": {
       "max-characters": "до 150 символів",
 
-      "fill-ad-title": "Заповніть оголошення про продаж товару",
+      "fill-ad-title-sell": "Заповніть оголошення про продаж товару",
+      "fill-ad-title-buy": "Заповніть оголошення про покупку товару",
       "enter-ad-title": "Введіть заголовок обʼяви",
       "select-ad-type": "Виберіть тип обʼяви",
       "select-category": "Виберіть категорію:",
@@ -330,8 +331,8 @@
       "price-per-kg-with-discount": "Вкажіть оптову ціну за кг:",
       "or": "або",
       "negotiated-price": "За домовленістю",
-      "fixed-price": "Поточна ціна:",
-      "fixed-price-kg": "Поточна ціна за 1 кг:",
+      "fixed-price": "Ціна:",
+      "fixed-price-kg": "Ціна за 1 кг:",
       "price-type": "Тип ціни:",
       "enter-volume": "При обʼємі",
       "enter-price": "Ціна",

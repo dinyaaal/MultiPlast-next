@@ -316,7 +316,8 @@
     "Sell": {
       "max-characters": "до 150 символов",
 
-      "fill-ad-title": "Заполните объявление о продаже товара",
+      "fill-ad-title-sell": "Заполните объявление о продаже товара",
+      "fill-ad-title-buy": "Заполните объявление о покупке товара",
       "enter-ad-title": "Введите заголовок объявления",
       "select-ad-type": "Выберите тип объявления",
       "select-category": "Выберите категорию:",
@@ -330,8 +331,8 @@
       "price-per-kg-with-discount": "Укажите оптовую цену за кг:",
       "or": "или",
       "negotiated-price": "По договорённости",
-      "fixed-price": "Текущая цена:",
-      "fixed-price-kg": "Текущая цена за 1 кг:",
+      "fixed-price": "Цена:",
+      "fixed-price-kg": "Цена за 1 кг:",
       "price-type": "Тип цены:",
       "enter-volume": "При объёме",
       "enter-price": "Цена",

@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+
 import { Link, usePathname } from "@/i18n/routing";
 import { useSession } from "next-auth/react";
 import { useLocale, useTranslations } from "next-intl";
@@ -101,10 +101,10 @@ export default function HeaderNavigation({
                             </Link>
                             <ul className="sub-sub-sub-menu__list">
                               {category.categories
-                                // .filter(
-                                //   (subCategory) =>
-                                //     subCategory.type === "Сировина"
-                                // )
+                                .filter(
+                                  (subCategory) =>
+                                    subCategory.type === "Сировина"
+                                )
                                 .map((subCategory) => {
                                   const subCategoryLink =
                                     subCategory.type === "Сировина"
@@ -202,10 +202,10 @@ export default function HeaderNavigation({
                             </Link>
                             <ul className="sub-sub-sub-menu__list">
                               {category.categories
-                                // .filter(
-                                //   (subCategory) =>
-                                //     subCategory.type === "Сировина"
-                                // )
+                                .filter(
+                                  (subCategory) =>
+                                    subCategory.type === "Сировина"
+                                )
                                 .map((subCategory) => {
                                   const subCategoryLink =
                                     subCategory.type === "Сировина"
