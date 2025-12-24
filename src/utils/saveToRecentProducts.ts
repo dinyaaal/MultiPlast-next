@@ -1,44 +1,33 @@
 import { MinimalProduct } from "@/types/types";
 
-const COOKIE_NAME = "recentProducts";
+const STORAGE_KEY = "recentProducts";
 const MAX_ITEMS = 8;
 
 export function saveToRecentProducts(product: MinimalProduct) {
-  if (typeof document === "undefined") return;
+  // Важно для Next.js
+  if (typeof window === "undefined") return;
 
-  const cookieValue = getCookie(COOKIE_NAME);
   let recentProducts: MinimalProduct[] = [];
 
-  if (cookieValue) {
-    try {
-      recentProducts = JSON.parse(decodeURIComponent(cookieValue));
-    } catch {
-      recentProducts = [];
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored) {
+      recentProducts = JSON.parse(stored);
     }
+  } catch {
+    recentProducts = [];
   }
 
   // Удаляем дубликаты
   recentProducts = recentProducts.filter((p) => p.id !== product.id);
+
+  // Добавляем в начало
   recentProducts.unshift(product);
 
-  // Обрезаем до MAX_ITEMS
+  // Ограничиваем количество
   if (recentProducts.length > MAX_ITEMS) {
     recentProducts = recentProducts.slice(0, MAX_ITEMS);
   }
 
-  const expires = new Date();
-  expires.setDate(expires.getDate() + 30);
-
-  document.cookie = `${COOKIE_NAME}=${encodeURIComponent(
-    JSON.stringify(recentProducts)
-  )}; path=/; expires=${expires.toUTCString()}`;
-}
-
-function getCookie(name: string): string | null {
-  const matches = document.cookie.match(
-    new RegExp(
-      "(?:^|; )" + name.replace(/([$?*|{}\]\\\/+^])/g, "\\$1") + "=([^;]*)"
-    )
-  );
-  return matches ? decodeURIComponent(matches[1]) : null;
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(recentProducts));
 }

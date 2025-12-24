@@ -1,19 +1,15 @@
+// utils/getRecentProducts.ts
 import { MinimalProduct } from "@/types/types";
 
+const STORAGE_KEY = "recentProducts";
+
 export function getRecentProducts(): MinimalProduct[] {
-  if (typeof document === "undefined") return [];
-
-  const cookie = document.cookie
-    .split("; ")
-    .find((row) => row.startsWith("recentProducts="));
-
-  if (!cookie) return [];
+  if (typeof window === "undefined") return [];
 
   try {
-    const value = decodeURIComponent(cookie.split("=")[1]);
-    return JSON.parse(value);
-  } catch (err) {
-    console.error("Ошибка парсинга куки:", err);
+    const stored = localStorage.getItem(STORAGE_KEY);
+    return stored ? JSON.parse(stored) : [];
+  } catch {
     return [];
   }
 }
