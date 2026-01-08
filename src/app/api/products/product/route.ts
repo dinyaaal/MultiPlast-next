@@ -8,16 +8,13 @@ export async function GET(request: NextRequest) {
   console.log("token", token);
 
   try {
-    const res = await fetch(
-      `https://multiplast-api.web-hub.online/api/products/${id}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          ...(token && { Authorization: "Bearer " + token }),
-        },
-      }
-    );
+    const res = await fetch(`http://176.118.167.92/api/products/${id}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        ...(token && { Authorization: "Bearer " + token }),
+      },
+    });
 
     if (!res.ok) {
       throw new Error("Network response was not ok");

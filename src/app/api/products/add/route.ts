@@ -10,16 +10,13 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const res = await fetch(
-      `https://multiplast-api.web-hub.online/api/products`,
-      {
-        method: "POST",
-        headers: {
-          Authorization: `${authHeader}`,
-        },
-        body: formData,
-      }
-    );
+    const res = await fetch(`http://176.118.167.92/api/products`, {
+      method: "POST",
+      headers: {
+        Authorization: `${authHeader}`,
+      },
+      body: formData,
+    });
 
     const text = await res.text(); // ← читаем как текст
 

@@ -10,17 +10,14 @@ export async function POST(request: NextRequest) {
   // }
 
   try {
-    const res = await fetch(
-      `https://multiplast-api.web-hub.online/api/auth/reset-password`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify(formData),
-      }
-    );
+    const res = await fetch(`http://176.118.167.92/api/auth/reset-password`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
 
     const data = await res.json();
 

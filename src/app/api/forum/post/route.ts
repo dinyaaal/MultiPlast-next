@@ -6,15 +6,12 @@ export async function GET(request: NextRequest) {
   const id = url.searchParams.get("id");
 
   try {
-    const res = await fetch(
-      `https://multiplast-api.web-hub.online/api/forums/${id}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    const res = await fetch(`http://176.118.167.92/api/forums/${id}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
 
     if (!res.ok) {
       throw new Error("Network response was not ok");

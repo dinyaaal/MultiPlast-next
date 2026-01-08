@@ -12,7 +12,7 @@ export async function POST(request: NextRequest) {
 
   try {
     const res = await fetch(
-      `https://multiplast-api.web-hub.online/api/chats/${id}/send-message`,
+      `http://176.118.167.92/api/chats/${id}/send-message`,
       {
         method: "POST",
         headers: {

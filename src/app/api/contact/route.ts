@@ -5,14 +5,11 @@ export async function POST(request: NextRequest) {
   const body = await request.json();
 
   try {
-    const res = await fetch(
-      `https://multiplast-api.web-hub.online/api/contact-us`,
-      {
-        method: "POST",
+    const res = await fetch(`http://176.118.167.92/api/contact-us`, {
+      method: "POST",
 
-        body: JSON.stringify(body),
-      }
-    );
+      body: JSON.stringify(body),
+    });
 
     if (!res.ok) {
       throw new Error("Network response was not ok");

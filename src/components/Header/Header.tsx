@@ -17,17 +17,14 @@ import HeaderNavigation from "./components/HeaderNavigation";
 // }
 
 const fetchCategories = async (): Promise<Category[]> => {
-  const res = await fetch(
-    `https://multiplast-api.web-hub.online/api/categories`,
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      // cache: "force-cache",
-      next: { revalidate: 86400 },
-    }
-  );
+  const res = await fetch(`http://176.118.167.92/api/categories`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    // cache: "force-cache",
+    next: { revalidate: 86400 },
+  });
 
   if (!res.ok) {
     throw new Error("Failed to fetch categories");

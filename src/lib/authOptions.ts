@@ -7,19 +7,16 @@ const verifyGoogleToken = async (idToken: string, email: string) => {
   console.log("Sending Google token verification request...");
   console.log("ID Token:", idToken);
   console.log("Email:", email);
-  const response = await fetch(
-    "https://multiplast-api.web-hub.online/api/auth/google",
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        google_token: idToken,
-        email: email,
-      }),
-    }
-  );
+  const response = await fetch("http://176.118.167.92/api/auth/google", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      google_token: idToken,
+      email: email,
+    }),
+  });
 
   const data = await response.json();
   return data; // В ответе может быть информация о пользователе или статус верификации
@@ -44,17 +41,14 @@ export const authOptions: AuthOptions = {
         if (!credentials) return null;
 
         try {
-          const res = await fetch(
-            "https://multiplast-api.web-hub.online/api/auth/login",
-            {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                email: credentials.email,
-                password: credentials.password,
-              }),
-            }
-          );
+          const res = await fetch("http://176.118.167.92/api/auth/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              email: credentials.email,
+              password: credentials.password,
+            }),
+          });
 
           const user = await res.json();
           if (!res.ok || ("success" in user && !user.success)) {

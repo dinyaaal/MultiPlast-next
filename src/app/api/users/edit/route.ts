@@ -11,18 +11,15 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const res = await fetch(
-      `https://multiplast-api.web-hub.online/api/users/${id}`,
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          // "Content-Type": "application/json",
-          // Accept: "application/json",
-        },
-        body: formData,
-      }
-    );
+    const res = await fetch(`http://176.118.167.92/api/users/${id}`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        // "Content-Type": "application/json",
+        // Accept: "application/json",
+      },
+      body: formData,
+    });
 
     const data = await res.json();
 

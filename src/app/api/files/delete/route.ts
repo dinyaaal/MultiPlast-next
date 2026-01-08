@@ -10,15 +10,12 @@ export async function DELETE(request: NextRequest) {
   }
 
   try {
-    const res = await fetch(
-      `https://multiplast-api.web-hub.online/api/remove-file/${id}`,
-      {
-        method: "DELETE",
-        headers: {
-          Authorization: `${authHeader}`,
-        },
-      }
-    );
+    const res = await fetch(`http://176.118.167.92/api/remove-file/${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `${authHeader}`,
+      },
+    });
 
     if (!res.ok) {
       throw new Error("Network response was not ok");

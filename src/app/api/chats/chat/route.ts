@@ -7,15 +7,12 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
   try {
-    const res = await fetch(
-      `https://multiplast-api.web-hub.online/api/chats/${id}`,
-      {
-        method: "GET",
-        headers: {
-          Authorization: `${authHeader}`,
-        },
-      }
-    );
+    const res = await fetch(`http://176.118.167.92/api/chats/${id}`, {
+      method: "GET",
+      headers: {
+        Authorization: `${authHeader}`,
+      },
+    });
 
     if (!res.ok) {
       throw new Error("Network response was not ok");

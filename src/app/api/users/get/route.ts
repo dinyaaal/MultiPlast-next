@@ -15,16 +15,13 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const res = await fetch(
-      `https://multiplast-api.web-hub.online/api/users/${id}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    const res = await fetch(`http://176.118.167.92/api/users/${id}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
     if (!res.ok) {
       throw new Error("Network response was not ok");

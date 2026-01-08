@@ -8,16 +8,13 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const res = await fetch(
-      `https://multiplast-api.web-hub.online/api/remove-files`,
-      {
-        method: "POST",
-        headers: {
-          Authorization: `${authHeader}`,
-        },
-        body: JSON.stringify({ file_ids: file_ids }),
-      }
-    );
+    const res = await fetch(`http://176.118.167.92/api/remove-files`, {
+      method: "POST",
+      headers: {
+        Authorization: `${authHeader}`,
+      },
+      body: JSON.stringify({ file_ids: file_ids }),
+    });
 
     if (!res.ok) {
       throw new Error("Network response was not ok");

@@ -5,15 +5,12 @@ export async function GET(request: NextRequest) {
   const token = url.searchParams.get("token");
 
   try {
-    const res = await fetch(
-      `https://multiplast-api.web-hub.online/api/favorites`,
-      {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    const res = await fetch(`http://176.118.167.92/api/favorites`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
     if (!res.ok) {
       throw new Error("Network response was not ok");

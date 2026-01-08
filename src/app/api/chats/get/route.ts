@@ -7,7 +7,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
   try {
-    const res = await fetch(`https://multiplast-api.web-hub.online/api/chats`, {
+    const res = await fetch(`http://176.118.167.92/api/chats`, {
       method: "GET",
       headers: {
         Authorization: `${authHeader}`,

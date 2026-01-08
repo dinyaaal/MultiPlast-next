@@ -24,17 +24,14 @@ export async function POST(request: Request) {
   });
 
   try {
-    const res = await fetch(
-      "https://multiplast-api.web-hub.online/api/auth/register",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body,
-      }
-    );
+    const res = await fetch("http://176.118.167.92/api/auth/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body,
+    });
 
     const data = await res.json(); // всегда парсим json, даже если ошибка
 

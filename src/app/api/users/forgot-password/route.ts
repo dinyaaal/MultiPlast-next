@@ -4,17 +4,14 @@ export async function POST(request: NextRequest) {
   const { email } = await request.json();
 
   try {
-    const res = await fetch(
-      "https://multiplast-api.web-hub.online/api/auth/forgot-password",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify({ email }),
-      }
-    );
+    const res = await fetch("http://176.118.167.92/api/auth/forgot-password", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify({ email }),
+    });
 
     // всегда парсим JSON, даже если ошибка
     const data = await res.json();

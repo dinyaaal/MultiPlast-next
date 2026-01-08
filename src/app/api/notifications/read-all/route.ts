@@ -9,7 +9,7 @@ export async function POST(request: NextRequest) {
 
   try {
     const res = await fetch(
-      `https://multiplast-api.web-hub.online/api/notifications/read-all`,
+      `http://176.118.167.92/api/notifications/read-all`,
       {
         method: "POST",
         headers: {

@@ -19,17 +19,14 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const res = await fetch(
-      `https://multiplast-api.web-hub.online/api/forums/comments/like`,
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ forum_id, comment_id }),
-      }
-    );
+    const res = await fetch(`http://176.118.167.92/api/forums/comments/like`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ forum_id, comment_id }),
+    });
 
     if (!res.ok) {
       throw new Error("Network response was not ok");

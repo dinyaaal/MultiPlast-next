@@ -9,7 +9,7 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const res = await fetch(`https://multiplast-api.web-hub.online/api/chats`, {
+    const res = await fetch(`http://176.118.167.92/api/chats`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
