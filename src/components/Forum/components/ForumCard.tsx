@@ -59,7 +59,9 @@ export const ForumCard: React.FC<ForumCardProps> = ({
           <div className="item-forum__body w-full h-full">
             <div className="item-forum__block">
               <h4 className="item-forum__title"> {post.title}</h4>
-              <p className="item-forum__text">{stripHtml(post.text)}</p>
+              {post.text && (
+                <p className="item-forum__text">{stripHtml(post.text)}</p>
+              )}
             </div>
             <button className="item-forum__more">
               <span>Детальніше</span>
@@ -105,7 +107,9 @@ export const ForumCard: React.FC<ForumCardProps> = ({
                 {/* <span className="text-base text-gray-500">ID: {post.id}</span>{" "} */}
                 {post.title}
               </h4>
-              <p className="item-forum__text">{stripHtml(post.text)}</p>
+              {post.text && (
+                <p className="item-forum__text">{stripHtml(post.text)}</p>
+              )}
               <span className="item-forum__author">
                 {post.author.first_name} {post.author.last_name || ""}
               </span>

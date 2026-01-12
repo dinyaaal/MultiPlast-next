@@ -155,7 +155,7 @@ export const ForumComment: React.FC<ForumCommentProps> = ({
         <div className="user-chat__image item-block-chat__image">
           {comment.author.avatar ? (
             <Image
-              src={comment.author.avatar}
+              src={`${comment.author.avatar}`}
               className="ibg"
               alt="Icon"
               width={100}

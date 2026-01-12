@@ -17,6 +17,10 @@ const nextConfig = {
         hostname: "ec2-13-60-7-255.eu-north-1.compute.amazonaws.com",
       },
       {
+        protocol: "http",
+        hostname: "176.118.167.92",
+      },
+      {
         protocol: "https",
         hostname: "multiplast.web-hub.online",
       },
