@@ -235,6 +235,8 @@ export interface ChatItemData {
   updated_at: string;
   from_user: ChatUser;
   last_message: IMessageItem | null;
+  last_message_content?: string | null;
+  last_message_files?: Photo[];
   to_user: ChatUser;
   reason_meta: ReasonableMeta;
   reasonable: Reasonable;

@@ -24,7 +24,9 @@ const ReadMore: React.FC<ReadMoreProps> = ({ children, className }) => {
   }, [children]);
   return (
     <div
-      className={`read-more ${isExpanded ? "active" : ""}  ${className ?? ""}`}
+      className={`read-more whitespace-pre-wrap ${
+        isExpanded ? "active" : ""
+      }  ${className ?? ""}`}
     >
       {/* <p className="read-more__text">{text}</p> */}
       <p ref={textRef} className={`read-more__text`}>

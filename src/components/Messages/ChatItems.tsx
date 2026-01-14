@@ -1,12 +1,20 @@
 "use client";
-import { ChatItemData } from "@/types/types";
+import { ChatItemData, Photo } from "@/types/types";
 import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
 import { Spinner } from "@heroui/react";
 import { ChatItem } from "./ChatItem";
 import { useTranslations } from "next-intl";
 
-export default function ChatItems() {
+interface ChatItemsProps {
+  lastMessageUpdate?: {
+    chatId: number;
+    content: string;
+    files: Photo[];
+  } | null;
+}
+
+export default function ChatItems({ lastMessageUpdate }: ChatItemsProps) {
   const t = useTranslations("Messages");
   const { data: session } = useSession();
   const [chats, setChats] = useState<ChatItemData[]>([]);
@@ -41,6 +49,23 @@ export default function ChatItems() {
 
     fetchChats();
   }, [token]);
+
+  useEffect(() => {
+    if (lastMessageUpdate) {
+      setChats((prevChats) =>
+        prevChats.map((chat) => {
+          if (chat.id === lastMessageUpdate.chatId) {
+            return {
+              ...chat,
+              last_message_content: lastMessageUpdate.content,
+              last_message_files: lastMessageUpdate.files,
+            };
+          }
+          return chat;
+        })
+      );
+    }
+  }, [lastMessageUpdate]);
 
   const handleDeleteChat = (id: number) => {
     setChats((prevChats) => prevChats.filter((chat) => chat.id !== id));

@@ -3,7 +3,7 @@
 import Image from "next/image";
 import React, { useState } from "react";
 import { Popover, PopoverTrigger, PopoverContent } from "@heroui/popover";
-import { Link } from "@/i18n/routing";
+import { Link, useRouter } from "@/i18n/routing";
 import { ChatItemData } from "@/types/types";
 import { stripHtml } from "@/utils/stripHtml";
 import { useSession } from "next-auth/react";
@@ -21,6 +21,7 @@ interface ChatItemProps {
 
 export const ChatItem: React.FC<ChatItemProps> = ({ chat, onDelete }) => {
   const t = useTranslations("Messages");
+  const router = useRouter();
   const params = useParams();
   const currentChatId = params?.id;
   const isActive = Number(currentChatId) === chat.id;
@@ -48,6 +49,7 @@ export const ChatItem: React.FC<ChatItemProps> = ({ chat, onDelete }) => {
       if (deleteResponse.ok) {
         toast.success(t("toast.deleteSuccess"));
         onDelete(chat.id);
+        router.push("/messages");
       } else {
         throw new Error(t("toast.deleteError"));
       }
@@ -107,13 +109,20 @@ export const ChatItem: React.FC<ChatItemProps> = ({ chat, onDelete }) => {
     }
   };
 
+  const lastMsg = chat.last_message;
+  const text = chat.last_message_content || lastMsg?.content;
+  const files = chat.last_message_files || lastMsg?.files || [];
+
+  const hasText = !!text;
+  const hasFiles = files.length > 0;
+
   const chatUser =
     chat.from_user.id === session?.user.id ? chat.to_user : chat.from_user;
 
   return (
     <>
       <Link
-        href={`/messages/${chat.id}`}
+        href={`/messages?chatId=${chat.id}`}
         className={`block-chat__item item-block-chat ${
           isActive ? "active" : ""
         }`}
@@ -225,12 +234,52 @@ export const ChatItem: React.FC<ChatItemProps> = ({ chat, onDelete }) => {
                 </PopoverContent>
               </Popover>
             </div>
+            {/* {hasContent && (
+              <p className="item-block-chat__text whitespace-pre-wrap line-clamp-1">
+                {lastMessageContent
+                  ? stripHtml(lastMessageContent)
+                  : t("noMessage")}
+              </p>
+            )} */}
+            <div className="flex items-center gap-1">
+              {/* 2. Если есть файлы — показываем снизу (или вместо текста) */}
+              {hasFiles && (
+                <div
+                  className={`chat-item__files-preview flex items-center gap-1 `}
+                >
+                  {/* Маленькая иконка или первая картинка */}
+                  <div className="relative w-6 h-6 rounded overflow-hidden border border-gray-200">
+                    <Image
+                      src={files[0].url}
+                      alt="attachment"
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
 
-            <p className="item-block-chat__text">
-              {chat.last_message?.content
-                ? stripHtml(chat.last_message.content)
-                : t("noMessage")}
-            </p>
+                  {/* Если файлов больше одного, пишем +X */}
+                  {!hasText && (
+                    <span className="text-xs text-gray-500">
+                      {files.length > 1
+                        ? `Фото (+${files.length - 1})`
+                        : "Фото"}
+                    </span>
+                  )}
+                </div>
+              )}
+              {hasText && (
+                <p className="item-block-chat__text whitespace-pre-wrap line-clamp-1">
+                  {stripHtml(text)}
+                </p>
+              )}
+
+              {/* 3. Если вообще ничего нет */}
+              {!hasText && !hasFiles && (
+                <p className="item-block-chat__text whitespace-pre-wrap line-clamp-1">
+                  {t("noMessage")}
+                </p>
+              )}
+            </div>
           </div>
         </div>
       </Link>

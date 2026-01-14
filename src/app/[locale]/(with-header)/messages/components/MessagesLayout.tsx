@@ -1,13 +1,15 @@
 import ChatItems from "@/components/Messages/ChatItems";
-import { getTranslations } from "next-intl/server";
-import React from "react";
+import { useTranslations } from "next-intl";
+import React, { use } from "react";
 
-export default async function MessagesLayout({
+export default function MessagesLayout({
+  onMessageSend,
   children,
 }: {
+  onMessageSend?: (payload: { chatId: number; content: string }) => void;
   children: React.ReactNode;
 }) {
-  const t = await getTranslations("Messages");
+  const t = useTranslations("Messages");
   return (
     <section className="chat">
       <div className="chat__container main-container">

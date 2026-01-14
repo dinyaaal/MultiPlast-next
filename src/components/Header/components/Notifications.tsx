@@ -77,7 +77,7 @@ export default function Notifications() {
 
   const handleOpenNotification = (id: number, rootId: number) => {
     handleReadItem(id);
-    router.push(`/messages/${rootId}`);
+    router.push(`/messages?chatId=${rootId}`);
     setIsOpen(false);
   };
 

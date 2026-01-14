@@ -61,8 +61,6 @@ export default function MessageItem({
           }))}
         />
 
-        <p className="whitespace-pre-wrap">{stripHtml(message.content)}</p>
-
         {message.files && message.files.length > 0 && (
           <div className="body-comment__images" data-popup="#popup-images">
             {message.files.map((file, index) => (
@@ -81,6 +79,8 @@ export default function MessageItem({
             ))}
           </div>
         )}
+        <p className="whitespace-pre-wrap">{stripHtml(message.content)}</p>
+
         <span className="message-body__time">{time}</span>
       </div>
     </div>

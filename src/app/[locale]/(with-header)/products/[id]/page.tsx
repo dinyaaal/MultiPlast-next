@@ -184,7 +184,8 @@ export default async function Product(props: { params: Params }) {
                   className="body-product__description description-body-product"
                 >
                   <div className="description-body-product__title">
-                    Опис товару:
+                    {/* Опис товару: */}
+                    {t(`description`)}:
                   </div>
                   <ReadMore>{product.text}</ReadMore>
                 </div>

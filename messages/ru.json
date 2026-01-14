@@ -102,6 +102,7 @@
   },
   "Product": {
     "published": "Опубликовано",
+    "description": "Описание товара",
     "price-types": {
       "by_arrangement": "Цена по договорённости",
       "for_piece": "шт",
@@ -277,6 +278,7 @@
 
   "Messages": {
     "title": "Сообщения",
+    "no-chat": "Чат не выбран",
     "no-messages": "Сообщения не выбраны",
     "CreateMessage": {
       "toast": {
