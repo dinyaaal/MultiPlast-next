@@ -19,6 +19,7 @@ export default function ForumComments({ postId }: ForumCommentInputProps) {
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const { data: session, status } = useSession();
   const tToast = useTranslations("Toast");
+  const tForumPage = useTranslations("Forum.forumPage");
   const [comments, setComments] = useState<CommentType[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isLoadingSubmit, setIsLoadingSubmit] = useState<boolean>(false);
@@ -175,7 +176,7 @@ export default function ForumComments({ postId }: ForumCommentInputProps) {
       <div className="forum-comments__write write-forum-comments">
         <div className="write-forum-comments__block">
           <h3 className="forum-comments__title title--small">
-            Написати відповідь
+            {tForumPage("write-comment")}
           </h3>
 
           <div className=" chat-input">
@@ -204,7 +205,7 @@ export default function ForumComments({ postId }: ForumCommentInputProps) {
               <textarea
                 ref={textareaRef}
                 className="chat-input_input"
-                placeholder="Написати..."
+                placeholder={tForumPage("write-comment")}
                 value={text}
                 onChange={(e) => setText(e.target.value)}
               ></textarea>
@@ -256,21 +257,31 @@ export default function ForumComments({ postId }: ForumCommentInputProps) {
           className="write-forum-comments__button button"
           disabled={!(text.trim() || images.length > 0) || isLoadingSubmit}
         >
-          Надіслати
+          {tForumPage("send-comment")}
           {isLoadingSubmit && <Spinner size="sm" />}
         </button>
       </div>
       <div className="forum-comments__body">
-        <h3 className="forum-comments__title title--small">Обговорення</h3>
+        <h3 className="forum-comments__title title--small">
+          {tForumPage("discussion")}
+        </h3>
         <div className="forum-comments__content">
-          {comments.map((comment) => (
-            <ForumComment
-              postId={postId}
-              key={comment.id}
-              comment={comment}
-              onReply={handleReply}
-            />
-          ))}
+          {comments.length === 0 ? (
+            <div className="forum-comments__empty">
+              <p>{tForumPage("no-comments")}</p>
+            </div>
+          ) : (
+            <>
+              {comments.map((comment) => (
+                <ForumComment
+                  postId={postId}
+                  key={comment.id}
+                  comment={comment}
+                  onReply={handleReply}
+                />
+              ))}
+            </>
+          )}
         </div>
         {comments.length > 1 && lastPage && (
           <button

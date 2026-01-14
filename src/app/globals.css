@@ -2441,7 +2441,7 @@ button:disabled {
   @apply relative w-full  h-fit p-[15px] flex flex-col items-end justify-end self-end gap-[20px];
 }
 .block-body-chat__block {
-  @apply w-full h-fit;
+  @apply w-full h-fit flex flex-col gap-3;
 }
 .block-body-chat__info {
   @apply absolute top-0 left-0 w-full flex w-full h-fit bg-white;

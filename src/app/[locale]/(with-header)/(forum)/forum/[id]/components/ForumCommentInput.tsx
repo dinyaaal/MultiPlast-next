@@ -16,6 +16,7 @@ export default function ForumCommentInput({ postId }: ForumCommentInputProps) {
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const { data: session, status } = useSession();
   const tToast = useTranslations("Toast");
+  const tForumPage = useTranslations("Forum.forumPage");
   useEffect(() => {
     const textarea = textareaRef.current;
     if (!textarea) return;
@@ -120,7 +121,7 @@ export default function ForumCommentInput({ postId }: ForumCommentInputProps) {
     <div className="forum-comments__write write-forum-comments">
       <div className="write-forum-comments__block">
         <h3 className="forum-comments__title title--small">
-          Написати відповідь
+          {tForumPage("write-comment")}
         </h3>
 
         <div className=" chat-input">
@@ -176,7 +177,7 @@ export default function ForumCommentInput({ postId }: ForumCommentInputProps) {
         className="write-forum-comments__button button"
         disabled={!(text.trim() || images.length > 0)}
       >
-        Надіслати
+        {tForumPage("send-comment")}
       </button>
     </div>
   );

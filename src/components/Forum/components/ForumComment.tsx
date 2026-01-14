@@ -29,9 +29,10 @@ export const ForumComment: React.FC<ForumCommentProps> = ({
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [replies, setReplies] = useState<CommentType[]>([]);
   const [isLiked, setIsLiked] = useState<boolean>(comment.is_liked);
+  const [likeCount, setLikeCount] = useState<number>(comment.like);
   const { data: session, status } = useSession();
   const t = useTranslations("Forum");
-
+  const tComment = useTranslations("Forum.comment");
   const galleryRef = useRef<any>(null);
 
   const formattedDate = new Date(comment.created_at).toLocaleDateString(
@@ -104,10 +105,10 @@ export const ForumComment: React.FC<ForumCommentProps> = ({
     const mod10 = count % 10;
     const mod100 = count % 100;
 
-    if (mod10 === 1 && mod100 !== 11) return "ответ";
+    if (mod10 === 1 && mod100 !== 11) return tComment("answers");
     if (mod10 >= 2 && mod10 <= 4 && (mod100 < 10 || mod100 >= 20))
-      return "ответа";
-    return "ответов";
+      return tComment("answers");
+    return tComment("answers-plural");
   };
 
   const handleLikeClick = async () => {
@@ -116,7 +117,8 @@ export const ForumComment: React.FC<ForumCommentProps> = ({
         const response = await fetch("/api/forum/comments/like", {
           method: "POST",
           headers: {
-            token: `${session?.user.access_token}`,
+            // token: `${session?.user.access_token}`,
+            Authorization: `Bearer ${session?.user.access_token}`,
           },
           body: JSON.stringify({
             forum_id: postId,
@@ -130,6 +132,11 @@ export const ForumComment: React.FC<ForumCommentProps> = ({
 
         const data = await response.json();
         setIsLiked(!isLiked);
+        if (isLiked) {
+          setLikeCount(likeCount - 1);
+        } else {
+          setLikeCount(likeCount + 1);
+        }
       } catch (error) {
         console.error("Failed to like comment", error);
         toast.error(t("toast.like-error"));
@@ -180,7 +187,7 @@ export const ForumComment: React.FC<ForumCommentProps> = ({
         <div className="comment__body body-comment">
           <div className="body-comment__content">
             <div className="flex items-start justify-between gap-2">
-              <p>{comment.text}</p>
+              <p className="whitespace-pre-wrap">{comment.text}</p>
               <p className="text-base text-gray-500 ml-auto whitespace-nowrap">
                 ID: {comment.id}
               </p>
@@ -210,7 +217,7 @@ export const ForumComment: React.FC<ForumCommentProps> = ({
                   onClick={handleReplyClick}
                   className="link text-sm"
                 >
-                  Відповісти
+                  {tComment("reply")}
                 </button>
               </div>
               <CreateMessage
@@ -258,7 +265,7 @@ export const ForumComment: React.FC<ForumCommentProps> = ({
                       </svg>
                     </button>
                   </div>
-                  <span className="info-item-forum__value">{comment.like}</span>
+                  <span className="info-item-forum__value">{likeCount}</span>
                 </div>
               </div>
               <span className="bottom-body-comment__date">{formattedDate}</span>

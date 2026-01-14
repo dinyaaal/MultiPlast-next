@@ -33,6 +33,7 @@ const years = Array.from({ length: 100 }, (_, i) =>
 export default function Profile() {
   const { data: session, status } = useSession();
   const t = useTranslations("Dashboard.Profile");
+  const tToast = useTranslations("Toast");
   const { data: userInfo, error } = useSelector(
     (state: RootState) => state.userInfo
   );
@@ -69,10 +70,38 @@ export default function Profile() {
     );
   };
 
+  // const handlePhotoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   if (event.target.files && event.target.files[0]) {
+  //     setPhoto(event.target.files[0]);
+  //   }
+  // };
   const handlePhotoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files && event.target.files[0]) {
-      setPhoto(event.target.files[0]);
+    if (!event.target.files || !event.target.files[0]) return;
+
+    const file = event.target.files[0];
+    const maxSize = 10 * 1024 * 1024;
+
+    const allowedTypes = ["image/png", "image/jpeg", "image/jpg"];
+
+    // Проверка типа
+    if (!allowedTypes.includes(file.type)) {
+      toast.error(tToast("file-type-error", { file: file.name }));
+      event.target.value = "";
+      return;
     }
+
+    // Проверка размера
+    if (file.size > maxSize) {
+      toast.error(tToast("file-size-error", { file: file.name }));
+      event.target.value = "";
+      return;
+    }
+
+    // Всё ок
+    setPhoto(file);
+
+    // Сброс input, чтобы можно было выбрать тот же файл повторно
+    event.target.value = "";
   };
 
   const processForm: SubmitHandler<Inputs> = async (data) => {
@@ -181,6 +210,7 @@ export default function Profile() {
           id: userInformation?.id!,
           photos: [],
         };
+        setPhoto(null);
         setUserInformation(_userInformation);
         dispatch(setUserInfoData(_userInformation));
       } else {
@@ -256,7 +286,7 @@ export default function Profile() {
                         onClick={handleDeletePhoto}
                         className="dashboard-contacts__delete button button--danger"
                       >
-                        Delete photo
+                        {t("delete-photo")}
                       </button>
                     )}
                   </div>

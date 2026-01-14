@@ -1,9 +1,8 @@
-"use client";
-
 import Image from "next/image";
-import React from "react";
+import { useTranslations } from "next-intl";
 
 export default function Messages() {
+  const t = useTranslations("Messages");
   return (
     <div className="body-chat-empty">
       <Image
@@ -13,7 +12,7 @@ export default function Messages() {
         width={140}
         height={140}
       />
-      <p className="body-chat-empty__text">Повідомлення не обрано</p>
+      <p className="body-chat-empty__text">{t("no-messages")}</p>
     </div>
   );
 }

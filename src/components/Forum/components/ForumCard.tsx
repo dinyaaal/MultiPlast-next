@@ -60,11 +60,13 @@ export const ForumCard: React.FC<ForumCardProps> = ({
             <div className="item-forum__block">
               <h4 className="item-forum__title"> {post.title}</h4>
               {post.text && (
-                <p className="item-forum__text">{stripHtml(post.text)}</p>
+                <p className=" whitespace-pre-wrap line-clamp-3">
+                  {stripHtml(post.text)}
+                </p>
               )}
             </div>
             <button className="item-forum__more">
-              <span>Детальніше</span>
+              <span>{t("read-more")}</span>
               <svg
                 width="17"
                 height="18"

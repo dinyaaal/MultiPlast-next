@@ -61,7 +61,7 @@ export default function MessageItem({
           }))}
         />
 
-        <p>{stripHtml(message.content)}</p>
+        <p className="whitespace-pre-wrap">{stripHtml(message.content)}</p>
 
         {message.files && message.files.length > 0 && (
           <div className="body-comment__images" data-popup="#popup-images">

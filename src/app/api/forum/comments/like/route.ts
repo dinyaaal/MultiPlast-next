@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
   try {
-    const token = request.headers.get("token");
+    const token = request.headers.get("Authorization");
 
     if (!token) {
       return NextResponse.json({ error: "Missing token" }, { status: 400 });
@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
     const res = await fetch(`http://176.118.167.92/api/forums/comments/like`, {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `${token}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ forum_id, comment_id }),
