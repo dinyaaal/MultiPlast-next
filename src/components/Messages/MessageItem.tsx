@@ -55,36 +55,7 @@ const time = useMemo(() => {
         </div>
       )}
       <div className="message-body__content">
-        {/* <LightGallery
-          onInit={(ref) => (galleryRef.current = ref.instance)}
-          dynamic
-          plugins={[lgZoom]}
-          dynamicEl={(message.files || []).map((item: Photo) => ({
-            src: item.url,
-            thumb: item.url,
-            subHtml: `<h4>${stripHtml(message.content)}</h4>`,
-          }))}
-        /> */}
-        
-
-        {/* {message.files && message.files.length > 0 && (
-          <div className="body-comment__images" data-popup="#popup-images">
-            {message.files.map((file, index) => (
-              <div
-                key={(file as any).id ?? `${message.id}-${index}`}
-                className="body-comment__image cursor-pointer"
-              >
-                <Image
-                  src={file.url}
-                  width={100}
-                  height={100}
-                  alt="Image"
-                  onClick={() => galleryRef.current?.openGallery(index)}
-                />
-              </div>
-            ))}
-          </div>
-        )} */}
+  
         {message.files && message.files.length > 0 && (
     <LightGallery
       plugins={[lgZoom]}
@@ -95,15 +66,17 @@ const time = useMemo(() => {
         <a
           key={file.id ?? index}
           href={file.url} // Ссылка на полноразмерное фото
+          data-src={file.url}
           className="body-comment__image cursor-pointer"
           data-sub-html={`<h4>${stripHtml(message.content)}</h4>`}
         >
-          <Image
+          <img src={file.url} alt="Image" className="w-10 h-10" />
+          {/* <Image
             src={file.url} // Ссылка на превью
             width={100}
             height={100}
             alt="Image"
-          />
+          /> */}
         </a>
       ))}
     </LightGallery>
