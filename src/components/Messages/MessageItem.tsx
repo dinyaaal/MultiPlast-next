@@ -1,6 +1,8 @@
+"use client";
+
 import { IMessageItem, Photo } from "@/types/types";
 import { stripHtml } from "@/utils/stripHtml";
-import React, { useRef } from "react";
+import  { useRef } from "react";
 import Image from "next/image";
 import LightGallery from "lightgallery/react";
 import lgZoom from "lightgallery/plugins/zoom";

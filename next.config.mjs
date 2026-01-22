@@ -4,38 +4,16 @@ import createNextIntlPlugin from "next-intl/plugin";
 const nextConfig = {
   images: {
     remotePatterns: [
-      {
-        protocol: "http",
-        hostname: "127.0.0.1",
-      },
-      {
-        protocol: "http",
-        hostname: "13.60.7.255",
-      },
-      {
-        protocol: "https",
-        hostname: "ec2-13-60-7-255.eu-north-1.compute.amazonaws.com",
-      },
-      {
-        protocol: "http",
-        hostname: "176.118.167.92",
-      },
-      {
-        protocol: "https",
-        hostname: "multiplast.web-hub.online",
-      },
-      {
-        protocol: "https",
-        hostname: "multiplast-api.web-hub.online",
-      },
-      {
-        protocol: "http",
-        hostname: "localhost",
-      },
+      { protocol: "http", hostname: "127.0.0.1", pathname: "/**" },
+      { protocol: "http", hostname: "13.60.7.255", pathname: "/**" },
+      { protocol: "https", hostname: "ec2-13-60-7-255.eu-north-1.compute.amazonaws.com", pathname: "/**" },
+      { protocol: "http", hostname: "176.118.167.92", pathname: "/**" },
+      { protocol: "https", hostname: "multiplast.web-hub.online", pathname: "/**" },
+      { protocol: "https", hostname: "multiplast-api.web-hub.online", pathname: "/**" },
+      { protocol: "http", hostname: "localhost", pathname: "/**" },
     ],
   },
 };
 
 const withNextIntl = createNextIntlPlugin();
-
 export default withNextIntl(nextConfig);
