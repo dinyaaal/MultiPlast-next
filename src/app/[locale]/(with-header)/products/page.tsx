@@ -12,25 +12,24 @@ const fetchCategories = async () => {
     headers: {
       "Content-Type": "application/json",
     },
-    cache: "force-cache",
+    // cache: "force-cache",
+    next: { revalidate: 86400 },
   });
 
   if (!res.ok) {
     throw new Error("Failed to fetch categories");
   }
-
   return res.json();
 };
 
-interface ProductsPageProps {
-  searchParams: { search?: string };
-}
+
 
 export default async function Products(props: { searchParams: SearchParams }) {
   const searchParams = await props.searchParams;
   const categories = await fetchCategories();
   const t = await getTranslations("Products");
   const tb = await getTranslations("Breadcrumbs");
+  console.log("categories", categories);
 
   const crumbs = [{ label: tb("home"), href: "/" }, { label: tb("products") }];
   return (
