@@ -2,7 +2,7 @@
 
 import { IMessageItem, Photo } from "@/types/types";
 import { stripHtml } from "@/utils/stripHtml";
-import  { useRef } from "react";
+import  { useMemo, useRef } from "react";
 import Image from "next/image";
 import LightGallery from "lightgallery/react";
 import lgZoom from "lightgallery/plugins/zoom";
@@ -20,10 +20,13 @@ export default function MessageItem({
   isFromUser,
   avatar,
 }: MessageItemProps) {
-  const time = new Date(message.created_at).toLocaleTimeString("uk-UA", {
-    hour: "2-digit",
-    minute: "2-digit",
-  });
+const time = useMemo(() => {
+  const date = new Date(message.created_at);
+  return isNaN(date.getTime()) 
+    ? "--:--" 
+    : date.toLocaleTimeString("uk-UA", { hour: "2-digit", minute: "2-digit" });
+}, [message.created_at]);
+
   const galleryRef = useRef<any>(null);
 
   return (
@@ -52,7 +55,7 @@ export default function MessageItem({
         </div>
       )}
       <div className="message-body__content">
-        <LightGallery
+        {/* <LightGallery
           onInit={(ref) => (galleryRef.current = ref.instance)}
           dynamic
           plugins={[lgZoom]}
@@ -61,9 +64,10 @@ export default function MessageItem({
             thumb: item.url,
             subHtml: `<h4>${stripHtml(message.content)}</h4>`,
           }))}
-        />
+        /> */}
+        
 
-        {message.files && message.files.length > 0 && (
+        {/* {message.files && message.files.length > 0 && (
           <div className="body-comment__images" data-popup="#popup-images">
             {message.files.map((file, index) => (
               <div
@@ -80,7 +84,30 @@ export default function MessageItem({
               </div>
             ))}
           </div>
-        )}
+        )} */}
+        {message.files && message.files.length > 0 && (
+    <LightGallery
+      plugins={[lgZoom]}
+      elementClassNames="body-comment__images" // Класс для контейнера с картинками
+      speed={500}
+    >
+      {message.files.map((file, index) => (
+        <a
+          key={file.id ?? index}
+          href={file.url} // Ссылка на полноразмерное фото
+          className="body-comment__image cursor-pointer"
+          data-sub-html={`<h4>${stripHtml(message.content)}</h4>`}
+        >
+          <Image
+            src={file.url} // Ссылка на превью
+            width={100}
+            height={100}
+            alt="Image"
+          />
+        </a>
+      ))}
+    </LightGallery>
+  )}
         <p className="whitespace-pre-wrap">{stripHtml(message.content)}</p>
 
         <span className="message-body__time">{time}</span>
