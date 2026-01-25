@@ -21,7 +21,6 @@ export default function ForumTabs({ categories }: ForumTabsProps) {
         radius="sm"
         aria-label="Forum Tabs"
         classNames={{
-          //   tab: "text-2xl font-bold text-black",
           tabList: "p-4 bg-secondaryColor overflow-hidden",
           tabContent: "text-xl xl:text-2xl font-bold text-black",
         }}

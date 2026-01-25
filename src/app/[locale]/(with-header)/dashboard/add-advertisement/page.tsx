@@ -7,8 +7,8 @@ const fetchCategories = async () => {
     headers: {
       "Content-Type": "application/json",
     },
-    cache: "force-cache",
-    // next: { revalidate: 86400  },
+    // cache: "force-cache",
+    next: { revalidate: 86400  },
   });
 
   if (!res.ok) {

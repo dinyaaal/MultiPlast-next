@@ -19,6 +19,7 @@
   --color-greyColor: #838383;
   --color-bg-lite: #edf4ff;
   --color-dark-blue: #0e274d;
+  --color-redColor: #BA360C;
   --breakpoint-1400: 1400px;
 }
 
@@ -392,9 +393,9 @@ input::-webkit-inner-spin-button {
   @apply font-semibold text-[24px] text-blueColor;
 }
 
-.like {
+/* .like {
   @apply relative z-[2] rounded-sm flex-[0_0_40px] w-10 h-10 border border-blueColor flex items-center justify-center;
-}
+} */
 .like svg {
   @apply flex-[0_0_22px] size-[22px];
 }
@@ -486,13 +487,14 @@ input::-webkit-inner-spin-button {
   @apply right-0;
 }
 
-.actions-top__item {
-  @apply flex-[0_0_30px] w-7.5 h-7.5;
+.action-btn {
+  @apply size-8 shrink-0 transition-all duration-300 active:scale-95 hover:scale-105;
 }
 
-.actions-top__item svg {
+.action-btn svg {
   @apply size-full;
 }
+
 
 .user-chat {
   @apply flex items-center gap-2.5;
@@ -706,7 +708,7 @@ input::-webkit-inner-spin-button {
 }
 
 .chat-input__image-wrapper {
-  @apply relative w-[60px] h-[60px] rounded-md overflow-hidden cursor-pointer after:content-['✕'] after:absolute after:inset-0 after:w-full after:h-full after:bg-black/60 after:text-white after:font-bold after:flex after:items-center after:justify-center after:opacity-0 after:pointer-events-none after:transition-opacity after:duration-300 after:z-2;
+  @apply relative size-10 xl:size-12 rounded-md overflow-hidden cursor-pointer after:content-['✕'] after:absolute after:inset-0 after:w-full after:h-full after:bg-black/60 after:text-white after:font-bold after:flex after:items-center after:justify-center after:opacity-0 after:pointer-events-none after:transition-opacity after:duration-300 after:z-2;
 }
 .chat-input__image-wrapper img {
   @apply w-full h-full object-cover;
@@ -1072,7 +1074,7 @@ button:disabled {
   @apply relative top-[0.5px] text-white text-[10px];
 }
 .menu-bottom-header {
-  @apply relative z-9 bg-blueColor rounded-md hidden md:flex items-center justify-center gap-2.5 w-full max-w-[305px] min-w-[180px] py-[14px] leading-none px-[5px] cursor-pointer transition-all duration-300 hover:bg-blueColor-hover;
+  @apply relative  z-9  hidden md:flex items-center justify-center max-w-[305px] min-w-[180px] w-full ;
 }
 
 .menu-bottom-header.active .menu-bottom-header__items {
@@ -1083,7 +1085,7 @@ button:disabled {
   @apply text-white;
 }
 .menu-bottom-header__body {
-  @apply absolute w-full h-fit top-[calc(100%+12px)] left-0 z-10  border-t-0 overflow-hidden pointer-events-none;
+  @apply absolute text-black w-full h-fit top-[calc(100%+12px)] left-0 z-10  border-t-0 overflow-hidden pointer-events-none;
 }
 .menu-bottom-header__items {
   @apply flex flex-col relative -translate-y-[200%] bg-[#f8fbff] border border-border rounded-b-lg pointer-events-auto transition-all duration-300;
@@ -1366,7 +1368,7 @@ button:disabled {
   @apply text-nowrap leading-[80%] border-b border-white pb-[10px] text-[clamp(40px,10vw,150px)];
 }
 .top-hero__title::first-letter {
-  @apply text-[clamp(50px,10vw,200px)];
+  @apply text-[clamp(50px,14vw,200px)];
 }
 .top-hero__text {
   @apply leading-[21.33px] text-[clamp(18px,5vw,24px)];
@@ -1852,7 +1854,7 @@ button:disabled {
 }
 
 .actions-dashboard {
-  @apply flex flex-wrap gap-x-[50px] gap-y-[20px];
+  @apply grid md:grid-cols-2 gap-x-[50px] gap-y-[20px];
 }
 .actions-dashboard .button {
   @apply max-w-[300px];
@@ -2476,11 +2478,11 @@ button:disabled {
 }
 
 .bottom-body-chat {
-  @apply w-full mb-auto border-t border-border py-[15px] xl:p-[25px] px-[25px] flex justify-center gap-[20px] items-center xl:items-start;
+  @apply w-full mb-auto border-t border-border p-[15px] xl:p-[25px]  flex justify-center gap-[20px] items-center xl:items-start;
 }
 
 .bottom-body-chat__add-file {
-  @apply cursor-pointer;
+  @apply cursor-pointer size-6 shrink-0 flex items-center justify-center;
 }
 .bottom-body-chat__add-file input {
   @apply absolute opacity-0 w-0 h-0 pointer-events-none;
@@ -2490,7 +2492,7 @@ button:disabled {
 }
 
 .bottom-body-chat__message-textarea {
-  @apply h-[126px] hidden xl:block;
+  @apply h-[126px] ;
 }
 
 .bottom-body-chat__write {
@@ -2504,7 +2506,7 @@ button:disabled {
   @apply w-full h-full outline-none;
 }
 .message-input__write {
-  @apply absolute top-0 right-0 size-[51px] rounded-none flex items-center justify-center p-0;
+  @apply absolute top-0 right-0 size-10 shrink-0 min-h-0 rounded-none flex items-center justify-center p-0;
 }
 .message-input__write svg {
   @apply !size-[22px];

@@ -11,6 +11,7 @@ async function fetchForumCategories() {
           "Content-Type": "application/json",
         },
         // cache: "force-cache",
+        next: { revalidate: 86400 },
         // кеш оставляем (по умолчанию cache: 'force-cache')
       }
     );

@@ -1,13 +1,15 @@
 "use client";
 
 import { CommentType } from "@/types/types";
-import { Spinner } from "@heroui/react";
+import { Button, Spinner, Textarea } from "@heroui/react";
 import { useSession } from "next-auth/react";
 import React, { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import Image from "next/image";
 import { ForumComment } from "@/components/Forum/components/ForumComment";
 import { useTranslations } from "next-intl";
+import { Paperclip, X } from "lucide-react";
+import { ButtonMain } from "@/components/ButtonMain";
 
 interface ForumCommentInputProps {
   postId: number;
@@ -179,7 +181,7 @@ export default function ForumComments({ postId }: ForumCommentInputProps) {
             {tForumPage("write-comment")}
           </h3>
 
-          <div className=" chat-input">
+          <div className="   flex flex-col gap-2 ">
             {/* Превью изображений */}
             {replyData && (
               <div className="chat-input-reply">
@@ -187,21 +189,19 @@ export default function ForumComments({ postId }: ForumCommentInputProps) {
                   <div className="chat-input-reply__name">{replyData.name}</div>
                   <div className="chat-input-reply__text">{replyData.text}</div>
                 </div>
-                <button
-                  onClick={(e) => setReplyData(null)}
-                  className="chat-input-reply__clear"
-                >
-                  <Image
+                <ButtonMain onPress={(e) => setReplyData(null)} isIconOnly variant="light" color='primary' className="size-10 shrink-0">
+                  {/* <Image
                     src="/icons/close.svg"
                     width={20}
                     height={20}
                     alt="Icon"
-                  />
-                </button>
+                  /> */}
+                  <X className="size-5 text-black" />
+                </ButtonMain>
               </div>
             )}
-            {/* Текстовая область */}
-            <div className="chat-input__input-wrapper">
+
+            {/* <div className="chat-input__input-wrapper">
               <textarea
                 ref={textareaRef}
                 className="chat-input_input"
@@ -209,7 +209,7 @@ export default function ForumComments({ postId }: ForumCommentInputProps) {
                 value={text}
                 onChange={(e) => setText(e.target.value)}
               ></textarea>
-              {/* Загрузка фото */}
+
               <label className="chat-input__add-file">
                 <input
                   type="file"
@@ -230,6 +230,32 @@ export default function ForumComments({ postId }: ForumCommentInputProps) {
                   />
                 </svg>
               </label>
+            </div> */}
+            <div className="flex gap-2">
+              <ButtonMain isIconOnly variant="light" className="size-10 shrink-0">
+
+                <label className="chat-input__add-file">
+                  <input
+                    type="file"
+                    multiple
+
+                    onChange={handleFileChange}
+                    style={{ display: "none" }}
+                  />
+                  <Paperclip className="size-5 text-black" />
+
+                </label>
+              </ButtonMain>
+
+              <Textarea
+                classNames={{
+                  inputWrapper: '!bg-[#F8FBFF] !border !border-border'
+                }}
+                // ref={textareaRef}
+                minRows={3}
+                placeholder={tForumPage("write-comment")}
+                value={text}
+                onChange={(e) => setText(e.target.value)} />
             </div>
             {images.length > 0 && (
               <div className="chat-input__images flex gap-2 flex-wrap">
@@ -252,14 +278,16 @@ export default function ForumComments({ postId }: ForumCommentInputProps) {
           </div>
         </div>
 
-        <button
-          onClick={handleSubmit}
-          className="write-forum-comments__button button"
+        <ButtonMain
+          onPress={handleSubmit}
+          color='primary'
+          className="w-fit"
+          size='lg'
           disabled={!(text.trim() || images.length > 0) || isLoadingSubmit}
         >
           {tForumPage("send-comment")}
           {isLoadingSubmit && <Spinner size="sm" />}
-        </button>
+        </ButtonMain>
       </div>
       <div className="forum-comments__body">
         <h3 className="forum-comments__title title--small">
@@ -284,15 +312,16 @@ export default function ForumComments({ postId }: ForumCommentInputProps) {
           )}
         </div>
         {comments.length > 1 && lastPage && (
-          <button
+          <ButtonMain
             type="button"
-            className="forum-comments__more block__more button"
+            color={'primary'}
+            className="mx-auto"
             disabled={isLoading}
             onClick={toggleComments}
           >
             <span>{currentPage < lastPage ? "Дивитися ще" : "Сховати"}</span>
             {isLoading && <Spinner size="sm" />}
-          </button>
+          </ButtonMain>
         )}
       </div>
     </div>

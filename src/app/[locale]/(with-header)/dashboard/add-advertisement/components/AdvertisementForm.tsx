@@ -23,6 +23,7 @@ import { useSession } from "next-auth/react";
 import Map from "@/components/Map/Map";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "@/i18n/routing";
+import { ButtonMain } from "@/components/ButtonMain";
 
 interface AdvertisementFormProps {
   setNewPhotos: (photos: File[]) => void;
@@ -114,13 +115,13 @@ export default function AdvertisementForm({
 
         contact_data: Array.isArray(product.contacts)
           ? product.contacts.map((c) => ({
-              name: c.name,
-              position: c.position || "",
-              phones:
-                Array.isArray(c.phones) && c.phones.length > 0
-                  ? c.phones
-                  : [""], // хотя бы один инпут, чтобы соответствовать .nonempty()
-            }))
+            name: c.name,
+            position: c.position || "",
+            phones:
+              Array.isArray(c.phones) && c.phones.length > 0
+                ? c.phones
+                : [""], // хотя бы один инпут, чтобы соответствовать .nonempty()
+          }))
           : [],
       });
     }
@@ -480,11 +481,10 @@ export default function AdvertisementForm({
                   placeholder={`Виберерите тип объявления`}
                   disallowEmptySelection
                   classNames={{
-                    trigger: `min-h-[45px] text-black px-[12px] bg-[#F8FBFF] rounded-[5px] outline-offset-0 outline-[1px]  ${
-                      errors.advertType
-                        ? "outline-[#FF0000] "
-                        : "outline-[#B0BFD7]"
-                    } `,
+                    trigger: `min-h-[45px] text-black px-[12px] bg-[#F8FBFF] rounded-[5px] outline-offset-0 outline-[1px]  ${errors.advertType
+                      ? "outline-[#FF0000] "
+                      : "outline-[#B0BFD7]"
+                      } `,
 
                     popoverContent:
                       "bg-[#F8FBFF] p-0 rounded-[5px] outline-offset-0 outline-[1px] outline-[#B0BFD7]",
@@ -508,8 +508,8 @@ export default function AdvertisementForm({
                   // defaultSelectedKeys={[advertType]}
                   selectedKeys={[watch("advertType")?.toString() || ""]}
                   onChange={handleAdvertTypeChange}
-                  // {...register("advertType")}
-                  // onChange={(selectedKey) => handleChangeType(selectedKey)}
+                // {...register("advertType")}
+                // onChange={(selectedKey) => handleChangeType(selectedKey)}
                 >
                   {advertTypes.map((type) => (
                     <SelectItem key={type.key}>{type.label}</SelectItem>
@@ -523,11 +523,10 @@ export default function AdvertisementForm({
                   placeholder={t("select-category")}
                   disallowEmptySelection
                   classNames={{
-                    trigger: `min-h-[45px] text-black px-[12px] bg-[#F8FBFF] rounded-[5px] outline-offset-0 outline-[1px]  ${
-                      errors.mainCategory
-                        ? "outline-[#FF0000] "
-                        : "outline-[#B0BFD7]"
-                    } `,
+                    trigger: `min-h-[45px] text-black px-[12px] bg-[#F8FBFF] rounded-[5px] outline-offset-0 outline-[1px]  ${errors.mainCategory
+                      ? "outline-[#FF0000] "
+                      : "outline-[#B0BFD7]"
+                      } `,
 
                     popoverContent:
                       "bg-[#F8FBFF] p-0 rounded-[5px] outline-offset-0 outline-[1px] outline-[#B0BFD7]",
@@ -564,12 +563,12 @@ export default function AdvertisementForm({
                     {Number(watch("mainCategory")) === 2
                       ? t("select-type")
                       : Number(watch("mainCategory")) === 3
-                      ? t("select-equipment")
-                      : Number(watch("mainCategory")) === 4
-                      ? t("select-service")
-                      : Number(watch("mainCategory")) === 5
-                      ? t("select-type-ad")
-                      : ""}
+                        ? t("select-equipment")
+                        : Number(watch("mainCategory")) === 4
+                          ? t("select-service")
+                          : Number(watch("mainCategory")) === 5
+                            ? t("select-type-ad")
+                            : ""}
                   </p>
 
                   <Select
@@ -578,17 +577,16 @@ export default function AdvertisementForm({
                       Number(watch("mainCategory")) === 2
                         ? t("select-type")
                         : Number(watch("mainCategory")) === 3
-                        ? t("select-equipment")
-                        : Number(watch("mainCategory")) === 4
-                        ? t("select-service")
-                        : Number(watch("mainCategory")) === 5
-                        ? t("select-type-ad")
-                        : ""
+                          ? t("select-equipment")
+                          : Number(watch("mainCategory")) === 4
+                            ? t("select-service")
+                            : Number(watch("mainCategory")) === 5
+                              ? t("select-type-ad")
+                              : ""
                     }
                     classNames={{
-                      trigger: `min-h-[45px] text-black px-[12px] bg-[#F8FBFF] rounded-[5px] outline-offset-0 outline-[1px]  ${
-                        errors.type ? "outline-[#FF0000] " : "outline-[#B0BFD7]"
-                      } `,
+                      trigger: `min-h-[45px] text-black px-[12px] bg-[#F8FBFF] rounded-[5px] outline-offset-0 outline-[1px]  ${errors.type ? "outline-[#FF0000] " : "outline-[#B0BFD7]"
+                        } `,
 
                       popoverContent:
                         "bg-[#F8FBFF] p-0 rounded-[5px] outline-offset-0 outline-[1px] outline-[#B0BFD7]",
@@ -637,63 +635,62 @@ export default function AdvertisementForm({
 
               {(Number(watch("mainCategory")) === 1 ||
                 Number(watch("mainCategory")) === 2) && (
-                <div className="input-block">
-                  <p>{t("select-polymer")}*</p>
+                  <div className="input-block">
+                    <p>{t("select-polymer")}*</p>
 
-                  <Select
-                    disallowEmptySelection
-                    placeholder={t("select-polymer")}
-                    classNames={{
-                      trigger: `min-h-[45px] text-black px-[12px] bg-[#F8FBFF] rounded-[5px] outline-offset-0 outline-[1px]  ${
-                        errors.polymer
+                    <Select
+                      disallowEmptySelection
+                      placeholder={t("select-polymer")}
+                      classNames={{
+                        trigger: `min-h-[45px] text-black px-[12px] bg-[#F8FBFF] rounded-[5px] outline-offset-0 outline-[1px]  ${errors.polymer
                           ? "outline-[#FF0000] "
                           : "outline-[#B0BFD7]"
-                      } `,
+                          } `,
 
-                      popoverContent:
-                        "bg-[#F8FBFF] p-0 rounded-[5px] outline-offset-0 outline-[1px] outline-[#B0BFD7]",
-                      listbox: "p-0",
-                    }}
-                    listboxProps={{
-                      itemClasses: {
-                        base: [
-                          "min-h-[39px]",
-                          "px-[15px]",
-                          "py-[5px]",
-                          "rounded-none",
-                          "bg-transparent",
-                          "transition-colors",
+                        popoverContent:
+                          "bg-[#F8FBFF] p-0 rounded-[5px] outline-offset-0 outline-[1px] outline-[#B0BFD7]",
+                        listbox: "p-0",
+                      }}
+                      listboxProps={{
+                        itemClasses: {
+                          base: [
+                            "min-h-[39px]",
+                            "px-[15px]",
+                            "py-[5px]",
+                            "rounded-none",
+                            "bg-transparent",
+                            "transition-colors",
 
-                          "data-[hover=true]:bg-[#c4dbff]",
-                          "data-[selectable=true]:focus:bg-[#c4dbff]",
-                        ],
-                      },
-                    }}
-                    // defaultSelectedKeys={[
-                    //   product?.categories
-                    //     .find((category) => category.type === "Полімер")
-                    //     ?.id?.toString() || "",
-                    // ]}
-                    selectedKeys={[watch("polymer")?.toString() || ""]}
-                    {...register("polymer")}
+                            "data-[hover=true]:bg-[#c4dbff]",
+                            "data-[selectable=true]:focus:bg-[#c4dbff]",
+                          ],
+                        },
+                      }}
+                      // defaultSelectedKeys={[
+                      //   product?.categories
+                      //     .find((category) => category.type === "Полімер")
+                      //     ?.id?.toString() || "",
+                      // ]}
+                      selectedKeys={[watch("polymer")?.toString() || ""]}
+                      {...register("polymer")}
                     // onChange={handlePolymerChange}
-                  >
-                    {categories
-                      .filter(
-                        (category) =>
-                          category.id === Number(watch("mainCategory"))
-                      )
-                      .flatMap((category) => category.categories)
-                      .filter((subCategory) => subCategory.type === "Полімер")
+                    >
+                      {categories
+                        .filter(
+                          (category) =>
+                            category.id === Number(watch("mainCategory"))
+                        )
+                        .flatMap((category) => category.categories)
+                        .filter((subCategory) => subCategory.type === "Полімер")
 
-                      .map((subCategory) => (
-                        <SelectItem key={subCategory.id}>
-                          {subCategory.name}
-                        </SelectItem>
-                      ))}
-                  </Select>
-                </div>
-              )}
+                        .map((subCategory) => (
+                          <SelectItem key={subCategory.id}>
+                            {subCategory.name}
+                          </SelectItem>
+                        ))}
+                    </Select>
+                  </div>
+                )}
             </div>
             <div className="body-dashboard__block">
               <div className="input-block">
@@ -705,7 +702,7 @@ export default function AdvertisementForm({
                       className="input-body-file__input input"
                     >
                       {photos.length > 0 ||
-                      (product?.photos && product?.photos?.length > 0) ? (
+                        (product?.photos && product?.photos?.length > 0) ? (
                         <>
                           <Swiper
                             spaceBetween={20}
@@ -792,25 +789,27 @@ export default function AdvertisementForm({
                       </p>
                     </div>
                     <div className="input-body-file__actions">
-                      <label
+
+                      <ButtonMain
+                        as="label"
                         htmlFor="dashboard-photo"
-                        className="input-body-file__button button"
-                      >
+                        type={'button'} color='primary' >
+
                         {t("upload")}
-                      </label>
+                      </ButtonMain>
 
                       {(photos.length > 0 ||
                         (product?.photos && product?.photos?.length > 0)) && (
-                        <>
-                          <button
-                            type="button"
-                            onClick={handleDeleteActivePhoto}
-                            className="input-body-file__delete"
-                          >
-                            {t("delete")}
-                          </button>
-                        </>
-                      )}
+                          <>
+                            <button
+                              type="button"
+                              onClick={handleDeleteActivePhoto}
+                              className="input-body-file__delete"
+                            >
+                              {t("delete")}
+                            </button>
+                          </>
+                        )}
                     </div>
                   </div>
                 </div>
@@ -836,9 +835,8 @@ export default function AdvertisementForm({
               <p>{t("enter-description")}*</p>
               <textarea
                 placeholder="Написати..."
-                className={`description__input input  ${
-                  errors.text ? "input--error" : ""
-                }`}
+                className={`description__input input  ${errors.text ? "input--error" : ""
+                  }`}
                 // value={watch("text")}
                 {...register("text")}
               ></textarea>
@@ -856,7 +854,8 @@ export default function AdvertisementForm({
                     )}
                   </div>
                   <div className="input-body-file__actions">
-                    <label className="input-body-file__button button">
+                    <ButtonMain as='label' type={'button'} color='primary' >
+
                       <input
                         id="dashboard-files"
                         type="file"
@@ -864,7 +863,7 @@ export default function AdvertisementForm({
                         onChange={handleFilesChange}
                       />
                       {t("upload")}
-                    </label>
+                    </ButtonMain>
                     <button
                       type="button"
                       onClick={deleteFiles}
@@ -881,15 +880,18 @@ export default function AdvertisementForm({
       </div>
       <div className="grid gap-10 ">
         <div className="flex flex-col gap-8 ">
-          <h2 className=" title title--small">{t("enter-price")}</h2>
+          <h2 className=" title title--small">         {Number(watch("mainCategory")) === 1 ||
+            Number(watch("mainCategory")) === 2
+            ? t("price-per-kg")
+            : t("enter-price")}</h2>
           <div className="flex flex-col gap-5">
             <div className="input-block input-block--price">
-              <p>
+              {/* <p>
                 {Number(watch("mainCategory")) === 1 ||
                 Number(watch("mainCategory")) === 2
                   ? t("price-per-kg")
                   : t("enter-price")}
-              </p>
+              </p> */}
 
               <div className="input-block">
                 <div className="grid grid-cols-2 gap-2">
@@ -899,8 +901,8 @@ export default function AdvertisementForm({
                         type="checkbox"
                         className="real-checkbox"
                         {...register("arrangement")}
-                        // checked={arrangement}
-                        // onChange={() => handleCheckboxChange("arrangement")}
+                      // checked={arrangement}
+                      // onChange={() => handleCheckboxChange("arrangement")}
                       />
                       <span className="custom-checkbox"></span>
                       {t("negotiated-price")}
@@ -933,15 +935,14 @@ export default function AdvertisementForm({
                     {/* <p>{t("fixed-price")}</p> */}
                     <p>
                       {Number(watch("mainCategory")) === 1 ||
-                      Number(watch("mainCategory")) === 2
+                        Number(watch("mainCategory")) === 2
                         ? t("fixed-price-kg")
                         : t("fixed-price")}
                     </p>
 
                     <label
-                      className={`input-body input ${
-                        errors.price ? "input--error" : ""
-                      }`}
+                      className={`input-body input ${errors.price ? "input--error" : ""
+                        }`}
                     >
                       <input
                         disabled={watch("arrangement")}
@@ -1006,16 +1007,18 @@ export default function AdvertisementForm({
                 Number(watch("mainCategory")) === 2) && (
                 <div className="block-row">
                   <div className="block-row__item">
-                    <button
+                    <ButtonMain
                       type="button"
+                      color='secondary'
+                      variant='bordered'
                       disabled={!!watch("arrangement")}
-                      onClick={() => setShowDiscount((prev) => !prev)}
-                      className=" button button--secondary   button--fw"
+                      onPress={() => setShowDiscount((prev) => !prev)}
+                      className="w-full!"
                     >
                       {showDiscount
                         ? t("price-without-discount")
                         : t("price-with-discount")}
-                    </button>
+                    </ButtonMain>
                   </div>
                 </div>
               )}
@@ -1067,9 +1070,8 @@ export default function AdvertisementForm({
           </h2>
           <div className="flex flex-col gap-5">
             <div
-              className={`map ${
-                errors.latitude || errors.longitude ? "input--error" : ""
-              }`}
+              className={`map ${errors.latitude || errors.longitude ? "input--error" : ""
+                }`}
             >
               <Map
                 lat={Number(watch("latitude"))}
@@ -1091,9 +1093,8 @@ export default function AdvertisementForm({
                 autoComplete="off"
                 type="text"
                 placeholder=""
-                className={`input ${
-                  errors.name_of_enterprise ? "input--error" : ""
-                }`}
+                className={`input ${errors.name_of_enterprise ? "input--error" : ""
+                  }`}
                 {...register("name_of_enterprise")}
               />
             </div>

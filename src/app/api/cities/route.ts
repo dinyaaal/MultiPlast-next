@@ -22,7 +22,8 @@ export async function GET() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(body),
-      cache: "force-cache",
+      // cache: "force-cache",
+      next: { revalidate: 86400 },
     });
 
     const data = await response.json();

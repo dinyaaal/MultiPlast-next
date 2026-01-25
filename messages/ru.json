@@ -135,6 +135,7 @@
   },
 
   "Forum": {
+    "author": "Автор",
     "breadcrumbsPosition": "Форум",
     "forumTitle": "Форум",
     "forumTab": "Форум",
@@ -350,7 +351,7 @@
       "fixed-price-kg": "Цена за 1 кг:",
       "price-type": "Тип цены:",
       "enter-volume": "При объёме",
-      "enter-price": "Цена",
+      "enter-price": "Введите цену",
       "main-photo": "Первая загруженная фотография будет главной",
       "price-without-discount": "Скрыть оптовую цену",
       "price-with-discount": "Добавить оптовую цену",
@@ -507,6 +508,8 @@
   "Toast": {
     "file-size-error": "Файл {file} превышает {size}МБ",
     "file-type-error": "Неверный формат файла",
-    "max-files": "Максимум 10 файлов"
+    "max-files": "Максимум 10 файлов",
+    "link-copied": "Ссылка скопирована",
+    "link-copy-error": "Не удалось скопировать ссылку"
   }
 }

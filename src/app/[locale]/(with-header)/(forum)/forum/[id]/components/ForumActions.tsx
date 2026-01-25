@@ -1,8 +1,8 @@
 "use client";
 
+import ShareBtn from "@/components/shareBtn";
 import { Link } from "@/i18n/routing";
 import { useSession } from "next-auth/react";
-import React from "react";
 
 interface ForumActionsProps {
   id: number;
@@ -14,7 +14,7 @@ export default function ForumActions({ id, author_id }: ForumActionsProps) {
   return (
     <div className="top-product__actions actions-top">
       {session?.user.id === author_id && (
-        <Link href={`/forum-add?edit=${id}`} className="actions-top__item edit">
+        <Link href={`/forum-add?edit=${id}`} className="action-btn edit">
           <svg
             width="30"
             height="30"
@@ -29,20 +29,7 @@ export default function ForumActions({ id, author_id }: ForumActionsProps) {
           </svg>
         </Link>
       )}
-      <Link href="#" className="actions-top__item share">
-        <svg
-          width="27"
-          height="30"
-          viewBox="0 0 27 30"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M22.5 30C21.25 30 20.1875 29.5625 19.3125 28.6875C18.4375 27.8125 18 26.75 18 25.5C18 25.325 18.0125 25.1435 18.0375 24.9555C18.0625 24.7675 18.1 24.599 18.15 24.45L7.575 18.3C7.15 18.675 6.675 18.969 6.15 19.182C5.625 19.395 5.075 19.501 4.5 19.5C3.25 19.5 2.1875 19.0625 1.3125 18.1875C0.4375 17.3125 0 16.25 0 15C0 13.75 0.4375 12.6875 1.3125 11.8125C2.1875 10.9375 3.25 10.5 4.5 10.5C5.075 10.5 5.625 10.6065 6.15 10.8195C6.675 11.0325 7.15 11.326 7.575 11.7L18.15 5.55C18.1 5.4 18.0625 5.2315 18.0375 5.0445C18.0125 4.8575 18 4.676 18 4.5C18 3.25 18.4375 2.1875 19.3125 1.3125C20.1875 0.4375 21.25 0 22.5 0C23.75 0 24.8125 0.4375 25.6875 1.3125C26.5625 2.1875 27 3.25 27 4.5C27 5.75 26.5625 6.8125 25.6875 7.6875C24.8125 8.5625 23.75 9 22.5 9C21.925 9 21.375 8.894 20.85 8.682C20.325 8.47 19.85 8.176 19.425 7.8L8.85 13.95C8.9 14.1 8.9375 14.269 8.9625 14.457C8.9875 14.645 9 14.826 9 15C9 15.175 8.9875 15.3565 8.9625 15.5445C8.9375 15.7325 8.9 15.901 8.85 16.05L19.425 22.2C19.85 21.825 20.325 21.5315 20.85 21.3195C21.375 21.1075 21.925 21.001 22.5 21C23.75 21 24.8125 21.4375 25.6875 22.3125C26.5625 23.1875 27 24.25 27 25.5C27 26.75 26.5625 27.8125 25.6875 28.6875C24.8125 29.5625 23.75 30 22.5 30Z"
-            fill="#1858B8"
-          ></path>
-        </svg>
-      </Link>
+      <ShareBtn />
     </div>
   );
 }

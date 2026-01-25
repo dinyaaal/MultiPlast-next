@@ -5,6 +5,8 @@ import Image from "next/image";
 import React, { FormEvent, useState } from "react";
 import { useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/routing";
+import { ButtonMain } from "@/components/ButtonMain";
+import { Search } from "lucide-react";
 
 export const HeaderSearch = () => {
   const router = useRouter();
@@ -29,7 +31,7 @@ export const HeaderSearch = () => {
           value={searchValue}
           id="search"
         />
-        <button className="search__icon-body cursor-pointer">
+        {/* <button className="search__icon-body cursor-pointer">
           <div className="search__icon">
             <Image
               src="/icons/search.svg"
@@ -38,7 +40,10 @@ export const HeaderSearch = () => {
               height={100}
             />
           </div>
-        </button>
+        </button> */}
+        <ButtonMain type="submit" disabled={!searchValue} isIconOnly color='primary' className="size-10 shrink-0">
+          <Search className="size-5 text-white" />
+        </ButtonMain>
       </label>
     </form>
   );

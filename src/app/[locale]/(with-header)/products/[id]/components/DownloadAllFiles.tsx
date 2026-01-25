@@ -1,5 +1,7 @@
 "use client";
 
+import { ButtonMain } from "@/components/ButtonMain";
+
 type Props = {
   files: { url: string; name: string }[];
   label: string;
@@ -18,11 +20,13 @@ export function DownloadAllFiles({ files, label }: Props) {
   };
 
   return (
-    <button
-      onClick={downloadAll}
-      className="actions-body-product__download button button--secondary"
+    <ButtonMain
+      type="button"
+      onPress={downloadAll}
+      color='secondary'
+      className="w-full!"
     >
       {label}: {files.length}
-    </button>
+    </ButtonMain>
   );
 }

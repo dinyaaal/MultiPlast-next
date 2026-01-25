@@ -15,6 +15,7 @@ import Image from "next/image";
 import { setUserInfoData, setUserInfoError } from "@/store/userInfoSlice";
 import { useRouter } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
+import { ButtonMain } from "@/components/ButtonMain";
 
 type Inputs = z.infer<typeof UserInfoSchema>;
 
@@ -272,22 +273,25 @@ export default function Profile() {
                         />
                       )}
                     </div>
-                    <label className="photo-dashboard-contacts__save button">
+                    <ButtonMain as="label" type={'button'} color='primary'>
+
                       {t("upload-photo")}
                       <input
                         type="file"
                         accept="image/jpeg, image/png, image/webp, image/jpg"
                         onChange={handlePhotoChange}
+                        className="w-0 h-0 opacity-0"
                       />
-                    </label>
+                    </ButtonMain>
                     {userInformation?.photos[0]?.id && (
-                      <button
+                      <ButtonMain
                         type="button"
-                        onClick={handleDeletePhoto}
-                        className="dashboard-contacts__delete button button--danger"
+                        onPress={handleDeletePhoto}
+                        className="w-full!"
+                        color={'danger'}
                       >
                         {t("delete-photo")}
-                      </button>
+                      </ButtonMain>
                     )}
                   </div>
                 </div>
@@ -313,9 +317,8 @@ export default function Profile() {
                         }
                         type="text"
                         placeholder=""
-                        className={` input ${
-                          errors.last_name ? "input--error" : ""
-                        }`}
+                        className={` input ${errors.last_name ? "input--error" : ""
+                          }`}
                       />
                     </div>
                   </div>
@@ -334,9 +337,8 @@ export default function Profile() {
                         }
                         type="text"
                         placeholder=""
-                        className={` input ${
-                          errors.first_name ? "input--error" : ""
-                        }`}
+                        className={` input ${errors.first_name ? "input--error" : ""
+                          }`}
                       />
                     </div>
                   </div>
@@ -361,9 +363,8 @@ export default function Profile() {
                         }
                         type="text"
                         placeholder=""
-                        className={` input ${
-                          errors.middle_name ? "input--error" : ""
-                        }`}
+                        className={` input ${errors.middle_name ? "input--error" : ""
+                          }`}
                       />
                     </div>
                   </div>
@@ -381,9 +382,8 @@ export default function Profile() {
                               onChange={handleGenderChange}
                             />
                             <span
-                              className={`custom-radio gender__item ${
-                                errors.gender ? "custom-radio--error" : ""
-                              }`}
+                              className={`custom-radio gender__item ${errors.gender ? "custom-radio--error" : ""
+                                }`}
                             >
                               {t("contact-details.gender-male")}
                             </span>
@@ -399,9 +399,8 @@ export default function Profile() {
                               onChange={handleGenderChange}
                             />
                             <span
-                              className={`custom-radio gender__item ${
-                                errors.gender ? "custom-radio--error" : ""
-                              }`}
+                              className={`custom-radio gender__item ${errors.gender ? "custom-radio--error" : ""
+                                }`}
                             >
                               {t("contact-details.gender-female")}
                             </span>
@@ -420,21 +419,19 @@ export default function Profile() {
                         defaultSelectedKeys={
                           userInformation && userInformation.birthday
                             ? [
-                                userInformation.birthday
-                                  .split(" ")[0]
-                                  .split("-")[2],
-                              ]
+                              userInformation.birthday
+                                .split(" ")[0]
+                                .split("-")[2],
+                            ]
                             : [""]
                         }
                         classNames={{
-                          trigger: `min-h-[45px] text-black px-[12px] bg-[#F8FBFF] rounded-[5px] outline-offset-0 outline-[1px]  ${
-                            errors.birthday_day
-                              ? "outline-[#FF0000]"
-                              : "outline-[#B0BFD7]"
-                          } `,
-                          value: `${
-                            errors.birthday_day ? "text-[#FF0000]" : ""
-                          }`,
+                          trigger: `min-h-[45px] text-black px-[12px] bg-[#F8FBFF] rounded-[5px] outline-offset-0 outline-[1px]  ${errors.birthday_day
+                            ? "outline-[#FF0000]"
+                            : "outline-[#B0BFD7]"
+                            } `,
+                          value: `${errors.birthday_day ? "text-[#FF0000]" : ""
+                            }`,
                           popoverContent:
                             "bg-[#F8FBFF] p-0 rounded-[5px] outline-offset-0 outline-[1px] outline-[#B0BFD7]",
                           listbox: "p-0",
@@ -470,14 +467,12 @@ export default function Profile() {
                             : [""]
                         }
                         classNames={{
-                          trigger: `min-h-[45px] text-black px-[12px] bg-[#F8FBFF] rounded-[5px] outline-offset-0 outline-[1px]  ${
-                            errors.birthday_month
-                              ? "outline-[#FF0000]"
-                              : "outline-[#B0BFD7]"
-                          } `,
-                          value: `${
-                            errors.birthday_month ? "text-[#FF0000]" : ""
-                          }`,
+                          trigger: `min-h-[45px] text-black px-[12px] bg-[#F8FBFF] rounded-[5px] outline-offset-0 outline-[1px]  ${errors.birthday_month
+                            ? "outline-[#FF0000]"
+                            : "outline-[#B0BFD7]"
+                            } `,
+                          value: `${errors.birthday_month ? "text-[#FF0000]" : ""
+                            }`,
                           popoverContent:
                             "bg-[#F8FBFF] p-0 rounded-[5px] outline-offset-0 outline-[1px] outline-[#B0BFD7]",
                           listbox: "p-0",
@@ -513,14 +508,12 @@ export default function Profile() {
                             : [""]
                         }
                         classNames={{
-                          trigger: `min-h-[45px] text-black px-[12px] bg-[#F8FBFF] rounded-[5px] outline-offset-0 outline-[1px]  ${
-                            errors.birthday_year
-                              ? "outline-[#FF0000]"
-                              : "outline-[#B0BFD7]"
-                          } `,
-                          value: `${
-                            errors.birthday_year ? "text-[#FF0000]" : ""
-                          }`,
+                          trigger: `min-h-[45px] text-black px-[12px] bg-[#F8FBFF] rounded-[5px] outline-offset-0 outline-[1px]  ${errors.birthday_year
+                            ? "outline-[#FF0000]"
+                            : "outline-[#B0BFD7]"
+                            } `,
+                          value: `${errors.birthday_year ? "text-[#FF0000]" : ""
+                            }`,
                           popoverContent:
                             "bg-[#F8FBFF] p-0 rounded-[5px] outline-offset-0 outline-[1px] outline-[#B0BFD7]",
                           listbox: "p-0",
@@ -557,9 +550,8 @@ export default function Profile() {
                         type="tel"
                         {...register("phone_number")}
                         placeholder={t("contact-details.phone-number")}
-                        className={` input ${
-                          errors.phone_number ? "input--error" : ""
-                        }`}
+                        className={` input ${errors.phone_number ? "input--error" : ""
+                          }`}
                         value={
                           userInformation?.phone_number
                             ? userInformation?.phone_number
@@ -582,9 +574,8 @@ export default function Profile() {
                         type="email"
                         {...register("email")}
                         placeholder={t("contact-details.email")}
-                        className={` input ${
-                          errors.email ? "input--error" : ""
-                        }`}
+                        className={` input ${errors.email ? "input--error" : ""
+                          }`}
                         value={
                           userInformation?.email ? userInformation?.email : ""
                         }
@@ -606,9 +597,8 @@ export default function Profile() {
                         type="text"
                         {...register("country")}
                         placeholder={t("contact-details.country")}
-                        className={` input ${
-                          errors.country ? "input--error" : ""
-                        }`}
+                        className={` input ${errors.country ? "input--error" : ""
+                          }`}
                         value={
                           userInformation?.country
                             ? userInformation?.country
@@ -629,9 +619,8 @@ export default function Profile() {
                         type="text"
                         placeholder={t("contact-details.region")}
                         {...register("area")}
-                        className={` input ${
-                          errors.area ? "input--error" : ""
-                        }`}
+                        className={` input ${errors.area ? "input--error" : ""
+                          }`}
                         value={
                           userInformation?.area ? userInformation?.area : ""
                         }
@@ -651,9 +640,8 @@ export default function Profile() {
                       <input
                         type="text"
                         placeholder={t("contact-details.city")}
-                        className={` input ${
-                          errors.city ? "input--error" : ""
-                        }`}
+                        className={` input ${errors.city ? "input--error" : ""
+                          }`}
                         {...register("city")}
                         value={
                           userInformation?.city ? userInformation?.city : ""
@@ -673,9 +661,8 @@ export default function Profile() {
                         type="text"
                         placeholder={t("contact-details.address")}
                         {...register("address")}
-                        className={` input ${
-                          errors.address ? "input--error" : ""
-                        }`}
+                        className={` input ${errors.address ? "input--error" : ""
+                          }`}
                         value={
                           userInformation?.address
                             ? userInformation?.address
@@ -697,9 +684,8 @@ export default function Profile() {
                       <input
                         type="text"
                         placeholder={t("contact-details.ig-link")}
-                        className={` input ${
-                          errors.ig_link ? "input--error" : ""
-                        }`}
+                        className={` input ${errors.ig_link ? "input--error" : ""
+                          }`}
                         {...register("ig_link")}
                         value={
                           userInformation?.ig_link
@@ -720,9 +706,8 @@ export default function Profile() {
                       <input
                         type="text"
                         placeholder={t("contact-details.tg-link")}
-                        className={` input ${
-                          errors.tg_link ? "input--error" : ""
-                        }`}
+                        className={` input ${errors.tg_link ? "input--error" : ""
+                          }`}
                         {...register("tg_link")}
                         value={
                           userInformation?.tg_link
@@ -745,9 +730,8 @@ export default function Profile() {
                       <input
                         type="text"
                         placeholder={t("contact-details.fb-link")}
-                        className={` input ${
-                          errors.fb_link ? "input--error" : ""
-                        }`}
+                        className={` input ${errors.fb_link ? "input--error" : ""
+                          }`}
                         {...register("fb_link")}
                         value={
                           userInformation?.fb_link
@@ -768,9 +752,8 @@ export default function Profile() {
                       <input
                         type="text"
                         placeholder={t("contact-details.yt-link")}
-                        className={` input ${
-                          errors.yt_link ? "input--error" : ""
-                        }`}
+                        className={` input ${errors.yt_link ? "input--error" : ""
+                          }`}
                         {...register("yt_link")}
                         value={
                           userInformation?.yt_link
@@ -791,16 +774,19 @@ export default function Profile() {
                 </p>
               </div>
               <div className="block-row">
-                <button
+                <ButtonMain
+                  color='primary'
                   type="submit"
-                  className="data-dashboard-contacts__save button"
+                  className="w-full!"
                 >
                   {t("save")}
                   {isLoadingRequest && <Spinner color="current" size="sm" />}
-                </button>
-                <button
+                </ButtonMain>
+                <ButtonMain
                   type="button"
-                  onClick={(e) => {
+                  color='danger'
+                  className="w-full!"
+                  onPress={(e) => {
                     toast(t("toast.delete-confirm"), {
                       classNames: {
                         actionButton: "bg-red-600! p-4!",
@@ -811,10 +797,9 @@ export default function Profile() {
                       },
                     });
                   }}
-                  className="dashboard-contacts__delete button button--danger"
                 >
                   {t("toast.delete-account")}
-                </button>
+                </ButtonMain>
               </div>
             </div>
           </form>

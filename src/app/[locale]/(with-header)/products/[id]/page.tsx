@@ -14,7 +14,7 @@ import { SocialsNetwork } from "./components/SocialsNetworks";
 import ProductMap from "./components/ProductMap";
 import ProductContacts from "./components/ProductContacts";
 import { DownloadAllFiles } from "./components/DownloadAllFiles";
-import Adverts from "@/components/Products/Adverts";
+import AdvertsWatched from "@/components/Products/AdvertsWatched";
 
 type Params = Promise<{ id: string }>;
 
@@ -87,33 +87,11 @@ export default async function Product(props: { params: Params }) {
                   {new Date(product.created_at).toLocaleDateString("uk-UA")}
                 </span>
               </div>
-              {/* <div className="top-product__body">
-                <div className="top-product__block">
-                  <h2 className="top-product__title title">{product.title}</h2>
-                  <div className="top-product__actions">
-                    <ProductActions product={product} />
-                  </div>
-                </div>
-                <div className="top-product__price price-product">
-                  <div className="price-product__text title">
-                    {product.type_price === "by_arrangement" ? (
-                      <p>{t(`price-types.by_arrangement`)}</p>
-                    ) : (
-                      <>
-                        <p>
-                          {product.price} грн/{getPriceUnit(product.type_price)}
-                        </p>
-                      </>
-                    )}
-                  </div>
-                </div>
-              </div> */}
+
               <div className="top-product__body">
                 <div className="w-full flex flex-col gap-5">
                   <div className="flex w-full justify-between gap-5 ">
-                    <div className="top-product__actions">
-                      <ProductActions product={product} />
-                    </div>
+                    <ProductActions product={product} />
                     <div className="flex flex-col gap-3">
                       <div className="top-product__price price-product">
                         <div className="price-product__text title">
@@ -162,9 +140,8 @@ export default async function Product(props: { params: Params }) {
                     <h2 className="top-product__title title">
                       {product.title}
                     </h2>
-                    <div className="top-product__actions">
-                      <ProductActions product={product} />
-                    </div>
+                    <ProductActions product={product} />
+
                   </div>
                   <div className="top-product__price price-product">
                     <div className="price-product__text title">
@@ -222,15 +199,6 @@ export default async function Product(props: { params: Params }) {
                     </div>
                   )}
                   <div className="location-info-body-product__map">
-                    {/* <iframe
-                        src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d2136.316975280789!2d30.524308983010492!3d50.449978484175695!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40d4ce517313ffff%3A0xa447b8f0aa513128!2z0JPQu9C-0LHRg9GB!5e0!3m2!1sru!2sua!4v1716397247674!5m2!1sru!2sua"
-                        width="600"
-                        height="450"
-                        style={{ border: 0 }}
-                        allowFullScreen
-                        loading="lazy"
-                        referrerPolicy="no-referrer-when-downgrade"
-                      ></iframe> */}
                     <ProductMap
                       latitude={product.latitude}
                       longitude={product.longitude}
@@ -238,17 +206,9 @@ export default async function Product(props: { params: Params }) {
                   </div>
                 </div>
 
-                {/* {isHasUser && (
-                )} */}
+
                 <div className="info-body-product__contact contact-info-body-product">
-                  {/* <div className="contact-info-body-product__title">
-                    Контактна особа:
-                  </div>
-                  <p className="contact-info-body-product__text">
-                    {`${isEmpty(product?.author?.first_name)} ${isEmpty(
-                      product?.author?.last_name
-                    )}`}
-                  </p> */}
+
                   {product.web_site && (
                     <>
                       <div className="contact-info-body-product__title">
@@ -284,7 +244,7 @@ export default async function Product(props: { params: Params }) {
           </div>
         </div>
       </section>
-      <Adverts />
+      <AdvertsWatched />
     </>
   );
 }

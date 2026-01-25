@@ -4,6 +4,7 @@ import { useRouter } from "@/i18n/routing";
 import { useSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
 import { toast } from "sonner";
+import { ButtonMain } from "../ButtonMain";
 
 interface CreateMessageProps {
   id: number;
@@ -72,9 +73,9 @@ export default function CreateMessage({
           {t("createMessage")}
         </button>
       ) : (
-        <button onClick={createMessage} className="button button--secondary">
+        <ButtonMain type="button" onPress={createMessage} color='secondary' variant='bordered' className="">
           {t("createMessage")}
-        </button>
+        </ButtonMain>
       )}
     </>
   );

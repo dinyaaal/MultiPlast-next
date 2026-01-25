@@ -10,6 +10,7 @@ import { NotificationType } from "@/types/types";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
 import { useRouter } from "next/navigation";
+import { ButtonMain } from "@/components/ButtonMain";
 
 export default function Notifications() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -117,9 +118,8 @@ export default function Notifications() {
     <div className="notifications__inner" ref={rootEl}>
       <button
         onClick={(_) => setIsOpen(!isOpen)}
-        className={`btn-icon btn-icon--notify notifications notifications--desktop ${
-          isOpen ? "active" : ""
-        }`}
+        className={`btn-icon btn-icon--notify notifications notifications--desktop ${isOpen ? "active" : ""
+          }`}
       >
         <div className="btn-icon__image">
           <Image src="/icons/bell.svg" alt="Icon" width={100} height={100} />
@@ -141,13 +141,13 @@ export default function Notifications() {
           <div className="body-notifications__items">
             {notificationsList.length > 0 ? (
               <>
-                <button
+                <ButtonMain type={'button'} color='primary'
                   disabled={!notificationsCount}
                   onClick={handleRead}
-                  className="button button--fw"
+                  className="w-full!"
                 >
                   {t("readAll")}
-                </button>
+                </ButtonMain>
 
                 {notificationsList.map((item) =>
                   item.root_id ? (
@@ -171,9 +171,8 @@ export default function Notifications() {
                         </p>
                       </div>
                       <button
-                        className={`size-6 shrink-0 ${
-                          item.is_read == 0 ? "" : "hidden"
-                        }`}
+                        className={`size-6 shrink-0 ${item.is_read == 0 ? "" : "hidden"
+                          }`}
                         onClick={(e) => {
                           e.preventDefault();
                           handleReadItem(item.id);
@@ -210,9 +209,8 @@ export default function Notifications() {
                         </p>
                       </div>
                       <button
-                        className={`size-6 shrink-0 ${
-                          item.is_read == 0 ? "" : "hidden"
-                        }`}
+                        className={`size-6 shrink-0 ${item.is_read == 0 ? "" : "hidden"
+                          }`}
                         onClick={(e) => {
                           e.preventDefault();
                           handleReadItem(item.id);

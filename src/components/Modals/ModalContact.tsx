@@ -15,6 +15,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
+import { ButtonMain } from "../ButtonMain";
 
 type Inputs = z.infer<typeof ContactFormSchema>;
 
@@ -36,30 +37,30 @@ export default function ModalContact() {
 
   const processForm =
     (onClose: () => void): SubmitHandler<Inputs> =>
-    async (data) => {
-      try {
-        const response = await fetch(`/api/contact`, {
-          method: "POST",
-          body: JSON.stringify(data),
-        });
-        if (response.ok) {
-          toast.success(t("toast.success"));
-          reset();
-          onClose(); // ✅ закрываем модалку
-        } else {
-          throw new Error(t("toast.error"));
+      async (data) => {
+        try {
+          const response = await fetch(`/api/contact`, {
+            method: "POST",
+            body: JSON.stringify(data),
+          });
+          if (response.ok) {
+            toast.success(t("toast.success"));
+            reset();
+            onClose(); // ✅ закрываем модалку
+          } else {
+            throw new Error(t("toast.error"));
+          }
+        } catch (error) {
+          console.error(t("toast.error"), error);
+          toast.error(t("toast.error"));
         }
-      } catch (error) {
-        console.error(t("toast.error"), error);
-        toast.error(t("toast.error"));
-      }
-    };
+      };
 
   return (
     <>
-      <button onClick={onOpen} className="support-footer__button button">
+      <ButtonMain onPress={onOpen} color='primary' >
         <span>{t("open-modal")}</span>
-      </button>
+      </ButtonMain>
 
       <Modal
         size="3xl"
@@ -96,26 +97,24 @@ export default function ModalContact() {
                       <input
                         type="email"
                         placeholder={t("form.email")}
-                        className={`input ${
-                          errors.email ? "input--error" : ""
-                        }`}
+                        className={`input ${errors.email ? "input--error" : ""
+                          }`}
                         {...register("email")}
                       />
                     </div>
                     <div className="input-block">
                       <p>{t("form.message")}</p>
                       <textarea
-                        className={`input form-popup__textarea ${
-                          errors.message ? "input--error" : ""
-                        }`}
+                        className={`input form-popup__textarea ${errors.message ? "input--error" : ""
+                          }`}
                         placeholder={t("form.message")}
                         {...register("message")}
                       ></textarea>
                     </div>
                   </div>
-                  <button type="submit" className="form-popup__button button">
+                  <ButtonMain type="submit" color='primary' >
                     {t("form.send")}
-                  </button>
+                  </ButtonMain>
                 </form>
               </ModalBody>
               <ModalFooter></ModalFooter>

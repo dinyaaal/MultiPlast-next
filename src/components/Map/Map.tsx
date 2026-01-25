@@ -40,7 +40,7 @@ export default function Map({ lat, lng, onSelect }: MapProps) {
         apiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string,
         version: "weekly",
         libraries: ["places"],
-        language: mapLocale,
+        language: "uk",
       });
 
       await loader.load();

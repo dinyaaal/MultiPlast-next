@@ -40,7 +40,8 @@ export default function Registration() {
       setIsLoading(true);
       try {
         const res = await fetch("/api/cities", {
-          cache: "force-cache",
+          // cache: "force-cache",
+          next: { revalidate: 86400 },
         });
 
         if (!res.ok) {

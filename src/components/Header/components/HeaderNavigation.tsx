@@ -90,7 +90,13 @@ export default function HeaderNavigation({
                                     "",
                                 }}
                               />
-                              <div className="sub-sub-menu__arrow menu__arrow">
+                              {category.categories
+                                .filter(
+                                  (subCategory) =>
+                                    subCategory.type === "Сировина"
+                                )
+                                .length > 0 && (
+                            <div className="sub-sub-menu__arrow menu__arrow">
                                 <Image
                                   src="/icons/dropdown-arrow.svg"
                                   alt="Icon"
@@ -98,6 +104,8 @@ export default function HeaderNavigation({
                                   height={100}
                                 />
                               </div>
+                                )}
+                            
                             </Link>
                             <ul className="sub-sub-sub-menu__list">
                               {category.categories
@@ -191,7 +199,14 @@ export default function HeaderNavigation({
                                     "",
                                 }}
                               />
-                              <div className="sub-sub-menu__arrow menu__arrow">
+                              
+                                {category.categories
+                                .filter(
+                                  (subCategory) =>
+                                    subCategory.type === "Сировина"
+                                )
+                                .length > 0 && (
+                                  <div className="sub-sub-menu__arrow menu__arrow">
                                 <Image
                                   src="/icons/dropdown-arrow.svg"
                                   alt="Icon"
@@ -199,6 +214,7 @@ export default function HeaderNavigation({
                                   height={100}
                                 />
                               </div>
+                                )}
                             </Link>
                             <ul className="sub-sub-sub-menu__list">
                               {category.categories

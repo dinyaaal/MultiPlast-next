@@ -10,6 +10,7 @@ import {
   UseFormWatch,
 } from "react-hook-form";
 import { useTranslations } from "next-intl";
+import { ButtonMain } from "@/components/ButtonMain";
 
 interface ContactsSectionProps {
   register: UseFormRegister<AdvertisementInputs>;
@@ -92,11 +93,10 @@ export default function ContactsSection({
                         minLength={3}
                         autoComplete="off"
                         type="text"
-                        className={`input ${
-                          errors.contact_data?.[index]?.name
-                            ? "input--error"
-                            : ""
-                        }`}
+                        className={`input ${errors.contact_data?.[index]?.name
+                          ? "input--error"
+                          : ""
+                          }`}
                         {...register(`contact_data.${index}.name`)}
                       />
                     </div>
@@ -107,11 +107,10 @@ export default function ContactsSection({
                       <input
                         autoComplete="off"
                         type="text"
-                        className={`input ${
-                          errors.contact_data?.[index]?.position
-                            ? "input--error"
-                            : ""
-                        }`}
+                        className={`input ${errors.contact_data?.[index]?.position
+                          ? "input--error"
+                          : ""
+                          }`}
                         {...register(`contact_data.${index}.position`)}
                       />
                     </div>
@@ -131,36 +130,38 @@ export default function ContactsSection({
                               {...register(
                                 `contact_data.${index}.phones.${phoneIndex}`
                               )}
-                              className={`input ${
-                                errors.contact_data?.[index]?.phones?.[
-                                  phoneIndex
-                                ]
-                                  ? "input--error"
-                                  : ""
-                              }`}
+                              className={`input ${errors.contact_data?.[index]?.phones?.[
+                                phoneIndex
+                              ]
+                                ? "input--error"
+                                : ""
+                                }`}
                             />
                             {phones.length > 1 && phoneIndex > 0 && (
-                              <Button
+                              <ButtonMain
                                 onPress={() => removePhone(phoneIndex)}
                                 isIconOnly
                                 aria-label="Delete number"
-                                radius="sm"
-                                className="button--danger"
+                                color='danger'
+                              // radius="sm"
+                              // className="button--danger"
                               >
                                 <TrashIcon />
-                              </Button>
+                              </ButtonMain>
                             )}
                           </div>
                         </div>
                       ))}
                     </div>
-                    <button
+                    <ButtonMain
                       type="button"
-                      className="button button--fw button--secondary"
-                      onClick={addPhone}
+                      className="w-full!"
+                      color='secondary'
+                      variant='bordered'
+                      onPress={addPhone}
                     >
                       {t("contacts.add-phone")}
-                    </button>
+                    </ButtonMain>
                   </div>
                 </div>
               </div>
@@ -168,10 +169,12 @@ export default function ContactsSection({
           })}
         </div>
         <div className="grid grid-cols-2 w-full gap-3 items-center">
-          <button
+          <ButtonMain
             type="button"
-            className="button button--fw button--secondary"
-            onClick={() =>
+            className="w-full!"
+            color='secondary'
+            variant='bordered'
+            onPress={() =>
               append({
                 name: "",
                 position: "",
@@ -181,15 +184,16 @@ export default function ContactsSection({
             }
           >
             {t("contacts.add-contact")}
-          </button>
+          </ButtonMain>
           {fields.length > 1 && (
-            <button
+            <ButtonMain
               type="button"
-              onClick={() => remove(fields.length - 1)}
-              className="button button--danger button--fw"
+              onPress={() => remove(fields.length - 1)}
+              className="w-full!"
+              color='danger'
             >
               {t("contacts.delete-contact")}
-            </button>
+            </ButtonMain>
           )}
         </div>
         <p className="contact-dashboard__text">{t("default-info")}</p>

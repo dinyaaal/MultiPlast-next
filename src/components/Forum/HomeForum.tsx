@@ -6,6 +6,7 @@ import { ForumPost } from "@/types/types";
 import { ForumCard } from "./components/ForumCard";
 import { getTranslations } from "next-intl/server";
 import Link from "next/link";
+import { ButtonMain } from "../ButtonMain";
 
 async function getForumPosts(): Promise<ForumPost[] | null> {
   const queryParams = new URLSearchParams();
@@ -68,8 +69,10 @@ export default async function HomeForum() {
             </h3>
             <p className="body-home-forum__text">{t("chatShareExperience")}</p>
           </div>
-          <Link href="/forum" className="body-home-forum__link button">
-            {t("goToForum")}
+          <Link href="/forum" className="">
+            <ButtonMain type={'button'} color='primary' >
+              {t("goToForum")}
+            </ButtonMain>
           </Link>
 
           <div className="body-home-forum__decor">

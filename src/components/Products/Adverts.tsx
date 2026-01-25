@@ -4,6 +4,7 @@ import { MinimalProduct } from "@/types/types";
 import AdvertsSwiper from "./components/AdvertsSwiper";
 import { Link } from "@/i18n/routing";
 import { getTranslations } from "next-intl/server";
+import { ButtonMain } from "../ButtonMain";
 
 async function getProducts(): Promise<MinimalProduct[] | null> {
   const queryParams = new URLSearchParams();
@@ -55,8 +56,11 @@ export default async function Adverts() {
         <div className="adverts__top w-full">
           <h2 className="adverts__title title">{t("title")}</h2>
           <div className="hidden md:block">
-            <Link href="/dashboard/add-advertisement" className=" button">
-              {t("button")}
+            <Link href="/dashboard/add-advertisement" className="">
+              <ButtonMain type={'button'} color='primary' >
+
+                {t("button")}
+              </ButtonMain>
             </Link>
           </div>
         </div>
@@ -64,8 +68,11 @@ export default async function Adverts() {
           <AdvertsSwiper adverts={recent} />
         </div>
         <div className="md:hidden">
-          <Link href="/dashboard/add-advertisement" className=" button">
-            {t("button")}
+          <Link href="/dashboard/add-advertisement" className="">
+            <ButtonMain type={'button'} color='primary' >
+
+              {t("button")}
+            </ButtonMain>
           </Link>
         </div>
       </div>

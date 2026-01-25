@@ -14,6 +14,7 @@ import { ForumCategoryMinimal, ForumPost } from "@/types/types";
 import { Link } from "@/i18n/routing";
 import { useSearchParams } from "next/navigation";
 import { SimpleEditor } from "@/components/tiptap-templates/simple/simple-editor";
+import { ButtonMain } from "@/components/ButtonMain";
 
 type Inputs = z.infer<typeof ForumAddSchema>;
 
@@ -199,9 +200,8 @@ export default function ForumAddBody({ categories }: ForumAddBodyProps) {
           placeholder={t("forumAdd.select-category")}
           disallowEmptySelection
           classNames={{
-            trigger: `min-h-[45px] text-black px-[12px] bg-[#F8FBFF] rounded-[5px] outline-offset-0 outline-[1px]  ${
-              errors.category ? "outline-[#FF0000] " : "outline-[#B0BFD7]"
-            } `,
+            trigger: `min-h-[45px] text-black px-[12px] bg-[#F8FBFF] rounded-[5px] outline-offset-0 outline-[1px]  ${errors.category ? "outline-[#FF0000] " : "outline-[#B0BFD7]"
+              } `,
 
             popoverContent:
               "bg-[#F8FBFF] p-0 rounded-[5px] outline-offset-0 outline-[1px] outline-[#B0BFD7]",
@@ -225,7 +225,7 @@ export default function ForumAddBody({ categories }: ForumAddBodyProps) {
           // defaultSelectedKeys={[advertType]}
           selectedKeys={[watch("category")?.toString() || ""]}
           {...register("category")}
-          // onChange={(selectedKey) => handleChangeType(selectedKey)}
+        // onChange={(selectedKey) => handleChangeType(selectedKey)}
         >
           {categories.map((category) => (
             <SelectItem key={category.id}>{category.title}</SelectItem>
@@ -264,14 +264,12 @@ export default function ForumAddBody({ categories }: ForumAddBodyProps) {
         {t("forumAdd.incognito")}
       </label>
       <div className="add-forum__actions">
-        <button
-          type="submit"
+        <ButtonMain type={'submit'} color='primary'
           disabled={isLoadingRequest}
-          className="add-forum__add button"
         >
           {t("forumAdd.publish")}
           {isLoadingRequest && <Spinner size="sm" />}
-        </button>
+        </ButtonMain>
       </div>
     </form>
   );

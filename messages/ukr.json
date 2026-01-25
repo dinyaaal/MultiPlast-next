@@ -41,8 +41,8 @@
     "mySellAds": "Мої оголошення про продаж",
     "myBuyAds": "Мої оголошення про купівлю",
     "editContactDetails": "Редагувати контактні данні",
-    "changePassword": "Смена пароля",
-    "deleteAccount": "Удалить аккаунт",
+    "changePassword": "Змінити пароль",
+    "deleteAccount": "Видалити акаунт",
     "myMessages": "Мої повідомлення",
     "aboutProject": "Про проект",
     "userAgreement": "Угода користувача",
@@ -90,8 +90,8 @@
       "button": "Фільтри",
       "back": "До товарів",
       "type": "Тип оголошення",
-      "typeSell": "Продажа",
-      "typeBuy": "Покупка",
+      "typeSell": "Продаж",
+      "typeBuy": "Купівля",
       "typeEquipment": "Тип обладнання",
       "typeService": "Послуга",
       "typeRawMaterial": "Сировина",
@@ -119,10 +119,10 @@
     },
     "info": {
       "contacts": {
-        "title": "Представитель",
-        "position": "Должность",
-        "name": "Имя",
-        "phone-number": "Номер телефона"
+        "title": "Представник",
+        "position": "Посада",
+        "name": "Імʼя",
+        "phone-number": "Номер телефону"
       },
       "location": {
         "title": "Місцезнаходження",
@@ -135,6 +135,7 @@
   },
 
   "Forum": {
+    "author": "Автор",
     "breadcrumbsPosition": "Форум",
     "forumTitle": "Форум",
     "forumTab": "Форум",
@@ -333,8 +334,8 @@
 
       "fill-ad-title-sell": "Заповніть оголошення про продаж товару",
       "fill-ad-title-buy": "Заповніть оголошення про покупку товару",
-      "enter-ad-title": "Введіть заголовок обʼяви",
-      "select-ad-type": "Виберіть тип обʼяви",
+      "enter-ad-title": "Введіть заголовок оголошення",
+      "select-ad-type": "Виберіть тип оголошення",
       "select-category": "Виберіть категорію:",
       "select-type": "Виберіть тип сировини:",
       "select-service": "Виберіть послугу:*",
@@ -350,11 +351,11 @@
       "fixed-price-kg": "Ціна за 1 кг:",
       "price-type": "Тип ціни:",
       "enter-volume": "При обʼємі",
-      "enter-price": "Ціна",
+      "enter-price": "Вкажіть ціну",
       "main-photo": "Первая загруженная фотография будет главной",
       "price-without-discount": "Сховати оптову ціну",
       "price-with-discount": "Додати оптову ціну",
-      "enter-title": "Введіть заголовок обʼяви",
+      "enter-title": "Введіть заголовок оголошення",
       "enter-description": "Введіть опис:",
       "upload-photo": "Завантажити фото",
       "photos-uploaded": "фото завантажено",
@@ -508,6 +509,8 @@
   "Toast": {
     "file-size-error": "Файл {file} перевищує {size}МБ",
     "file-type-error": "Неправильний формат файлу",
-    "max-files": "Максимум 10 файлів"
+    "max-files": "Максимум 10 файлів",
+    "link-copied": "Посилання скопійовано",
+    "link-copy-error": "Не вдалося скопіювати посилання"
   }
 }

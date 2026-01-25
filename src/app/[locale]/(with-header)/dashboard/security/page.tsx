@@ -11,6 +11,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { Toaster, toast } from "sonner";
 import { useTranslations } from "next-intl";
+import { ButtonMain } from "@/components/ButtonMain";
 
 type Inputs = z.infer<typeof UserSecuritySchema>;
 
@@ -121,9 +122,8 @@ export default function Profile() {
                   <div className="input-block">
                     <p>{t("old-password")}</p>
                     <div
-                      className={`password input ${
-                        errors.oldPassword ? "input--error" : ""
-                      } `}
+                      className={`password input ${errors.oldPassword ? "input--error" : ""
+                        } `}
                     >
                       <input
                         autoComplete="off"
@@ -135,9 +135,8 @@ export default function Profile() {
 
                       <button
                         type="button"
-                        className={`password__button ${
-                          isVisibleOld ? "active" : ""
-                        }`}
+                        className={`password__button ${isVisibleOld ? "active" : ""
+                          }`}
                         onClick={toggleVisibilityOld}
                       >
                         <svg
@@ -163,9 +162,8 @@ export default function Profile() {
                   <div className="input-block">
                     <p>{t("new-password")}</p>
                     <div
-                      className={`password input ${
-                        errors.newPassword ? "input--error" : ""
-                      } `}
+                      className={`password input ${errors.newPassword ? "input--error" : ""
+                        } `}
                     >
                       <input
                         autoComplete="off"
@@ -177,9 +175,8 @@ export default function Profile() {
 
                       <button
                         type="button"
-                        className={`password__button ${
-                          isVisibleNew ? "active" : ""
-                        }`}
+                        className={`password__button ${isVisibleNew ? "active" : ""
+                          }`}
                         onClick={toggleVisibilityNew}
                       >
                         <svg
@@ -205,9 +202,8 @@ export default function Profile() {
                   <div className="input-block">
                     <p>{t("repeat-password")}</p>
                     <div
-                      className={`password input ${
-                        errors.repeatPassword ? "input--error" : ""
-                      } `}
+                      className={`password input ${errors.repeatPassword ? "input--error" : ""
+                        } `}
                     >
                       <input
                         autoComplete="off"
@@ -219,9 +215,8 @@ export default function Profile() {
 
                       <button
                         type="button"
-                        className={`password__button ${
-                          isVisibleRepeat ? "active" : ""
-                        }`}
+                        className={`password__button ${isVisibleRepeat ? "active" : ""
+                          }`}
                         onClick={toggleVisibilityRepeat}
                       >
                         <svg
@@ -247,16 +242,15 @@ export default function Profile() {
                   <p>{t("min-length")}</p>
                 </div>
                 <div className="password-dashboard-contacts__actions">
-                  <button
+                  <ButtonMain
                     type="submit"
-                    className="password-dashboard-contacts__save button"
+                    className="w-full! max-w-[300px]"
+                    color='primary'
                   >
                     {t("save")}
                     {isLoadingRequest && <Spinner color="current" size="sm" />}
-                  </button>
-                  {/* <button className="password-dashboard-contacts__cancel">
-                      Відміна
-                    </button> */}
+                  </ButtonMain>
+
                 </div>
               </div>
             </div>

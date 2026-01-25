@@ -15,6 +15,7 @@ import { toast } from "sonner";
 import { useRouter } from "@/i18n/routing";
 import ContactsSection from "./ContactsSection";
 import AdvertisementForm from "./AdvertisementForm";
+import { ButtonMain } from "@/components/ButtonMain";
 
 interface SellProps {
   categories: Category[];
@@ -327,18 +328,21 @@ export default function Advertisement({ categories }: SellProps) {
           remove={remove}
         />
         <div className="dashboard__actions actions-dashboard">
-          <button
+          <ButtonMain
             type="submit"
             disabled={isLoadingRequest}
-            className="actions-dashboard__save button"
+            className="w-full!"
+            color='primary'
           >
             {t("save-publish")}
             {isLoadingRequest && <Spinner color="current" size="sm" />}
-          </button>
+          </ButtonMain>
           {editId && product && (
-            <button
+            <ButtonMain
               type="button"
-              onClick={(e) => {
+              className="w-full!"
+              color='danger'
+              onPress={(e: any) => {
                 e.preventDefault();
                 toast(t("toast.delete-confirm"), {
                   classNames: {
@@ -350,10 +354,10 @@ export default function Advertisement({ categories }: SellProps) {
                   },
                 });
               }}
-              className="actions-dashboard__delete button button--secondary"
+
             >
               {t("delete-ad")}
-            </button>
+            </ButtonMain>
           )}
         </div>
       </form>
