@@ -342,8 +342,7 @@ export default function Advertisement({ categories }: SellProps) {
               type="button"
               className="w-full!"
               color='danger'
-              onPress={(e: any) => {
-                e.preventDefault();
+              onPress={() => {
                 toast(t("toast.delete-confirm"), {
                   classNames: {
                     actionButton: "bg-red-600 p-4",

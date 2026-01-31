@@ -144,7 +144,7 @@ export default function ChatTop({ chat }: { chat: ChatItemData }) {
             </div>
 
             <div className="user-chat__name">
-              {chatUser?.first_name} {chatUser?.last_name}
+              {chatUser?.first_name}
             </div>
           </div>
         </div>

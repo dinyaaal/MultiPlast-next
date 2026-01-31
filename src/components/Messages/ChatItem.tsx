@@ -123,9 +123,8 @@ export const ChatItem: React.FC<ChatItemProps> = ({ chat, onDelete }) => {
     <>
       <Link
         href={`/messages?chatId=${chat.id}`}
-        className={`block-chat__item item-block-chat ${
-          isActive ? "active" : ""
-        }`}
+        className={`block-chat__item item-block-chat ${isActive ? "active" : ""
+          }`}
       >
         <div className="item-block-chat__message">
           <div className="item-block-chat__image">
@@ -152,7 +151,7 @@ export const ChatItem: React.FC<ChatItemProps> = ({ chat, onDelete }) => {
             <div className="item-block-chat__info">
               <div className="item-block-chat__block">
                 <div className="item-block-chat__name">
-                  {`${chatUser?.first_name} ${chatUser?.last_name}`}
+                  {`${chatUser?.first_name}`}
                 </div>
                 <span className="item-block-chat__date">{formattedDate}</span>
               </div>

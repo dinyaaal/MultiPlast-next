@@ -51,7 +51,7 @@ export const ForumComment: React.FC<ForumCommentProps> = ({
   const handleReplyClick = () => {
     const replyData = {
       id: comment.id,
-      name: `${comment.author.first_name} ${comment.author.last_name}`,
+      name: `${comment.author.first_name} `,
       text: comment.text,
     };
     onReply(replyData);
@@ -179,9 +179,7 @@ export const ForumComment: React.FC<ForumCommentProps> = ({
             </div>
           )}
         </div>
-        <div className="user-chat__name">{`${comment.author.first_name} ${
-          comment.author.last_name || ""
-        }`}</div>
+        <div className="user-chat__name">{`${comment.author.first_name}`}</div>
       </div>
       <div className="comment__block">
         <div className="comment__body body-comment">
@@ -276,9 +274,8 @@ export const ForumComment: React.FC<ForumCommentProps> = ({
           <>
             <button
               onClick={toggleAnswers}
-              className={`comment-show-replies ${
-                isAnswersOpen ? "active" : ""
-              }`}
+              className={`comment-show-replies ${isAnswersOpen ? "active" : ""
+                }`}
             >
               <svg
                 className="comment-show-replies__arrow"
@@ -299,9 +296,8 @@ export const ForumComment: React.FC<ForumCommentProps> = ({
             </button>
             {isAnswersOpen && replies && (
               <div
-                className={`comment__answers answers-comment ${
-                  !isAnswer ? "answers-comment--main" : ""
-                }`}
+                className={`comment__answers answers-comment ${!isAnswer ? "answers-comment--main" : ""
+                  }`}
               >
                 {replies.map((reply) => (
                   <ForumComment
