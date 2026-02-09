@@ -147,6 +147,7 @@ export default function Advertisement({ categories }: SellProps) {
     const formData = new FormData();
 
     const {
+      advertType,
       address,
       city,
       area,
@@ -231,7 +232,7 @@ export default function Advertisement({ categories }: SellProps) {
     formData.append("longitude", longitude);
     if (text) formData.append("text", text);
     if (web_site) formData.append("web_site", web_site);
-    formData.append("type_of_product", data.advertType);
+    formData.append("type_of_product", advertType);
 
     formData.append(
       "type_price",

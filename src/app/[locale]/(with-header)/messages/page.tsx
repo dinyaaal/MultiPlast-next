@@ -16,6 +16,7 @@ import ChatBottom from "./components/ChatBottom";
 import ChatTop from "./components/ChatTop";
 import { useSearchParams } from "next/navigation";
 import ChatItems from "@/components/Messages/ChatItems";
+import { createEchoInstance } from "@/lib/echo";
 
 export default function Page() {
   const t = useTranslations("Messages");
@@ -126,38 +127,79 @@ export default function Page() {
     }
   }, [messages]);
 
+  // useEffect(() => {
+  //   if (!token || !id) return;
+
+  //   const interval = setInterval(async () => {
+  //     try {
+  //       const response = await fetch(`/api/chats/messages/get`, {
+  //         method: "GET",
+  //         headers: {
+  //           Authorization: `Bearer ${token}`,
+  //           id: id.toString(),
+  //         },
+  //       });
+  //       if (!response.ok) throw new Error("Network response was not ok");
+  //       const data = await response.json();
+  //       const fetchedMessages: IMessageItem[] = data.data || [];
+
+  //       // Получаем ID последнего сообщения
+  //       const lastFetchedId = fetchedMessages[fetchedMessages.length - 1]?.id;
+  //       const lastCurrentId = messages[messages.length - 1]?.id;
+
+  //       // Обновляем только если есть новые
+  //       if (lastFetchedId && lastFetchedId !== lastCurrentId) {
+  //         setMessages(fetchedMessages);
+  //       }
+  //     } catch (error) {
+  //       console.error("Error fetching messages:", error);
+  //       toast.error(t("toast.getError"));
+  //     }
+  //   }, 10000);
+
+  //   return () => clearInterval(interval);
+  // }, [token, id, messages, t]);
+
   useEffect(() => {
-    if (!token || !id) return;
+    // 1. Проверяем наличие условий для подключения
+    if (!token || !id || !session?.user.id) return;
 
-    const interval = setInterval(async () => {
-      try {
-        const response = await fetch(`/api/chats/messages/get`, {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            id: id.toString(),
-          },
+    // 2. Инициализируем Echo (Пункт 3)
+    const echo = createEchoInstance(token);
+    if (!echo) return;
+
+    // 3. Подписка на приватный канал (Пункт 5)
+    // В Laravel Echo метод .private() сам подставит префикс 'private-'
+    const channelName = `chat.${id}`;
+
+    const channel = echo.private(channelName)
+      .listen('.chat.message.sent', (e: { message: IMessageItem }) => {
+        // Пункт 6: Слушаем событие
+        const newMessage = e.message;
+
+        // Пункт 9: Если автор сообщения — мы, игнорируем (уже добавлено через handleSend)
+        if (newMessage.from_user.id === session.user.id) return;
+
+        // Пункт 7: Добавляем сообщение в список
+        setMessages((prev) => {
+          // Проверка на дубликаты (на всякий случай)
+          if (prev.some(m => m.id === newMessage.id)) return prev;
+          return [...prev, newMessage];
         });
-        if (!response.ok) throw new Error("Network response was not ok");
-        const data = await response.json();
-        const fetchedMessages: IMessageItem[] = data.data || [];
-
-        // Получаем ID последнего сообщения
-        const lastFetchedId = fetchedMessages[fetchedMessages.length - 1]?.id;
-        const lastCurrentId = messages[messages.length - 1]?.id;
-
-        // Обновляем только если есть новые
-        if (lastFetchedId && lastFetchedId !== lastCurrentId) {
-          setMessages(fetchedMessages);
+      })
+      .error((error: any) => {
+        // Пункт 10: Обработка 401/403
+        if (error.status === 401 || error.status === 403) {
+          console.error("Broadcasting auth failed. Token might be expired.");
+          // Здесь можно вызвать обновление сессии или редирект
         }
-      } catch (error) {
-        console.error("Error fetching messages:", error);
-        toast.error(t("toast.getError"));
-      }
-    }, 10000);
+      });
 
-    return () => clearInterval(interval);
-  }, [token, id, messages, t]);
+    // Пункт 8: Обязательная отписка при смене chatId или unmount
+    return () => {
+      echo.leave(channelName);
+    };
+  }, [id, token, session?.user.id]);
 
   const chatReason = useMemo(() => {
     if (chat?.reason_meta) {
@@ -200,9 +242,8 @@ export default function Page() {
                     className="body-chat__block block-body-chat"
                   >
                     <div
-                      className={`block-body-chat__wrapper ${
-                        isOpenReason ? "!pt-30" : ""
-                      }`}
+                      className={`block-body-chat__wrapper ${isOpenReason ? "!pt-30" : ""
+                        }`}
                     >
                       {chat.reasonable && chatReasonLink && isOpenReason && (
                         <div className="block-body-chat__info">

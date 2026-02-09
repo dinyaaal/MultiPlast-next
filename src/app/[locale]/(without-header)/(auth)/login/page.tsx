@@ -8,7 +8,7 @@ import Image from "next/image";
 import { Link } from "@/i18n/routing";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { toast } from "sonner";
@@ -20,7 +20,6 @@ export default function Login() {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get("callbackUrl") || "./";
   const {
     register,
     handleSubmit,
@@ -113,28 +112,28 @@ export default function Login() {
           <div className="input-block">
             <p>{t("registration-email")}</p>
             <input
+              value={watch("email") || ""}
               type="email"
               placeholder={t("registration-email")}
-              className={`form-login__input input ${
-                errors.email ? "input--error" : ""
-              }`}
+              className={`form-login__input input ${errors.email ? "input--error" : ""
+                }`}
               {...register("email")}
             />
           </div>
           <div className="input-block">
             <p>{t("registration-password")}</p>
             <input
+              value={watch("password") || ""}
               type="password"
               placeholder={t("registration-password")}
-              className={`form-login__input input ${
-                errors.password ? "input--error" : ""
-              }`}
+              className={`form-login__input input ${errors.password ? "input--error" : ""
+                }`}
               {...register("password")}
             />
           </div>
         </div>
         <div className="form-login__actions">
-          <label className="check">
+          {/* <label className="check">
             <input
               {...register("remember")}
               type="checkbox"
@@ -143,7 +142,7 @@ export default function Login() {
             />
             <span className="custom-checkbox"></span>
             {t("login-checkbox")}
-          </label>
+          </label> */}
           <Link href="/forgot-password" className="form-login__forget link">
             {t("login-forgot")}
           </Link>

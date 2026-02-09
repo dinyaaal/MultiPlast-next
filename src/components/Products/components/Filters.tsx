@@ -32,21 +32,6 @@ export const Filters: React.FC<FiltersProps> = ({
   );
   const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
 
-  const handleCheckboxChange = (subCategoryId: string) => {
-    setSelectedSubCategories((prev) =>
-      prev.includes(subCategoryId)
-        ? prev.filter((id) => id !== subCategoryId)
-        : [...prev, subCategoryId]
-    );
-  };
-
-  const handleOptionChange = (value: string) => {
-    setSelectedOptions((prev) =>
-      prev.includes(value)
-        ? prev.filter((id) => id !== value)
-        : [...prev, value]
-    );
-  };
 
   useEffect(() => {
     setSelectedSubCategories([]);
@@ -72,9 +57,7 @@ export const Filters: React.FC<FiltersProps> = ({
   };
 
   const handleConfirm = () => {
-    console.log("Выбранная категория:", selectedCategory);
-    console.log("Выбранные подкатегории:", selectedSubCategories);
-    console.log("Выбранные опции:", selectedOptions);
+
     onSelectionConfirm(
       selectedCategory,
       selectedSubCategories,
@@ -213,8 +196,8 @@ export const Filters: React.FC<FiltersProps> = ({
                 }}
                 indicator={<ChevronDownIcon />}
                 key="1"
-                aria-label="Тип оголошення"
-                title="Тип оголошення"
+                aria-label={t("type")}
+                title={t("type")}
               >
                 <CheckboxGroup
                   value={selectedOptions}
@@ -239,8 +222,8 @@ export const Filters: React.FC<FiltersProps> = ({
                 }}
                 indicator={<ChevronDownIcon />}
                 key="2"
-                aria-label="Категория"
-                title="Категория"
+                aria-label={t("category")}
+                title={t("category")}
               >
                 <RadioGroup
                   value={selectedCategory}
