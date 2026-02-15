@@ -5,7 +5,7 @@ export async function GET(request: NextRequest) {
   const token = url.searchParams.get("token");
 
   try {
-    const res = await fetch(`http://176.118.167.92/api/favorites`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/favorites`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,

@@ -161,43 +161,46 @@ export default function Page() {
   // }, [token, id, messages, t]);
 
   useEffect(() => {
-    // 1. Проверяем наличие условий для подключения
     if (!token || !id || !session?.user.id) return;
 
-    // 2. Инициализируем Echo (Пункт 3)
     const echo = createEchoInstance(token);
     if (!echo) return;
 
-    // 3. Подписка на приватный канал (Пункт 5)
-    // В Laravel Echo метод .private() сам подставит префикс 'private-'
     const channelName = `chat.${id}`;
 
     const channel = echo.private(channelName)
       .listen('.chat.message.sent', (e: { message: IMessageItem }) => {
-        // Пункт 6: Слушаем событие
         const newMessage = e.message;
 
-        // Пункт 9: Если автор сообщения — мы, игнорируем (уже добавлено через handleSend)
         if (newMessage.from_user.id === session.user.id) return;
 
-        // Пункт 7: Добавляем сообщение в список
         setMessages((prev) => {
-          // Проверка на дубликаты (на всякий случай)
           if (prev.some(m => m.id === newMessage.id)) return prev;
           return [...prev, newMessage];
         });
+
+        // ВАЖНО: Обновляем lastSentMsg, чтобы список чатов слева 
+        // увидел новое сообщение от собеседника (Пункт 7)
+        setLastSentMsg({
+          chatId: Number(id),
+          content: newMessage.content,
+          files: newMessage.files || [],
+        });
       })
       .error((error: any) => {
-        // Пункт 10: Обработка 401/403
         if (error.status === 401 || error.status === 403) {
-          console.error("Broadcasting auth failed. Token might be expired.");
-          // Здесь можно вызвать обновление сессии или редирект
+          console.error("Broadcasting auth failed.");
+          toast.error("Сессия устарела, обновите страницу");
         }
       });
 
-    // Пункт 8: Обязательная отписка при смене chatId или unmount
     return () => {
+      console.log(`Leaving channel: ${channelName}`);
       echo.leave(channelName);
+
+      // Пункт 8: Если ты хочешь ПОЛНОСТЬЮ закрыть соединение при смене чата, 
+      // чтобы не плодить WebSocket-подключения:
+      echo.disconnect();
     };
   }, [id, token, session?.user.id]);
 

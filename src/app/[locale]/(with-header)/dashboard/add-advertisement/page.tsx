@@ -2,13 +2,13 @@ import React from "react";
 import Advertisement from "./components/advertisement";
 
 const fetchCategories = async () => {
-  const res = await fetch(`http://176.118.167.92/api/categories`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/categories`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
     },
     // cache: "force-cache",
-    next: { revalidate: 86400  },
+    next: { revalidate: 86400 },
   });
 
   if (!res.ok) {

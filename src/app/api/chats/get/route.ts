@@ -7,7 +7,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
   try {
-    const res = await fetch(`http://176.118.167.92/api/chats`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/chats`, {
       method: "GET",
       headers: {
         Authorization: `${authHeader}`,

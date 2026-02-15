@@ -9,7 +9,7 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const res = await fetch(`http://176.118.167.92/api/chats/block/${id}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/chats/block/${id}`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,

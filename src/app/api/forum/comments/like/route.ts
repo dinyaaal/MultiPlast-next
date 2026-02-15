@@ -19,7 +19,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const res = await fetch(`http://176.118.167.92/api/forums/comments/like`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/forums/comments/like`, {
       method: "POST",
       headers: {
         Authorization: `${token}`,

@@ -5,7 +5,7 @@ export async function GET(req: NextRequest) {
     const { searchParams } = new URL(req.url);
     const queryString = searchParams.toString();
 
-    const res = await fetch(`http://176.118.167.92/api/forums?${queryString}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/forums?${queryString}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

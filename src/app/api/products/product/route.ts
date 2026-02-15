@@ -8,7 +8,7 @@ export async function GET(request: NextRequest) {
   console.log("token", token);
 
   try {
-    const res = await fetch(`http://176.118.167.92/api/products/${id}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/products/${id}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

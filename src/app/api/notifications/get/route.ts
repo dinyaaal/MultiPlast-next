@@ -8,7 +8,7 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const res = await fetch(`http://176.118.167.92/api/notifications`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/notifications`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,

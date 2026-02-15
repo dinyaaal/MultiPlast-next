@@ -10,7 +10,7 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const res = await fetch(`http://176.118.167.92/api/chats/report/${id}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/chats/report/${id}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

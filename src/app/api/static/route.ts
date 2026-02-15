@@ -5,12 +5,12 @@ export async function GET(request: NextRequest) {
 
   try {
     const res = id
-      ? await fetch(`http://176.118.167.92/api/static-data/${id}`, {
-          method: "GET",
-        })
-      : await fetch(`http://176.118.167.92/api/static-data`, {
-          method: "GET",
-        });
+      ? await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/static-data/${id}`, {
+        method: "GET",
+      })
+      : await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/static-data`, {
+        method: "GET",
+      });
 
     if (!res.ok) {
       throw new Error("Network response was not ok");

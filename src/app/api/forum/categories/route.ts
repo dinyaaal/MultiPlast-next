@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
   try {
-    const res = await fetch(`http://176.118.167.92/api/forums/subjects`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/forums/subjects`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

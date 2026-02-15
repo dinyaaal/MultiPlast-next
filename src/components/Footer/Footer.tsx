@@ -12,7 +12,7 @@ export default async function Footer() {
 
   // TODO Надо вывести инфу с запроса
   // async function getStaticData() {
-  //   const res = await fetch("http://176.118.167.92/api/static-data").then((res) => {
+  //   const res = await fetch("${process.env.NEXT_PUBLIC_BACKEND_URL}/api/static-data").then((res) => {
   //     console.log(res);
   //   });
   // }

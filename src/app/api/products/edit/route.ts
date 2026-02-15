@@ -11,7 +11,7 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const res = await fetch(`http://176.118.167.92/api/products/${id}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/products/${id}`, {
       method: "POST",
       headers: {
         Authorization: `${authHeader}`,

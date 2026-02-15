@@ -11,7 +11,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const res = await fetch(`http://176.118.167.92/api/favorites/add/${id}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/favorites/add/${id}`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,

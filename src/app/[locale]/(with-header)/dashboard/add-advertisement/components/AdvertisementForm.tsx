@@ -81,6 +81,7 @@ export default function AdvertisementForm({
   const searchCategory = searchParams.get("category");
   const searchType = searchParams.get("type");
   const searchSubCategory = searchParams.get("subCategory");
+  const searchPolymer = searchParams.get("polymer");
   // const MAX_FILE_SIZE_MB = 100;
   const tToast = useTranslations("Toast");
   useEffect(() => {
@@ -154,6 +155,7 @@ export default function AdvertisementForm({
     setValue("mainCategory", newCategoryId);
     setValue("advertType", newAdvertType);
     setValue("type", searchSubCategory || "");
+    setValue("polymer", searchPolymer || "");
   }, [searchCategory, searchSubCategory, searchType]);
 
   // Следим за выбранной категорией
@@ -405,10 +407,11 @@ export default function AdvertisementForm({
     setValue("polymer", "");
     setCategoryId(Number(newCategoryId));
     setValue("mainCategory", newCategoryId);
-
+    setValue("polymer", "");
     updateSearchParams({
       category: newCategoryId,
       subCategory: null,
+      polymer: null,
     });
 
     // if (Number(e.target.value) === 1 || Number(e.target.value) === 2) {
@@ -420,7 +423,14 @@ export default function AdvertisementForm({
 
   const handleTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setValue("type", e.target.value); // обновляем react-hook-form
+    // обновляем только advertType в URL
+
     updateSearchParams({ subCategory: e.target.value }); // обновляем только advertType в URL
+  };
+
+  const handlePolymerChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setValue("polymer", e.target.value); // обновляем react-hook-form
+    updateSearchParams({ polymer: e.target.value }); // обновляем только advertType в URL
   };
 
   // const handleCheckboxChange = (checkbox: "arrangement" | "fixed") => {
@@ -672,7 +682,8 @@ export default function AdvertisementForm({
                       //     ?.id?.toString() || "",
                       // ]}
                       selectedKeys={[watch("polymer")?.toString() || ""]}
-                      {...register("polymer")}
+                      // {...register("polymer")}
+                      onChange={handlePolymerChange}
                     // onChange={handlePolymerChange}
                     >
                       {categories

@@ -10,7 +10,7 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const res = await fetch(`http://176.118.167.92/api/forums/comments`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/forums/comments`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,

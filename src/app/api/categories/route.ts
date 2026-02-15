@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
   try {
-    const res = await fetch(`http://176.118.167.92/api/categories`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/categories`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

@@ -12,7 +12,7 @@ export async function POST(request: NextRequest) {
 
   try {
     const res = await fetch(
-      `http://176.118.167.92/api/chats/${id}/send-message`,
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/chats/${id}/send-message`,
       {
         method: "POST",
         headers: {

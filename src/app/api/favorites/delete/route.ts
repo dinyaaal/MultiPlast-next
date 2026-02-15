@@ -12,7 +12,7 @@ export async function POST(request: NextRequest) {
     }
 
     const res = await fetch(
-      `http://176.118.167.92/api/favorites/remove/${id}`,
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/favorites/remove/${id}`,
       {
         method: "POST",
         headers: {

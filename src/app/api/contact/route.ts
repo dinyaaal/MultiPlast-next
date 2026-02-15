@@ -5,7 +5,7 @@ export async function POST(request: NextRequest) {
   const body = await request.json();
 
   try {
-    const res = await fetch(`http://176.118.167.92/api/contact-us`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/contact-us`, {
       method: "POST",
 
       body: JSON.stringify(body),

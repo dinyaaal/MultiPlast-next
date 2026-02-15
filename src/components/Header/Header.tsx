@@ -17,7 +17,7 @@ import HeaderNavigation from "./components/HeaderNavigation";
 // }
 
 const fetchCategories = async (): Promise<Category[]> => {
-  const res = await fetch(`http://176.118.167.92/api/categories`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/categories`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",

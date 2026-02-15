@@ -7,7 +7,7 @@ const verifyGoogleToken = async (idToken: string, email: string) => {
   console.log("Sending Google token verification request...");
   console.log("ID Token:", idToken);
   console.log("Email:", email);
-  const response = await fetch("http://176.118.167.92/api/auth/google", {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/google`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -41,7 +41,7 @@ export const authOptions: AuthOptions = {
         if (!credentials) return null;
 
         try {
-          const res = await fetch("http://176.118.167.92/api/auth/login", {
+          const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/login`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({

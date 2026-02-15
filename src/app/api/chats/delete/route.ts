@@ -9,7 +9,7 @@ export async function DELETE(request: NextRequest) {
   }
 
   try {
-    const res = await fetch(`http://176.118.167.92/api/chats/${id}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/chats/${id}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${token}`,
