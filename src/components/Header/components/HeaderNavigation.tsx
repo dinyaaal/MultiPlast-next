@@ -19,7 +19,7 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { ChevronRightIcon } from "lucide-react";
+import { ChevronDownIcon, ChevronRightIcon } from "lucide-react";
 
 export default function HeaderNavigation({
   categories,
@@ -306,8 +306,8 @@ export default function HeaderNavigation({
           <DropdownMenu >
             <DropdownMenuTrigger asChild >
               <li className="menu__item">
-                <Link
-                  href="/dashboard/add-advertisement"
+                <div
+                  // href="/dashboard/add-advertisement"
                   className={`menu__link ${pathname === "/dashboard/add-advertisement" ? "active" : ""
                     }`}
                 >
@@ -315,16 +315,17 @@ export default function HeaderNavigation({
                     {tNavigation("addAdvertisement")}
                   </span>
                   {categories.length > 0 && (
-                    <div className="main-menu__arrow menu__arrow">
-                      <Image
-                        src="/icons/dropdown-arrow.svg"
-                        alt="Icon"
-                        width={100}
-                        height={100}
-                      />
-                    </div>
+                    <ChevronDownIcon className="menu__link-arrow" />
+                    // <div className="main-menu__arrow menu__arrow">
+                    //   <Image
+                    //     src="/icons/dropdown-arrow.svg"
+                    //     alt="Icon"
+                    //     width={100}
+                    //     height={100}
+                    //   />
+                    // </div>
                   )}
-                </Link>
+                </div>
 
               </li>
 

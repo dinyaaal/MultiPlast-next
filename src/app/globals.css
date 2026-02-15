@@ -1242,7 +1242,7 @@ button:disabled {
 }
 
 .menu__link {
-  @apply relative text-center flex items-center  gap-[5px] transition-all duration-300 hover:text-blueColor;
+  @apply cursor-pointer relative text-center flex items-center  gap-[5px] transition-all duration-300 hover:text-blueColor;
 }
 
 .menu__link.active {
