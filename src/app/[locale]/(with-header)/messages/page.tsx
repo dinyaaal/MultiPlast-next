@@ -164,6 +164,7 @@ export default function Page() {
     if (!token || !id || !session?.user.id) return;
 
     const echo = createEchoInstance(token);
+    console.log("Echo instance:", echo);
     if (!echo) return;
 
     const channelName = `chat.${id}`;
@@ -171,6 +172,7 @@ export default function Page() {
     const channel = echo.private(channelName)
       .listen('.chat.message.sent', (e: { message: IMessageItem }) => {
         const newMessage = e.message;
+        console.log("New message:", newMessage);
 
         if (newMessage.from_user.id === session.user.id) return;
 

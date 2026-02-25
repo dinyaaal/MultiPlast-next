@@ -5,11 +5,11 @@ import Pusher from 'pusher-js';
 declare global {
     interface Window {
         Pusher: typeof Pusher;
-        Echo: Echo<'reverb'>;
+        Echo: Echo<'pusher'>;
     }
 }
 
-type BroadcasterType = 'reverb';
+// type BroadcasterType = 'reverb';
 
 export const createEchoInstance = (token?: string) => {
     if (typeof window === 'undefined') return null;
@@ -24,15 +24,18 @@ export const createEchoInstance = (token?: string) => {
     // Теперь ошибки "Property Pusher does not exist" не будет
     window.Pusher = Pusher;
 
-    return new Echo<BroadcasterType>({
-        broadcaster: 'reverb',
+    return new Echo<'pusher'>({
+        broadcaster: 'pusher',
         key: appKey,
+
+        cluster: 'mt1',
+
         wsHost: host,
         wsPort: Number(port),
         wssPort: Number(port),
         forceTLS: false,
         enabledTransports: ['ws', 'wss'],
-        // authEndpoint: `${process.env.NEXT_PUBLIC_API_URL}/broadcasting/auth`,
+        authEndpoint: `${process.env.NEXT_PUBLIC_API_URL}/broadcasting/auth`,
         auth: {
             headers: {
                 Authorization: `Bearer ${token}`,

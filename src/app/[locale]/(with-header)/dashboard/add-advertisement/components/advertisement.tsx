@@ -303,6 +303,7 @@ export default function Advertisement({ categories }: SellProps) {
     );
   }
 
+
   return (
     <>
       <form className="dashboard__form" onSubmit={handleSubmit(processForm)}>

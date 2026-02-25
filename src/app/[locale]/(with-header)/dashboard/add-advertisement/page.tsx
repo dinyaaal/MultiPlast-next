@@ -1,4 +1,3 @@
-import React from "react";
 import Advertisement from "./components/advertisement";
 
 const fetchCategories = async () => {
