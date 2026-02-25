@@ -35,7 +35,7 @@ export const createEchoInstance = (token?: string) => {
         wssPort: Number(port),
         forceTLS: false,
         enabledTransports: ['ws', 'wss'],
-        authEndpoint: `${process.env.NEXT_PUBLIC_API_URL}/broadcasting/auth`,
+        authEndpoint: `${process.env.NEXT_PUBLIC_BACKEND_URL}/broadcasting/auth`,
         auth: {
             headers: {
                 Authorization: `Bearer ${token}`,

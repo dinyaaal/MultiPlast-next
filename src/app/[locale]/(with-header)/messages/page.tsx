@@ -108,7 +108,6 @@ export default function Page() {
       content: message.text,
       files: message.files,
     });
-    console.log(message);
   };
 
   // --- группировка сообщений по датам ---
