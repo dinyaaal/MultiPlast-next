@@ -17,7 +17,7 @@ export const createEchoInstance = (token?: string) => {
     const appKey = process.env.NEXT_PUBLIC_WS_KEY;
     const host = process.env.NEXT_PUBLIC_WS_HOST;
     const port = process.env.NEXT_PUBLIC_WS_PORT;
-    const scheme = process.env.NEXT_PUBLIC_WS_SCHEME;
+    const scheme = process.env.NEXT_PUBLIC_WS_SCHEME || 'https';
 
     if (!appKey) return null;
 
@@ -31,9 +31,9 @@ export const createEchoInstance = (token?: string) => {
         cluster: 'mt1',
 
         wsHost: host,
-        wsPort: Number(port),
-        wssPort: Number(port),
-        forceTLS: false,
+        // wsPort: Number(port),
+        // wssPort: Number(port),
+        forceTLS: scheme === 'https',
         enabledTransports: ['ws', 'wss'],
         authEndpoint: `${process.env.NEXT_PUBLIC_BACKEND_URL}/broadcasting/auth`,
         auth: {

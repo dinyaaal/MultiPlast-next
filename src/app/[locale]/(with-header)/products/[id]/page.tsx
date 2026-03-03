@@ -70,6 +70,7 @@ export default async function Product(props: { params: Params }) {
   const crumbs = [
     { label: tb("home"), href: "/" },
     { label: tb("products"), href: "/products" },
+
     { label: product.title },
   ];
 
