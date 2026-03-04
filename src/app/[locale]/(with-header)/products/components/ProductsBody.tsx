@@ -3,7 +3,7 @@ import { Pagination } from "@heroui/pagination";
 import { ProductCard } from "@/components/Products/components/ProductCard";
 import { Category, MinimalProduct, Page } from "@/types/types";
 
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Filters } from "@/components/Products/components/Filters";
 import { useSearchParams } from "next/navigation";
 import { Spinner } from "@heroui/react";
@@ -23,46 +23,39 @@ export function ProductsBody({ categories }: ProductsProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const pageFromUrl = Number(searchParams.get("page")) || 1;
+  // const pageFromUrl = Number(searchParams.get("page")) || 1;
 
-  const [currentPage, setCurrentPage] = useState<number>(pageFromUrl);
+  // const [currentPage, setCurrentPage] = useState<number>(pageFromUrl);
   // const [currentPage, setCurrentPage] = useState<number>(1);
   const [links, setLinks] = useState<Page[]>([]);
   const [lastPage, setLastPage] = useState<number>();
   const search = useMemo(() => searchParams.get("search"), [searchParams]);
   const accessToken = session?.user.access_token;
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [selectedSubCategories, setSelectedSubCategories] = useState<string[]>(
-    []
-  );
-  const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
+  const currentPage = Number(searchParams.get("page")) || 1;
+  // const search = searchParams.get("search") || "";
+  const cat = searchParams.get("cat") || "";
+  const subcat = searchParams.get("subcat") || "";
+  const opt = searchParams.get("opt") || "";
 
-  const handleSelection = (
-    category: string | null,
-    subCategories: string[],
-    options: string[]
-  ) => {
-    setSelectedCategory(category);
-    setSelectedSubCategories(subCategories);
-    setSelectedOptions(options);
-  };
+
 
   const fetchProducts = useCallback(async () => {
+    // Ждем, пока сессия загрузится, если нужно передать токен
+    if (status === "loading") return;
+
     setIsLoading(true);
     const queryParams = new URLSearchParams();
 
-    if (selectedCategory) queryParams.append("category_id", selectedCategory);
-    if (selectedSubCategories.length > 0)
-      queryParams.append("type_id", selectedSubCategories.join(","));
-    if (selectedOptions.length > 0)
-      queryParams.append("type_of_product", selectedOptions.join(","));
-    queryParams.append("page", `${currentPage}`);
-    queryParams.append("perPage", "12");
+    // Мапим параметры URL на параметры API
+    if (cat) queryParams.append("category_id", cat);
+    if (subcat) queryParams.append("type_id", subcat);
+    if (opt) queryParams.append("type_of_product", opt);
     if (search) queryParams.append("search", search);
 
-    const queryString = queryParams.toString()
-      ? `?${queryParams.toString()}`
-      : "";
+    queryParams.append("page", `${currentPage}`);
+    queryParams.append("perPage", "12");
+
+    const queryString = `?${queryParams.toString()}`;
 
     try {
       const res = await fetch(`/api/products/get${queryString}`, {
@@ -73,42 +66,32 @@ export function ProductsBody({ categories }: ProductsProps) {
       });
       if (!res.ok) throw new Error("Network response was not ok");
       const data = await res.json();
-      setProducts(data.data);
-      setLinks(data.links);
+      setProducts(data.data || []);
       setLastPage(data.last_page);
     } catch (error) {
       console.error("Error fetching products:", error);
     } finally {
       setIsLoading(false);
     }
-  }, [
-    accessToken,
-    currentPage,
-    selectedCategory,
-    selectedSubCategories,
-    selectedOptions,
-    search,
-  ]);
+  }, [accessToken, status, currentPage, search, cat, subcat, opt]);
+
+  // Следим за изменением любых параметров в URL
+  useEffect(() => {
+    fetchProducts();
+  }, [fetchProducts]);
 
   const handlePageChange = (page: number) => {
-    setCurrentPage(page);
-
     const params = new URLSearchParams(searchParams.toString());
     params.set("page", page.toString());
-
     router.replace(`?${params.toString()}`, { scroll: true });
   };
 
-  useEffect(() => {
-    if (status !== "loading") {
-      fetchProducts();
-    }
-  }, [fetchProducts, status]);
+
 
   return (
     <>
       <div className="trade__body">
-        <Filters categories={categories} onSelectionConfirm={handleSelection} />
+        <Filters categories={categories} />
 
         <div className="trade__content content-trade">
           {isLoading && (
@@ -131,9 +114,8 @@ export function ProductsBody({ categories }: ProductsProps) {
             <div className="pages">
               <button
                 type="button"
-                className={`pages__arrow pages__arrow-prev ${
-                  currentPage === 1 ? "disabled" : ""
-                } `}
+                className={`pages__arrow pages__arrow-prev ${currentPage === 1 ? "disabled" : ""
+                  } `}
                 onClick={() => handlePageChange(currentPage - 1)}
               >
                 <svg
@@ -177,9 +159,8 @@ export function ProductsBody({ categories }: ProductsProps) {
               />
               <button
                 type="button"
-                className={`pages__arrow pages__arrow-next ${
-                  currentPage === lastPage ? "disabled" : ""
-                } `}
+                className={`pages__arrow pages__arrow-next ${currentPage === lastPage ? "disabled" : ""
+                  } `}
                 onClick={() => handlePageChange(currentPage + 1)}
               >
                 <svg

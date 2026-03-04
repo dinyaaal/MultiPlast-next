@@ -2518,6 +2518,11 @@ button:disabled {
 .bottom-body-chat__add-file input {
   @apply absolute opacity-0 w-0 h-0 pointer-events-none;
 }
+
+.hidden-input {
+  @apply absolute opacity-0 w-0 h-0 pointer-events-none;
+}
+
 .bottom-body-chat__message-input {
   @apply xl:!hidden;
 }

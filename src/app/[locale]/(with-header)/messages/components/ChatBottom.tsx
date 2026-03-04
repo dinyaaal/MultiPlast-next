@@ -199,19 +199,18 @@ export default function ChatBottom({ id, onSend }: ChatBottomProps) {
           )}
           <div className="form__bottom w-full flex items-end justify-between gap-2 xl:gap-8">
             <div className="flex w-full items-end gap-1 xl:gap-3">
-              <ButtonMain isIconOnly variant="light" color='default' className="size-10 shrink-0">
+              <ButtonMain as='label' isIconOnly variant="light" color='default' className="size-10 shrink-0 relative">
 
-                <label className="bottom-body-chat__add-file">
-                  <input
-                    ref={fileInputRef}
-                    type="file"
-                    multiple
-                    onChange={handleFileChange}
-                    style={{ display: "none" }}
-                  />
-                  <Paperclip className="size-5 text-black" />
+                <input
+                  className="hidden-input"
+                  ref={fileInputRef}
+                  type="file"
+                  multiple
+                  onChange={handleFileChange}
+                  style={{ display: "none" }}
+                />
+                <Paperclip className="size-5 text-black" />
 
-                </label>
               </ButtonMain>
 
               <Textarea

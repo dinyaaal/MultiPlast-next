@@ -13,16 +13,15 @@ import { ButtonMain } from "@/components/ButtonMain";
 
 interface FiltersProps {
   categories: Category[];
-  onSelectionConfirm: (
-    category: string | null,
-    subCategories: string[],
-    options: string[]
-  ) => void;
+  // onSelectionConfirm: (
+  //   category: string | null,
+  //   subCategories: string[],
+  //   options: string[]
+  // ) => void;
 }
 
 export const Filters: React.FC<FiltersProps> = ({
   categories,
-  onSelectionConfirm,
 }) => {
   const t = useTranslations("Products.filters");
   const [isOpen, setIsOpen] = useState(false);
@@ -58,11 +57,11 @@ export const Filters: React.FC<FiltersProps> = ({
 
   const handleConfirm = () => {
 
-    onSelectionConfirm(
-      selectedCategory,
-      selectedSubCategories,
-      selectedOptions
-    );
+    // onSelectionConfirm(
+    //   selectedCategory,
+    //   selectedSubCategories,
+    //   selectedOptions
+    // );
     closeMenu();
 
     updateUrl();
@@ -72,7 +71,7 @@ export const Filters: React.FC<FiltersProps> = ({
     setSelectedCategory(null);
     setSelectedSubCategories([]);
     setSelectedOptions([]);
-    onSelectionConfirm(null, [], []);
+    // onSelectionConfirm(null, [], []);
 
     closeMenu();
     updateUrl(true);
@@ -116,7 +115,7 @@ export const Filters: React.FC<FiltersProps> = ({
       }, 100);
     }
 
-    onSelectionConfirm(category, parsedSubcategories, parsedOptions);
+    // onSelectionConfirm(category, parsedSubcategories, parsedOptions);
   }, []);
 
   console.log(selectedOptions);
