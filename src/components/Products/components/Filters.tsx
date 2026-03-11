@@ -8,7 +8,7 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ChevronDownIcon, MoveLeft } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { ButtonMain } from "@/components/ButtonMain";
 
 interface FiltersProps {
@@ -23,6 +23,8 @@ interface FiltersProps {
 export const Filters: React.FC<FiltersProps> = ({
   categories,
 }) => {
+  const locale = useLocale();
+
   const t = useTranslations("Products.filters");
   const [isOpen, setIsOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
@@ -234,7 +236,12 @@ export const Filters: React.FC<FiltersProps> = ({
                       classNames={{ label: "text-xl" }}
                       value={category.id.toString()}
                     >
-                      {category.name}
+                      {/* {category.name} */}
+                      <span dangerouslySetInnerHTML={{
+                        __html: category.translations.name[locale as keyof typeof category.translations.name] ||
+                          category.name ||
+                          ""
+                      }} />
                     </Radio>
                   ))}
                 </RadioGroup>
@@ -285,7 +292,12 @@ export const Filters: React.FC<FiltersProps> = ({
                           key={subCategory.id}
                           value={subCategory.id.toString()}
                         >
-                          {subCategory.name}
+                          {/* {subCategory.name} */}
+                          <span dangerouslySetInnerHTML={{
+                            __html: subCategory.translations.name[locale as keyof typeof subCategory.translations.name] ||
+                              subCategory.name ||
+                              ""
+                          }} />
                         </Checkbox>
                       ))}
                   </CheckboxGroup>
@@ -322,7 +334,12 @@ export const Filters: React.FC<FiltersProps> = ({
                           key={subCategory.id}
                           value={subCategory.id.toString()}
                         >
-                          {subCategory.name}
+                          {/* {subCategory.name} */}
+                          <span dangerouslySetInnerHTML={{
+                            __html: subCategory.translations.name[locale as keyof typeof subCategory.translations.name] ||
+                              subCategory.name ||
+                              ""
+                          }} />
                         </Checkbox>
                       ))}
                   </CheckboxGroup>
