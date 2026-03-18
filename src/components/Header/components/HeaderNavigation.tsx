@@ -4,16 +4,13 @@ import { Link, usePathname } from "@/i18n/routing";
 import { useSession } from "next-auth/react";
 import { useLocale, useTranslations } from "next-intl";
 import { Category } from "@/types/types";
-import Image from "next/image";
 import { NotificationsCount } from "./NotificationsCount";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuPortal,
-  DropdownMenuSeparator,
   DropdownMenuSub,
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,

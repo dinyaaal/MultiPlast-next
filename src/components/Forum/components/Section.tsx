@@ -13,8 +13,8 @@ export default function Section({ title, text, isActive, onClick }: SectionProps
 
   return (
     <div onClick={onClick} className={"sections-forum__item item-sections-forum" + isActiveClass}>
-      <div className="item-sections-forum__title">{title}</div>
-      <p className="item-sections-forum__text">{text}</p>
+      <div dangerouslySetInnerHTML={{ __html: title }} className="item-sections-forum__title" />
+      <p dangerouslySetInnerHTML={{ __html: text }} className="item-sections-forum__text" />
     </div>
   );
 }

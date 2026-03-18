@@ -1,9 +1,7 @@
 export interface Translations {
-  name: {
-    en: string;
-    ukr: string;
-    ru: string;
-  };
+  en: string;
+  ukr: string;
+  ru: string;
 }
 
 export interface SubCategory {
@@ -11,7 +9,9 @@ export interface SubCategory {
   parent_id: number;
   name: string;
   type: string;
-  translations: Translations;
+  translations: {
+    name: Translations;
+  };
 }
 
 export interface Category {
@@ -19,7 +19,9 @@ export interface Category {
   name: string;
   type: string;
   categories: SubCategory[];
-  translations: Translations;
+  translations: {
+    name: Translations;
+  };
 }
 
 export interface UserAuth {
@@ -271,6 +273,10 @@ export interface ForumCategory {
   created_at: string;
   updated_at: string;
   position: number;
+  translations: {
+    title: Translations;
+    description: Translations;
+  };
 }
 
 export type NotificationType = {

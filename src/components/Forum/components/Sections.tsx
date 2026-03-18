@@ -5,8 +5,8 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import { Navigation, Pagination } from "swiper/modules";
 import Section from "./Section";
-import { useTranslations } from "next-intl";
-import { ForumCategory } from "@/types/types";
+import { useLocale, useTranslations } from "next-intl";
+import { ForumCategory, Translations } from "@/types/types";
 import { ChevronRight } from "lucide-react";
 
 interface SectionsProps {
@@ -15,6 +15,7 @@ interface SectionsProps {
 
 export default function Sections({ onChangeSectionId }: SectionsProps) {
   const t = useTranslations("Forum");
+  const locale = useLocale();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [forumSectionsList, setForumSectionsList] = useState<ForumCategory[]>(
     []
@@ -91,8 +92,8 @@ export default function Sections({ onChangeSectionId }: SectionsProps) {
           >
             <SwiperSlide>
               <Section
-                title={"Все"}
-                text={"Показати всі статті"}
+                title={t("sections.all")}
+                text={t("sections.allText")}
                 isActive={!activeSection}
                 onClick={() => {
                   setActiveSection(null);
@@ -105,8 +106,8 @@ export default function Sections({ onChangeSectionId }: SectionsProps) {
               forumSectionsList.map((item) => (
                 <SwiperSlide key={item.id}>
                   <Section
-                    title={item.title}
-                    text={item.description}
+                    title={item.translations.title[locale as keyof Translations] || item.title}
+                    text={item.translations.description[locale as keyof Translations] || item.description}
                     isActive={item.id === activeSection}
                     onClick={() => handleSectionClick(item.id)}
                   />
