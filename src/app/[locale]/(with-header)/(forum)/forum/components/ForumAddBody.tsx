@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 import { ForumAddSchema } from "@/lib/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -24,6 +24,7 @@ interface ForumAddBodyProps {
 
 export default function ForumAddBody({ categories }: ForumAddBodyProps) {
   const t = useTranslations("Forum");
+  const locale = useLocale();
   const { data: session, status } = useSession();
   const token = session?.user.access_token;
   const [content, setContent] = useState<string>("");
@@ -228,7 +229,11 @@ export default function ForumAddBody({ categories }: ForumAddBodyProps) {
         // onChange={(selectedKey) => handleChangeType(selectedKey)}
         >
           {categories.map((category) => (
-            <SelectItem key={category.id}>{category.title}</SelectItem>
+            <SelectItem key={category.id}>
+              <span dangerouslySetInnerHTML={{
+                __html: category.translations.title[locale as keyof typeof category.translations.title] || category.title
+              }} />
+            </SelectItem>
           ))}
         </Select>
       </div>

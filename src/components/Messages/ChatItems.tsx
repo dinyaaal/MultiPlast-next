@@ -12,9 +12,12 @@ interface ChatItemsProps {
     content: string;
     files: Photo[];
   } | null;
+  onBlock: (chatId: number) => void;
+  onUnblock: (chatId: number) => void;
+  onDelete: (chatId: number) => void;
 }
 
-export default function ChatItems({ lastMessageUpdate }: ChatItemsProps) {
+export default function ChatItems({ lastMessageUpdate, onBlock, onUnblock, onDelete }: ChatItemsProps) {
   const t = useTranslations("Messages");
   const { data: session } = useSession();
   const [chats, setChats] = useState<ChatItemData[]>([]);
@@ -67,7 +70,36 @@ export default function ChatItems({ lastMessageUpdate }: ChatItemsProps) {
     }
   }, [lastMessageUpdate]);
 
-  const handleDeleteChat = (id: number) => {
+  const handleLocalBlock = async (chatId: number) => {
+    await onBlock(chatId);
+
+    setChats((prevChats) =>
+      prevChats.map((chat) =>
+        chat.id === chatId
+          ? {
+            ...chat,
+            // Если id нет (undefined), записываем null, чтобы соответствовать типу
+            blocked_by_user_id: session?.user.id ?? null
+          }
+          : chat
+      )
+    );
+  };
+
+  // 2. Создаем внутренний обработчик разблокировки
+  const handleLocalUnblock = async (chatId: number) => {
+    await onUnblock(chatId);
+
+    setChats((prevChats) =>
+      prevChats.map((chat) =>
+        chat.id === chatId ? { ...chat, blocked_by_user_id: null } : chat
+      )
+    );
+  };
+
+  // 3. Обработчик удаления (уже есть, но убедитесь, что вызываете onDelete из пропсов)
+  const handleLocalDelete = async (id: number) => {
+    await onDelete(id);
     setChats((prevChats) => prevChats.filter((chat) => chat.id !== id));
   };
 
@@ -95,7 +127,10 @@ export default function ChatItems({ lastMessageUpdate }: ChatItemsProps) {
                 <ChatItem
                   key={chat.id}
                   chat={chat}
-                  onDelete={handleDeleteChat}
+                  onDelete={handleLocalDelete}
+                  onBlock={handleLocalBlock}
+                  onUnblock={handleLocalUnblock}
+
                 />
               ))
           ) : (

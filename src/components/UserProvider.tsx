@@ -1,6 +1,6 @@
 "use client";
 
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserInfoData, setUserInfoError } from "@/store/userInfoSlice";
@@ -61,6 +61,12 @@ export default function UserProvider({
   useEffect(() => {
     if (!userInfo) {
       fetchUserInfo();
+    }
+  }, [session]);
+
+  useEffect(() => {
+    if (session?.error === "AccessTokenError") {
+      signOut({ callbackUrl: "/login" }); // Принудительно разлогиниваем
     }
   }, [session]);
 

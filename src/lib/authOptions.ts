@@ -2,6 +2,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import { AuthOptions } from "next-auth";
 import { UserAuth } from "@/types/types";
+import { jwtDecode } from "jwt-decode";
 
 const verifyGoogleToken = async (idToken: string, email: string) => {
   console.log("Sending Google token verification request...");
@@ -66,41 +67,85 @@ export const authOptions: AuthOptions = {
     }),
   ],
   callbacks: {
+    // async jwt({ token, account, profile, user }) {
+    //   if (account?.provider === "google") {
+    //     if (!profile?.email) throw new Error("No profile email");
+
+    //     if (account.id_token && profile.email) {
+    //       const verificationResponse = await verifyGoogleToken(
+    //         account.id_token,
+    //         profile.email
+    //       );
+
+    //       if (
+    //         verificationResponse &&
+    //         verificationResponse.id &&
+    //         verificationResponse.access_token
+    //       ) {
+    //         token.user = {
+    //           id: verificationResponse.id,
+    //           access_token: verificationResponse.access_token,
+    //           email: verificationResponse.email,
+    //           first_name: verificationResponse.first_name,
+    //           last_name: verificationResponse.last_name,
+    //           city: verificationResponse.city,
+    //           phone_number: verificationResponse.phone_number,
+    //           avatar: verificationResponse.avatar,
+    //         };
+    //       } else {
+    //         throw new Error(
+    //           "Google token verification failed: Missing expected data"
+    //         );
+    //       }
+    //     }
+    //   }
+
+    //   if (user && !token.user) {
+    //     token.user = user;
+    //   }
+
+    //   return token;
+    // },
     async jwt({ token, account, profile, user }) {
-      if (account?.provider === "google") {
-        if (!profile?.email) throw new Error("No profile email");
+      // 1. Инициализация при первом входе
+      if (user) {
+        if (account?.provider === "google") {
+          if (!profile?.email) throw new Error("No profile email");
+          const verificationResponse = await verifyGoogleToken(account.id_token!, profile.email);
 
-        if (account.id_token && profile.email) {
-          const verificationResponse = await verifyGoogleToken(
-            account.id_token,
-            profile.email
-          );
-
-          if (
-            verificationResponse &&
-            verificationResponse.id &&
-            verificationResponse.access_token
-          ) {
+          if (verificationResponse?.access_token) {
             token.user = {
+              ...verificationResponse,
               id: verificationResponse.id,
               access_token: verificationResponse.access_token,
-              email: verificationResponse.email,
-              first_name: verificationResponse.first_name,
-              last_name: verificationResponse.last_name,
-              city: verificationResponse.city,
-              phone_number: verificationResponse.phone_number,
-              avatar: verificationResponse.avatar,
             };
           } else {
-            throw new Error(
-              "Google token verification failed: Missing expected data"
-            );
+            throw new Error("Google verification failed");
           }
+        } else {
+          token.user = user;
         }
       }
 
-      if (user && !token.user) {
-        token.user = user;
+      // 2. ПРОВЕРКА СРОКА ДЕЙСТВИЯ ТОКЕНА (каждый вызов)
+      const userTokens = token.user as any;
+      if (userTokens?.access_token) {
+        try {
+          const decoded = jwtDecode<{ exp: number }>(userTokens.access_token);
+          const now = Math.floor(Date.now() / 1000);
+
+          const REFRESH_THRESHOLD = 300;
+          const isAboutToExpire = (decoded.exp - now) < REFRESH_THRESHOLD;
+
+          // Если токен просрочен (exp < текущего времени)
+          if (isAboutToExpire) {
+            console.warn("Token is about to expire or already expired. Triggering logout.");
+            return { ...token, error: "AccessTokenError" };
+          }
+        } catch (e) {
+          console.error("Error decoding token:", e);
+          return { ...token, error: "AccessTokenError" };
+        }
       }
 
       return token;
@@ -109,6 +154,8 @@ export const authOptions: AuthOptions = {
       if (token?.user) {
         session.user = token.user as UserAuth;
       }
+      // Передаем статус ошибки на клиент, чтобы там вызвать signOut()
+      (session as any).error = token.error;
       return session;
     },
   },
@@ -117,6 +164,7 @@ export const authOptions: AuthOptions = {
   },
   session: {
     strategy: "jwt",
+    maxAge: 30 * 24 * 60 * 60, // 30 дней (максимальный срок сессии)
   },
   secret: process.env.NEXTAUTH_SECRET,
 };

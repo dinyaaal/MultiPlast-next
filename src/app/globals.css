@@ -2251,7 +2251,7 @@ button:disabled {
   @apply pt-[40px] pb-[60px];
 }
 .chat__wrapper {
-  @apply relative overflow-hidden flex border border-border rounded-[7px] h-screen min-h-[400px] xl:min-h-[600px];
+  @apply relative overflow-hidden flex border border-border rounded-[7px] h-screen max-h-[1000px] min-h-[400px] xl:min-h-[600px];
 }
 
 .chat__block {

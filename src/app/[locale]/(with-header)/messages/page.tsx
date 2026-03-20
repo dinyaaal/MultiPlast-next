@@ -11,16 +11,17 @@ import { getLocale } from "@/utils/locale";
 
 import { Spinner } from "@heroui/react";
 import { X } from "lucide-react";
-import { Link } from "@/i18n/routing";
+import { Link, useRouter } from "@/i18n/routing";
 import ChatBottom from "./components/ChatBottom";
 import ChatTop from "./components/ChatTop";
 import { useSearchParams } from "next/navigation";
 import ChatItems from "@/components/Messages/ChatItems";
 import { createEchoInstance } from "@/lib/echo";
+import { ChatItem } from "@/components/Messages/ChatItem";
 
 export default function Page() {
   const t = useTranslations("Messages");
-
+  const router = useRouter();
   const searchParams = useSearchParams();
   const id = searchParams.get("chatId");
   const { data: session } = useSession();
@@ -36,6 +37,53 @@ export default function Page() {
     content: string;
     files: Photo[];
   } | null>(null);
+  const [chatsLoading, setChatsLoading] = useState(false);
+  const [chats, setChats] = useState<ChatItemData[]>([]);
+
+  useEffect(() => {
+    async function fetchChats() {
+      if (!token) return;
+      setChatsLoading(true);
+      try {
+        const res = await fetch("/api/chats/get", {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (!res.ok) {
+          throw new Error("Ошибка при загрузке чатов");
+        }
+
+        const data = await res.json();
+        setChats(data.data);
+      } catch (error) {
+        console.error("Ошибка:", error);
+      } finally {
+        setChatsLoading(false);
+      }
+    }
+
+    fetchChats();
+  }, [token]);
+
+  // useEffect(() => {
+  //   if (lastMessageUpdate) {
+  //     setChats((prevChats) =>
+  //       prevChats.map((chat) => {
+  //         if (chat.id === lastMessageUpdate.chatId) {
+  //           return {
+  //             ...chat,
+  //             last_message_content: lastMessageUpdate.content,
+  //             last_message_files: lastMessageUpdate.files,
+  //           };
+  //         }
+  //         return chat;
+  //       })
+  //     );
+  //   }
+  // }, [lastMessageUpdate]);
 
   const fetchMessages = async () => {
     if (!token || !id) return;
@@ -103,11 +151,12 @@ export default function Page() {
         },
       },
     ]);
-    setLastSentMsg({
-      chatId: Number(id),
-      content: message.text,
-      files: message.files,
-    });
+    setChats(prev => prev.map(chat => chat.id === Number(id) ? { ...chat, last_message_content: message.text, last_message_files: message.files } : chat));
+    // setLastSentMsg({
+    //   chatId: Number(id),
+    //   content: message.text,
+    //   files: message.files,
+    // });
   };
 
   // --- группировка сообщений по датам ---
@@ -120,11 +169,7 @@ export default function Page() {
     }, {});
   }, [messages]);
 
-  useEffect(() => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
-    }
-  }, [messages]);
+
 
   // useEffect(() => {
   //   if (!token || !id) return;
@@ -182,11 +227,12 @@ export default function Page() {
 
         // ВАЖНО: Обновляем lastSentMsg, чтобы список чатов слева 
         // увидел новое сообщение от собеседника (Пункт 7)
-        setLastSentMsg({
-          chatId: Number(id),
-          content: newMessage.content,
-          files: newMessage.files || [],
-        });
+        setChats(prev => prev.map(chat => chat.id === Number(id) ? { ...chat, last_message_content: newMessage.content, last_message_files: newMessage.files || [] } : chat));
+        // setLastSentMsg({
+        //   chatId: Number(id),
+        //   content: newMessage.content,
+        //   files: newMessage.files || [],
+        // });
       })
       .error((error: any) => {
         if (error.status === 401 || error.status === 403) {
@@ -220,6 +266,77 @@ export default function Page() {
     return `/products/${chat?.reasonable.id}`;
   }, [chatReason]);
 
+  const handleChatDelete = async (chatId: number) => {
+    if (!session?.user.access_token || !chatId) {
+      return;
+    }
+
+    try {
+      const deleteResponse = await fetch(`/api/chats/delete`, {
+        method: "DELETE",
+        headers: {
+          token: session?.user.access_token,
+          id: chatId.toString(),
+        },
+      });
+      if (deleteResponse.ok) {
+        toast.success(t("toast.deleteSuccess"));
+        router.push("/messages");
+        setChats(prev => prev.filter(chat => chat.id !== chatId));
+        // onDelete(chat.id);
+      } else {
+        throw new Error(t("toast.deleteError"));
+      }
+    } catch (error) {
+      console.error(t("toast.deleteError"), error);
+      toast.error(t("toast.deleteError"));
+    }
+  };
+
+  const handleChatBlock = async () => {
+    if (!token || !id) return;
+    try {
+      const res = await fetch(`/api/chats/block`, {
+        method: "POST",
+        headers: { token, id },
+      });
+      if (res.ok) {
+        // Обновляем состояние чата в текущем компоненте
+        setChat(prev => prev ? { ...prev, blocked_by_user_id: session?.user.id } : null);
+        setChats(prev => prev.map(chat => chat.id === Number(id) ? { ...chat, blocked_by_user_id: session?.user.id } : chat));
+        // Опционально: уведомляем список чатов слева через lastSentMsg, 
+        // если там есть логика обработки блокировок
+
+        toast.success(t("toast.blockSuccess"));
+      }
+    } catch (error) {
+      toast.error(t("toast.blockError"));
+    }
+  };
+
+  const handleChatUnblock = async () => {
+    if (!token || !id) return;
+    try {
+      const res = await fetch(`/api/chats/unblock`, {
+        method: "POST",
+        headers: { token, id },
+      });
+      if (res.ok) {
+        setChat(prev => prev ? { ...prev, blocked_by_user_id: null } : null);
+        setChats(prev => prev.map(chat => chat.id === Number(id) ? { ...chat, blocked_by_user_id: null } : chat));
+        toast.success(t("toast.unblockSuccess"));
+      }
+    } catch (error) {
+      toast.error(t("toast.unblockError"));
+    }
+  };
+
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
+  }, [messages, scrollRef]);
+
   return (
     <section className="chat">
       <div className="chat__container main-container">
@@ -229,18 +346,53 @@ export default function Page() {
               <div className="block-chat__title">{t("title")}</div>
             </div>
             <div className="block-chat__content">
-              <ChatItems lastMessageUpdate={lastSentMsg} />
+              {/* <ChatItems lastMessageUpdate={lastSentMsg} onBlock={handleChatBlock} onUnblock={handleChatUnblock} onDelete={handleChatDelete} /> */}
+
+              {chatsLoading ? (
+                <div className="flex w-full h-full flex-auto items-center justify-center">
+                  <Spinner size="lg" />
+                </div>
+              ) : (
+
+                <div className="block-chat__items">
+                  <div className="block-chat__section">
+                    <div className="block-chat__section-items">
+                      {chats.length > 0 ? (
+                        chats
+                          .filter((chat) => Number(chat.is_deleted) !== 1)
+                          .sort(
+                            (a, b) =>
+                              new Date(b.updated_at).getTime() -
+                              new Date(a.updated_at).getTime()
+                          )
+                          .map((chat) => (
+                            <ChatItem
+                              key={chat.id}
+                              chat={chat}
+                              onDelete={handleChatDelete}
+                              onBlock={handleChatBlock}
+                              onUnblock={handleChatUnblock}
+
+                            />
+                          ))
+                      ) : (
+                        <p className="p-5 text-center self-center">{t("noChats")}</p>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
           <>
             {isLoading ? (
-              <div className="w-full flex justify-center items-center ">
+              <div className="w-full xl:flex justify-center items-center hidden">
                 <Spinner /> {/* или любой компонент-спиннер */}
               </div>
             ) : chat && id ? (
               <div className="chat__body body-chat">
                 <div className="body-chat__content">
-                  <ChatTop chat={chat} />
+                  <ChatTop chat={chat} onDelete={handleChatDelete} onBlock={handleChatBlock} onUnblock={handleChatUnblock} />
                   <div
                     ref={scrollRef}
                     className="body-chat__block block-body-chat"

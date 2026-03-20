@@ -8,7 +8,7 @@ import { ChatItemData } from "@/types/types";
 import { stripHtml } from "@/utils/stripHtml";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
-import { Ellipsis } from "lucide-react";
+import { Ban, Ellipsis } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useParams } from "next/navigation";
 import { useDisclosure } from "@heroui/react";
@@ -16,10 +16,12 @@ import ReportModal from "./ReportModal";
 
 interface ChatItemProps {
   chat: ChatItemData;
-  onDelete: (id: number) => void;
+  onBlock: (chatId: number) => void;
+  onUnblock: (chatId: number) => void;
+  onDelete: (chatId: number) => void;
 }
 
-export const ChatItem: React.FC<ChatItemProps> = ({ chat, onDelete }) => {
+export const ChatItem: React.FC<ChatItemProps> = ({ chat, onDelete, onBlock, onUnblock }) => {
   const t = useTranslations("Messages");
   const router = useRouter();
   const params = useParams();
@@ -27,87 +29,85 @@ export const ChatItem: React.FC<ChatItemProps> = ({ chat, onDelete }) => {
   const isActive = Number(currentChatId) === chat.id;
   const { data: session, status } = useSession();
   const formattedDate = new Date(chat.updated_at).toLocaleDateString();
-  const [isBlocked, setIsBlocked] = useState<boolean>(
-    !!chat.blocked_by_user_id
-  );
+  const isBlocked = !!chat.blocked_by_user_id;
   const [isOpenPopover, setIsOpenPopover] = useState(false);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
-  const handleChatDelete = async () => {
-    if (!session?.user.access_token || !chat.id) {
-      return;
-    }
+  // const handleChatDelete = async () => {
+  //   if (!session?.user.access_token || !chat.id) {
+  //     return;
+  //   }
 
-    try {
-      const deleteResponse = await fetch(`/api/chats/delete`, {
-        method: "DELETE",
-        headers: {
-          token: session?.user.access_token,
-          id: chat.id.toString(),
-        },
-      });
-      if (deleteResponse.ok) {
-        toast.success(t("toast.deleteSuccess"));
-        onDelete(chat.id);
-        router.push("/messages");
-      } else {
-        throw new Error(t("toast.deleteError"));
-      }
-    } catch (error) {
-      console.error(t("toast.deleteError"), error);
-      toast.error(t("toast.deleteError"));
-    }
-  };
+  //   try {
+  //     const deleteResponse = await fetch(`/api/chats/delete`, {
+  //       method: "DELETE",
+  //       headers: {
+  //         token: session?.user.access_token,
+  //         id: chat.id.toString(),
+  //       },
+  //     });
+  //     if (deleteResponse.ok) {
+  //       toast.success(t("toast.deleteSuccess"));
+  //       onDelete(chat.id);
+  //       router.push("/messages");
+  //     } else {
+  //       throw new Error(t("toast.deleteError"));
+  //     }
+  //   } catch (error) {
+  //     console.error(t("toast.deleteError"), error);
+  //     toast.error(t("toast.deleteError"));
+  //   }
+  // };
 
-  const handleChatBlock = async () => {
-    if (!session?.user.access_token || !chat.id) {
-      return;
-    }
+  // const handleChatBlock = async () => {
+  //   if (!session?.user.access_token || !chat.id) {
+  //     return;
+  //   }
 
-    try {
-      const blockResponse = await fetch(`/api/chats/block`, {
-        method: "POST",
-        headers: {
-          token: session?.user.access_token,
-          id: chat.id.toString(),
-        },
-      });
-      if (blockResponse.ok) {
-        toast.success(t("toast.blockSuccess"));
-        setIsBlocked(true);
-      } else {
-        throw new Error(t("toast.blockError"));
-      }
-    } catch (error) {
-      console.error(t("toast.blockError"), error);
-      toast.error(t("toast.blockError"));
-    }
-  };
+  //   try {
+  //     const blockResponse = await fetch(`/api/chats/block`, {
+  //       method: "POST",
+  //       headers: {
+  //         token: session?.user.access_token,
+  //         id: chat.id.toString(),
+  //       },
+  //     });
+  //     if (blockResponse.ok) {
+  //       toast.success(t("toast.blockSuccess"));
+  //       setIsBlocked(true);
+  //     } else {
+  //       throw new Error(t("toast.blockError"));
+  //     }
+  //   } catch (error) {
+  //     console.error(t("toast.blockError"), error);
+  //     toast.error(t("toast.blockError"));
+  //   }
+  // };
 
-  const handleChatUnblock = async () => {
-    if (!session?.user.access_token || !chat.id) {
-      return;
-    }
+  // const handleChatUnblock = async () => {
+  //   if (!session?.user.access_token || !chat.id) {
+  //     return;
+  //   }
 
-    try {
-      const blockResponse = await fetch(`/api/chats/unblock`, {
-        method: "POST",
-        headers: {
-          token: session?.user.access_token,
-          id: chat.id.toString(),
-        },
-      });
-      if (blockResponse.ok) {
-        toast.success(t("toast.unblockSuccess"));
-        setIsBlocked(false);
-      } else {
-        throw new Error(t("toast.unblockError"));
-      }
-    } catch (error) {
-      console.error(t("toast.unblockError"), error);
-      toast.error(t("toast.unblockError"));
-    }
-  };
+  //   try {
+  //     const blockResponse = await fetch(`/api/chats/unblock`, {
+  //       method: "POST",
+  //       headers: {
+  //         token: session?.user.access_token,
+  //         id: chat.id.toString(),
+  //       },
+  //     });
+  //     if (blockResponse.ok) {
+  //       toast.success(t("toast.unblockSuccess"));
+  //       setIsBlocked(false);
+  //     } else {
+  //       throw new Error(t("toast.unblockError"));
+  //     }
+  //   } catch (error) {
+  //     console.error(t("toast.unblockError"), error);
+  //     toast.error(t("toast.unblockError"));
+  //   }
+  // };
 
   const lastMsg = chat.last_message;
   const text = chat.last_message_content || lastMsg?.content;
@@ -150,8 +150,9 @@ export const ChatItem: React.FC<ChatItemProps> = ({ chat, onDelete }) => {
           <div className="item-block-chat__body">
             <div className="item-block-chat__info">
               <div className="item-block-chat__block">
-                <div className="item-block-chat__name">
+                <div className="item-block-chat__name flex items-center gap-1">
                   {`${chatUser?.first_name}`}
+                  {isBlocked && <Ban size={16} className="text-red-700" />}
                 </div>
                 <span className="item-block-chat__date">{formattedDate}</span>
               </div>
@@ -192,7 +193,7 @@ export const ChatItem: React.FC<ChatItemProps> = ({ chat, onDelete }) => {
                           onClick={(e) => {
                             e.preventDefault();
                             setIsOpenPopover(false);
-                            handleChatUnblock();
+                            onUnblock(chat.id);
                           }}
                           className="body-actions-menu__item"
                         >
@@ -204,7 +205,7 @@ export const ChatItem: React.FC<ChatItemProps> = ({ chat, onDelete }) => {
                           onClick={(e) => {
                             e.preventDefault();
                             setIsOpenPopover(false);
-                            handleChatBlock();
+                            onBlock(chat.id);
                           }}
                           className="body-actions-menu__item"
                         >
@@ -220,7 +221,7 @@ export const ChatItem: React.FC<ChatItemProps> = ({ chat, onDelete }) => {
                           toast(t("toast.deleteConfirm"), {
                             action: {
                               label: t("toast.delete"),
-                              onClick: () => handleChatDelete(),
+                              onClick: () => onDelete(chat.id),
                             },
                           });
                         }}

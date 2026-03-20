@@ -4,12 +4,16 @@ import { UserAuth } from "@/types/types";
 declare module "next-auth" {
   interface Session {
     user: UserAuth;
+    // Добавляем поле ошибки, чтобы фронтенд знал, когда токен протух
+    error?: "AccessTokenError";
   }
 
-  interface Token {
+  interface JWT {
     user?: UserAuth;
-    exp?: number;
+    // Добавляем ошибку и сюда для колбэка jwt
+    error?: "AccessTokenError";
   }
 
-  interface User extends UserAuth {}
+  // Расширяем стандартный объект User данными из твоего UserAuth
+  interface User extends UserAuth { }
 }

@@ -16,89 +16,96 @@ import { ChatItemData } from "@/types/types";
 import Image from "next/image";
 import ReportModal from "@/components/Messages/ReportModal";
 
-export default function ChatTop({ chat }: { chat: ChatItemData }) {
+interface ChatTopProps {
+  chat: ChatItemData;
+  onDelete: (chatId: number) => void;
+  onBlock: (chatId: number) => void;
+  onUnblock: (chatId: number) => void;
+}
+
+export default function ChatTop({ chat, onDelete, onBlock, onUnblock }: ChatTopProps) {
   const t = useTranslations("Messages");
   const { data: session } = useSession();
   const router = useRouter();
-  const [isBlocked, setIsBlocked] = useState<boolean>(false);
+  const isBlocked = !!chat.blocked_by_user_id;
   const [isOpenPopover, setIsOpenPopover] = useState(false);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
-  const handleChatDelete = async () => {
-    if (!session?.user.access_token || !chat.id) {
-      return;
-    }
+  // const handleChatDelete = async () => {
+  //   if (!session?.user.access_token || !chat.id) {
+  //     return;
+  //   }
 
-    try {
-      const deleteResponse = await fetch(`/api/chats/delete`, {
-        method: "DELETE",
-        headers: {
-          token: session?.user.access_token,
-          id: chat.id.toString(),
-        },
-      });
-      if (deleteResponse.ok) {
-        toast.success(t("toast.deleteSuccess"));
-        router.push("/messages");
-        // onDelete(chat.id);
-      } else {
-        throw new Error(t("toast.deleteError"));
-      }
-    } catch (error) {
-      console.error(t("toast.deleteError"), error);
-      toast.error(t("toast.deleteError"));
-    }
-  };
+  //   try {
+  //     const deleteResponse = await fetch(`/api/chats/delete`, {
+  //       method: "DELETE",
+  //       headers: {
+  //         token: session?.user.access_token,
+  //         id: chat.id.toString(),
+  //       },
+  //     });
+  //     if (deleteResponse.ok) {
+  //       toast.success(t("toast.deleteSuccess"));
+  //       router.push("/messages");
+  //       // onDelete(chat.id);
+  //     } else {
+  //       throw new Error(t("toast.deleteError"));
+  //     }
+  //   } catch (error) {
+  //     console.error(t("toast.deleteError"), error);
+  //     toast.error(t("toast.deleteError"));
+  //   }
+  // };
 
-  const handleChatBlock = async () => {
-    if (!session?.user.access_token || !chat.id) {
-      return;
-    }
+  // const handleChatBlock = async () => {
+  //   if (!session?.user.access_token || !chat.id) {
+  //     return;
+  //   }
 
-    try {
-      const blockResponse = await fetch(`/api/chats/block`, {
-        method: "POST",
-        headers: {
-          token: session?.user.access_token,
-          id: chat.id.toString(),
-        },
-      });
-      if (blockResponse.ok) {
-        toast.success(t("toast.blockSuccess"));
-        setIsBlocked(true);
-      } else {
-        throw new Error(t("toast.blockError"));
-      }
-    } catch (error) {
-      console.error(t("toast.blockError"), error);
-      toast.error(t("toast.blockError"));
-    }
-  };
+  //   try {
+  //     const blockResponse = await fetch(`/api/chats/block`, {
+  //       method: "POST",
+  //       headers: {
+  //         token: session?.user.access_token,
+  //         id: chat.id.toString(),
+  //       },
+  //     });
+  //     if (blockResponse.ok) {
+  //       toast.success(t("toast.blockSuccess"));
+  //       setIsBlocked(true);
+  //     } else {
+  //       throw new Error(t("toast.blockError"));
+  //     }
+  //   } catch (error) {
+  //     console.error(t("toast.blockError"), error);
+  //     toast.error(t("toast.blockError"));
+  //   }
+  // };
 
-  const handleChatUnblock = async () => {
-    if (!session?.user.access_token || !chat.id) {
-      return;
-    }
+  // const handleChatUnblock = async () => {
+  //   if (!session?.user.access_token || !chat.id) {
+  //     return;
+  //   }
 
-    try {
-      const blockResponse = await fetch(`/api/chats/unblock`, {
-        method: "POST",
-        headers: {
-          token: session?.user.access_token,
-          id: chat.id.toString(),
-        },
-      });
-      if (blockResponse.ok) {
-        toast.success(t("toast.unblockSuccess"));
-        // setIsBlocked(false);
-      } else {
-        throw new Error(t("toast.unblockError"));
-      }
-    } catch (error) {
-      console.error(t("toast.unblockError"), error);
-      toast.error(t("toast.unblockError"));
-    }
-  };
+  //   try {
+  //     const blockResponse = await fetch(`/api/chats/unblock`, {
+  //       method: "POST",
+  //       headers: {
+  //         token: session?.user.access_token,
+  //         id: chat.id.toString(),
+  //       },
+  //     });
+  //     if (blockResponse.ok) {
+  //       toast.success(t("toast.unblockSuccess"));
+  //       setIsBlocked(false);
+  //     } else {
+  //       throw new Error(t("toast.unblockError"));
+  //     }
+  //   } catch (error) {
+  //     console.error(t("toast.unblockError"), error);
+  //     toast.error(t("toast.unblockError"));
+  //   }
+  // };
 
   const chatUser =
     chat.from_user.id === session?.user.id ? chat.to_user : chat.from_user;
@@ -186,7 +193,7 @@ export default function ChatTop({ chat }: { chat: ChatItemData }) {
                       onClick={(e) => {
                         e.preventDefault();
                         setIsOpenPopover(false);
-                        handleChatUnblock();
+                        onUnblock(chat.id);
                       }}
                       className="body-actions-menu__item"
                     >
@@ -196,10 +203,9 @@ export default function ChatTop({ chat }: { chat: ChatItemData }) {
                     <button
                       type="button"
                       onClick={(e) => {
-                        setIsOpenPopover(false);
-                        handleChatUnblock();
                         e.preventDefault();
-                        handleChatBlock();
+                        setIsOpenPopover(false);
+                        onBlock(chat.id);
                       }}
                       className="body-actions-menu__item"
                     >
@@ -215,7 +221,7 @@ export default function ChatTop({ chat }: { chat: ChatItemData }) {
                       toast(t("toast.deleteConfirm"), {
                         action: {
                           label: t("toast.delete"),
-                          onClick: () => handleChatDelete(),
+                          onClick: () => onDelete(chat.id),
                         },
                       });
                     }}
@@ -274,7 +280,7 @@ export default function ChatTop({ chat }: { chat: ChatItemData }) {
             >
               <button
                 type="button"
-                onClick={(e) => handleChatUnblock()}
+                onClick={(e) => onUnblock(chat.id)}
                 className="actions-menu__icon"
               >
                 {/* <Image
@@ -283,7 +289,7 @@ export default function ChatTop({ chat }: { chat: ChatItemData }) {
                 width={100}
                 height={100}
               /> */}
-                <Ban />
+                <Ban className="text-red-700" />
               </button>
             </Tooltip>
           ) : (
@@ -303,7 +309,7 @@ export default function ChatTop({ chat }: { chat: ChatItemData }) {
             >
               <button
                 type="button"
-                onClick={(e) => handleChatBlock()}
+                onClick={(e) => onBlock(chat.id)}
                 className="actions-menu__icon"
               >
                 <Ban />
@@ -332,7 +338,7 @@ export default function ChatTop({ chat }: { chat: ChatItemData }) {
                 toast(t("toast.deleteConfirm"), {
                   action: {
                     label: t("toast.delete"),
-                    onClick: () => handleChatDelete(),
+                    onClick: () => onDelete(chat.id),
                   },
                 });
               }}

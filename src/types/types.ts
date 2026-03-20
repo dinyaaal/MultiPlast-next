@@ -189,7 +189,13 @@ export interface ForumCategory {
 export interface ForumCategoryMinimal {
   id: number;
   title: string;
+  description: string;
   position: number;
+  is_active: boolean;
+  translations: {
+    title: Translations;
+    description: Translations;
+  };
 }
 
 export interface ForumPost {
