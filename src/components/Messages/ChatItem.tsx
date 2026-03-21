@@ -19,14 +19,14 @@ interface ChatItemProps {
   onBlock: (chatId: number) => void;
   onUnblock: (chatId: number) => void;
   onDelete: (chatId: number) => void;
+  isActive: boolean;
 }
 
-export const ChatItem: React.FC<ChatItemProps> = ({ chat, onDelete, onBlock, onUnblock }) => {
+export const ChatItem: React.FC<ChatItemProps> = ({ chat, onDelete, onBlock, onUnblock, isActive }) => {
   const t = useTranslations("Messages");
   const router = useRouter();
   const params = useParams();
   const currentChatId = params?.id;
-  const isActive = Number(currentChatId) === chat.id;
   const { data: session, status } = useSession();
   const formattedDate = new Date(chat.updated_at).toLocaleDateString();
   const isBlocked = !!chat.blocked_by_user_id;

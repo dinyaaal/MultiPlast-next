@@ -15,7 +15,6 @@ import { Link, useRouter } from "@/i18n/routing";
 import ChatBottom from "./components/ChatBottom";
 import ChatTop from "./components/ChatTop";
 import { useSearchParams } from "next/navigation";
-import ChatItems from "@/components/Messages/ChatItems";
 import { createEchoInstance } from "@/lib/echo";
 import { ChatItem } from "@/components/Messages/ChatItem";
 
@@ -24,6 +23,7 @@ export default function Page() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const id = searchParams.get("chatId");
+  const isNew = searchParams.get("isNew");
   const { data: session } = useSession();
   const token = session?.user.access_token;
   const [messages, setMessages] = useState<IMessageItem[]>([]);
@@ -346,7 +346,6 @@ export default function Page() {
               <div className="block-chat__title">{t("title")}</div>
             </div>
             <div className="block-chat__content">
-              {/* <ChatItems lastMessageUpdate={lastSentMsg} onBlock={handleChatBlock} onUnblock={handleChatUnblock} onDelete={handleChatDelete} /> */}
 
               {chatsLoading ? (
                 <div className="flex w-full h-full flex-auto items-center justify-center">
@@ -360,6 +359,7 @@ export default function Page() {
                       {chats.length > 0 ? (
                         chats
                           .filter((chat) => Number(chat.is_deleted) !== 1)
+                          .filter((chat) => Number(chat.last_message !== null) || Number(chat.id) === Number(isNew))
                           .sort(
                             (a, b) =>
                               new Date(b.updated_at).getTime() -
@@ -372,6 +372,7 @@ export default function Page() {
                               onDelete={handleChatDelete}
                               onBlock={handleChatBlock}
                               onUnblock={handleChatUnblock}
+                              isActive={Number(chat.id) === Number(id)}
 
                             />
                           ))

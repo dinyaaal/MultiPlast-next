@@ -2351,7 +2351,7 @@ button:disabled {
   @apply line-clamp-1;
 }
 .topic-message__content {
-  @apply flex items-center gap-[10px] w-fit h-full  overflow-hidden p-1 border-2 border-blueColor rounded-xl;
+  @apply flex items-center gap-[10px] w-fit h-full  overflow-hidden p-2 border-2 border-blueColor rounded-xl;
 }
 
 .topic-message__close {

@@ -12,7 +12,7 @@ import {
   UseFormSetValue,
   UseFormWatch,
 } from "react-hook-form";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { Category, MapSelectData, PriceType, ProductType } from "@/types/types";
 import { Select, SelectItem } from "@heroui/react";
 import Image from "next/image";
@@ -65,6 +65,7 @@ export default function AdvertisementForm({
   watch,
   reset,
 }: AdvertisementFormProps) {
+  const locale = useLocale();
   const t = useTranslations("Dashboard.Sell");
   const [activePhotoIndex, setActivePhotoIndex] = useState(0);
   const [showDiscount, setShowDiscount] = useState(false);
@@ -563,7 +564,13 @@ export default function AdvertisementForm({
                   onChange={handleCategoryChange}
                 >
                   {categories.map((category) => (
-                    <SelectItem key={category.id}>{category.name}</SelectItem>
+                    <SelectItem key={category.id}>
+                      <span dangerouslySetInnerHTML={{
+                        __html: category.translations.name[locale as keyof typeof category.translations.name] ||
+                          category.name ||
+                          ""
+                      }} />
+                    </SelectItem>
                   ))}
                 </Select>
               </div>
@@ -636,7 +643,11 @@ export default function AdvertisementForm({
 
                       .map((subCategory) => (
                         <SelectItem key={subCategory.id}>
-                          {subCategory.name}
+                          <span dangerouslySetInnerHTML={{
+                            __html: subCategory.translations.name[locale as keyof typeof subCategory.translations.name] ||
+                              subCategory.name ||
+                              ""
+                          }} />
                         </SelectItem>
                       ))}
                   </Select>
@@ -696,7 +707,11 @@ export default function AdvertisementForm({
 
                         .map((subCategory) => (
                           <SelectItem key={subCategory.id}>
-                            {subCategory.name}
+                            <span dangerouslySetInnerHTML={{
+                              __html: subCategory.translations.name[locale as keyof typeof subCategory.translations.name] ||
+                                subCategory.name ||
+                                ""
+                            }} />
                           </SelectItem>
                         ))}
                     </Select>

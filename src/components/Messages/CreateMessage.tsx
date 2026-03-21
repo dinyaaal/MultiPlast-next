@@ -55,7 +55,7 @@ export default function CreateMessage({
       }
 
       const data = await response.json();
-      router.push(`/messages?chatId=${data.data.id}`);
+      router.push(`/messages?chatId=${data.data.id}&isNew=${data.data.id}`);
     } catch (error) {
       console.error("Error fetching data:", error);
       toast.error(t("toast.error"));

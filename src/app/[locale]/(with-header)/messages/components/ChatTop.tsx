@@ -11,7 +11,7 @@ import {
 } from "@heroui/react";
 import { Link, useRouter } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
-import { Ban, Ellipsis, Trash, TriangleAlert } from "lucide-react";
+import { Ban, Ellipsis, LockOpen, Trash, TriangleAlert } from "lucide-react";
 import { ChatItemData } from "@/types/types";
 import Image from "next/image";
 import ReportModal from "@/components/Messages/ReportModal";
@@ -289,7 +289,8 @@ export default function ChatTop({ chat, onDelete, onBlock, onUnblock }: ChatTopP
                 width={100}
                 height={100}
               /> */}
-                <Ban className="text-red-700" />
+                {/* <Ban className="text-red-700" /> */}
+                <LockOpen className="text-red-700" />
               </button>
             </Tooltip>
           ) : (
