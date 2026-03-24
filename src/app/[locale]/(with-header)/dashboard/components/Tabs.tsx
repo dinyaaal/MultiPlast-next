@@ -22,7 +22,7 @@ export default function Tabs() {
           prevEl: ".swiper-arrow-prev",
         }}
         breakpoints={{
-          991.98: {
+          1280: {
             slidesPerView: "auto",
             enabled: false,
           },
@@ -35,7 +35,7 @@ export default function Tabs() {
             <AdvertismentTab
               href="/dashboard/add-advertisement"
               text={tNavigation("addAdvertisement")}
-              // params="sell"
+            // params="sell"
             />
             {/* <AdvertismentTab
               href="/add-dashboard"

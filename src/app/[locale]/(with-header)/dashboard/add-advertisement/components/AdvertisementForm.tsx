@@ -24,6 +24,7 @@ import Map from "@/components/Map/Map";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "@/i18n/routing";
 import { ButtonMain } from "@/components/ButtonMain";
+import { stripHtml } from "@/utils/stripHtml";
 
 interface AdvertisementFormProps {
   setNewPhotos: (photos: File[]) => void;
@@ -473,6 +474,8 @@ export default function AdvertisementForm({
     setNewFiles([]);
   };
 
+  console.log(categories)
+
   return (
     <>
       <div className=" wrapper-dashboard">
@@ -559,19 +562,24 @@ export default function AdvertisementForm({
                     },
                   }}
                   // defaultSelectedKeys={[categoryId.toString()]}
-                  selectedKeys={[watch("mainCategory")?.toString() || ""]}
+                  // selectedKeys={[watch("mainCategory")?.toString() || ""]}
+                  selectedKeys={watch("mainCategory") ? [watch("mainCategory").toString()] : []}
                   // {...register("mainCategory")}
                   onChange={handleCategoryChange}
                 >
-                  {categories.map((category) => (
-                    <SelectItem key={category.id}>
-                      <span dangerouslySetInnerHTML={{
-                        __html: category.translations.name[locale as keyof typeof category.translations.name] ||
-                          category.name ||
-                          ""
-                      }} />
-                    </SelectItem>
-                  ))}
+                  {categories.map((category) => {
+
+                    const text = category.translations.name[locale as keyof typeof category.translations.name] ||
+                      category.name ||
+                      "";
+                    const cleanText = stripHtml(text);
+                    return (
+
+                      <SelectItem key={category.id.toString()} >
+                        {cleanText}
+                      </SelectItem>
+                    )
+                  })}
                 </Select>
               </div>
               {Number(watch("mainCategory")) !== 1 && (
@@ -624,13 +632,9 @@ export default function AdvertisementForm({
                         ],
                       },
                     }}
-                    // defaultSelectedKeys={[
-                    //   product?.categories
-                    //     .find((category) => category.type === "Сировина")
-                    //     ?.id?.toString() || "",
-                    // ]}
-                    selectedKeys={[watch("type")?.toString() || ""]}
-                    // {...register("type")}
+
+                    selectedKeys={watch("type") ? [String(watch("type"))] : []}
+
                     onChange={handleTypeChange}
                   >
                     {categories
@@ -641,15 +645,20 @@ export default function AdvertisementForm({
                       .flatMap((category) => category.categories)
                       .filter((subCategory) => subCategory.type === "Сировина")
 
-                      .map((subCategory) => (
-                        <SelectItem key={subCategory.id}>
-                          <span dangerouslySetInnerHTML={{
-                            __html: subCategory.translations.name[locale as keyof typeof subCategory.translations.name] ||
-                              subCategory.name ||
-                              ""
-                          }} />
-                        </SelectItem>
-                      ))}
+                      .map((subCategory) => {
+
+                        const text = subCategory.translations.name[locale as keyof typeof subCategory.translations.name] ||
+                          subCategory.name ||
+                          "";
+                        const cleanText = stripHtml(text);
+
+                        return (
+
+                          <SelectItem key={subCategory.id.toString()} >
+                            {cleanText}
+                          </SelectItem>
+                        )
+                      })}
                   </Select>
                 </div>
               )}
@@ -687,12 +696,8 @@ export default function AdvertisementForm({
                           ],
                         },
                       }}
-                      // defaultSelectedKeys={[
-                      //   product?.categories
-                      //     .find((category) => category.type === "Полімер")
-                      //     ?.id?.toString() || "",
-                      // ]}
-                      selectedKeys={[watch("polymer")?.toString() || ""]}
+
+                      selectedKeys={watch("polymer") ? [String(watch("polymer"))] : []}
                       // {...register("polymer")}
                       onChange={handlePolymerChange}
                     // onChange={handlePolymerChange}
@@ -705,15 +710,18 @@ export default function AdvertisementForm({
                         .flatMap((category) => category.categories)
                         .filter((subCategory) => subCategory.type === "Полімер")
 
-                        .map((subCategory) => (
-                          <SelectItem key={subCategory.id}>
-                            <span dangerouslySetInnerHTML={{
-                              __html: subCategory.translations.name[locale as keyof typeof subCategory.translations.name] ||
-                                subCategory.name ||
-                                ""
-                            }} />
-                          </SelectItem>
-                        ))}
+                        .map((subCategory) => {
+                          const text = subCategory.translations.name[locale as keyof typeof subCategory.translations.name] ||
+                            subCategory.name ||
+                            "";
+                          const cleanText = stripHtml(text);
+                          return (
+                            <SelectItem key={subCategory.id.toString()} >
+                              {cleanText}
+                            </SelectItem>
+                          )
+                        }
+                        )}
                     </Select>
                   </div>
                 )}

@@ -1868,7 +1868,7 @@ button:disabled {
   @apply w-full;
 }
 .dashboard-files__input {
-  @apply w-0 h-0 opacity-0;
+  @apply w-0 h-0 opacity-0 absolute;
 }
 
 .contact-dashboard {
