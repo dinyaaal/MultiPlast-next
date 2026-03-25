@@ -174,10 +174,12 @@
       "publish": "Опублікувати",
       "incognito": "Інкогніто",
       "auth-required": "Для створення теми, необхідно авторизуватися",
-      "auth-button": "Авторизуватися"
+      "auth-button": "Авторизуватися",
+      "delete": "Видалити тему"
     },
     "toast": {
       "delete-confirm": "Ви впевнені, що хочете видалити пост?",
+      "delete-confirm-action": "Так",
       "delete-success": "Пост успішно видалено",
       "delete-error": "Не вдалося видалити пост",
       "photo-delete-success": "Фото видалено",

@@ -14,7 +14,7 @@ export default function ForumActions({ id, author_id }: ForumActionsProps) {
   return (
     <div className="top-product__actions actions-top">
       {session?.user.id === author_id && (
-        <Link href={`/forum-add?edit=${id}`} className="action-btn edit">
+        <Link href={`/forum?tab=add&edit=${id}`} className="action-btn edit">
           <svg
             width="30"
             height="30"

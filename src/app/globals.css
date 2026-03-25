@@ -409,7 +409,7 @@ input::-webkit-inner-spin-button {
 }
 
 .pages {
-  @apply w-fit mx-auto flex items-center gap-2.5;
+  @apply w-fit mx-auto flex items-center justify-center gap-2.5;
 }
 .pages__arrow {
   @apply flex-[0_0_40px] w-10 h-10;

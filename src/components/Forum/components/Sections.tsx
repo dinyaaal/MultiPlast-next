@@ -23,6 +23,7 @@ export default function Sections({ onChangeSectionId }: SectionsProps) {
 
   const [activeSection, setActiveSection] = useState<number | null>(null);
 
+
   const fetchForumCategories = async () => {
     setIsLoading(true);
 
@@ -59,6 +60,9 @@ export default function Sections({ onChangeSectionId }: SectionsProps) {
   useEffect(() => {
     fetchForumCategories();
   }, []);
+
+  console.log(forumSectionsList);
+
 
   useEffect(() => {
     if (forumSectionsList.length > 0) {

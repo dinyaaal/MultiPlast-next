@@ -174,11 +174,13 @@
       "publish": "Опубликовать",
       "incognito": "Инкогнито",
       "auth-required": "Для создания темы, необходимо авторизоваться",
-      "auth-button": "Авторизоваться"
+      "auth-button": "Авторизоваться",
+      "delete": "Удалить тему"
     },
     "toast": {
       "delete-confirm": "Вы уверены, что хотите удалить пост?",
       "delete-success": "Пост успешно удалён",
+      "delete-confirm-action": "Да",
       "delete-error": "Не удалось удалить пост",
       "photo-delete-success": "Фото удалено",
       "photo-delete-error": "Ошибка при удалении фото",

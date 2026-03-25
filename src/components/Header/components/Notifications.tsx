@@ -48,7 +48,7 @@ export default function Notifications() {
       echo.leave(channelName);
       // disconnect() здесь НЕ вызываем, так как уведомления обычно глобальные
     };
-  }, [token, userId, status, t]);
+  }, [token, userId, status]);
 
   // --- МЕТОДЫ API ---
   const getNotifications = useCallback(async () => {

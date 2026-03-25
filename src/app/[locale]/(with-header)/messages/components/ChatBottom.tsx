@@ -39,6 +39,14 @@ export default function ChatBottom({ id, onSend }: ChatBottomProps) {
       "image/jpeg",
       "image/webp",
       "application/pdf",
+
+      // Word документы (.doc и .docx)
+      "application/msword",
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+
+      // Excel таблицы (.xls и .xlsx)
+      "application/vnd.ms-excel",
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     ];
     const selectedFiles = Array.from(e.target.files);
 

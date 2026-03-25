@@ -101,12 +101,9 @@ export default function ForumItems({ activeSectionId }: ForumItemsProps) {
         <div className="pages">
           <button
             type="button"
-            className={`pages__arrow pages__arrow-prev ${
-              currentPage === 1 ? "disabled" : ""
-            } `}
-            onClick={() =>
-              setCurrentPage((prev) => (prev > 1 ? prev - 1 : prev))
-            }
+            className={`pages__arrow pages__arrow-prev ${currentPage === 1 ? "disabled" : ""
+              } `}
+            onClick={() => setCurrentPage(currentPage - 1)}
           >
             <svg
               width="41"
@@ -135,7 +132,7 @@ export default function ForumItems({ activeSectionId }: ForumItemsProps) {
             page={currentPage}
             onChange={setCurrentPage}
             classNames={{
-              base: " flex justify-center ",
+              base: " flex justify-center",
               wrapper:
                 "gap-0 text-white overflow-hidden rounded-lg border border-solid border-[#B0BFD7]",
               item: "w-10 h-10 text-black text-xs md:text-base bg-[#F8FBFF] rounded-none  border-r border-solid border-[#B0BFD7] last:border-r-0 ",
@@ -149,12 +146,9 @@ export default function ForumItems({ activeSectionId }: ForumItemsProps) {
           />
           <button
             type="button"
-            className={`pages__arrow pages__arrow-next ${
-              currentPage === lastPage ? "disabled" : ""
-            } `}
-            onClick={() =>
-              setCurrentPage((prev) => (prev < 10 ? prev + 1 : prev))
-            }
+            className={`pages__arrow pages__arrow-next ${currentPage === lastPage ? "disabled" : ""
+              } `}
+            onClick={() => setCurrentPage(currentPage + 1)}
           >
             <svg
               width="41"

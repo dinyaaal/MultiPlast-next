@@ -11,10 +11,11 @@ import { toast } from "sonner";
 import { useSession } from "next-auth/react";
 import { Select, SelectItem, Spinner } from "@heroui/react";
 import { ForumCategoryMinimal, ForumPost } from "@/types/types";
-import { Link } from "@/i18n/routing";
+import { Link, useRouter } from "@/i18n/routing";
 import { useSearchParams } from "next/navigation";
 import { SimpleEditor } from "@/components/tiptap-templates/simple/simple-editor";
 import { ButtonMain } from "@/components/ButtonMain";
+import { stripHtml } from "@/utils/stripHtml";
 
 type Inputs = z.infer<typeof ForumAddSchema>;
 
@@ -24,6 +25,7 @@ interface ForumAddBodyProps {
 
 export default function ForumAddBody({ categories }: ForumAddBodyProps) {
   const t = useTranslations("Forum");
+  const tForumToast = useTranslations("Forum.toast");
   const locale = useLocale();
   const { data: session, status } = useSession();
   const token = session?.user.access_token;
@@ -34,6 +36,8 @@ export default function ForumAddBody({ categories }: ForumAddBodyProps) {
   const editId = searchParams.get("edit");
   const [removedImageIds, setRemovedImageIds] = useState<string[]>([]);
   const [post, setPost] = useState<ForumPost | null>(null);
+  const [isLoadingDelete, setIsLoadingDelete] = useState(false);
+  const router = useRouter();
 
   const {
     register,
@@ -101,6 +105,34 @@ export default function ForumAddBody({ categories }: ForumAddBodyProps) {
     });
   };
 
+  const handleForumDelete = async () => {
+    if (!session?.user.access_token || !editId) {
+      return;
+    }
+
+    setIsLoadingDelete(true);
+    try {
+      const deleteResponse = await fetch(`/api/forum/delete`, {
+        method: "DELETE",
+        headers: {
+          token: session?.user.access_token,
+          id: editId.toString(),
+        },
+      });
+      if (deleteResponse.ok) {
+        toast.success(tForumToast("delete-success"));
+        router.push("/forum");
+      } else {
+        throw new Error("Delete error");
+      }
+    } catch (error) {
+      console.error("Ошибка при отправке данных:", error);
+      toast.error(tForumToast("delete-error"));
+    } finally {
+      setIsLoadingDelete(false);
+    }
+  };
+
   const processForm: SubmitHandler<Inputs> = async (data) => {
     if (!session?.user.access_token) {
       return;
@@ -161,6 +193,7 @@ export default function ForumAddBody({ categories }: ForumAddBodyProps) {
         if (forumAddResponse.ok) {
           const editResult = await forumAddResponse.json();
           toast.success(t("toast.create-success"));
+          router.push(`/forum/${editResult.id}`);
         } else {
           throw new Error("Ошибка обновления информации пользователя");
         }
@@ -228,13 +261,17 @@ export default function ForumAddBody({ categories }: ForumAddBodyProps) {
           {...register("category")}
         // onChange={(selectedKey) => handleChangeType(selectedKey)}
         >
-          {categories.map((category) => (
-            <SelectItem key={category.id}>
-              <span dangerouslySetInnerHTML={{
-                __html: category.translations.title[locale as keyof typeof category.translations.title] || category.title
-              }} />
-            </SelectItem>
-          ))}
+          {categories.map((category) => {
+            const text = category.translations.title[locale as keyof typeof category.translations.title] || category.title;
+            const cleanText = stripHtml(text);
+            return (
+
+              <SelectItem key={category.id}>
+                {cleanText}
+              </SelectItem>
+            )
+          }
+          )}
         </Select>
       </div>
       <div className="input-block">
@@ -275,6 +312,25 @@ export default function ForumAddBody({ categories }: ForumAddBodyProps) {
           {t("forumAdd.publish")}
           {isLoadingRequest && <Spinner size="sm" />}
         </ButtonMain>
+        {editId && post && (
+          <ButtonMain type={'button'} color='secondary'
+            disabled={isLoadingDelete}
+            onClick={() => {
+              toast(tForumToast("delete-confirm"), {
+                classNames: {
+                  actionButton: "bg-red-600 p-4",
+                },
+                action: {
+                  label: tForumToast("delete-confirm-action"),
+                  onClick: () => handleForumDelete(),
+                },
+              });
+            }}
+          >
+            {t("forumAdd.delete")}
+            {isLoadingDelete && <Spinner size="sm" />}
+          </ButtonMain>
+        )}
       </div>
     </form>
   );

@@ -358,6 +358,15 @@ export default function AdvertisementForm({
 
       "image/jpg",
       "application/pdf",
+
+      // Word документы (.doc и .docx)
+      "application/msword",
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+
+      // Excel таблицы (.xls и .xlsx)
+      "application/vnd.ms-excel",
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+
     ];
 
     // Проверка общего кол-ва файлов

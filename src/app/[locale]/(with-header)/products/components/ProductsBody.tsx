@@ -1,4 +1,5 @@
 "use client";
+
 import { Pagination } from "@heroui/pagination";
 import { ProductCard } from "@/components/Products/components/ProductCard";
 import { Category, MinimalProduct, Page } from "@/types/types";
@@ -22,7 +23,6 @@ export function ProductsBody({ categories }: ProductsProps) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const router = useRouter();
   const searchParams = useSearchParams();
-
   // const pageFromUrl = Number(searchParams.get("page")) || 1;
 
   // const [currentPage, setCurrentPage] = useState<number>(pageFromUrl);
@@ -36,6 +36,7 @@ export function ProductsBody({ categories }: ProductsProps) {
   const cat = searchParams.get("cat") || "";
   const subcat = searchParams.get("subcat") || "";
   const opt = searchParams.get("opt") || "";
+  const [isRestored, setIsRestored] = useState(false);
 
 
 
@@ -81,10 +82,50 @@ export function ProductsBody({ categories }: ProductsProps) {
   }, [fetchProducts]);
 
   const handlePageChange = (page: number) => {
+    sessionStorage.removeItem("products-scroll-pos");
+    setIsRestored(false); // Позволяем скроллу отработать для новой страницы
+
     const params = new URLSearchParams(searchParams.toString());
     params.set("page", page.toString());
+
+    // При пагинации лучше оставить scroll: true, чтобы кидало наверх новой страницы
     router.replace(`?${params.toString()}`, { scroll: true });
   };
+
+  useEffect(() => {
+    const handleScroll = () => {
+      // Сохраняем позицию только если мы не в процессе загрузки
+      if (!isLoading) {
+        sessionStorage.setItem("products-scroll-pos", window.scrollY.toString());
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [isLoading]);
+
+  // 2. Логика восстановления скролла
+  useEffect(() => {
+    // Условия для скролла: данные загружены, есть товары и мы еще не восстанавливали на этом маунте
+    if (!isLoading && products.length > 0 && !isRestored) {
+      const savedScroll = sessionStorage.getItem("products-scroll-pos");
+
+      if (savedScroll) {
+        // Небольшая задержка, чтобы браузер успел отрисовать DOM
+        const timeoutId = setTimeout(() => {
+          window.scrollTo({
+            top: parseInt(savedScroll),
+            behavior: "instant", // "instant" лучше для возврата назад, чтобы не было дерганий
+          });
+          setIsRestored(true);
+        }, 100);
+
+        return () => clearTimeout(timeoutId);
+      } else {
+        setIsRestored(true);
+      }
+    }
+  }, [isLoading, products, isRestored]);
 
 
 

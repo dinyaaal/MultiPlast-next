@@ -20,6 +20,7 @@ export const ForumCard: React.FC<ForumCardProps> = ({
   onDelete,
 }) => {
   const t = useTranslations("Forum");
+  const tForumToast = useTranslations("Forum.toast");
   const { data: session, status } = useSession();
 
   const handleForumDelete = async () => {
@@ -36,18 +37,17 @@ export const ForumCard: React.FC<ForumCardProps> = ({
         },
       });
       if (deleteResponse.ok) {
-        toast.success(t("toast.delete-success"));
+        toast.success(tForumToast("delete-success"));
         onDelete?.(post.id);
       } else {
         throw new Error("Delete error");
       }
     } catch (error) {
       console.error("Ошибка при отправке данных:", error);
-      toast.error(t("toast.delete-error"));
+      toast.error(tForumToast("delete-error"));
     }
   };
 
-  console.log(post);
 
   const formattedDate = new Date(post.created_at).toLocaleDateString("uk-UA", {
     day: "2-digit",
@@ -93,12 +93,12 @@ export const ForumCard: React.FC<ForumCardProps> = ({
           {session?.user.id === post.author_id && (
             <button
               onClick={() => {
-                toast(t("toast.delete-confirm"), {
+                toast(tForumToast("delete-confirm"), {
                   classNames: {
                     actionButton: "bg-red-600 p-4",
                   },
                   action: {
-                    label: t("toast.delete-confirm-action"),
+                    label: tForumToast("delete-confirm-action"),
                     onClick: () => handleForumDelete(),
                   },
                 });
@@ -120,13 +120,13 @@ export const ForumCard: React.FC<ForumCardProps> = ({
               )}
               {post.author.first_name && (
 
-              <span className="item-forum__author">
-               {t("author")}: {post.author.first_name}  
-              </span>
+                <span className="item-forum__author">
+                  {t("author")}: {post.author.first_name}
+                </span>
               )}
               {formattedDate && (
                 <span className="item-forum__date">
-                   {formattedDate}
+                  {formattedDate}
                 </span>
               )}
             </div>
