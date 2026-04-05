@@ -50,6 +50,8 @@ export default function Notifications() {
     };
   }, [token, userId, status]);
 
+  console.log(notificationsList)
+
   // --- МЕТОДЫ API ---
   const getNotifications = useCallback(async () => {
     if (!token) return;
@@ -99,11 +101,14 @@ export default function Notifications() {
     }
   };
 
-  const handleOpenNotification = (id: number, rootId: number | null) => {
+  const handleOpenNotification = (id: number, rootId: number | null, type: number) => {
     handleReadItem(id);
-    if (rootId) {
+    // type 3 (Админы) — никуда не ведём
+    if (rootId && type === 1) {
       router.push(`/messages?chatId=${rootId}`);
-    }
+    } else if (rootId && type === 2) {
+      router.push(`/forum/${rootId}`);
+    } else return;
     setIsOpen(false);
   };
 
@@ -151,16 +156,16 @@ export default function Notifications() {
                   {t("readAll")}
                 </ButtonMain>
 
-                {notificationsList.map((item) => (
+                {notificationsList.filter((item) => item.type !== 4).map((item) => (
                   <div
                     key={item.id}
-                    onClick={() => handleOpenNotification(item.id, item.root_id)}
-                    className={`body-notifications__item item-body-notifications ${item.root_id ? "cursor-pointer" : ""} ${!Number(item.is_read) ? "new" : ""}`}
+                    onClick={() => handleOpenNotification(item.id, item.root_id, item.type)}
+                    className={`body-notifications__item item-body-notifications ${item.root_id && item.type !== 3 ? "cursor-pointer" : ""} ${!Number(item.is_read) ? "new" : ""}`}
                   >
                     <div className="item-body-notifications__content">
                       <strong>{item.title}</strong>
                       <p className="item-body-notifications__text">
-                        {item.type === 1 ? t("newMessageChat") : t("newMessageForum")}
+                        {item.type === 1 ? t("newMessageChat") : item.type === 2 ? t("newMessageForum") : t("newMessageAdmin")}
                       </p>
                     </div>
                     {Number(item.is_read) === 0 && (

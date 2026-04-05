@@ -394,89 +394,92 @@ export default function Page() {
               <div className="chat__body body-chat">
                 <div className="body-chat__content">
                   <ChatTop chat={chat} onDelete={handleChatDelete} onBlock={handleChatBlock} onUnblock={handleChatUnblock} />
-                  <div
-                    ref={scrollRef}
-                    className="body-chat__block block-body-chat"
-                  >
-                    <div
-                      className={`block-body-chat__wrapper ${isOpenReason ? "!pt-30" : ""
-                        }`}
-                    >
-                      {chat.reasonable && chatReasonLink && isOpenReason && (
-                        <div className="block-body-chat__info">
-                          <div className="item-block-chat__topic topic-message">
-                            <Link
-                              href={chatReasonLink}
-                              className="topic-message__content"
-                            >
-                              {chat.reasonable.image && (
-                                <div className="topic-message__image">
-                                  <Image
-                                    src={chat.reasonable.image}
-                                    alt="Image"
-                                    width={100}
-                                    height={100}
-                                  />
-                                </div>
-                              )}
-                              <div className="topic-message__block">
-                                <h4 className="topic-message__title title title--small">
-                                  {chat.reasonable.title}
-                                </h4>
-                                <div className="">
-                                  {/* <span>{chat.reasonable.city}</span> -{" "} */}
-                                  <span>
-                                    {new Date(
-                                      chat.reasonable.updated_at
-                                    ).toLocaleDateString("uk-UA")}
-                                  </span>
-                                </div>
-                              </div>
-                            </Link>
-                            <button
-                              onClick={() => setIsOpenReason(false)}
-                              className="topic-message__close"
-                            >
-                              <X className="size-full " />
-                            </button>
-                          </div>
-                        </div>
-                      )}
-                      {Object.entries(groupedMessages).map(([date, msgs]) => (
-                        <div key={date} className="block-body-chat__block">
-                          {/* Дата */}
-                          <div className="block-body-chat__date">
-                            {new Date(date).toLocaleDateString(
-                              getLocale(locale),
-                              {
-                                day: "numeric",
-                                month: "long",
-                                year: "numeric",
-                              }
-                            )}
-                          </div>
+                  <div className="relative w-full h-full">
 
-                          {/* Сообщения */}
-                          <div className="block-body-chat__content">
-                            {msgs.length > 0 ? (
-                              msgs.map((m) => (
-                                <MessageItem
-                                  key={m.id}
-                                  message={m}
-                                  isFromUser={
-                                    m.from_user.id === session?.user.id
-                                  }
-                                  avatar={m.from_user.avatar}
-                                />
-                              ))
-                            ) : (
-                              <p className="text-center text-gray-500">
-                                {t("no-messages")}
-                              </p>
-                            )}
+                    <div
+                      ref={scrollRef}
+                      className="body-chat__block block-body-chat"
+                    >
+                      <div
+                        className={`block-body-chat__wrapper ${isOpenReason ? "pt-30!" : ""
+                          }`}
+                      >
+                        {chat.reasonable && chatReasonLink && isOpenReason && (
+                          <div className="block-body-chat__info">
+                            <div className="item-block-chat__topic topic-message">
+                              <Link
+                                href={chatReasonLink}
+                                className="topic-message__content"
+                              >
+                                {chat.reasonable.image && (
+                                  <div className="topic-message__image">
+                                    <Image
+                                      src={chat.reasonable.image}
+                                      alt="Image"
+                                      width={100}
+                                      height={100}
+                                    />
+                                  </div>
+                                )}
+                                <div className="topic-message__block">
+                                  <h4 className="topic-message__title title title--small">
+                                    {chat.reasonable.title}
+                                  </h4>
+                                  <div className="">
+                                    {/* <span>{chat.reasonable.city}</span> -{" "} */}
+                                    <span>
+                                      {new Date(
+                                        chat.reasonable.updated_at
+                                      ).toLocaleDateString("uk-UA")}
+                                    </span>
+                                  </div>
+                                </div>
+                              </Link>
+                              <button
+                                onClick={() => setIsOpenReason(false)}
+                                className="topic-message__close"
+                              >
+                                <X className="size-full " />
+                              </button>
+                            </div>
                           </div>
-                        </div>
-                      ))}
+                        )}
+                        {Object.entries(groupedMessages).map(([date, msgs]) => (
+                          <div key={date} className="block-body-chat__block">
+                            {/* Дата */}
+                            <div className="block-body-chat__date">
+                              {new Date(date).toLocaleDateString(
+                                getLocale(locale),
+                                {
+                                  day: "numeric",
+                                  month: "long",
+                                  year: "numeric",
+                                }
+                              )}
+                            </div>
+
+                            {/* Сообщения */}
+                            <div className="block-body-chat__content">
+                              {msgs.length > 0 ? (
+                                msgs.map((m) => (
+                                  <MessageItem
+                                    key={m.id}
+                                    message={m}
+                                    isFromUser={
+                                      m.from_user.id === session?.user.id
+                                    }
+                                    avatar={m.from_user.avatar}
+                                  />
+                                ))
+                              ) : (
+                                <p className="text-center text-gray-500">
+                                  {t("no-messages")}
+                                </p>
+                              )}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   </div>
                 </div>
