@@ -168,7 +168,7 @@ export const ForumCard: React.FC<ForumCardProps> = ({
                 </div>
               </div>
               <button className="item-forum__more">
-                <span>Читати</span>
+                <span>{t("read-more")}</span>
                 <svg
                   width="17"
                   height="18"

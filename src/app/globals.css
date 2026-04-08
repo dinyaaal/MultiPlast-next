@@ -2285,7 +2285,7 @@ button:disabled {
 }
 
 .block-chat__item .item-block-chat__image img {
-  @apply w-full h-full object-cover;
+  @apply w-full h-full object-contain;
 }
 
 .item-block-chat {
@@ -2412,7 +2412,7 @@ button:disabled {
   @apply w-full flex-1 flex flex-col overflow-hidden;
 }
 .body-chat__top {
-  @apply grow shrink-0;
+  @apply shrink-0;
 }
 
 .chat-top {

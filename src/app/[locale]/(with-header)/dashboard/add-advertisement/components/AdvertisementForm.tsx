@@ -73,7 +73,7 @@ export default function AdvertisementForm({
   const [photos, setPhotos] = useState<File[]>([]);
   const [files, setFiles] = useState<File[]>([]);
   const { data: session, status } = useSession();
-  const [arrangement, setArrangement] = useState<boolean>(false);
+
   //   const [typePrice, setTypePrice] = useState<PriceType>({ type: "for_kg" });
   const [categoryId, setCategoryId] = useState<number>(1);
   const searchParams = useSearchParams();
@@ -86,6 +86,7 @@ export default function AdvertisementForm({
   const searchPolymer = searchParams.get("polymer");
   // const MAX_FILE_SIZE_MB = 100;
   const tToast = useTranslations("Toast");
+
   useEffect(() => {
     if (product) {
       reset({
@@ -109,12 +110,14 @@ export default function AdvertisementForm({
         longitude: product.longitude?.toString() || "",
         price: product.price?.toString() || "",
         arrangement: product.type_price === "by_arrangement",
+        type_price: product.type_price as PriceType["type"],
         volume: product.volume?.toString() || "",
         volume_price: product.price_per_volume?.toString() || "",
         address: product.contacts[0]?.address || "",
         city: product.contacts[0]?.city || "",
         area: product.contacts[0]?.area || "",
         name_of_enterprise: product.contacts[0]?.name_of_enterprise || "",
+        web_site: product.web_site || "",
 
         contact_data: Array.isArray(product.contacts)
           ? product.contacts.map((c) => ({
@@ -123,10 +126,11 @@ export default function AdvertisementForm({
             phones:
               Array.isArray(c.phones) && c.phones.length > 0
                 ? c.phones
-                : [""], // хотя бы один инпут, чтобы соответствовать .nonempty()
+                : [""],
           }))
           : [],
       });
+      setShowDiscount(!!product.price_per_volume);
     }
   }, [product, reset]);
 
@@ -143,22 +147,18 @@ export default function AdvertisementForm({
   // }, [searchParams]);
 
   useEffect(() => {
-    // reset();
-    const newCategoryId = searchCategory || "1";
-    // const newSubCategoryId = searchSubCategory || "1";
+    if (editId) return; // при редактировании значения берутся из product через reset()
 
+    const newCategoryId = searchCategory || "1";
     const typeParam = searchType;
     const newAdvertType =
       typeParam === "sell" || typeParam === "buy" ? typeParam : "sell";
-    // setCategoryId(Number(newCategoryId));
-
-    // setAdvertType(newAdvertType);
 
     setValue("mainCategory", newCategoryId);
     setValue("advertType", newAdvertType);
     setValue("type", searchSubCategory || "");
     setValue("polymer", searchPolymer || "");
-  }, [searchCategory, searchSubCategory, searchType]);
+  }, [searchCategory, searchSubCategory, searchType, editId]);
 
   // Следим за выбранной категорией
   useEffect(() => {
@@ -173,36 +173,7 @@ export default function AdvertisementForm({
     }
   }, [watch("mainCategory"), setValue]);
 
-  // const handlePhotosChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   const files = event.target.files;
-  //   if (!files) return;
 
-  //   const maxSize = MAX_FILE_SIZE_MB * 1024 * 1024; // 1 МБ в байтах
-
-  //   const validFiles: File[] = [];
-  //   const invalidFiles: File[] = [];
-
-  //   Array.from(files).forEach((file) => {
-  //     if (file.size <= maxSize) {
-  //       validFiles.push(file);
-  //     } else {
-  //       invalidFiles.push(file);
-  //     }
-  //   });
-
-  //   if (invalidFiles.length > 0) {
-  //     toast.error(t("toast.photo-size-error"));
-  //   }
-
-  //   if (validFiles.length > 0) {
-  //     const updatedPhotos = [...photos, ...validFiles];
-  //     setPhotos((prevPhotos) => [...prevPhotos, ...validFiles]);
-  //     setNewPhotos(updatedPhotos);
-  //   }
-
-  //   // Сброс input, чтобы можно было загрузить те же файлы повторно
-  //   event.target.value = "";
-  // };
 
   const handlePhotosChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!event.target.files) return;
@@ -444,16 +415,7 @@ export default function AdvertisementForm({
     updateSearchParams({ polymer: e.target.value }); // обновляем только advertType в URL
   };
 
-  // const handleCheckboxChange = (checkbox: "arrangement" | "fixed") => {
-  //   if (checkbox === "arrangement") {
-  //     const newValue = !arrangement;
-  //     setArrangement(newValue);
-  //     setValue("arrangement", newValue);
-  //   } else {
-  //     setArrangement(false);
-  //     setValue("arrangement", false);
-  //   }
-  // };
+
 
   const handleChangeTypePrice = (
     event: React.ChangeEvent<HTMLSelectElement>
@@ -483,7 +445,6 @@ export default function AdvertisementForm({
     setNewFiles([]);
   };
 
-  console.log(categories)
 
   return (
     <>
@@ -1005,7 +966,7 @@ export default function AdvertisementForm({
                       <p>{t("price-type")}</p>
 
                       <Select
-                        isDisabled={arrangement}
+                        isDisabled={!!watch("arrangement")}
                         disallowEmptySelection
                         placeholder={t("select-category")}
                         className="w-full"

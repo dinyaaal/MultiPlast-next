@@ -158,8 +158,6 @@ export const AdvertismentSchema = z
     name_of_enterprise: z.string().optional(),
     web_site: z
       .string()
-      .url("Введите корректный URL")
-      .or(z.literal("")) // ← разрешаем пустую строку
       .optional(),
     area: z.string().optional(),
 

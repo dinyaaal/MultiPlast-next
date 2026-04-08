@@ -394,7 +394,8 @@ export default function Page() {
               <div className="chat__body body-chat">
                 <div className="body-chat__content">
                   <ChatTop chat={chat} onDelete={handleChatDelete} onBlock={handleChatBlock} onUnblock={handleChatUnblock} />
-                  <div className="relative w-full h-full">
+
+                  <div className="relative w-full flex-1 min-h-0">
 
                     <div
                       ref={scrollRef}

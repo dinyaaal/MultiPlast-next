@@ -98,7 +98,7 @@
       "typeRawMaterial": "Сировина",
       "typePolymer": "Полімер",
       "applyFilters": "Застосувати фільтри",
-      "resetFilters": "Сбросить фильтры"
+      "resetFilters": "Скинути фільтри"
     }
   },
   "Product": {
@@ -161,7 +161,9 @@
       "write-comment": "Написати коментар",
       "send-comment": "Надіслати",
       "discussion": "Обговорення",
-      "no-comments": "Немає коментарів"
+      "no-comments": "Немає коментарів",
+      "read-more": "Дивитися ще",
+      "hide": "Сховати"
     },
     "comment": {
       "reply": "Відповісти",
@@ -317,7 +319,7 @@
       "send-error": "Помилка при надсиланні повідомлення"
     },
     "noMessages": "Повідомлення не обрано",
-    "noChats": "Немає чатів для отображения",
+    "noChats": "Немає чатів для відображення",
     "noMessage": "Немає повідомлень",
     "actions": {
       "report": "Поскаржитися",
@@ -363,7 +365,7 @@
       "price-type": "Тип ціни:",
       "enter-volume": "При обʼємі",
       "enter-price": "Вкажіть ціну",
-      "main-photo": "Первая загруженная фотография будет главной",
+      "main-photo": "Перше завантажене фото буде головним",
       "price-without-discount": "Сховати оптову ціну",
       "price-with-discount": "Додати оптову ціну",
       "enter-title": "Введіть заголовок оголошення",
@@ -513,9 +515,9 @@
     "justifyAlign": "Вирівняти по ширині",
     "addImage": "Додати зображення",
     "back": "Назад",
-    "clickToUpload": "Нажмите, чтобы загрузить",
-    "orDragDrop": "или перетащите файл",
-    "maximumFiles": "Максимум {limit} файл(ов), {sizeMb} MB каждый"
+    "clickToUpload": "Натисніть, щоб завантажити",
+    "orDragDrop": "або перетягніть файл",
+    "maximumFiles": "Максимум {limit} файл(ів), {sizeMb} МБ кожен"
   },
   "Toast": {
     "file-size-error": "Файл {file} перевищує {size}МБ",

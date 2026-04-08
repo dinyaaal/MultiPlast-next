@@ -1,7 +1,7 @@
 import { ButtonMain } from "@/components/ButtonMain";
 import { Photo } from "@/types/types";
 import { Button, Textarea } from "@heroui/react";
-import { Paperclip, Send } from "lucide-react";
+import { Paperclip, Send, FileText, FileSpreadsheet, File, X } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
@@ -192,17 +192,38 @@ export default function ChatBottom({ id, onSend }: ChatBottomProps) {
           {images.length > 0 && (
             <div className="chat-input__images flex gap-2 flex-wrap">
               {images.map((file, index) => (
-                <div
-                  className="chat-input__image-wrapper"
-                  key={index}
-                  onClick={() => handleRemoveImage(index)}
-                >
-                  <Image
-                    width={100}
-                    height={100}
-                    src={URL.createObjectURL(file)}
-                    alt="preview"
-                  />
+                <div key={index} className="relative">
+                  {file.type.startsWith("image/") ? (
+                    <div
+                      className="chat-input__image-wrapper"
+                      onClick={() => handleRemoveImage(index)}
+                    >
+                      <Image
+                        width={100}
+                        height={100}
+                        src={URL.createObjectURL(file)}
+                        alt="preview"
+                      />
+                    </div>
+                  ) : (
+                    <div className="flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-3 py-2 pr-8 max-w-[220px]">
+                      {file.type === "application/pdf" ? (
+                        <FileText className="w-5 h-5 shrink-0 text-red-500" />
+                      ) : file.type.includes("spreadsheet") || file.type.includes("excel") ? (
+                        <FileSpreadsheet className="w-5 h-5 shrink-0 text-green-600" />
+                      ) : (
+                        <File className="w-5 h-5 shrink-0 text-blue-500" />
+                      )}
+                      <span className="text-sm truncate text-gray-700">{file.name}</span>
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveImage(index)}
+                        className="absolute top-1 right-1 rounded-full bg-gray-100 hover:bg-gray-200 p-0.5"
+                      >
+                        <X className="w-3 h-3 text-gray-500" />
+                      </button>
+                    </div>
+                  )}
                 </div>
               ))}
             </div>

@@ -319,7 +319,7 @@ export default function ForumComments({ postId }: ForumCommentInputProps) {
             disabled={isLoading}
             onClick={toggleComments}
           >
-            <span>{currentPage < lastPage ? "Дивитися ще" : "Сховати"}</span>
+            <span>{currentPage < lastPage ? tForumPage("read-more") : tForumPage("hide")}</span>
             {isLoading && <Spinner size="sm" />}
           </ButtonMain>
         )}
