@@ -208,7 +208,8 @@ export interface ForumPost {
   comments_count: number;
   views_count: number;
   categories: ForumCategory[];
-  author: Author;
+  author: Author | null;
+  is_from_incognito?: boolean;
 }
 
 interface ChatUser {

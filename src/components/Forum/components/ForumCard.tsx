@@ -118,17 +118,25 @@ export const ForumCard: React.FC<ForumCardProps> = ({
               {post.text && (
                 <p className="item-forum__text">{stripHtml(post.text)}</p>
               )}
-              {post.author.first_name && (
+              <div className="flex flex-col gap-2 ">
 
-                <span className="item-forum__author">
-                  {t("author")}: {post.author.first_name}
-                </span>
-              )}
-              {formattedDate && (
-                <span className="item-forum__date">
-                  {formattedDate}
-                </span>
-              )}
+                {post.author && post.author.first_name && !post.is_from_incognito && (
+
+                  <span className="item-forum__author">
+                    {t("author")}: {post.author.first_name}
+                  </span>
+                )}
+                {formattedDate && (
+
+                  <span className="item-forum__date font-medium">
+                    {t("published-at")}: {new Date(post.created_at).toLocaleDateString("uk-UA", {
+                      day: "2-digit",
+                      month: "2-digit",
+                      year: "2-digit",
+                    })}
+                  </span>
+                )}
+              </div>
             </div>
             <div className="item-forum__block">
               <div className="item-forum__info info-item-forum">

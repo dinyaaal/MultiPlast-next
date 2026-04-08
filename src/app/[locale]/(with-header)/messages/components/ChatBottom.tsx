@@ -102,7 +102,8 @@ export default function ChatBottom({ id, onSend }: ChatBottomProps) {
       });
 
       if (!response.ok) {
-        throw new Error("Не вдалося надіслати коментар");
+        const errorData = await response.json().catch(() => null);
+        throw new Error(errorData?.message || t("ChatBottom.send-error"));
       }
       const data = await response.json();
       setMessage("");
@@ -110,6 +111,7 @@ export default function ChatBottom({ id, onSend }: ChatBottomProps) {
       onSend({ text: message, files: data.data.files });
     } catch (error) {
       console.error("Ошибка при отправке:", error);
+      toast.error(error instanceof Error ? error.message : t("ChatBottom.send-error"));
     } finally {
       setIsLoading(false);
     }

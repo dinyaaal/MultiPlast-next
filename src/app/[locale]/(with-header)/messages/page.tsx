@@ -409,7 +409,7 @@ export default function Page() {
                             <div className="item-block-chat__topic topic-message">
                               <Link
                                 href={chatReasonLink}
-                                className="topic-message__content"
+                                className="topic-message__content w-full"
                               >
                                 {chat.reasonable.image && (
                                   <div className="topic-message__image">

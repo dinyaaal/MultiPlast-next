@@ -1,8 +1,7 @@
 import notFound from "@/app/[locale]/not-found";
 import ModalContact from "@/components/Modals/ModalContact";
 import { ForumPost } from "@/types/types";
-import React from "react";
-import Gallery from "@/components/Gallery";
+
 import ForumComments from "./components/ForumComments";
 import ForumActions from "./components/ForumActions";
 import "@/components/tiptap-node/blockquote-node/blockquote-node.scss";
@@ -12,6 +11,7 @@ import "@/components/tiptap-node/list-node/list-node.scss";
 import "@/components/tiptap-node/image-node/image-node.scss";
 import "@/components/tiptap-node/heading-node/heading-node.scss";
 import "@/components/tiptap-node/paragraph-node/paragraph-node.scss";
+import { getTranslations } from "next-intl/server";
 // import "@/components/tiptap-templates/simple/simple-editor.scss";
 
 type Params = Promise<{ id: string }>;
@@ -46,12 +46,14 @@ async function getPost(id: string): Promise<ForumPost | null> {
 export default async function ForumTopicPage(props: { params: Params }) {
   const params = await props.params;
   const post = await getPost(params.id);
-
+  const t = await getTranslations("Forum");
   await new Promise((resolve) => setTimeout(resolve, 2000));
 
   if (!post) {
     return notFound();
   }
+
+  console.log(post);
 
   return (
     <section className="forum-topic">
@@ -68,6 +70,22 @@ export default async function ForumTopicPage(props: { params: Params }) {
           {/* <div className="body-forum-topic__image">
             <Gallery src={"/product/01.jpg"} thumb={"/product/01.jpg"} />
           </div> */}
+          <div className="flex flex-col gap-2 ">
+            {
+              post.author && post.author.first_name && !post.is_from_incognito && (
+                <div className=" font-medium">
+                  {t("author")}: {post.author.first_name}
+                </div>
+              )
+            }
+            <span className="item-forum__date font-medium">
+              {t("published-at")}: {new Date(post.created_at).toLocaleDateString("uk-UA", {
+                day: "2-digit",
+                month: "2-digit",
+                year: "2-digit",
+              })}
+            </span>
+          </div>
           <div className="simple-editor-content !p-0">
             <div
               className=" tiptap ProseMirror simple-editor"
@@ -84,8 +102,7 @@ export default async function ForumTopicPage(props: { params: Params }) {
           <div className="add-forum__info info-contact">
             <div className="info-contact__body">
               <p className="info-contact__text">
-                За всіма питаннями і пропозиціями, які у вас виникли, зв'яжіться
-                з адміністрацією форуму
+                {t("forumProposition")}
               </p>
               <ModalContact />
             </div>

@@ -86,6 +86,7 @@ export default function ForumAddBody({ categories }: ForumAddBodyProps) {
         category: post.categories[0].id.toString() || "",
         title: post.title || "",
         text: post.text || "",
+        is_from_incognito: post.is_from_incognito ?? false,
       });
     }
   }, [post, reset]);
@@ -145,6 +146,7 @@ export default function ForumAddBody({ categories }: ForumAddBodyProps) {
     formData.append("title", data.title);
     formData.append("text", content);
     formData.append("subject_id", data.category);
+    formData.append("is_from_incognito", data.is_from_incognito ? "true" : "false");
 
     // if (data.keywords) {
     //   formData.append("keywords", data.keywords);
@@ -157,6 +159,7 @@ export default function ForumAddBody({ categories }: ForumAddBodyProps) {
           method: "POST",
           headers: {
             token: token,
+            id: editId,
           },
           body: formData,
         });
@@ -164,6 +167,7 @@ export default function ForumAddBody({ categories }: ForumAddBodyProps) {
         if (forumEditResponse.ok) {
           const editResult = await forumEditResponse.json();
           toast.success(t("toast.update-success"));
+          router.push(`/forum/${editResult.id}`);
         } else {
           throw new Error("Ошибка обновления информации пользователя");
         }
@@ -301,7 +305,7 @@ export default function ForumAddBody({ categories }: ForumAddBodyProps) {
       </div>
 
       <label className="check">
-        <input type="checkbox" name="incognito" className="real-checkbox" />
+        <input type="checkbox" className="real-checkbox" {...register("is_from_incognito")} />
         <span className="custom-checkbox"></span>
         {t("forumAdd.incognito")}
       </label>

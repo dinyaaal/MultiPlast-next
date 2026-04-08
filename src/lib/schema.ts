@@ -58,6 +58,7 @@ export const ForumAddSchema = z.object({
   title: z.string().min(1, "Введите заголовок "),
   text: z.string().min(1, "Введите описание "),
   category: z.string().min(1, "Выберите категорию "),
+  is_from_incognito: z.boolean().optional(),
 });
 
 export const UserInfoSchema = z

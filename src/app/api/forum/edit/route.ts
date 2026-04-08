@@ -1,26 +1,22 @@
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
-  // Получаем formData из запроса
   const formData = await request.formData();
-  // const token = request.headers.get("token");
-  const authHeader = request.headers.get("authorization");
+  const token = request.headers.get("token");
   const id = request.headers.get("id");
-  if (!authHeader || !id) {
+
+  if (!token || !id) {
     return NextResponse.json({ error: "Missing id or token" }, { status: 400 });
   }
 
   try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/chats/${id}/send-message`,
-      {
-        method: "POST",
-        headers: {
-          Authorization: `${authHeader}`,
-        },
-        body: formData,
-      }
-    );
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/forums/${id}`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: formData,
+    });
 
     if (!res.ok) {
       const errorData = await res.json().catch(() => ({ message: res.statusText }));
