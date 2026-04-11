@@ -18,6 +18,8 @@ export function ProductPhotos({ product }: { product: ProductType }) {
   const [thumbsSwiper, setThumbsSwiper] = useState<SwiperType | null>(null);
 
   const galleryRef = useRef<any>(null);
+  const prevRef = useRef<HTMLButtonElement>(null);
+  const nextRef = useRef<HTMLButtonElement>(null);
 
   return (
     <>
@@ -42,8 +44,14 @@ export function ProductPhotos({ product }: { product: ProductType }) {
               speed={800}
               className="body-product__slider"
               navigation={{
-                prevEl: ".thumbs-slider-body-product-button-prev",
-                nextEl: ".thumbs-slider-body-product-button-next",
+                prevEl: prevRef.current,
+                nextEl: nextRef.current,
+              }}
+              onBeforeInit={(swiper) => {
+                if (typeof swiper.params.navigation === "object") {
+                  swiper.params.navigation.prevEl = prevRef.current;
+                  swiper.params.navigation.nextEl = nextRef.current;
+                }
               }}
             >
               {product.photos.map((item, index) => (
@@ -82,8 +90,9 @@ export function ProductPhotos({ product }: { product: ProductType }) {
                   ))}
                 </Swiper>
                 <button
+                  ref={prevRef}
                   type="button"
-                  className="swiper-button swiper-button-prev thumbs-slider-body-product-button-prev"
+                  className="swiper-button swiper-button-prev"
                 >
                   <svg
                     width="41"
@@ -108,8 +117,9 @@ export function ProductPhotos({ product }: { product: ProductType }) {
                   </svg>
                 </button>
                 <button
+                  ref={nextRef}
                   type="button"
-                  className="swiper-button swiper-button-next thumbs-slider-body-product-button-next"
+                  className="swiper-button swiper-button-next"
                 >
                   <svg
                     width="41"

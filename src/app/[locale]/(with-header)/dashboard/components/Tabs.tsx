@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useRef } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import "swiper/css";
@@ -10,6 +10,8 @@ import { useTranslations } from "next-intl";
 
 export default function Tabs() {
   const tNavigation = useTranslations("Navigation");
+  const prevRef = useRef<HTMLButtonElement>(null);
+  const nextRef = useRef<HTMLButtonElement>(null);
   return (
     <div className="tabs-dashboard">
       <Swiper
@@ -18,8 +20,14 @@ export default function Tabs() {
         modules={[Navigation]}
         className=""
         navigation={{
-          nextEl: ".swiper-arrow-next",
-          prevEl: ".swiper-arrow-prev",
+          prevEl: prevRef.current,
+          nextEl: nextRef.current,
+        }}
+        onBeforeInit={(swiper) => {
+          if (typeof swiper.params.navigation === "object") {
+            swiper.params.navigation.prevEl = prevRef.current;
+            swiper.params.navigation.nextEl = nextRef.current;
+          }
         }}
         breakpoints={{
           1280: {
@@ -77,7 +85,7 @@ export default function Tabs() {
           </div>
         </SwiperSlide>
       </Swiper>
-      <button type="button" className="swiper-arrow swiper-arrow-prev">
+      <button ref={prevRef} type="button" className="swiper-arrow swiper-arrow-prev">
         <svg
           width="15"
           height="12"
@@ -91,7 +99,7 @@ export default function Tabs() {
           />
         </svg>
       </button>
-      <button type="button" className="swiper-arrow swiper-arrow-next">
+      <button ref={nextRef} type="button" className="swiper-arrow swiper-arrow-next">
         <svg
           width="15"
           height="12"

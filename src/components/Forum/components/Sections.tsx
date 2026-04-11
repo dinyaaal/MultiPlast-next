@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import { Navigation, Pagination } from "swiper/modules";
@@ -22,6 +22,8 @@ export default function Sections({ onChangeSectionId }: SectionsProps) {
   );
 
   const [activeSection, setActiveSection] = useState<number | null>(null);
+  const prevRef = useRef<HTMLButtonElement>(null);
+  const nextRef = useRef<HTMLButtonElement>(null);
 
 
   const fetchForumCategories = async () => {
@@ -89,8 +91,14 @@ export default function Sections({ onChangeSectionId }: SectionsProps) {
             autoHeight={false}
             modules={[Pagination, Navigation]}
             navigation={{
-              nextEl: ".swiper-button-next",
-              prevEl: ".swiper-button-prev",
+              prevEl: prevRef.current,
+              nextEl: nextRef.current,
+            }}
+            onBeforeInit={(swiper) => {
+              if (typeof swiper.params.navigation === "object") {
+                swiper.params.navigation.prevEl = prevRef.current;
+                swiper.params.navigation.nextEl = nextRef.current;
+              }
             }}
             pagination={{ clickable: true }}
           >
@@ -119,12 +127,14 @@ export default function Sections({ onChangeSectionId }: SectionsProps) {
               ))}
           </Swiper>
           <button
+            ref={prevRef}
             type="button"
             className="sections-forum__prev swiper-button swiper-button-prev"
           >
             <ChevronRight />
           </button>
           <button
+            ref={nextRef}
             type="button"
             className="sections-forum__next swiper-button swiper-button-next"
           >

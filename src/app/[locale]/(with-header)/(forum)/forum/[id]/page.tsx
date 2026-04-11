@@ -12,6 +12,7 @@ import "@/components/tiptap-node/image-node/image-node.scss";
 import "@/components/tiptap-node/heading-node/heading-node.scss";
 import "@/components/tiptap-node/paragraph-node/paragraph-node.scss";
 import { getTranslations } from "next-intl/server";
+import BackBtn from "@/components/BackBtn";
 // import "@/components/tiptap-templates/simple/simple-editor.scss";
 
 type Params = Promise<{ id: string }>;
@@ -56,60 +57,65 @@ export default async function ForumTopicPage(props: { params: Params }) {
   console.log(post);
 
   return (
-    <section className="forum-topic">
-      <div className="forum-topic__container main-container">
-        <div className="forum-topic__body body-forum-topic">
-          <div className="body-forum-topic__top top-body-forum-topic">
-            <h2 className="top-body-forum-topic__title title text-start">
-              {/* <span className="text-base text-gray-500">ID: {post.id}</span>{" "} */}
-              {post.title}
-            </h2>
-            <ForumActions id={post.id} author_id={post.author_id} />
-          </div>
+    <>
+      <div className="main-container">
+        <BackBtn href={`/forum`} />
+      </div>
+      <section className="forum-topic">
+        <div className="forum-topic__container main-container">
+          <div className="forum-topic__body body-forum-topic">
+            <div className="body-forum-topic__top top-body-forum-topic">
+              <h2 className="top-body-forum-topic__title title text-start">
+                {/* <span className="text-base text-gray-500">ID: {post.id}</span>{" "} */}
+                {post.title}
+              </h2>
+              <ForumActions id={post.id} author_id={post.author_id} />
+            </div>
 
-          {/* <div className="body-forum-topic__image">
+            {/* <div className="body-forum-topic__image">
             <Gallery src={"/product/01.jpg"} thumb={"/product/01.jpg"} />
           </div> */}
-          <div className="flex flex-col gap-2 ">
-            {
-              post.author && post.author.first_name && !post.is_from_incognito && (
-                <div className=" font-medium">
-                  {t("author")}: {post.author.first_name}
-                </div>
-              )
-            }
-            <span className="item-forum__date font-medium">
-              {t("published-at")}: {new Date(post.created_at).toLocaleDateString("uk-UA", {
-                day: "2-digit",
-                month: "2-digit",
-                year: "2-digit",
-              })}
-            </span>
-          </div>
-          <div className="simple-editor-content !p-0">
-            <div
-              className=" tiptap ProseMirror simple-editor"
-              dangerouslySetInnerHTML={{ __html: post.text }}
-            />
-          </div>
-          <ForumComments postId={post.id} />
-          {/* <div className="forum-comments">
+            <div className="flex flex-col gap-2 ">
+              {
+                post.author && post.author.first_name && !post.is_from_incognito && (
+                  <div className=" font-medium">
+                    {t("author")}: {post.author.first_name}
+                  </div>
+                )
+              }
+              <span className="item-forum__date font-medium">
+                {t("published-at")}: {new Date(post.created_at).toLocaleDateString("uk-UA", {
+                  day: "2-digit",
+                  month: "2-digit",
+                  year: "2-digit",
+                })}
+              </span>
+            </div>
+            <div className="simple-editor-content !p-0">
+              <div
+                className=" tiptap ProseMirror simple-editor"
+                dangerouslySetInnerHTML={{ __html: post.text }}
+              />
+            </div>
+            <ForumComments postId={post.id} />
+            {/* <div className="forum-comments">
             <ForumCommentInput postId={post.id} />
             <ForumComments postId={post.id} />
           </div> */}
-        </div>
-        <div className="forum-topic__block block-forum-topic">
-          <div className="add-forum__info info-contact">
-            <div className="info-contact__body">
-              <p className="info-contact__text">
-                {t("forumProposition")}
-              </p>
-              <ModalContact />
+          </div>
+          <div className="forum-topic__block block-forum-topic">
+            <div className="add-forum__info info-contact">
+              <div className="info-contact__body">
+                <p className="info-contact__text">
+                  {t("forumProposition")}
+                </p>
+                <ModalContact />
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 }
 

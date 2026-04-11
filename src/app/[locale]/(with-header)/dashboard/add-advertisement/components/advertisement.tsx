@@ -99,7 +99,6 @@ export default function Advertisement({ categories }: SellProps) {
       //   data.photos.map(convertApiResponseToFile)
       // );
       // setPhotos(data.photos[0]);
-      console.log(data.photos[0]);
       setProduct(data);
     } catch (err) {
       console.log("error");
@@ -129,14 +128,12 @@ export default function Advertisement({ categories }: SellProps) {
       }
     } catch (error) {
       console.error("Ошибка при отправке данных:", error);
-      toast.success(t("toast.delete-error"));
+      toast.error(t("toast.delete-error"));
     }
   };
 
-  console.log(files);
-
   const processForm: SubmitHandler<AdvertisementInputs> = async (data) => {
-    if (!session?.user.access_token && !session?.user.id) {
+    if (!session?.user.access_token || !session?.user.id) {
       return;
     }
 
@@ -258,7 +255,6 @@ export default function Advertisement({ categories }: SellProps) {
         });
         if (editResponse.ok) {
           toast.success(t("toast.update-success"));
-          const result = await editResponse.json();
           router.push(`/products/${product.id}`);
         } else {
           throw new Error(t("toast.update-error"));

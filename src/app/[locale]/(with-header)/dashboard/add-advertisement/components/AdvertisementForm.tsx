@@ -18,7 +18,7 @@ import { Select, SelectItem } from "@heroui/react";
 import Image from "next/image";
 import { ChevronRight } from "lucide-react";
 import { toast } from "sonner";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSession } from "next-auth/react";
 import Map from "@/components/Map/Map";
 import { useSearchParams } from "next/navigation";
@@ -68,6 +68,8 @@ export default function AdvertisementForm({
 }: AdvertisementFormProps) {
   const locale = useLocale();
   const t = useTranslations("Dashboard.Sell");
+  const photoPrevRef = useRef<HTMLButtonElement>(null);
+  const photoNextRef = useRef<HTMLButtonElement>(null);
   const [activePhotoIndex, setActivePhotoIndex] = useState(0);
   const [showDiscount, setShowDiscount] = useState(false);
   const [photos, setPhotos] = useState<File[]>([]);
@@ -714,8 +716,14 @@ export default function AdvertisementForm({
                             modules={[Navigation]}
                             className="w-full "
                             navigation={{
-                              nextEl: ".swiper-button-next",
-                              prevEl: ".swiper-button-prev",
+                              prevEl: photoPrevRef.current,
+                              nextEl: photoNextRef.current,
+                            }}
+                            onBeforeInit={(swiper) => {
+                              if (typeof swiper.params.navigation === "object") {
+                                swiper.params.navigation.prevEl = photoPrevRef.current;
+                                swiper.params.navigation.nextEl = photoNextRef.current;
+                              }
                             }}
                             onSlideChange={(swiper) =>
                               setActivePhotoIndex(swiper.activeIndex)
@@ -746,12 +754,14 @@ export default function AdvertisementForm({
                           </Swiper>
 
                           <button
+                            ref={photoPrevRef}
                             type="button"
                             className="swiper-button swiper-button-prev"
                           >
                             <ChevronRight />
                           </button>
                           <button
+                            ref={photoNextRef}
                             type="button"
                             className="swiper-button swiper-button-next"
                           >

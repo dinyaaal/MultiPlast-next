@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useRef } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import { Navigation, Pagination } from "swiper/modules";
@@ -13,6 +13,9 @@ interface AdvertsSwiperProps {
 }
 
 export default function AdvertsSwiper({ adverts }: AdvertsSwiperProps) {
+  const prevRef = useRef<HTMLButtonElement>(null);
+  const nextRef = useRef<HTMLButtonElement>(null);
+
   return (
     <div className="adverts__body">
       <Swiper
@@ -21,8 +24,14 @@ export default function AdvertsSwiper({ adverts }: AdvertsSwiperProps) {
         className="adverts__slider"
         modules={[Pagination, Navigation]}
         navigation={{
-          nextEl: ".swiper-button-next",
-          prevEl: ".swiper-button-prev",
+          prevEl: prevRef.current,
+          nextEl: nextRef.current,
+        }}
+        onBeforeInit={(swiper) => {
+          if (typeof swiper.params.navigation === "object") {
+            swiper.params.navigation.prevEl = prevRef.current;
+            swiper.params.navigation.nextEl = nextRef.current;
+          }
         }}
         pagination={{ clickable: true }}
         breakpoints={{
@@ -47,12 +56,14 @@ export default function AdvertsSwiper({ adverts }: AdvertsSwiperProps) {
         ))}
       </Swiper>
       <button
+        ref={prevRef}
         type="button"
         className="swiper-button swiper-button-prev adverts-arrow-prev"
       >
         <ChevronRight />
       </button>
       <button
+        ref={nextRef}
         type="button"
         className="swiper-button swiper-button-next adverts-arrow-next"
       >

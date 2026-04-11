@@ -15,6 +15,9 @@ import ProductMap from "./components/ProductMap";
 import ProductContacts from "./components/ProductContacts";
 import { DownloadAllFiles } from "./components/DownloadAllFiles";
 import AdvertsWatched from "@/components/Products/AdvertsWatched";
+import { ButtonMain } from "@/components/ButtonMain";
+import { ChevronLeft } from "lucide-react";
+import BackBtn from "@/components/BackBtn";
 
 type Params = Promise<{ id: string }>;
 
@@ -79,6 +82,7 @@ export default async function Product(props: { params: Params }) {
       <BreadcrumbsClient items={crumbs} />
       <section className="product pb-20">
         <div className="product__container main-container">
+          <BackBtn href={`/products`} />
           <div className="product__top top-product">
             <div className="w-full flex flex-col gap-2 ">
               <div className="flex items-center justify-between gap-3">
@@ -213,10 +217,10 @@ export default async function Product(props: { params: Params }) {
                   {product.web_site && (
                     <>
                       <div className="contact-info-body-product__title">
-                        {t(`info.website`)}:
+                        {t(`info.website-${product.type_of_product}`)}:
                       </div>
                       <Link
-                        href={product.web_site}
+                        href={`${product.web_site}`}
                         target="_blank"
                         className="contact-info-body-product__text text-sm link"
                       >
