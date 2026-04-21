@@ -111,8 +111,8 @@ export const ForumCard: React.FC<ForumCardProps> = ({
 
           <Link href={`/forum/${post.id}`} className="item-forum__body">
             <div className="item-forum__block">
+              <span className="text-sm text-gray-400">ID: {post.id}</span>
               <h4 className="item-forum__title">
-                {/* <span className="text-base text-gray-500">ID: {post.id}</span>{" "} */}
                 {post.title}
               </h4>
               {post.text && (

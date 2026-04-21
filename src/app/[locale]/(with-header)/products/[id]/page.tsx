@@ -85,7 +85,7 @@ export default async function Product(props: { params: Params }) {
           <BackBtn href={`/products`} />
           <div className="product__top top-product">
             <div className="w-full flex flex-col gap-2 ">
-              <div className="flex items-center justify-between gap-3">
+              <div className="flex flex-wrap items-center justify-between gap-3">
                 <span>ID: {product.id}</span>
                 <span>
                   {t(`published`)}:{" "}
@@ -141,6 +141,13 @@ export default async function Product(props: { params: Params }) {
               <div className="body-product__content">
                 <ProductPhotos product={product} />
                 <div className="top-product__body">
+                  <div className="flex items-center justify-between gap-3 w-full">
+                    <span>ID: {product.id}</span>
+                    <span>
+                      {t(`published`)}:{" "}
+                      {new Date(product.created_at).toLocaleDateString("uk-UA")}
+                    </span>
+                  </div>
                   <div className="top-product__block">
                     <h2 className="top-product__title title">
                       {product.title}

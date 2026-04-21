@@ -65,10 +65,11 @@ export default async function ForumTopicPage(props: { params: Params }) {
         <div className="forum-topic__container main-container">
           <div className="forum-topic__body body-forum-topic">
             <div className="body-forum-topic__top top-body-forum-topic">
-              <h2 className="top-body-forum-topic__title title text-start">
-                {/* <span className="text-base text-gray-500">ID: {post.id}</span>{" "} */}
-                {post.title}
-              </h2>
+              <div>
+                <h2 className="top-body-forum-topic__title title text-start">
+                  {post.title}
+                </h2>
+              </div>
               <ForumActions id={post.id} author_id={post.author_id} />
             </div>
 
@@ -76,6 +77,8 @@ export default async function ForumTopicPage(props: { params: Params }) {
             <Gallery src={"/product/01.jpg"} thumb={"/product/01.jpg"} />
           </div> */}
             <div className="flex flex-col gap-2 ">
+              <span className="text-sm text-gray-400">ID: {post.id}</span>
+
               {
                 post.author && post.author.first_name && !post.is_from_incognito && (
                   <div className=" font-medium">
