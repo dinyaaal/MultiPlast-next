@@ -27,7 +27,12 @@ export default function HeaderNavigation({
   const { data: session } = useSession();
   const locale = useLocale();
 
-  console.log(categories);
+  const menuCategories = categories
+    .filter((c) => c.show_in_menu)
+    .map((c) => ({
+      ...c,
+      categories: c.categories?.filter((sub) => sub.show_in_menu) ?? [],
+    }));
 
   const tNavigation = useTranslations("Navigation");
   return (
@@ -54,7 +59,7 @@ export default function HeaderNavigation({
                   <span className="menu__link-text">
                     {tNavigation("addAdvertisement")}
                   </span>
-                  {categories.length > 0 && (
+                  {menuCategories.length > 0 && (
                     <ChevronDownIcon className="menu__link-arrow" />
                     // <div className="main-menu__arrow menu__arrow">
                     //   <Image
@@ -70,7 +75,7 @@ export default function HeaderNavigation({
               </li>
 
             </DropdownMenuTrigger>
-            {categories.length > 0 && (
+            {menuCategories.length > 0 && (
               <DropdownMenuContent side='bottom' align='start' className="sub-menu__list">
                 <ul>
                   <DropdownMenuGroup>
@@ -102,60 +107,60 @@ export default function HeaderNavigation({
                         <DropdownMenuSubContent className="sub-menu__list">
                           <ul>
 
-                            {categories.map((category) => {
-                              const sellSubs = category.categories?.filter((sub) => sub.type === "Сировина") ?? [];
+                            {menuCategories.map((category) => {
+                              const sellSubs = category.categories ?? [];
                               return sellSubs.length > 0 ? (
-                              <DropdownMenuSub key={category.id}>
-                                <DropdownMenuSubTrigger asChild >
-                                  <li>
-                                    <Link
-                                      href={`/dashboard/add-advertisement?type=sell&category=${category.id}`}
-                                      className="sub-menu__link menu__link"
-                                    >
-                                      <span
-                                        className="menu__link-text"
-                                        dangerouslySetInnerHTML={{
-                                          __html:
-                                            category.translations.name[
-                                            locale as keyof typeof category.translations.name
-                                            ] ||
-                                            category.name ||
-                                            "",
-                                        }}
-                                      />
-                                      <ChevronRightIcon className="menu__link-arrow" />
-                                    </Link>
-                                  </li>
-                                </DropdownMenuSubTrigger>
-                                <DropdownMenuPortal>
-                                  <DropdownMenuSubContent className="sub-menu__list">
-                                    <ul>
-                                      {sellSubs.map((subCategory) => (
-                                        <DropdownMenuItem key={subCategory.id} asChild>
-                                          <li>
-                                            <Link
-                                              href={`/dashboard/add-advertisement?type=sell&category=${subCategory.parent_id}&subCategory=${subCategory.id}`}
-                                              className="menu__link"
-                                            >
-                                              <span
-                                                className="menu__link-text"
-                                                dangerouslySetInnerHTML={{
-                                                  __html:
-                                                    subCategory.translations.name[
-                                                    locale as keyof typeof subCategory.translations.name
-                                                    ] ||
-                                                    subCategory.name ||
-                                                    "",
-                                                }}
-                                              />
-                                            </Link>
-                                          </li>
-                                        </DropdownMenuItem>
-                                      ))}
-                                    </ul>
-                                  </DropdownMenuSubContent>
-                                </DropdownMenuPortal>
-                              </DropdownMenuSub>
+                                <DropdownMenuSub key={category.id}>
+                                  <DropdownMenuSubTrigger asChild >
+                                    <li>
+                                      <Link
+                                        href={`/dashboard/add-advertisement?type=sell&category=${category.id}`}
+                                        className="sub-menu__link menu__link"
+                                      >
+                                        <span
+                                          className="menu__link-text"
+                                          dangerouslySetInnerHTML={{
+                                            __html:
+                                              category.translations.name[
+                                              locale as keyof typeof category.translations.name
+                                              ] ||
+                                              category.name ||
+                                              "",
+                                          }}
+                                        />
+                                        <ChevronRightIcon className="menu__link-arrow" />
+                                      </Link>
+                                    </li>
+                                  </DropdownMenuSubTrigger>
+                                  <DropdownMenuPortal>
+                                    <DropdownMenuSubContent className="sub-menu__list">
+                                      <ul>
+                                        {sellSubs.map((subCategory) => (
+                                          <DropdownMenuItem key={subCategory.id} asChild>
+                                            <li>
+                                              <Link
+                                                href={`/dashboard/add-advertisement?type=sell&category=${subCategory.parent_id}&subCategory=${subCategory.id}`}
+                                                className="menu__link"
+                                              >
+                                                <span
+                                                  className="menu__link-text"
+                                                  dangerouslySetInnerHTML={{
+                                                    __html:
+                                                      subCategory.translations.name[
+                                                      locale as keyof typeof subCategory.translations.name
+                                                      ] ||
+                                                      subCategory.name ||
+                                                      "",
+                                                  }}
+                                                />
+                                              </Link>
+                                            </li>
+                                          </DropdownMenuItem>
+                                        ))}
+                                      </ul>
+                                    </DropdownMenuSubContent>
+                                  </DropdownMenuPortal>
+                                </DropdownMenuSub>
                               ) : (
                                 <DropdownMenuItem key={category.id} asChild>
                                   <li>
@@ -211,60 +216,60 @@ export default function HeaderNavigation({
                         <DropdownMenuSubContent className="sub-menu__list">
                           <ul>
 
-                            {categories.map((category) => {
-                              const buySubs = category.categories?.filter((sub) => sub.type === "Сировина") ?? [];
+                            {menuCategories.map((category) => {
+                              const buySubs = category.categories ?? [];
                               return buySubs.length > 0 ? (
-                              <DropdownMenuSub key={category.id}>
-                                <DropdownMenuSubTrigger asChild >
-                                  <li>
-                                    <Link
-                                      href={`/dashboard/add-advertisement?type=buy&category=${category.id}`}
-                                      className="sub-menu__link menu__link"
-                                    >
-                                      <span
-                                        className="menu__link-text"
-                                        dangerouslySetInnerHTML={{
-                                          __html:
-                                            category.translations.name[
-                                            locale as keyof typeof category.translations.name
-                                            ] ||
-                                            category.name ||
-                                            "",
-                                        }}
-                                      />
-                                      <ChevronRightIcon className="menu__link-arrow" />
-                                    </Link>
-                                  </li>
-                                </DropdownMenuSubTrigger>
-                                <DropdownMenuPortal>
-                                  <DropdownMenuSubContent className="sub-menu__list">
-                                    <ul>
-                                      {buySubs.map((subCategory) => (
-                                        <DropdownMenuItem key={subCategory.id} asChild>
-                                          <li>
-                                            <Link
-                                              href={`/dashboard/add-advertisement?type=buy&category=${subCategory.parent_id}&subCategory=${subCategory.id}`}
-                                              className="menu__link"
-                                            >
-                                              <span
-                                                className="menu__link-text"
-                                                dangerouslySetInnerHTML={{
-                                                  __html:
-                                                    subCategory.translations.name[
-                                                    locale as keyof typeof subCategory.translations.name
-                                                    ] ||
-                                                    subCategory.name ||
-                                                    "",
-                                                }}
-                                              />
-                                            </Link>
-                                          </li>
-                                        </DropdownMenuItem>
-                                      ))}
-                                    </ul>
-                                  </DropdownMenuSubContent>
-                                </DropdownMenuPortal>
-                              </DropdownMenuSub>
+                                <DropdownMenuSub key={category.id}>
+                                  <DropdownMenuSubTrigger asChild >
+                                    <li>
+                                      <Link
+                                        href={`/dashboard/add-advertisement?type=buy&category=${category.id}`}
+                                        className="sub-menu__link menu__link"
+                                      >
+                                        <span
+                                          className="menu__link-text"
+                                          dangerouslySetInnerHTML={{
+                                            __html:
+                                              category.translations.name[
+                                              locale as keyof typeof category.translations.name
+                                              ] ||
+                                              category.name ||
+                                              "",
+                                          }}
+                                        />
+                                        <ChevronRightIcon className="menu__link-arrow" />
+                                      </Link>
+                                    </li>
+                                  </DropdownMenuSubTrigger>
+                                  <DropdownMenuPortal>
+                                    <DropdownMenuSubContent className="sub-menu__list">
+                                      <ul>
+                                        {buySubs.map((subCategory) => (
+                                          <DropdownMenuItem key={subCategory.id} asChild>
+                                            <li>
+                                              <Link
+                                                href={`/dashboard/add-advertisement?type=buy&category=${subCategory.parent_id}&subCategory=${subCategory.id}`}
+                                                className="menu__link"
+                                              >
+                                                <span
+                                                  className="menu__link-text"
+                                                  dangerouslySetInnerHTML={{
+                                                    __html:
+                                                      subCategory.translations.name[
+                                                      locale as keyof typeof subCategory.translations.name
+                                                      ] ||
+                                                      subCategory.name ||
+                                                      "",
+                                                  }}
+                                                />
+                                              </Link>
+                                            </li>
+                                          </DropdownMenuItem>
+                                        ))}
+                                      </ul>
+                                    </DropdownMenuSubContent>
+                                  </DropdownMenuPortal>
+                                </DropdownMenuSub>
                               ) : (
                                 <DropdownMenuItem key={category.id} asChild>
                                   <li>

@@ -9,6 +9,7 @@ export interface SubCategory {
   parent_id: number;
   name: string;
   type: string;
+  show_in_menu: boolean;
   translations: {
     name: Translations;
   };
@@ -18,6 +19,7 @@ export interface Category {
   id: number;
   name: string;
   type: string;
+  show_in_menu: boolean;
   categories: SubCategory[];
   translations: {
     name: Translations;
