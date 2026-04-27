@@ -23,7 +23,7 @@ const fetchCategories = async (): Promise<Category[]> => {
       "Content-Type": "application/json",
     },
     // cache: "force-cache",
-    next: { revalidate: 86400 },
+    next: { revalidate: 3600 },
   });
 
   if (!res.ok) {

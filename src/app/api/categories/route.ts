@@ -7,7 +7,7 @@ export async function GET(request: NextRequest) {
       headers: {
         "Content-Type": "application/json",
       },
-      next: { revalidate: 86400 },
+      next: { revalidate: 3600 },
     });
 
     if (!res.ok) {
