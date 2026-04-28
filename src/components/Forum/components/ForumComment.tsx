@@ -220,7 +220,7 @@ export const ForumComment: React.FC<ForumCommentProps> = ({
               </div>
               <CreateMessage
                 id={comment.author.id}
-                reasonId={comment.id}
+                reasonId={postId}
                 isComment={true}
                 isSmall={true}
               />
