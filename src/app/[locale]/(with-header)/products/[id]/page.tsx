@@ -180,7 +180,7 @@ export default async function Product(props: { params: Params }) {
                 </div>
               </div>
             </div>
-            <div className="body-product__block">
+            <div className="body-product__block max-w-[410px]">
               <div className="body-product__info info-body-product">
                 {product.contacts[0]?.name_of_enterprise && (
                   <h4 className="info-body-product__title">

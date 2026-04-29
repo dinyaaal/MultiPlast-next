@@ -29,6 +29,7 @@ import { stripHtml } from "@/utils/stripHtml";
 interface AdvertisementFormProps {
   setNewPhotos: (photos: File[]) => void;
   setNewFiles: (files: File[]) => void;
+  setDeleteAllFiles: (value: boolean) => void;
   product?: ProductType | null;
   categories: Category[];
   register: UseFormRegister<AdvertisementInputs>;
@@ -57,6 +58,7 @@ export default function AdvertisementForm({
   setProduct,
   setNewPhotos,
   setNewFiles,
+  setDeleteAllFiles,
   clearErrors,
   product,
   categories,
@@ -74,6 +76,7 @@ export default function AdvertisementForm({
   const [showDiscount, setShowDiscount] = useState(false);
   const [photos, setPhotos] = useState<File[]>([]);
   const [files, setFiles] = useState<File[]>([]);
+  const [existingFilesDeleted, setExistingFilesDeleted] = useState(false);
   const { data: session, status } = useSession();
 
   //   const [typePrice, setTypePrice] = useState<PriceType>({ type: "for_kg" });
@@ -442,9 +445,11 @@ export default function AdvertisementForm({
     setValue("area", data.address.region);
   };
 
-  const deleteFiles = () => {
+  const handleDeleteAllFiles = () => {
     setFiles([]);
     setNewFiles([]);
+    setExistingFilesDeleted(true);
+    setDeleteAllFiles(true);
   };
 
 
@@ -860,16 +865,9 @@ export default function AdvertisementForm({
                 <div className="input-body-file__content dashboard-files">
                   <div className="flex flex-col gap-1">
                     <p>{t("upload-files")}</p>
-
-                    {files && files.length > 0 && (
-                      <p className="input-body-file__item">
-                        {t("files-uploaded")} {files.length}
-                      </p>
-                    )}
                   </div>
                   <div className="input-body-file__actions">
-                    <ButtonMain as='label' type={'button'} color='primary' >
-
+                    <ButtonMain as="label" type={"button"} color="primary">
                       <input
                         id="dashboard-files"
                         type="file"
@@ -878,15 +876,36 @@ export default function AdvertisementForm({
                       />
                       {t("upload")}
                     </ButtonMain>
-                    <button
-                      type="button"
-                      onClick={deleteFiles}
-                      className="input-body-file__delete"
-                    >
-                      {t("delete")}
-                    </button>
+                    {(!existingFilesDeleted && product?.files && product.files.length > 0) || files.length > 0 ? (
+                      <button
+                        type="button"
+                        onClick={handleDeleteAllFiles}
+                        className="input-body-file__delete"
+                      >
+                        {t("delete")}
+                      </button>
+                    ) : null}
                   </div>
                 </div>
+
+                {!existingFilesDeleted && product?.files && product.files.length > 0 && (
+                  <div className="flex flex-col gap-2 mt-3">
+                    {product.files.map((file) => (
+                      <div key={file.id} className="flex items-center gap-2 p-2 border border-border rounded-lg text-sm min-w-0">
+                        <span className="flex-1 truncate min-w-0">{file.name}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                {files.length > 0 && (
+                  <div className="flex flex-col gap-2 mt-3">
+                    {files.map((file, index) => (
+                      <div key={index} className="flex items-center gap-2 p-2 border border-border rounded-lg text-sm min-w-0">
+                        <span className="flex-1 truncate min-w-0">{file.name}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
           </div>

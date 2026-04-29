@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import "swiper/css";
 import { MinimalProduct } from "@/types/types";
 import { getRecentProducts } from "@/utils/getRecentProducts";
 import { useTranslations } from "next-intl";
@@ -25,7 +24,9 @@ export default function AdvertsWatched() {
         <div className="adverts__top">
           <h2 className="adverts__title title">{t("title")}</h2>
         </div>
-        <AdvertsSwiper adverts={recent} />
+        {recent.length > 0 && (
+          <AdvertsSwiper adverts={recent} />
+        )}
       </div>
     </section>
   );

@@ -1,12 +1,13 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import { Navigation, Pagination } from "swiper/modules";
 import { ProductCard } from "./ProductCard";
 import { MinimalProduct } from "@/types/types";
 import { ChevronRight } from "lucide-react";
+import type { Swiper as SwiperType } from "swiper";
 
 interface AdvertsSwiperProps {
   adverts: MinimalProduct[];
@@ -15,6 +16,19 @@ interface AdvertsSwiperProps {
 export default function AdvertsSwiper({ adverts }: AdvertsSwiperProps) {
   const prevRef = useRef<HTMLButtonElement>(null);
   const nextRef = useRef<HTMLButtonElement>(null);
+  const swiperRef = useRef<SwiperType | null>(null);
+
+  const updateButtonsVisibility = () => {
+    const swiper = swiperRef.current;
+    if (!swiper) return;
+    const hidden = swiper.isBeginning && swiper.isEnd;
+    if (prevRef.current) prevRef.current.style.display = hidden ? "none" : "";
+    if (nextRef.current) nextRef.current.style.display = hidden ? "none" : "";
+  };
+
+  useEffect(() => {
+    updateButtonsVisibility();
+  }, []);
 
   return (
     <div className="adverts__body">
@@ -24,15 +38,13 @@ export default function AdvertsSwiper({ adverts }: AdvertsSwiperProps) {
         className="adverts__slider"
         modules={[Pagination, Navigation]}
         navigation={{
-          prevEl: prevRef.current,
-          nextEl: nextRef.current,
+          prevEl: ".adverts-arrow-prev",
+          nextEl: ".adverts-arrow-next",
         }}
-        onBeforeInit={(swiper) => {
-          if (typeof swiper.params.navigation === "object") {
-            swiper.params.navigation.prevEl = prevRef.current;
-            swiper.params.navigation.nextEl = nextRef.current;
-          }
+        onSwiper={(swiper) => {
+          swiperRef.current = swiper;
         }}
+        onBreakpoint={updateButtonsVisibility}
         pagination={{ clickable: true }}
         breakpoints={{
           375: {

@@ -38,6 +38,7 @@ export default function Advertisement({ categories }: SellProps) {
 
   const [photos, setPhotos] = useState<File[]>([]);
   const [files, setFiles] = useState<File[]>([]);
+  const [deleteAllFiles, setDeleteAllFiles] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingRequest, setIsLoadingRequest] = useState(false);
 
@@ -219,9 +220,11 @@ export default function Advertisement({ categories }: SellProps) {
 
     // Файлы и фото
     photos.forEach((photo) => formData.append("photos[]", photo));
-    // if (files && files.length > 0) {
-    // }
-    files.forEach((file) => formData.append("files[]", file));
+    if (deleteAllFiles) {
+      formData.append("files[]", "");
+    } else {
+      files.forEach((file) => formData.append("files[]", file));
+    }
 
     // Основные поля объявления
     formData.append("title", title);
@@ -306,6 +309,7 @@ export default function Advertisement({ categories }: SellProps) {
         <AdvertisementForm
           setNewPhotos={setPhotos}
           setNewFiles={setFiles}
+          setDeleteAllFiles={setDeleteAllFiles}
           setProduct={setProduct}
           product={product}
           clearErrors={clearErrors}
