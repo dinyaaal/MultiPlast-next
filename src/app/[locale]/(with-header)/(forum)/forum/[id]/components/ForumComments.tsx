@@ -173,6 +173,7 @@ export default function ForumComments({ postId }: ForumCommentInputProps) {
     }
   };
 
+
   return (
     <div className="forum-comments" ref={forumCommentsRef}>
       <div className="forum-comments__write write-forum-comments">

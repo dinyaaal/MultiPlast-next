@@ -146,6 +146,8 @@ export const ForumComment: React.FC<ForumCommentProps> = ({
     }
   };
 
+  console.log(replies)
+
   return (
     <div className="forum-comments__comment comment comment-main">
       <LightGallery
@@ -160,7 +162,7 @@ export const ForumComment: React.FC<ForumCommentProps> = ({
       />
       <div className="comment__user user-chat">
         <div className="user-chat__image item-block-chat__image">
-          {comment.author.avatar ? (
+          {comment.author.avatar && comment.author.avatar_file ? (
             <Image
               src={`${comment.author.avatar}`}
               className="ibg"

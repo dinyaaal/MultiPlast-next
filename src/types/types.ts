@@ -219,6 +219,7 @@ interface ChatUser {
   first_name: string;
   last_name: string;
   avatar: string;
+  avatar_file: string;
 }
 
 export interface Reasonable {
