@@ -135,28 +135,32 @@ export default function HeaderNavigation({
                                   <DropdownMenuPortal>
                                     <DropdownMenuSubContent className="sub-menu__list">
                                       <ul>
-                                        {sellSubs.map((subCategory) => (
-                                          <DropdownMenuItem key={subCategory.id} asChild>
-                                            <li>
-                                              <Link
-                                                href={`/dashboard/add-advertisement?type=sell&category=${subCategory.parent_id}&subCategory=${subCategory.id}`}
-                                                className="menu__link"
-                                              >
-                                                <span
-                                                  className="menu__link-text"
-                                                  dangerouslySetInnerHTML={{
-                                                    __html:
-                                                      subCategory.translations.name[
-                                                      locale as keyof typeof subCategory.translations.name
-                                                      ] ||
-                                                      subCategory.name ||
-                                                      "",
-                                                  }}
-                                                />
-                                              </Link>
-                                            </li>
-                                          </DropdownMenuItem>
-                                        ))}
+                                        {sellSubs.map((subCategory) => {
+                                          const isPolymer = subCategory.type === "Полімер";
+                                          const link = isPolymer ? `/dashboard/add-advertisement?type=sell&category=${subCategory.parent_id}&polymer=${subCategory.id}` : `/dashboard/add-advertisement?type=sell&category=${subCategory.parent_id}&subCategory=${subCategory.id}`;
+                                          return (
+                                            <DropdownMenuItem key={subCategory.id} asChild>
+                                              <li>
+                                                <Link
+                                                  href={link}
+                                                  className="menu__link"
+                                                >
+                                                  <span
+                                                    className="menu__link-text"
+                                                    dangerouslySetInnerHTML={{
+                                                      __html:
+                                                        subCategory.translations.name[
+                                                        locale as keyof typeof subCategory.translations.name
+                                                        ] ||
+                                                        subCategory.name ||
+                                                        "",
+                                                    }}
+                                                  />
+                                                </Link>
+                                              </li>
+                                            </DropdownMenuItem>
+                                          )
+                                        })}
                                       </ul>
                                     </DropdownMenuSubContent>
                                   </DropdownMenuPortal>
@@ -244,28 +248,33 @@ export default function HeaderNavigation({
                                   <DropdownMenuPortal>
                                     <DropdownMenuSubContent className="sub-menu__list">
                                       <ul>
-                                        {buySubs.map((subCategory) => (
-                                          <DropdownMenuItem key={subCategory.id} asChild>
-                                            <li>
-                                              <Link
-                                                href={`/dashboard/add-advertisement?type=buy&category=${subCategory.parent_id}&subCategory=${subCategory.id}`}
-                                                className="menu__link"
-                                              >
-                                                <span
-                                                  className="menu__link-text"
-                                                  dangerouslySetInnerHTML={{
-                                                    __html:
-                                                      subCategory.translations.name[
-                                                      locale as keyof typeof subCategory.translations.name
-                                                      ] ||
-                                                      subCategory.name ||
-                                                      "",
-                                                  }}
-                                                />
-                                              </Link>
-                                            </li>
-                                          </DropdownMenuItem>
-                                        ))}
+                                        {buySubs.map((subCategory) => {
+                                          const isPolymer = subCategory.type === "Полімер";
+                                          const link = isPolymer ? `/dashboard/add-advertisement?type=buy&category=${subCategory.parent_id}&polymer=${subCategory.id}` : `/dashboard/add-advertisement?type=buy&category=${subCategory.parent_id}&subCategory=${subCategory.id}`;
+                                          return (
+
+                                            <DropdownMenuItem key={subCategory.id} asChild>
+                                              <li>
+                                                <Link
+                                                  href={link}
+                                                  className="menu__link"
+                                                >
+                                                  <span
+                                                    className="menu__link-text"
+                                                    dangerouslySetInnerHTML={{
+                                                      __html:
+                                                        subCategory.translations.name[
+                                                        locale as keyof typeof subCategory.translations.name
+                                                        ] ||
+                                                        subCategory.name ||
+                                                        "",
+                                                    }}
+                                                  />
+                                                </Link>
+                                              </li>
+                                            </DropdownMenuItem>
+                                          )
+                                        })}
                                       </ul>
                                     </DropdownMenuSubContent>
                                   </DropdownMenuPortal>
@@ -298,47 +307,7 @@ export default function HeaderNavigation({
                         </DropdownMenuSubContent>
                       </DropdownMenuPortal>
                     </DropdownMenuSub>
-                    {/* <DropdownMenuSub>
-                    <DropdownMenuSubTrigger>
-                      <li>
-                        <Link
-                          href="/dashboard/add-advertisement?type=buy"
-                          className="sub-menu__link menu__link"
-                        >
-                          <span>{tNavigation("addAdvertisementBuy")}</span>
-                          <div className="sub-menu__arrow menu__arrow">
-                            <Image
-                              src="/icons/dropdown-arrow.svg"
-                              alt="Icon"
-                              width={100}
-                              height={100}
-                            />
-                          </div>
-                        </Link>
 
-
-                      </li>
-                    </DropdownMenuSubTrigger>
-                    <DropdownMenuPortal>
-                      <DropdownMenuSubContent>
-                        <DropdownMenuItem>Email</DropdownMenuItem>
-                        <DropdownMenuItem>Message</DropdownMenuItem>
-                        <DropdownMenuSub>
-                          <DropdownMenuSubTrigger>More options</DropdownMenuSubTrigger>
-                          <DropdownMenuPortal>
-                            <DropdownMenuSubContent>
-                              <DropdownMenuItem>Calendly</DropdownMenuItem>
-                              <DropdownMenuItem>Slack</DropdownMenuItem>
-                              <DropdownMenuSeparator />
-                              <DropdownMenuItem>Webhook</DropdownMenuItem>
-                            </DropdownMenuSubContent>
-                          </DropdownMenuPortal>
-                        </DropdownMenuSub>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem>Advanced...</DropdownMenuItem>
-                      </DropdownMenuSubContent>
-                    </DropdownMenuPortal>
-                  </DropdownMenuSub> */}
 
                   </DropdownMenuGroup>
                 </ul>

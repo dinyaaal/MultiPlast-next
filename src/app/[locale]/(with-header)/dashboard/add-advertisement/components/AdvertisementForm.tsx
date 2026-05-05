@@ -41,18 +41,7 @@ interface AdvertisementFormProps {
   reset: UseFormReset<AdvertisementInputs>;
 }
 
-const units = [
-  { key: "for_hour", label: "За годину" },
-  { key: "for_minute", label: "За хвилину" },
-  { key: "for_piece", label: "За штуку" },
-  { key: "for_kg", label: "За кілограм" },
-  { key: "for_meter", label: "За метр" },
-];
 
-const advertTypes = [
-  { key: "sell", label: "Продажа" },
-  { key: "buy", label: "Покупка" },
-];
 
 export default function AdvertisementForm({
   setProduct,
@@ -91,6 +80,20 @@ export default function AdvertisementForm({
   const searchPolymer = searchParams.get("polymer");
   // const MAX_FILE_SIZE_MB = 100;
   const tToast = useTranslations("Toast");
+
+
+  const units = [
+    { key: "for_hour" },
+    { key: "for_minute" },
+    { key: "for_piece" },
+    { key: "for_kg" },
+    { key: "for_meter" },
+  ];
+
+  const advertTypes = [
+    { key: "sell" },
+    { key: "buy" },
+  ];
 
   useEffect(() => {
     if (product) {
@@ -163,7 +166,7 @@ export default function AdvertisementForm({
     setValue("advertType", newAdvertType);
     setValue("type", searchSubCategory || "");
     setValue("polymer", searchPolymer || "");
-  }, [searchCategory, searchSubCategory, searchType, editId]);
+  }, [searchCategory, searchSubCategory, searchType, editId, searchPolymer]);
 
   // Следим за выбранной категорией
   useEffect(() => {
@@ -503,7 +506,7 @@ export default function AdvertisementForm({
                 // onChange={(selectedKey) => handleChangeType(selectedKey)}
                 >
                   {advertTypes.map((type) => (
-                    <SelectItem key={type.key}>{type.label}</SelectItem>
+                    <SelectItem key={type.key}>{t(`advertTypes.${type.key}`)}</SelectItem>
                   ))}
                 </Select>
               </div>
@@ -1027,7 +1030,7 @@ export default function AdvertisementForm({
                         }
                       >
                         {units.map((unit) => (
-                          <SelectItem key={unit.key}>{unit.label}</SelectItem>
+                          <SelectItem key={unit.key}>{t(`units.${unit.key}`)}</SelectItem>
                         ))}
                       </Select>
                     </div>
