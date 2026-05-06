@@ -148,6 +148,7 @@ export default function Page() {
           first_name: session.user.first_name,
           last_name: session.user.last_name,
           avatar: session.user.avatar,
+          // avatar_file: session.user.avatar_file,
         },
       },
     ]);

@@ -214,12 +214,26 @@ export interface ForumPost {
   is_from_incognito?: boolean;
 }
 
+export interface IFile {
+  id: number;
+  name: string;
+  path: string;
+  url: string;
+  type: string; // например, "photos"
+  mime_type: string; // например, "image/jpeg"
+  size: number;
+  fileable_type: string; // модель, к которой привязан файл (например, "user")
+  fileable_id: number;
+  created_at: string; // или Date, если планируешь преобразовывать при парсинге
+  updated_at: string;
+}
+
 interface ChatUser {
   id: number;
   first_name: string;
   last_name: string;
   avatar: string;
-  avatar_file: string;
+  avatar_file?: IFile;
 }
 
 export interface Reasonable {
