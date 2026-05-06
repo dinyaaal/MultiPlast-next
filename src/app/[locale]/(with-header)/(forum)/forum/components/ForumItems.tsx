@@ -1,11 +1,12 @@
 "use client";
 import { ForumPost } from "@/types/types";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Pagination, Spinner } from "@heroui/react";
 
 import { useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { ForumCard } from "@/components/Forum/components/ForumCard";
+import { useRouter } from "@/i18n/routing";
 
 interface ForumItemsProps {
   activeSectionId: number | null;
@@ -19,6 +20,9 @@ export default function ForumItems({ activeSectionId }: ForumItemsProps) {
   const [lastPage, setLastPage] = useState<number>();
   const searchParams = useSearchParams();
   const search = searchParams.get("search");
+  const [isRestored, setIsRestored] = useState(false);
+  const router = useRouter();
+  const forumItemsRef = useRef<HTMLDivElement>(null);
 
   const fetchForum = async () => {
     setIsLoading(true);
@@ -73,6 +77,55 @@ export default function ForumItems({ activeSectionId }: ForumItemsProps) {
     fetchForum();
   }, [currentPage, search, activeSectionId]);
 
+  const handlePageChange = (page: number) => {
+    sessionStorage.removeItem("forum-scroll-pos");
+    setIsRestored(false); // Позволяем скроллу отработать для новой страницы
+
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("page", page.toString());
+
+    // При пагинации лучше оставить scroll: true, чтобы кидало наверх новой страницы
+    router.replace(`?${params.toString()}`, { scroll: false });
+    window.scrollTo({
+      top: forumItemsRef.current?.offsetTop || 0,
+      behavior: "smooth",
+    });
+  };
+
+  useEffect(() => {
+    const handleScroll = () => {
+      // Сохраняем позицию только если мы не в процессе загрузки
+      if (!isLoading) {
+        sessionStorage.setItem("forum-scroll-pos", window.scrollY.toString());
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [isLoading]);
+
+  useEffect(() => {
+    // Условия для скролла: данные загружены, есть товары и мы еще не восстанавливали на этом маунте
+    if (!isLoading && forumPosts.length > 0 && !isRestored) {
+      const savedScroll = sessionStorage.getItem("forum-scroll-pos");
+
+      if (savedScroll) {
+        // Небольшая задержка, чтобы браузер успел отрисовать DOM
+        const timeoutId = setTimeout(() => {
+          window.scrollTo({
+            top: parseInt(savedScroll),
+            behavior: "instant", // "instant" лучше для возврата назад, чтобы не было дерганий
+          });
+          setIsRestored(true);
+        }, 100);
+
+        return () => clearTimeout(timeoutId);
+      } else {
+        setIsRestored(true);
+      }
+    }
+  }, [isLoading, forumPosts, isRestored]);
+
   if (isLoading) {
     return (
       <div className="flex w-full h-full flex-auto items-center justify-center">
@@ -83,7 +136,7 @@ export default function ForumItems({ activeSectionId }: ForumItemsProps) {
 
   return (
     <>
-      <div className="body-forum__items">
+      <div ref={forumItemsRef} className="body-forum__items">
         {isLoading ? (
           <div className="flex w-full h-full flex-auto items-center justify-center">
             <Spinner size="lg" />
@@ -129,8 +182,9 @@ export default function ForumItems({ activeSectionId }: ForumItemsProps) {
           </button>
 
           <Pagination
+
             page={currentPage}
-            onChange={setCurrentPage}
+            onChange={handlePageChange}
             classNames={{
               base: " flex justify-center",
               wrapper:

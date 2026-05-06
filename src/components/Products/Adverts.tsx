@@ -67,11 +67,18 @@ export default async function Adverts() {
         <div className="w-full">
           <AdvertsSwiper adverts={recent} />
         </div>
-        <div className="md:hidden">
+        <div className="md:hidden flex flex-col items-center gap-10">
+
           <Link href="/dashboard/add-advertisement" className="">
             <ButtonMain type={'button'} color='primary' >
 
               {t("button")}
+            </ButtonMain>
+          </Link>
+          <Link href="/products" className="">
+            <ButtonMain type={'button'} color='secondary' >
+
+              {t("viewAllProducts")}
             </ButtonMain>
           </Link>
         </div>
