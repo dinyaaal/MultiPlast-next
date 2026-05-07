@@ -293,7 +293,7 @@ export const ForumComment: React.FC<ForumCommentProps> = ({
                 />
               </svg>
               <span>
-                {comment.comments_count} {getReplyWord(comment.comments_count)}
+                {tComment("answers")}: {comment.comments_count}
               </span>
             </button>
             {isAnswersOpen && replies && (

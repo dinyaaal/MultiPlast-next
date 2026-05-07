@@ -14,11 +14,13 @@ interface ForumItemsProps {
 
 export default function ForumItems({ activeSectionId }: ForumItemsProps) {
   const t = useTranslations("Forum");
+  const searchParams = useSearchParams();
   const [forumPosts, setForumPosts] = useState<ForumPost[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [currentPage, setCurrentPage] = useState<number>(
+    Number(searchParams.get("page")) || 1
+  );
   const [lastPage, setLastPage] = useState<number>();
-  const searchParams = useSearchParams();
   const search = searchParams.get("search");
   const [isRestored, setIsRestored] = useState(false);
   const router = useRouter();
@@ -91,6 +93,13 @@ export default function ForumItems({ activeSectionId }: ForumItemsProps) {
       behavior: "smooth",
     });
   };
+
+  useEffect(() => {
+    const pageFromApi = Number(searchParams.get("page")) || 1;
+    if (pageFromApi !== currentPage) {
+      setCurrentPage(pageFromApi);
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     const handleScroll = () => {

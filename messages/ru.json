@@ -168,8 +168,8 @@
     },
     "comment": {
       "reply": "Ответить",
-      "answers": "ответ",
-      "answers-plural": "ответов"
+      "answers": "Ответы",
+      "answers-plural": "Ответы"
     },
     "forumAdd": {
       "select-category": "Выберите категорию:",
