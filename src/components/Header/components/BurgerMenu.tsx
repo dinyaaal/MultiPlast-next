@@ -68,23 +68,32 @@ export default function BurgerMenu() {
               <Link
                 onClick={closeMenu}
                 href="/products"
-                className={`menu__link ${
-                  pathname === "/products" ? "active" : ""
-                }`}
+                className={`menu__link ${pathname === "/products" ? "active" : ""
+                  }`}
               >
                 {tNavigation("marketplace")}
               </Link>
             </li>
-
+            <li className="menu__item">
+              <Link
+                onClick={closeMenu}
+                href="/dashboard/add-advertisement"
+                className={`menu__link ${pathname === "/dashboard/add-advertisement"
+                  ? "active"
+                  : ""
+                  }`}
+              >
+                {tNavigation("addAdvertisement")}
+              </Link>
+            </li>
             {status === "authenticated" && (
               <>
                 <li className="menu__item">
                   <Link
                     onClick={closeMenu}
                     href="/dashboard/profile"
-                    className={`menu__link  ${
-                      pathname === "/dashboard/profile" ? "active" : ""
-                    }`}
+                    className={`menu__link  ${pathname === "/dashboard/profile" ? "active" : ""
+                      }`}
                   >
                     {tNavigation("personalAccount")}
                   </Link>
@@ -93,34 +102,20 @@ export default function BurgerMenu() {
                   <Link
                     onClick={closeMenu}
                     href="/messages"
-                    className={`menu__link ${
-                      pathname === "/messages" ? "active" : ""
-                    }`}
+                    className={`menu__link ${pathname === "/messages" ? "active" : ""
+                      }`}
                   >
                     {tNavigation("myMessages")}
                   </Link>
                 </li>
 
-                <li className="menu__item">
-                  <Link
-                    onClick={closeMenu}
-                    href="/dashboard/add-advertisement"
-                    className={`menu__link ${
-                      pathname === "/dashboard/add-advertisement"
-                        ? "active"
-                        : ""
-                    }`}
-                  >
-                    {tNavigation("addAdvertisement")}
-                  </Link>
-                </li>
+
                 <li className="menu__item">
                   <Link
                     onClick={closeMenu}
                     href="/dashboard/my-sell"
-                    className={`menu__link ${
-                      pathname === "/dashboard/my-sell" ? "active" : ""
-                    }`}
+                    className={`menu__link ${pathname === "/dashboard/my-sell" ? "active" : ""
+                      }`}
                   >
                     {tNavigation("mySellAds")}
                   </Link>
@@ -129,9 +124,8 @@ export default function BurgerMenu() {
                   <Link
                     onClick={closeMenu}
                     href="/dashboard/my-buy"
-                    className={`menu__link ${
-                      pathname === "/dashboard/my-buy" ? "active" : ""
-                    }`}
+                    className={`menu__link ${pathname === "/dashboard/my-buy" ? "active" : ""
+                      }`}
                   >
                     {tNavigation("myBuyAds")}
                   </Link>
@@ -141,9 +135,8 @@ export default function BurgerMenu() {
                   <Link
                     onClick={closeMenu}
                     href="/dashboard/security"
-                    className={`menu__link ${
-                      pathname === "/dashboard/security" ? "active" : ""
-                    }`}
+                    className={`menu__link ${pathname === "/dashboard/security" ? "active" : ""
+                      }`}
                   >
                     {tNavigation("changePassword")}
                   </Link>
@@ -155,9 +148,8 @@ export default function BurgerMenu() {
               <Link
                 onClick={closeMenu}
                 href="/forum"
-                className={`menu__link ${
-                  pathname === "/forum" ? "active" : ""
-                }`}
+                className={`menu__link ${pathname === "/forum" ? "active" : ""
+                  }`}
               >
                 {tNavigation("forum")}
               </Link>
@@ -166,9 +158,8 @@ export default function BurgerMenu() {
               <Link
                 onClick={closeMenu}
                 href="/about"
-                className={`menu__link ${
-                  pathname === "/about" ? "active" : ""
-                }`}
+                className={`menu__link ${pathname === "/about" ? "active" : ""
+                  }`}
               >
                 {tNavigation("aboutProject")}
               </Link>
@@ -177,9 +168,8 @@ export default function BurgerMenu() {
               <Link
                 onClick={closeMenu}
                 href="/user-agreement"
-                className={`menu__link ${
-                  pathname === "/user-agreement" ? "active" : ""
-                }`}
+                className={`menu__link ${pathname === "/user-agreement" ? "active" : ""
+                  }`}
               >
                 {tNavigation("userAgreement")}
               </Link>
@@ -188,9 +178,8 @@ export default function BurgerMenu() {
               <Link
                 onClick={closeMenu}
                 href="/how-to-trade"
-                className={`menu__link ${
-                  pathname === "/how-to-trade" ? "active" : ""
-                }`}
+                className={`menu__link ${pathname === "/how-to-trade" ? "active" : ""
+                  }`}
               >
                 {tNavigation("howToSellBuy")}
               </Link>
