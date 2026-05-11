@@ -45,278 +45,278 @@ export default function HeaderNavigation({
           {tNavigation("marketplace")}
         </Link>
       </li>
+      <DropdownMenu >
+        <DropdownMenuTrigger asChild >
+          <li className="menu__item">
+            <div
+              // href="/dashboard/add-advertisement"
+              className={`menu__link ${pathname === "/dashboard/add-advertisement" ? "active" : ""
+                }`}
+            >
+              <span className="menu__link-text">
+                {tNavigation("addAdvertisement")}
+              </span>
+              {menuCategories.length > 0 && (
+                <ChevronDownIcon className="menu__link-arrow" />
+                // <div className="main-menu__arrow menu__arrow">
+                //   <Image
+                //     src="/icons/dropdown-arrow.svg"
+                //     alt="Icon"
+                //     width={100}
+                //     height={100}
+                //   />
+                // </div>
+              )}
+            </div>
+
+          </li>
+
+        </DropdownMenuTrigger>
+        {menuCategories.length > 0 && (
+          <DropdownMenuContent side='bottom' align='start' className="sub-menu__list">
+            <ul>
+              <DropdownMenuGroup>
+
+                <DropdownMenuSub>
+                  <DropdownMenuSubTrigger asChild >
+                    <li>
+                      <Link
+                        href="/dashboard/add-advertisement?type=sell"
+                        className="sub-menu__link menu__link"
+                      >
+                        <span>{tNavigation("addAdvertisementSell")}</span>
+                        <ChevronRightIcon className="menu__link-arrow" />
+
+                        {/* <div className="sub-menu__arrow menu__arrow">
+                              <Image
+                                src="/icons/dropdown-arrow.svg"
+                                alt="Icon"
+                                width={100}
+                                height={100}
+                              />
+                            </div> */}
+                      </Link>
+
+
+                    </li>
+                  </DropdownMenuSubTrigger>
+                  <DropdownMenuPortal>
+                    <DropdownMenuSubContent className="sub-menu__list">
+                      <ul>
+
+                        {menuCategories.map((category) => {
+                          const sellSubs = category.categories ?? [];
+                          return sellSubs.length > 0 ? (
+                            <DropdownMenuSub key={category.id}>
+                              <DropdownMenuSubTrigger asChild >
+                                <li>
+                                  <Link
+                                    href={`/dashboard/add-advertisement?type=sell&category=${category.id}`}
+                                    className="sub-menu__link menu__link"
+                                  >
+                                    <span
+                                      className="menu__link-text"
+                                      dangerouslySetInnerHTML={{
+                                        __html:
+                                          category.translations.name[
+                                          locale as keyof typeof category.translations.name
+                                          ] ||
+                                          category.name ||
+                                          "",
+                                      }}
+                                    />
+                                    <ChevronRightIcon className="menu__link-arrow" />
+                                  </Link>
+                                </li>
+                              </DropdownMenuSubTrigger>
+                              <DropdownMenuPortal>
+                                <DropdownMenuSubContent className="sub-menu__list">
+                                  <ul>
+                                    {sellSubs.map((subCategory) => {
+                                      const isPolymer = subCategory.type === "Полімер";
+                                      const link = isPolymer ? `/dashboard/add-advertisement?type=sell&category=${subCategory.parent_id}&polymer=${subCategory.id}` : `/dashboard/add-advertisement?type=sell&category=${subCategory.parent_id}&subCategory=${subCategory.id}`;
+                                      return (
+                                        <DropdownMenuItem key={subCategory.id} asChild>
+                                          <li>
+                                            <Link
+                                              href={link}
+                                              className="menu__link"
+                                            >
+                                              <span
+                                                className="menu__link-text"
+                                                dangerouslySetInnerHTML={{
+                                                  __html:
+                                                    subCategory.translations.name[
+                                                    locale as keyof typeof subCategory.translations.name
+                                                    ] ||
+                                                    subCategory.name ||
+                                                    "",
+                                                }}
+                                              />
+                                            </Link>
+                                          </li>
+                                        </DropdownMenuItem>
+                                      )
+                                    })}
+                                  </ul>
+                                </DropdownMenuSubContent>
+                              </DropdownMenuPortal>
+                            </DropdownMenuSub>
+                          ) : (
+                            <DropdownMenuItem key={category.id} asChild>
+                              <li>
+                                <Link
+                                  href={`/dashboard/add-advertisement?type=sell&category=${category.id}`}
+                                  className="sub-menu__link menu__link"
+                                >
+                                  <span
+                                    className="menu__link-text"
+                                    dangerouslySetInnerHTML={{
+                                      __html:
+                                        category.translations.name[
+                                        locale as keyof typeof category.translations.name
+                                        ] ||
+                                        category.name ||
+                                        "",
+                                    }}
+                                  />
+                                </Link>
+                              </li>
+                            </DropdownMenuItem>
+                          );
+                        })}
+                      </ul>
+
+                    </DropdownMenuSubContent>
+                  </DropdownMenuPortal>
+                </DropdownMenuSub>
+                <DropdownMenuSub>
+                  <DropdownMenuSubTrigger asChild >
+                    <li>
+                      <Link
+                        href="/dashboard/add-advertisement?type=buy"
+                        className="sub-menu__link menu__link"
+                      >
+                        <span>{tNavigation("addAdvertisementBuy")}</span>
+                        <ChevronRightIcon className="menu__link-arrow" />
+
+                        {/* <div className="sub-menu__arrow menu__arrow">
+                              <Image
+                                src="/icons/dropdown-arrow.svg"
+                                alt="Icon"
+                                width={100}
+                                height={100}
+                              />
+                            </div> */}
+                      </Link>
+
+
+                    </li>
+                  </DropdownMenuSubTrigger>
+                  <DropdownMenuPortal>
+                    <DropdownMenuSubContent className="sub-menu__list">
+                      <ul>
+
+                        {menuCategories.map((category) => {
+                          const buySubs = category.categories ?? [];
+                          return buySubs.length > 0 ? (
+                            <DropdownMenuSub key={category.id}>
+                              <DropdownMenuSubTrigger asChild >
+                                <li>
+                                  <Link
+                                    href={`/dashboard/add-advertisement?type=buy&category=${category.id}`}
+                                    className="sub-menu__link menu__link"
+                                  >
+                                    <span
+                                      className="menu__link-text"
+                                      dangerouslySetInnerHTML={{
+                                        __html:
+                                          category.translations.name[
+                                          locale as keyof typeof category.translations.name
+                                          ] ||
+                                          category.name ||
+                                          "",
+                                      }}
+                                    />
+                                    <ChevronRightIcon className="menu__link-arrow" />
+                                  </Link>
+                                </li>
+                              </DropdownMenuSubTrigger>
+                              <DropdownMenuPortal>
+                                <DropdownMenuSubContent className="sub-menu__list">
+                                  <ul>
+                                    {buySubs.map((subCategory) => {
+                                      const isPolymer = subCategory.type === "Полімер";
+                                      const link = isPolymer ? `/dashboard/add-advertisement?type=buy&category=${subCategory.parent_id}&polymer=${subCategory.id}` : `/dashboard/add-advertisement?type=buy&category=${subCategory.parent_id}&subCategory=${subCategory.id}`;
+                                      return (
+
+                                        <DropdownMenuItem key={subCategory.id} asChild>
+                                          <li>
+                                            <Link
+                                              href={link}
+                                              className="menu__link"
+                                            >
+                                              <span
+                                                className="menu__link-text"
+                                                dangerouslySetInnerHTML={{
+                                                  __html:
+                                                    subCategory.translations.name[
+                                                    locale as keyof typeof subCategory.translations.name
+                                                    ] ||
+                                                    subCategory.name ||
+                                                    "",
+                                                }}
+                                              />
+                                            </Link>
+                                          </li>
+                                        </DropdownMenuItem>
+                                      )
+                                    })}
+                                  </ul>
+                                </DropdownMenuSubContent>
+                              </DropdownMenuPortal>
+                            </DropdownMenuSub>
+                          ) : (
+                            <DropdownMenuItem key={category.id} asChild>
+                              <li>
+                                <Link
+                                  href={`/dashboard/add-advertisement?type=buy&category=${category.id}`}
+                                  className="sub-menu__link menu__link"
+                                >
+                                  <span
+                                    className="menu__link-text"
+                                    dangerouslySetInnerHTML={{
+                                      __html:
+                                        category.translations.name[
+                                        locale as keyof typeof category.translations.name
+                                        ] ||
+                                        category.name ||
+                                        "",
+                                    }}
+                                  />
+                                </Link>
+                              </li>
+                            </DropdownMenuItem>
+                          );
+                        })}
+                      </ul>
+
+                    </DropdownMenuSubContent>
+                  </DropdownMenuPortal>
+                </DropdownMenuSub>
+
+
+              </DropdownMenuGroup>
+            </ul>
+
+          </DropdownMenuContent>
+
+        )}
+
+      </DropdownMenu>
       {session && (
         <>
 
-          <DropdownMenu >
-            <DropdownMenuTrigger asChild >
-              <li className="menu__item">
-                <div
-                  // href="/dashboard/add-advertisement"
-                  className={`menu__link ${pathname === "/dashboard/add-advertisement" ? "active" : ""
-                    }`}
-                >
-                  <span className="menu__link-text">
-                    {tNavigation("addAdvertisement")}
-                  </span>
-                  {menuCategories.length > 0 && (
-                    <ChevronDownIcon className="menu__link-arrow" />
-                    // <div className="main-menu__arrow menu__arrow">
-                    //   <Image
-                    //     src="/icons/dropdown-arrow.svg"
-                    //     alt="Icon"
-                    //     width={100}
-                    //     height={100}
-                    //   />
-                    // </div>
-                  )}
-                </div>
-
-              </li>
-
-            </DropdownMenuTrigger>
-            {menuCategories.length > 0 && (
-              <DropdownMenuContent side='bottom' align='start' className="sub-menu__list">
-                <ul>
-                  <DropdownMenuGroup>
-
-                    <DropdownMenuSub>
-                      <DropdownMenuSubTrigger asChild >
-                        <li>
-                          <Link
-                            href="/dashboard/add-advertisement?type=sell"
-                            className="sub-menu__link menu__link"
-                          >
-                            <span>{tNavigation("addAdvertisementSell")}</span>
-                            <ChevronRightIcon className="menu__link-arrow" />
-
-                            {/* <div className="sub-menu__arrow menu__arrow">
-                              <Image
-                                src="/icons/dropdown-arrow.svg"
-                                alt="Icon"
-                                width={100}
-                                height={100}
-                              />
-                            </div> */}
-                          </Link>
-
-
-                        </li>
-                      </DropdownMenuSubTrigger>
-                      <DropdownMenuPortal>
-                        <DropdownMenuSubContent className="sub-menu__list">
-                          <ul>
-
-                            {menuCategories.map((category) => {
-                              const sellSubs = category.categories ?? [];
-                              return sellSubs.length > 0 ? (
-                                <DropdownMenuSub key={category.id}>
-                                  <DropdownMenuSubTrigger asChild >
-                                    <li>
-                                      <Link
-                                        href={`/dashboard/add-advertisement?type=sell&category=${category.id}`}
-                                        className="sub-menu__link menu__link"
-                                      >
-                                        <span
-                                          className="menu__link-text"
-                                          dangerouslySetInnerHTML={{
-                                            __html:
-                                              category.translations.name[
-                                              locale as keyof typeof category.translations.name
-                                              ] ||
-                                              category.name ||
-                                              "",
-                                          }}
-                                        />
-                                        <ChevronRightIcon className="menu__link-arrow" />
-                                      </Link>
-                                    </li>
-                                  </DropdownMenuSubTrigger>
-                                  <DropdownMenuPortal>
-                                    <DropdownMenuSubContent className="sub-menu__list">
-                                      <ul>
-                                        {sellSubs.map((subCategory) => {
-                                          const isPolymer = subCategory.type === "Полімер";
-                                          const link = isPolymer ? `/dashboard/add-advertisement?type=sell&category=${subCategory.parent_id}&polymer=${subCategory.id}` : `/dashboard/add-advertisement?type=sell&category=${subCategory.parent_id}&subCategory=${subCategory.id}`;
-                                          return (
-                                            <DropdownMenuItem key={subCategory.id} asChild>
-                                              <li>
-                                                <Link
-                                                  href={link}
-                                                  className="menu__link"
-                                                >
-                                                  <span
-                                                    className="menu__link-text"
-                                                    dangerouslySetInnerHTML={{
-                                                      __html:
-                                                        subCategory.translations.name[
-                                                        locale as keyof typeof subCategory.translations.name
-                                                        ] ||
-                                                        subCategory.name ||
-                                                        "",
-                                                    }}
-                                                  />
-                                                </Link>
-                                              </li>
-                                            </DropdownMenuItem>
-                                          )
-                                        })}
-                                      </ul>
-                                    </DropdownMenuSubContent>
-                                  </DropdownMenuPortal>
-                                </DropdownMenuSub>
-                              ) : (
-                                <DropdownMenuItem key={category.id} asChild>
-                                  <li>
-                                    <Link
-                                      href={`/dashboard/add-advertisement?type=sell&category=${category.id}`}
-                                      className="sub-menu__link menu__link"
-                                    >
-                                      <span
-                                        className="menu__link-text"
-                                        dangerouslySetInnerHTML={{
-                                          __html:
-                                            category.translations.name[
-                                            locale as keyof typeof category.translations.name
-                                            ] ||
-                                            category.name ||
-                                            "",
-                                        }}
-                                      />
-                                    </Link>
-                                  </li>
-                                </DropdownMenuItem>
-                              );
-                            })}
-                          </ul>
-
-                        </DropdownMenuSubContent>
-                      </DropdownMenuPortal>
-                    </DropdownMenuSub>
-                    <DropdownMenuSub>
-                      <DropdownMenuSubTrigger asChild >
-                        <li>
-                          <Link
-                            href="/dashboard/add-advertisement?type=buy"
-                            className="sub-menu__link menu__link"
-                          >
-                            <span>{tNavigation("addAdvertisementBuy")}</span>
-                            <ChevronRightIcon className="menu__link-arrow" />
-
-                            {/* <div className="sub-menu__arrow menu__arrow">
-                              <Image
-                                src="/icons/dropdown-arrow.svg"
-                                alt="Icon"
-                                width={100}
-                                height={100}
-                              />
-                            </div> */}
-                          </Link>
-
-
-                        </li>
-                      </DropdownMenuSubTrigger>
-                      <DropdownMenuPortal>
-                        <DropdownMenuSubContent className="sub-menu__list">
-                          <ul>
-
-                            {menuCategories.map((category) => {
-                              const buySubs = category.categories ?? [];
-                              return buySubs.length > 0 ? (
-                                <DropdownMenuSub key={category.id}>
-                                  <DropdownMenuSubTrigger asChild >
-                                    <li>
-                                      <Link
-                                        href={`/dashboard/add-advertisement?type=buy&category=${category.id}`}
-                                        className="sub-menu__link menu__link"
-                                      >
-                                        <span
-                                          className="menu__link-text"
-                                          dangerouslySetInnerHTML={{
-                                            __html:
-                                              category.translations.name[
-                                              locale as keyof typeof category.translations.name
-                                              ] ||
-                                              category.name ||
-                                              "",
-                                          }}
-                                        />
-                                        <ChevronRightIcon className="menu__link-arrow" />
-                                      </Link>
-                                    </li>
-                                  </DropdownMenuSubTrigger>
-                                  <DropdownMenuPortal>
-                                    <DropdownMenuSubContent className="sub-menu__list">
-                                      <ul>
-                                        {buySubs.map((subCategory) => {
-                                          const isPolymer = subCategory.type === "Полімер";
-                                          const link = isPolymer ? `/dashboard/add-advertisement?type=buy&category=${subCategory.parent_id}&polymer=${subCategory.id}` : `/dashboard/add-advertisement?type=buy&category=${subCategory.parent_id}&subCategory=${subCategory.id}`;
-                                          return (
-
-                                            <DropdownMenuItem key={subCategory.id} asChild>
-                                              <li>
-                                                <Link
-                                                  href={link}
-                                                  className="menu__link"
-                                                >
-                                                  <span
-                                                    className="menu__link-text"
-                                                    dangerouslySetInnerHTML={{
-                                                      __html:
-                                                        subCategory.translations.name[
-                                                        locale as keyof typeof subCategory.translations.name
-                                                        ] ||
-                                                        subCategory.name ||
-                                                        "",
-                                                    }}
-                                                  />
-                                                </Link>
-                                              </li>
-                                            </DropdownMenuItem>
-                                          )
-                                        })}
-                                      </ul>
-                                    </DropdownMenuSubContent>
-                                  </DropdownMenuPortal>
-                                </DropdownMenuSub>
-                              ) : (
-                                <DropdownMenuItem key={category.id} asChild>
-                                  <li>
-                                    <Link
-                                      href={`/dashboard/add-advertisement?type=buy&category=${category.id}`}
-                                      className="sub-menu__link menu__link"
-                                    >
-                                      <span
-                                        className="menu__link-text"
-                                        dangerouslySetInnerHTML={{
-                                          __html:
-                                            category.translations.name[
-                                            locale as keyof typeof category.translations.name
-                                            ] ||
-                                            category.name ||
-                                            "",
-                                        }}
-                                      />
-                                    </Link>
-                                  </li>
-                                </DropdownMenuItem>
-                              );
-                            })}
-                          </ul>
-
-                        </DropdownMenuSubContent>
-                      </DropdownMenuPortal>
-                    </DropdownMenuSub>
-
-
-                  </DropdownMenuGroup>
-                </ul>
-
-              </DropdownMenuContent>
-
-            )}
-
-          </DropdownMenu>
           <li className="menu__item">
             <Link
               href="/messages"
