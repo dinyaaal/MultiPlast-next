@@ -16,7 +16,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { Category, MapSelectData, PriceType, ProductType } from "@/types/types";
 import { Select, SelectItem } from "@heroui/react";
 import Image from "next/image";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, TrashIcon } from "lucide-react";
 import { toast } from "sonner";
 import { useEffect, useRef, useState } from "react";
 import { useSession } from "next-auth/react";
@@ -29,7 +29,6 @@ import { stripHtml } from "@/utils/stripHtml";
 interface AdvertisementFormProps {
   setNewPhotos: (photos: File[]) => void;
   setNewFiles: (files: File[]) => void;
-  setDeleteAllFiles: (value: boolean) => void;
   product?: ProductType | null;
   categories: Category[];
   register: UseFormRegister<AdvertisementInputs>;
@@ -47,7 +46,6 @@ export default function AdvertisementForm({
   setProduct,
   setNewPhotos,
   setNewFiles,
-  setDeleteAllFiles,
   clearErrors,
   product,
   categories,
@@ -65,7 +63,6 @@ export default function AdvertisementForm({
   const [showDiscount, setShowDiscount] = useState(false);
   const [photos, setPhotos] = useState<File[]>([]);
   const [files, setFiles] = useState<File[]>([]);
-  const [existingFilesDeleted, setExistingFilesDeleted] = useState(false);
   const { data: session, status } = useSession();
 
   //   const [typePrice, setTypePrice] = useState<PriceType>({ type: "for_kg" });
@@ -385,6 +382,43 @@ export default function AdvertisementForm({
     event.target.value = "";
   };
 
+  const handleDeleteFile = async (target: number | File) => {
+    if (typeof target !== "number") {
+      const next = files.filter((f) => f !== target);
+      setFiles(next);
+      setNewFiles(next);
+      return;
+    }
+
+    if (!session?.user.access_token || !product) {
+      toast.error(t("toast.file-delete-error"));
+      return;
+    }
+
+    try {
+      const res = await fetch("/api/files/delete", {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${session.user.access_token}`,
+          id: String(target),
+        },
+      });
+
+      if (!res.ok) {
+        throw new Error("Delete failed");
+      }
+
+      const nextServerFiles = (product.files || []).filter(
+        (f) => Number(f.id) !== target
+      );
+      setProduct({ ...product, files: nextServerFiles });
+      toast.success(t("toast.file-delete-success"));
+    } catch (err) {
+      console.error(err);
+      toast.error(t("toast.file-delete-error"));
+    }
+  };
+
   const handleAdvertTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setValue("advertType", e.target.value as "sell" | "buy"); // обновляем react-hook-form
     updateSearchParams({ type: e.target.value }); // обновляем только advertType в URL
@@ -448,12 +482,6 @@ export default function AdvertisementForm({
     setValue("area", data.address.region);
   };
 
-  const handleDeleteAllFiles = () => {
-    setFiles([]);
-    setNewFiles([]);
-    setExistingFilesDeleted(true);
-    setDeleteAllFiles(true);
-  };
 
 
   return (
@@ -879,23 +907,18 @@ export default function AdvertisementForm({
                       />
                       {t("upload")}
                     </ButtonMain>
-                    {(!existingFilesDeleted && product?.files && product.files.length > 0) || files.length > 0 ? (
-                      <button
-                        type="button"
-                        onClick={handleDeleteAllFiles}
-                        className="input-body-file__delete"
-                      >
-                        {t("delete")}
-                      </button>
-                    ) : null}
                   </div>
                 </div>
 
-                {!existingFilesDeleted && product?.files && product.files.length > 0 && (
+
+                {product?.files && product.files.length > 0 && (
                   <div className="flex flex-col gap-2 mt-3">
                     {product.files.map((file) => (
                       <div key={file.id} className="flex items-center gap-2 p-2 border border-border rounded-lg text-sm min-w-0">
                         <span className="flex-1 truncate min-w-0">{file.name}</span>
+                        <ButtonMain type="button" color="danger" isIconOnly onPress={() => handleDeleteFile(file.id)}>
+                          <TrashIcon />
+                        </ButtonMain>
                       </div>
                     ))}
                   </div>
@@ -905,6 +928,9 @@ export default function AdvertisementForm({
                     {files.map((file, index) => (
                       <div key={index} className="flex items-center gap-2 p-2 border border-border rounded-lg text-sm min-w-0">
                         <span className="flex-1 truncate min-w-0">{file.name}</span>
+                        <ButtonMain type="button" color="danger" isIconOnly onPress={() => handleDeleteFile(file)}>
+                          <TrashIcon />
+                        </ButtonMain>
                       </div>
                     ))}
                   </div>

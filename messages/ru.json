@@ -428,6 +428,8 @@
         "delete-error": "Не удалось удалить объявление",
         "photo-size-error": "Файлы размером более 1 МБ не были добавлены",
         "photo-delete-success": "Фото удалено",
+        "file-delete-success": "Файл удалён",
+        "file-delete-error": "Ошибка при удалении файла",
         "photo-delete-error": "Ошибка при удалении фото"
       }
     },

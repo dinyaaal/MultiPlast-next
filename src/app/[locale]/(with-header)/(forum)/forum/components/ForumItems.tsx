@@ -165,7 +165,7 @@ export default function ForumItems({ activeSectionId }: ForumItemsProps) {
             type="button"
             className={`pages__arrow pages__arrow-prev ${currentPage === 1 ? "disabled" : ""
               } `}
-            onClick={() => setCurrentPage(currentPage - 1)}
+            onClick={() => handlePageChange(currentPage - 1)}
           >
             <svg
               width="41"
@@ -211,7 +211,7 @@ export default function ForumItems({ activeSectionId }: ForumItemsProps) {
             type="button"
             className={`pages__arrow pages__arrow-next ${currentPage === lastPage ? "disabled" : ""
               } `}
-            onClick={() => setCurrentPage(currentPage + 1)}
+            onClick={() => handlePageChange(currentPage + 1)}
           >
             <svg
               width="41"

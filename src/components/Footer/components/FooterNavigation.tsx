@@ -25,15 +25,14 @@ export default function FooterNavigation() {
           <li className="menu-footer__item">
             <Link
               href="/user-agreement"
-              className={`menu__link ${
-                pathname === "/user-agreement" ? "active" : ""
-              }`}
+              className={`menu__link ${pathname === "/user-agreement" ? "active" : ""
+                }`}
             >
               {tNavigation("userAgreement")}
             </Link>
           </li>
 
-          <li className="menu-footer__item">
+          {/* <li className="menu-footer__item">
             <Link
               href="/how-to-trade"
               className={`menu__link ${
@@ -42,13 +41,12 @@ export default function FooterNavigation() {
             >
               {tNavigation("howToSellBuy")}
             </Link>
-          </li>
+          </li> */}
           <li className="menu-footer__item">
             <Link
               href="/privacy-policy"
-              className={`menu__link ${
-                pathname === "/privacy-policy" ? "active" : ""
-              }`}
+              className={`menu__link ${pathname === "/privacy-policy" ? "active" : ""
+                }`}
             >
               {tNavigation("privacyPolicy")}
             </Link>
@@ -77,9 +75,8 @@ export default function FooterNavigation() {
           <li className="menu-footer__item">
             <Link
               href="/products"
-              className={`menu__link ${
-                pathname === "/products" ? "active" : ""
-              }`}
+              className={`menu__link ${pathname === "/products" ? "active" : ""
+                }`}
             >
               {tNavigation("marketplace")}
             </Link>
@@ -89,9 +86,8 @@ export default function FooterNavigation() {
               <li className="menu-footer__item">
                 <Link
                   href="/messages"
-                  className={`menu__link ${
-                    pathname === "/messages" ? "active" : ""
-                  }`}
+                  className={`menu__link ${pathname === "/messages" ? "active" : ""
+                    }`}
                 >
                   {tNavigation("myMessages")}
                 </Link>
@@ -99,9 +95,8 @@ export default function FooterNavigation() {
               <li className="menu-footer__item">
                 <Link
                   href="/dashboard/add-advertisement"
-                  className={`menu__link ${
-                    pathname === "/dashboard/add-advertisement" ? "active" : ""
-                  }`}
+                  className={`menu__link ${pathname === "/dashboard/add-advertisement" ? "active" : ""
+                    }`}
                 >
                   {tNavigation("addAdvertisement")}
                 </Link>

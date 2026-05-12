@@ -428,6 +428,8 @@
         "delete-error": "Не вдалося видалити оголошення",
         "photo-size-error": "Файли, розмір яких перевищує 1 МБ, не були додані",
         "photo-delete-success": "Фото видалено",
+        "file-delete-success": "Файл видалено",
+        "file-delete-error": "Помилка при видаленні файлу",
 
         "photo-delete-error": "Помилка при видаленні фото"
       }

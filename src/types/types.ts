@@ -342,3 +342,25 @@ export interface MapSelectData {
     postalCode: string;
   };
 }
+
+interface ServerFile {
+  id: number;
+  name: string;
+  path: string;
+  url: string;
+  type: string;
+  mime_type: string;
+  size: number;
+  fileable_type: string;
+  fileable_id: number;
+  created_at: string;
+  updated_at: string;
+}
+
+/**
+ * Объединенный тип для работы в компоненте.
+ * Мы используем пересечение (&), чтобы сказать: 
+ * "Это может быть либо структура с сервера, либо стандартный объект File,
+ * но у него МОЖЕТ быть id (если он с сервера) и ОБЯЗАТЕЛЬНО есть name".
+ */
+export type CustomFile = (Partial<ServerFile> & { name: string }) | File;
