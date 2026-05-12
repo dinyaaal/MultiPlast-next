@@ -387,6 +387,7 @@ export default function AdvertisementForm({
       const next = files.filter((f) => f !== target);
       setFiles(next);
       setNewFiles(next);
+      toast.success(t("toast.file-delete-success"));
       return;
     }
 
