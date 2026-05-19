@@ -51,13 +51,13 @@ export default function HeaderMenu() {
           >
             {tNavigation("userAgreement")}
           </Link>
-          <Link
+          {/* <Link
             href="/how-to-trade"
             className={`menu__link menu-bottom-header__item ${pathname === "/how-to-trade" ? "active" : ""
               }`}
           >
             {tNavigation("howToSellBuy")}
-          </Link>
+          </Link> */}
           {status === "authenticated" && (
             <>
               <Link

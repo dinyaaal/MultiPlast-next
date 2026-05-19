@@ -174,7 +174,7 @@ export default function BurgerMenu() {
                 {tNavigation("userAgreement")}
               </Link>
             </li>
-            <li className="menu__item">
+            {/* <li className="menu__item">
               <Link
                 onClick={closeMenu}
                 href="/how-to-trade"
@@ -183,7 +183,7 @@ export default function BurgerMenu() {
               >
                 {tNavigation("howToSellBuy")}
               </Link>
-            </li>
+            </li> */}
           </ul>
           <div
             onClick={closeMenu}
