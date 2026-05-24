@@ -117,7 +117,7 @@ export const ChatItem: React.FC<ChatItemProps> = ({ chat, onDelete, onBlock, onU
   const hasFiles = files.length > 0;
 
   const chatUser =
-    chat.from_user.id === session?.user.id ? chat.to_user : chat.from_user;
+    chat.from_user?.id === session?.user.id ? chat.to_user : chat.from_user;
 
   return (
     <>
