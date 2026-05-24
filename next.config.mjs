@@ -14,6 +14,12 @@ const nextConfig = {
       { protocol: "http", hostname: "176.118.167.92", pathname: "/**" },
       {
         protocol: "https",
+        hostname: "api.multiplast.com.ua",
+        pathname: "/**",
+      },
+
+      {
+        protocol: "https",
         hostname: "multiplast.web-hub.online",
         pathname: "/**",
       },

@@ -2017,7 +2017,7 @@ button:disabled {
   @apply w-fit flex flex-col items-center gap-[5px];
 }
 .price-product__text {
-  @apply text-nowrap;
+  @apply text-wrap;
 }
 .price-product__sub-text {
   @apply font-medium text-greyColor;

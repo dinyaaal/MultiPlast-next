@@ -155,7 +155,33 @@ export default async function Product(props: { params: Params }) {
                     <ProductActions product={product} />
 
                   </div>
-                  <div className="top-product__price price-product">
+                  <div className="flex flex-col gap-3">
+                    <div className="top-product__price price-product ">
+                      <div className="price-product__text title">
+                        {product.type_price === "by_arrangement" ? (
+                          <p>{t(`price-types.by_arrangement`)}</p>
+                        ) : (
+                          <>
+                            <p>
+                              {product.price} грн/
+                              {getPriceUnit(product.type_price)}
+                            </p>
+                          </>
+                        )}
+                      </div>
+                    </div>
+                    {product.volume && (
+                      <div className=" price-product self-end w-fit">
+                        {product.price_per_volume && (
+                          <div className="price-product__text title title--small">
+                            От {product.volume} кг -{" "}
+                            {product.price_per_volume} грн
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                  {/* <div className="top-product__price price-product">
                     <div className="price-product__text title">
                       {product.price} грн
                     </div>
@@ -163,10 +189,10 @@ export default async function Product(props: { params: Params }) {
                   {product.volume && product.price_per_volume && (
                     <div className=" price-product  w-fit">
                       <div className="price-product__text title title--small">
-                        От {product.volume} кг - {product.price_per_volume} грн
+                        {t(`from`)} {product.volume} {t(`kg`)} - {product.price_per_volume} {t(`grn`)}
                       </div>
                     </div>
-                  )}
+                  )} */}
                 </div>
                 <div
                   data-showmore="size"

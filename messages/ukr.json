@@ -104,6 +104,10 @@
   "Product": {
     "published": "Опубліковано",
     "description": "Опис товару",
+    "from": "від",
+    "to": "до",
+    "kg": "кг",
+    "grn": "грн",
     "price-types": {
       "by_arrangement": "Ціна за домовленістю",
       "for_piece": "шт",
