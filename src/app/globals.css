@@ -2307,16 +2307,16 @@ button:disabled {
   @apply text-blueColor;
 }
 .item-block-chat__body {
-  @apply flex flex-col gap-[6px] w-full;
+  @apply flex flex-col gap-[6px]  flex-1 min-w-0;
 }
 .item-block-chat__info {
-  @apply flex items-center justify-between gap-[10px];
+  @apply flex items-center justify-between gap-[10px] flex-auto min-w-0 w-full;
 }
 .item-block-chat__block {
-  @apply flex items-center w-full justify-between;
+  @apply flex gap-2 items-center  justify-between min-w-0 flex-1 w-full;
 }
 .item-block-chat__name {
-  @apply w-[90px] text-base xl:text-lg whitespace-nowrap overflow-hidden text-ellipsis font-medium;
+  @apply line-clamp-1 text-base xl:text-lg  font-medium min-w-0 w-full;
 }
 .item-block-chat__date {
   @apply font-light;
