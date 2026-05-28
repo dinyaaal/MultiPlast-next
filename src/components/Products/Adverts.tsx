@@ -6,6 +6,9 @@ import { Link } from "@/i18n/routing";
 import { getTranslations } from "next-intl/server";
 import { ButtonMain } from "../ButtonMain";
 
+const BACKEND_URL =
+  process.env.NEXT_PUBLIC_BACKEND_URL || "https://api.multiplast.com.ua";
+
 async function getProducts(): Promise<MinimalProduct[] | null> {
   const queryParams = new URLSearchParams();
 
@@ -17,18 +20,15 @@ async function getProducts(): Promise<MinimalProduct[] | null> {
     : "";
 
   try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/products/get${queryString}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        next: {
-          revalidate: 3600,
-        },
-      }
-    );
+    const res = await fetch(`${BACKEND_URL}/api/products${queryString}`, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+      },
+      next: {
+        revalidate: 3600,
+      },
+    });
 
     if (!res.ok) return null;
 

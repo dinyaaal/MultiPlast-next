@@ -1,22 +1,25 @@
 import { NextRequest, NextResponse } from "next/server";
 
+const RESET_PASSWORD_URL =
+  "https://api.multiplast.com.ua/api/users/reset-password";
+
 export async function POST(request: NextRequest) {
-  const formData = await request.formData();
-
-  const email = formData.get("email");
-
-  // if (!email || typeof email !== "string") {
-  //   return NextResponse.json({ error: "Email is required" }, { status: 400 });
-  // }
+  const contentType = request.headers.get("content-type") || "";
+  const body: Record<string, unknown> = contentType.includes("application/json")
+    ? await request.json()
+    : Object.fromEntries(await request.formData());
 
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/reset-password`, {
+    const res = await fetch(RESET_PASSWORD_URL, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
         Accept: "application/json",
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(formData),
+      body: JSON.stringify({
+        ...body,
+        password_confirmation: body.password_confirmation || body.password,
+      }),
     });
 
     const data = await res.json();

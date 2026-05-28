@@ -8,6 +8,9 @@ import { getTranslations } from "next-intl/server";
 import Link from "next/link";
 import { ButtonMain } from "../ButtonMain";
 
+const BACKEND_URL =
+  process.env.NEXT_PUBLIC_BACKEND_URL || "https://api.multiplast.com.ua";
+
 async function getForumPosts(): Promise<ForumPost[] | null> {
   const queryParams = new URLSearchParams();
 
@@ -19,18 +22,15 @@ async function getForumPosts(): Promise<ForumPost[] | null> {
     : "";
 
   try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/forum/get${queryString}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        next: {
-          revalidate: 3600,
-        },
-      }
-    );
+    const res = await fetch(`${BACKEND_URL}/api/forums${queryString}`, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+      },
+      next: {
+        revalidate: 3600,
+      },
+    });
 
     if (!res.ok) return null;
 
