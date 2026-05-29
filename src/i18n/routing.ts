@@ -6,6 +6,10 @@ export const routing = defineRouting({
 
   // Used when no locale matches
   defaultLocale: "ukr",
+
+  // Always open the Ukrainian version from the bare domain instead of
+  // redirecting by browser language or a previously saved locale cookie.
+  localeDetection: false,
 });
 
 // Lightweight wrappers around Next.js' navigation APIs

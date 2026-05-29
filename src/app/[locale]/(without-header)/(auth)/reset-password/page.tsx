@@ -2,17 +2,18 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
-import { Link } from "@/i18n/routing";
 import { useEffect, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
-import Image from "next/image";
 import { useSearchParams } from "next/navigation";
-import { ForgotPasswordSchema, ResetPasswordSchema } from "@/lib/schema";
+import { ResetPasswordSchema } from "@/lib/schema";
 import { Spinner } from "@heroui/react";
 
 type StepTwoInputs = z.infer<typeof ResetPasswordSchema>;
+
+const RESET_PASSWORD_URL =
+  "https://api.multiplast.com.ua/api/users/reset-password";
 
 export default function ForgotPassword() {
   const t = useTranslations("Auth.forgot-password");
@@ -21,17 +22,9 @@ export default function ForgotPassword() {
   const token = searchParams.get("token");
   const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    if (email && token) {
-      setValueStep2("email", email);
-      setValueStep2("token", token);
-    }
-  }, [email, token]);
-
   // Шаг 2 — Token и новый пароль
   const {
     register: registerStep2,
-    watch: watchStep2,
     setValue: setValueStep2,
     handleSubmit: handleSubmitStep2,
     formState: { errors: errors2 },
@@ -39,22 +32,34 @@ export default function ForgotPassword() {
     resolver: zodResolver(ResetPasswordSchema),
   });
 
-  const handleResetSubmit: SubmitHandler<StepTwoInputs> = async (data) => {
-    const formData = new FormData();
-    formData.append("email", data.email);
-    formData.append("token", data.token);
-    formData.append("password", data.newPassword);
+  useEffect(() => {
+    if (email && token) {
+      setValueStep2("email", email);
+      setValueStep2("token", token);
+    }
+  }, [email, setValueStep2, token]);
 
+  const handleResetSubmit: SubmitHandler<StepTwoInputs> = async (data) => {
+    setIsLoading(true);
     try {
-      const res = await fetch("/api/users/reset-password", {
+      const res = await fetch(RESET_PASSWORD_URL, {
         method: "POST",
-        body: formData,
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: data.email,
+          token: data.token,
+          password: data.newPassword,
+          password_confirmation: data.newPassword,
+        }),
       });
 
       const result = await res.json();
 
       if (!res.ok) {
-        toast.error(t("update-error"));
+        toast.error(result.message || t("update-error"));
         return;
       }
 
@@ -62,6 +67,8 @@ export default function ForgotPassword() {
       // можно редирект на login или очищение формы
     } catch (err) {
       toast.error(t("update-error"));
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -102,8 +109,13 @@ export default function ForgotPassword() {
           </div>
         </div>
 
-        <button type="submit" className="form-login__button button">
+        <button
+          type="submit"
+          disabled={isLoading}
+          className="form-login__button button"
+        >
           {t("save-button")}
+          {isLoading && <Spinner color="current" size="sm" />}
         </button>
       </form>
     </>
