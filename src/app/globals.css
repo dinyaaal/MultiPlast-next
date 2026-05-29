@@ -2697,7 +2697,7 @@ button:disabled {
 }
 
 .add-forum__container {
-  @apply flex flex-col gap-[20px] justify-between md:flex-row;
+  @apply flex flex-col gap-[20px] justify-between xl:flex-row;
 }
 
 .add-forum__block {
@@ -2919,7 +2919,7 @@ button:disabled {
   @apply w-full overflow-hidden p-[14px] text-lg;
 }
 .tiptap-toolbar {
-  @apply !border-b !border-border;
+  @apply !border-b !border-border sticky!;
 }
 
 .comment-message-button {

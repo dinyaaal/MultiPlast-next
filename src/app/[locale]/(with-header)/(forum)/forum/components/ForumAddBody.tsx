@@ -230,7 +230,7 @@ export default function ForumAddBody({ categories }: ForumAddBodyProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit(processForm)} className="add-forum__block">
+    <form onSubmit={handleSubmit(processForm)} className="add-forum__block flex-auto min-w-0">
       <div className="input-block">
         <p>{t("forumAdd.select-category")}</p>
 
