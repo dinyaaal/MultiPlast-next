@@ -5,11 +5,12 @@ import { CheckboxGroup, Checkbox } from "@heroui/react";
 import { Accordion, AccordionItem } from "@heroui/react";
 import { Category } from "@/types/types";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ChevronDownIcon, MoveLeft } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { ButtonMain } from "@/components/ButtonMain";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface FiltersProps {
   categories: Category[];
@@ -32,11 +33,9 @@ export const Filters: React.FC<FiltersProps> = ({
     []
   );
   const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
-
-
-  useEffect(() => {
-    setSelectedSubCategories([]);
-  }, [selectedCategory]);
+  const isMobile = useIsMobile(1280);
+  const isHydratedFromUrl = useRef(false);
+  const skipNextAutoApply = useRef(true);
 
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -105,8 +104,8 @@ export const Filters: React.FC<FiltersProps> = ({
     const category = searchParams.get("cat");
     const subcategoriesRaw = searchParams.get("subcat");
 
-    const parsedOptions = optionsRaw?.split(",") ?? [];
-    const parsedSubcategories = subcategoriesRaw?.split(",") ?? [];
+    const parsedOptions = optionsRaw?.split(",").filter(Boolean) ?? [];
+    const parsedSubcategories = subcategoriesRaw?.split(",").filter(Boolean) ?? [];
 
     setSelectedOptions(parsedOptions);
     setSelectedCategory(category);
@@ -117,10 +116,17 @@ export const Filters: React.FC<FiltersProps> = ({
       }, 100);
     }
 
-    // onSelectionConfirm(category, parsedSubcategories, parsedOptions);
+    isHydratedFromUrl.current = true;
   }, []);
 
-  console.log(selectedOptions);
+  useEffect(() => {
+    if (!isHydratedFromUrl.current || isMobile) return;
+    if (skipNextAutoApply.current) {
+      skipNextAutoApply.current = false;
+      return;
+    }
+    updateUrl();
+  }, [selectedCategory, selectedSubCategories, selectedOptions, isMobile]);
 
   // -=-=-=-=-=-=-=-=- Фильтрация после перезагрузки страницы с выбранными фильтрами -=-=-=-=-=-=-=-=-
 
@@ -228,7 +234,10 @@ export const Filters: React.FC<FiltersProps> = ({
               >
                 <RadioGroup
                   value={selectedCategory}
-                  onValueChange={setSelectedCategory}
+                  onValueChange={(value) => {
+                    setSelectedCategory(value);
+                    setSelectedSubCategories([]);
+                  }}
                 >
                   {categories.map((category) => (
                     <Radio
@@ -353,7 +362,7 @@ export const Filters: React.FC<FiltersProps> = ({
               type="button"
               onPress={handleConfirm}
               color='primary'
-              className="w-full!"
+              className="w-full! xl:hidden"
             >
               {t("applyFilters")}
             </ButtonMain>
