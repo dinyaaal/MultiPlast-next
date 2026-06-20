@@ -13,7 +13,7 @@ const fetchCategories = async () => {
       "Content-Type": "application/json",
     },
     // cache: "force-cache",
-    next: { revalidate: 86400 },
+    // next: { revalidate: 86400 },
   });
 
   if (!res.ok) {

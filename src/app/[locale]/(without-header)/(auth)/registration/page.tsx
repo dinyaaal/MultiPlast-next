@@ -198,9 +198,8 @@ export default function Registration() {
               autoComplete="off"
               type="text"
               placeholder={t("registration-name")}
-              className={`form-login__input input ${
-                errors.firstName ? "input--error" : ""
-              }`}
+              className={`form-login__input input ${errors.firstName ? "input--error" : ""
+                }`}
               {...register("firstName")}
             />
           </div>
@@ -210,9 +209,8 @@ export default function Registration() {
               autoComplete="off"
               type="text"
               placeholder={t("registration-surname")}
-              className={`form-login__input input ${
-                errors.lastName ? "input--error" : ""
-              }`}
+              className={`form-login__input input ${errors.lastName ? "input--error" : ""
+                }`}
               {...register("lastName")}
             />
           </div>
@@ -222,9 +220,8 @@ export default function Registration() {
               autoComplete="off"
               type="tel"
               placeholder={t("registration-number")}
-              className={`form-login__input input ${
-                errors.phoneNumber ? "input--error" : ""
-              }`}
+              className={`form-login__input input ${errors.phoneNumber ? "input--error" : ""
+                }`}
               {...register("phoneNumber")}
             />
           </div>
@@ -234,9 +231,8 @@ export default function Registration() {
               autoComplete="off"
               type="email"
               placeholder={t("registration-email")}
-              className={`form-login__input input ${
-                errors.email ? "input--error" : ""
-              }`}
+              className={`form-login__input input ${errors.email ? "input--error" : ""
+                }`}
               {...register("email")}
             />
           </div>
@@ -263,9 +259,8 @@ export default function Registration() {
               inputProps={{
                 autoComplete: "off",
                 classNames: {
-                  inputWrapper: `h-[45px] text-black px-[12px]  bg-[#F8FBFF]! rounded-[5px] outline-offset-0 outline-[1px]  ${
-                    errors.city ? "outline-[#FF0000]" : "outline-[#B0BFD7]"
-                  } `,
+                  inputWrapper: `h-[45px] text-black px-[12px]  bg-[#F8FBFF]! rounded-[5px] outline-offset-0 outline-[1px]  ${errors.city ? "outline-[#FF0000]" : "outline-[#B0BFD7]"
+                    } `,
                 },
               }}
               listboxProps={{
@@ -303,9 +298,8 @@ export default function Registration() {
               autoComplete="off"
               type="password"
               placeholder={t("registration-password")}
-              className={`form-login__input input ${
-                errors.password ? "input--error" : ""
-              }`}
+              className={`form-login__input input ${errors.password ? "input--error" : ""
+                }`}
               {...register("password")}
             />
           </div>
@@ -315,9 +309,8 @@ export default function Registration() {
               autoComplete="off"
               type="password"
               placeholder={t("registration-repeat-password")}
-              className={`form-login__input input ${
-                errors.passwordConfirmation ? "input--error" : ""
-              }`}
+              className={`form-login__input input ${errors.passwordConfirmation ? "input--error" : ""
+                }`}
               {...register("passwordConfirmation")}
             />
           </div>
@@ -328,9 +321,8 @@ export default function Registration() {
               {...register("agreement")}
             />
             <span
-              className={`custom-checkbox ${
-                errors.agreement ? "custom-checkbox--error" : ""
-              }`}
+              className={`custom-checkbox ${errors.agreement ? "custom-checkbox--error" : ""
+                }`}
             ></span>
             {t("registration-checkbox")}
           </label>

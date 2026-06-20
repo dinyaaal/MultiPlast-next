@@ -28,7 +28,7 @@ async function getForumPosts(): Promise<ForumPost[] | null> {
         Accept: "application/json",
       },
       next: {
-        revalidate: 3600,
+        // revalidate: 3600,
       },
     });
 
@@ -62,7 +62,7 @@ export default async function HomeForum() {
           {posts &&
             posts.map((post) => <ForumCard small key={post.id} post={post} />)}
         </div>
-        <div className="home-forum__body body-home-forum">
+        {/* <div className="home-forum__body body-home-forum">
           <div className="body-home-forum__block">
             <h3 className="body-home-forum__title title--small">
               {t("joinSpecializedForum")}
@@ -83,7 +83,7 @@ export default async function HomeForum() {
               height={1000}
             />
           </div>
-        </div>
+        </div> */}
       </div>
     </section>
   );

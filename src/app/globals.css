@@ -1294,7 +1294,7 @@ button:disabled {
 /* FOOTER ///////////////////////// */
 
 .footer {
-  @apply border-t border-border pt-[50px] pb-[15px] bg-secondaryColor mt-[20px];
+  @apply border-t border-border pt-[50px] pb-[15px] bg-secondaryColor;
 }
 .footer__body {
   @apply flex flex-col  gap-[60px] justify-center text-center xl:text-start xl:flex-row xl:justify-between;
@@ -1479,7 +1479,7 @@ button:disabled {
 }
 
 .home-forum {
-  @apply pt-[30px] pb-[20px];
+  @apply pt-[30px] pb-20 xl:pb-[50px];
 }
 .home-forum__container {
   @apply flex flex-col gap-[50px];
@@ -2934,6 +2934,81 @@ button:disabled {
 }
 .account-body-user__icon img {
   @apply size-full object-contain;
+}
+
+.info-block {
+  @apply bg-blueColor text-white w-full relative overflow-hidden;
+}
+
+.info-block__gradient {
+  @apply absolute bottom-0 right-0 w-[50%] h-full hidden md:block;
+  background: linear-gradient(
+    180deg,
+    #1858b8 0%,
+    rgba(24, 88, 184, 0.5) 66.4%,
+    rgba(24, 88, 184, 0) 100%
+  );
+}
+
+.info-block__bg {
+  @apply absolute left-1/2 translate-x-[-50%] w-full h-full max-h-[50%] md:max-h-none bottom-0 md:left-auto md:right-0 md:translate-x-0 md:w-[50%] md:h-full;
+  -webkit-mask-image: linear-gradient(
+    0deg,
+    #1858b8 0%,
+    rgba(24, 88, 184, 0.5) 66.4%,
+    rgba(24, 88, 184, 0) 100%
+  );
+  mask-image: linear-gradient(
+    0deg,
+    #1858b8 0%,
+    rgba(24, 88, 184, 0.5) 66.4%,
+    rgba(24, 88, 184, 0) 100%
+  );
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+}
+
+@media (min-width: 768px) {
+  .info-block__bg {
+    -webkit-mask-image: linear-gradient(
+      270deg,
+      #1858b8 -2.6%,
+      rgba(24, 88, 184, 0.5) 60.91%,
+      rgba(24, 88, 184, 0) 93.04%
+    );
+    mask-image: linear-gradient(
+      270deg,
+      #1858b8 -2.6%,
+      rgba(24, 88, 184, 0.5) 60.91%,
+      rgba(24, 88, 184, 0) 93.04%
+    );
+  }
+}
+
+.info-block__bg img {
+  @apply w-full h-full object-cover;
+}
+
+.info-block.info-block--advertisment .info-block__bg img {
+  @apply object-left md:object-right;
+}
+
+.info-block__container {
+  @apply relative z-2 flex flex-col items-center gap-10 justify-between xl:flex-row w-full max-w-[1680px] xl:px-20 py-5 xl:py-10;
+}
+
+.info-block__block {
+  @apply flex flex-col gap-5 xl:gap-6 text-center xl:text-start flex-[0_1_60%];
+}
+
+.info-block__title {
+  @apply text-2xl xl:text-3xl;
+}
+
+.info-block__text {
+  @apply font-light;
 }
 
 @theme inline {

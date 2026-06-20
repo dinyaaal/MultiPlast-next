@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { Link, usePathname } from "@/i18n/routing";
 import { useSession } from "next-auth/react";
 import { useLocale, useTranslations } from "next-intl";
@@ -26,6 +27,13 @@ export default function HeaderNavigation({
   const pathname = usePathname();
   const { data: session } = useSession();
   const locale = useLocale();
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  useEffect(() => {
+    setMenuOpen(false);
+  }, [pathname]);
+
+  const closeMenu = () => setMenuOpen(false);
 
   const menuCategories = categories
     .filter((c) => c.show_in_menu)
@@ -45,7 +53,7 @@ export default function HeaderNavigation({
           {tNavigation("marketplace")}
         </Link>
       </li>
-      <DropdownMenu >
+      <DropdownMenu open={menuOpen} onOpenChange={setMenuOpen}>
         <DropdownMenuTrigger asChild >
           <li className="menu__item">
             <div
@@ -83,6 +91,7 @@ export default function HeaderNavigation({
                       <Link
                         href="/dashboard/add-advertisement?type=sell"
                         className="sub-menu__link menu__link"
+                        onClick={closeMenu}
                       >
                         <span>{tNavigation("addAdvertisementSell")}</span>
                         <ChevronRightIcon className="menu__link-arrow" />
@@ -113,6 +122,7 @@ export default function HeaderNavigation({
                                   <Link
                                     href={`/dashboard/add-advertisement?type=sell&category=${category.id}`}
                                     className="sub-menu__link menu__link"
+                                    onClick={closeMenu}
                                   >
                                     <span
                                       className="menu__link-text"
@@ -141,6 +151,7 @@ export default function HeaderNavigation({
                                             <Link
                                               href={link}
                                               className="menu__link"
+                                              onClick={closeMenu}
                                             >
                                               <span
                                                 className="menu__link-text"
@@ -168,6 +179,7 @@ export default function HeaderNavigation({
                                 <Link
                                   href={`/dashboard/add-advertisement?type=sell&category=${category.id}`}
                                   className="sub-menu__link menu__link"
+                                  onClick={closeMenu}
                                 >
                                   <span
                                     className="menu__link-text"
@@ -196,6 +208,7 @@ export default function HeaderNavigation({
                       <Link
                         href="/dashboard/add-advertisement?type=buy"
                         className="sub-menu__link menu__link"
+                        onClick={closeMenu}
                       >
                         <span>{tNavigation("addAdvertisementBuy")}</span>
                         <ChevronRightIcon className="menu__link-arrow" />
@@ -226,6 +239,7 @@ export default function HeaderNavigation({
                                   <Link
                                     href={`/dashboard/add-advertisement?type=buy&category=${category.id}`}
                                     className="sub-menu__link menu__link"
+                                    onClick={closeMenu}
                                   >
                                     <span
                                       className="menu__link-text"
@@ -255,6 +269,7 @@ export default function HeaderNavigation({
                                             <Link
                                               href={link}
                                               className="menu__link"
+                                              onClick={closeMenu}
                                             >
                                               <span
                                                 className="menu__link-text"
@@ -282,6 +297,7 @@ export default function HeaderNavigation({
                                 <Link
                                   href={`/dashboard/add-advertisement?type=buy&category=${category.id}`}
                                   className="sub-menu__link menu__link"
+                                  onClick={closeMenu}
                                 >
                                   <span
                                     className="menu__link-text"

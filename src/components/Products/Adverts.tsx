@@ -5,6 +5,7 @@ import AdvertsSwiper from "./components/AdvertsSwiper";
 import { Link } from "@/i18n/routing";
 import { getTranslations } from "next-intl/server";
 import { ButtonMain } from "../ButtonMain";
+import InfoBlock from "../InfoBlock";
 
 const BACKEND_URL =
   process.env.NEXT_PUBLIC_BACKEND_URL || "https://api.multiplast.com.ua";
@@ -26,7 +27,7 @@ async function getProducts(): Promise<MinimalProduct[] | null> {
         Accept: "application/json",
       },
       next: {
-        revalidate: 3600,
+        // revalidate: 3600,
       },
     });
 
@@ -51,38 +52,40 @@ export default async function Adverts() {
   if (!recent || recent.length === 0) return null;
 
   return (
-    <section className="adverts">
-      <div className="adverts__container main-container w-full items-center">
-        <div className="adverts__top w-full">
-          <h2 className="adverts__title title">{t("title")}</h2>
-          <div className="hidden md:block">
+    <>
+      <section className="adverts">
+        <div className="adverts__container main-container w-full items-center">
+          <div className="adverts__top w-full">
+            <h2 className="adverts__title title">{t("title")}</h2>
+            <div className="hidden md:block">
+              <Link href="/dashboard/add-advertisement" className="">
+                <ButtonMain type={'button'} color='primary' >
+
+                  {t("button")}
+                </ButtonMain>
+              </Link>
+            </div>
+          </div>
+          <div className="w-full">
+            <AdvertsSwiper adverts={recent} />
+          </div>
+          <div className="md:hidden flex flex-col items-center gap-10">
+
             <Link href="/dashboard/add-advertisement" className="">
               <ButtonMain type={'button'} color='primary' >
 
                 {t("button")}
               </ButtonMain>
             </Link>
+            <Link href="/products" className="">
+              <ButtonMain type={'button'} color='secondary' >
+
+                {t("viewAllProducts")}
+              </ButtonMain>
+            </Link>
           </div>
         </div>
-        <div className="w-full">
-          <AdvertsSwiper adverts={recent} />
-        </div>
-        <div className="md:hidden flex flex-col items-center gap-10">
-
-          <Link href="/dashboard/add-advertisement" className="">
-            <ButtonMain type={'button'} color='primary' >
-
-              {t("button")}
-            </ButtonMain>
-          </Link>
-          <Link href="/products" className="">
-            <ButtonMain type={'button'} color='secondary' >
-
-              {t("viewAllProducts")}
-            </ButtonMain>
-          </Link>
-        </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 }

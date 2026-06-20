@@ -20,22 +20,8 @@ export function ProductActions({ product }: { product: ProductType }) {
   const { data: session, status } = useSession();
 
   useEffect(() => {
-    const minimalProduct = {
-      id: product.id, // или `${product.id}`
-      title: product.title,
-      photos: product.photos,
-      type_price: product.type_price,
-      price: product.price,
-      author: product.author,
-      is_liked: product.is_liked,
-      volume: product.volume,
-      price_per_volume: product.price_per_volume,
-      city: product.city,
-      updated_at: product.updated_at,
-    };
-
-    saveToRecentProducts(minimalProduct);
-  }, [product]);
+    saveToRecentProducts(product.id);
+  }, [product.id]);
 
   // useEffect(() => {
   //   if (status === "unauthenticated") {

@@ -1,33 +1,34 @@
-import { MinimalProduct } from "@/types/types";
-
-const STORAGE_KEY = "recentProducts";
+const COOKIE_NAME = "recentProducts";
 const MAX_ITEMS = 8;
+const MAX_AGE = 365 * 24 * 60 * 60;
 
-export function saveToRecentProducts(product: MinimalProduct) {
-  // Важно для Next.js
+export function saveToRecentProducts(productId: number) {
   if (typeof window === "undefined") return;
 
-  let recentProducts: MinimalProduct[] = [];
+  let recentIds: number[] = [];
 
   try {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (stored) {
-      recentProducts = JSON.parse(stored);
+    const cookie = document.cookie
+      .split("; ")
+      .find((row) => row.startsWith(`${COOKIE_NAME}=`));
+
+    if (cookie) {
+      const parsed = JSON.parse(decodeURIComponent(cookie.split("=")[1]));
+      if (Array.isArray(parsed)) {
+        recentIds = parsed.filter((id): id is number => typeof id === "number");
+      }
     }
   } catch {
-    recentProducts = [];
+    recentIds = [];
   }
 
-  // Удаляем дубликаты
-  recentProducts = recentProducts.filter((p) => p.id !== product.id);
+  recentIds = recentIds.filter((id) => id !== productId);
+  recentIds.unshift(productId);
 
-  // Добавляем в начало
-  recentProducts.unshift(product);
-
-  // Ограничиваем количество
-  if (recentProducts.length > MAX_ITEMS) {
-    recentProducts = recentProducts.slice(0, MAX_ITEMS);
+  if (recentIds.length > MAX_ITEMS) {
+    recentIds = recentIds.slice(0, MAX_ITEMS);
   }
 
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(recentProducts));
+  const encoded = encodeURIComponent(JSON.stringify(recentIds));
+  document.cookie = `${COOKIE_NAME}=${encoded}; path=/; max-age=${MAX_AGE}`;
 }

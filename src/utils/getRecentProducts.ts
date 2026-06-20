@@ -1,14 +1,19 @@
-// utils/getRecentProducts.ts
-import { MinimalProduct } from "@/types/types";
+const COOKIE_NAME = "recentProducts";
 
-const STORAGE_KEY = "recentProducts";
-
-export function getRecentProducts(): MinimalProduct[] {
+export function getRecentProducts(): number[] {
   if (typeof window === "undefined") return [];
 
   try {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    return stored ? JSON.parse(stored) : [];
+    const cookie = document.cookie
+      .split("; ")
+      .find((row) => row.startsWith(`${COOKIE_NAME}=`));
+
+    if (!cookie) return [];
+
+    const parsed = JSON.parse(decodeURIComponent(cookie.split("=")[1]));
+    return Array.isArray(parsed)
+      ? parsed.filter((id): id is number => typeof id === "number")
+      : [];
   } catch {
     return [];
   }

@@ -9,7 +9,8 @@ export const ButtonMain = extendVariants(Button, {
             primary: 'bg-blueColor text-white data-[hover=true]:bg-blueColor-hover ',
             secondary: 'bg-secondaryColor text-black  data-[hover=true]:bg-[#c4dbff]',
             transparent: 'bg-transparent text-black ',
-            danger: 'bg-red-800 text-white hover:bg-red-700 '
+            danger: 'bg-red-800 text-white hover:bg-red-700 ',
+            white: 'bg-white text-blueColor hover:bg-[#c4dbff] '
         },
         variant: {
             bordered: 'border border-black',
