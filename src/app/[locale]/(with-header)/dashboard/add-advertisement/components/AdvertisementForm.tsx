@@ -16,7 +16,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { Category, MapSelectData, PriceType, ProductType } from "@/types/types";
 import { Select, SelectItem } from "@heroui/react";
 import Image from "next/image";
-import { ChevronRight, TrashIcon } from "lucide-react";
+import { ChevronRight, CircleDollarSign, Handshake, TrashIcon } from "lucide-react";
 import { toast } from "sonner";
 import { useEffect, useRef, useState } from "react";
 import { useSession } from "next-auth/react";
@@ -473,6 +473,23 @@ export default function AdvertisementForm({
       //   });
     }
   };
+
+  const isArrangement = watch("arrangement");
+
+  const handlePriceModeChange = (arrangement: boolean) => {
+    setValue("arrangement", arrangement);
+    if (arrangement) {
+      clearErrors("price");
+      setShowDiscount(false);
+    }
+  };
+
+  const priceModeCardClass = (active: boolean) =>
+    `flex flex-col gap-3 p-5 md:p-6 rounded-lg border-2 text-left transition-all duration-200 cursor-pointer ${
+      active
+        ? "border-blueColor bg-secondaryColor shadow-sm"
+        : "border-[#B0BFD7] bg-[#F8FBFF] hover:border-blueColor/40"
+    }`;
 
   const handleMapSelect = (data: MapSelectData) => {
     console.log(data);
@@ -943,59 +960,51 @@ export default function AdvertisementForm({
       </div>
       <div className="grid gap-10 ">
         <div className="flex flex-col gap-8 ">
-          <h2 className=" title title--small">         {Number(watch("mainCategory")) === 1 ||
+          <h2 className="title title--small">
+            {Number(watch("mainCategory")) === 1 ||
             Number(watch("mainCategory")) === 2
-            ? t("price-per-kg")
-            : t("enter-price")}</h2>
-          <div className="flex flex-col gap-5">
-            <div className="input-block input-block--price">
-              {/* <p>
-                {Number(watch("mainCategory")) === 1 ||
-                Number(watch("mainCategory")) === 2
-                  ? t("price-per-kg")
-                  : t("enter-price")}
-              </p> */}
+              ? t("price-per-kg")
+              : t("enter-price")}
+          </h2>
+          <div className="flex flex-col gap-6">
+            <input type="checkbox" className="sr-only" {...register("arrangement")} tabIndex={-1} />
 
-              <div className="input-block">
-                <div className="grid grid-cols-2 gap-2">
-                  <div className="block-row__item">
-                    <label className="check">
-                      <input
-                        type="checkbox"
-                        className="real-checkbox"
-                        {...register("arrangement")}
-                      // checked={arrangement}
-                      // onChange={() => handleCheckboxChange("arrangement")}
-                      />
-                      <span className="custom-checkbox"></span>
-                      {t("negotiated-price")}
-                    </label>
-                  </div>
-                  {/* <div className="block-row__item">
-                    <label className="check">
-                      <input
-                        type="checkbox"
-                        className="real-checkbox"
-                        checked={!watch("arrangement")} // второй чекбокс активен, когда arrangement = false
-                        onChange={() =>
-                          setValue("arrangement", !watch("arrangement"))
-                        }
-                      />
-                      <span className="custom-checkbox"></span>
-                      Фіксована ціна
-                    </label>
-                  </div> */}
-                </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <button
+                type="button"
+                onClick={() => handlePriceModeChange(true)}
+                className={priceModeCardClass(!!isArrangement)}
+                aria-pressed={!!isArrangement}
+              >
+                <Handshake className="w-9 h-9 text-blueColor shrink-0" strokeWidth={1.75} />
+                <span className="text-xl font-semibold leading-tight">{t("negotiated-price")}</span>
+                <span className="text-base text-[#4A5D7A] leading-snug">{t("negotiated-price-hint")}</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => handlePriceModeChange(false)}
+                className={priceModeCardClass(!isArrangement)}
+                aria-pressed={!isArrangement}
+              >
+                <CircleDollarSign className="w-9 h-9 text-blueColor shrink-0" strokeWidth={1.75} />
+                <span className="text-xl font-semibold leading-tight">{t("fixed-price-option")}</span>
+                <span className="text-base text-[#4A5D7A] leading-snug">{t("fixed-price-hint")}</span>
+              </button>
+            </div>
+
+            {isArrangement && (
+              <div className="flex items-start gap-3 p-5 rounded-lg border-2 border-blueColor bg-secondaryColor">
+                <Handshake className="w-6 h-6 text-blueColor shrink-0 mt-0.5" strokeWidth={1.75} />
+                <p className="text-lg leading-snug">{t("negotiated-price-selected")}</p>
               </div>
-              <div className="flex justify-center items-center gap-3">
-                <div className="w-full h-px bg-[#B0BFD7]"></div>
-                <span>{t("or")}</span>
-                <div className="w-full h-px bg-[#B0BFD7]"></div>
-              </div>
+            )}
+
+            {!isArrangement && (
+            <div className="input-block input-block--price">
               <div className="block-row">
                 <div className="block-row__item">
                   <div className="input-block">
-                    {/* <p>{t("fixed-price")}</p> */}
                     <p>
                       {Number(watch("mainCategory")) === 1 ||
                         Number(watch("mainCategory")) === 2
@@ -1008,7 +1017,6 @@ export default function AdvertisementForm({
                         }`}
                     >
                       <input
-                        disabled={watch("arrangement")}
                         autoComplete="off"
                         type="number"
                         placeholder=""
@@ -1025,7 +1033,6 @@ export default function AdvertisementForm({
                       <p>{t("price-type")}</p>
 
                       <Select
-                        isDisabled={!!watch("arrangement")}
                         disallowEmptySelection
                         placeholder={t("select-category")}
                         className="w-full"
@@ -1065,7 +1072,8 @@ export default function AdvertisementForm({
                 )}
               </div>
             </div>
-            {watch("advertType") === "sell" &&
+            )}
+            {!isArrangement && watch("advertType") === "sell" &&
               (Number(watch("mainCategory")) === 1 ||
                 Number(watch("mainCategory")) === 2) && (
                 <div className="block-row">
@@ -1074,7 +1082,6 @@ export default function AdvertisementForm({
                       type="button"
                       color='secondary'
                       variant='bordered'
-                      disabled={!!watch("arrangement")}
                       onPress={() => setShowDiscount((prev) => !prev)}
                       className="w-full!"
                     >
@@ -1086,6 +1093,7 @@ export default function AdvertisementForm({
                 </div>
               )}
             {showDiscount &&
+              !isArrangement &&
               watch("advertType") === "sell" &&
               (Number(watch("mainCategory")) === 1 ||
                 Number(watch("mainCategory")) === 2) && (
@@ -1095,7 +1103,6 @@ export default function AdvertisementForm({
                       <p>{t("enter-volume")}</p>
                       <label className="input-body input">
                         <input
-                          disabled={!!watch("arrangement")}
                           autoComplete="off"
                           type="number"
                           placeholder=""
@@ -1112,7 +1119,6 @@ export default function AdvertisementForm({
                       <p>{t("price-per-kg-with-discount")}</p>
                       <label className="input-body input">
                         <input
-                          disabled={!!watch("arrangement")}
                           autoComplete="off"
                           type="number"
                           placeholder=""

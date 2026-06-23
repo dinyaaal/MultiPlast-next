@@ -114,24 +114,8 @@ export default function Registration() {
         return;
       }
 
-      // ✅ Регистрация успешна
-      toast.success(t("toast.success"));
-
-      // ⚡ Автовход
-      const res = await signIn("credentials", {
-        redirect: false,
-        email: data.email,
-        password: data.password,
-      });
-
-      if (res?.error) {
-        toast.error(res.error || t("toast.login-error"));
-        console.error("❌ Login error:", res.error);
-        return;
-      }
-
-      toast.success(t("toast.login-success"));
-      router.push("/");
+      toast.success(t("toast.confirm-email"));
+      router.push("/login");
     } catch (error) {
       console.error("❌ Unexpected error:", error);
       toast.error(t("toast.error"));
@@ -174,7 +158,7 @@ export default function Registration() {
               </div>
               <div className="item-socials-auth__name">Google</div>
             </button>
-            <button
+            {/* <button
               type="button"
               className="socials-auth__item item-socials-auth"
             >
@@ -187,7 +171,7 @@ export default function Registration() {
                 />
               </div>
               <div className="item-socials-auth__name">Facebook</div>
-            </button>
+            </button> */}
           </div>
         </div>
         <div className="form-login__block">

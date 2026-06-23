@@ -3,7 +3,7 @@
 import { LoginFormSchema } from "@/lib/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signIn } from "next-auth/react";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import Image from "next/image";
 import { Link } from "@/i18n/routing";
 
@@ -17,6 +17,7 @@ type Inputs = z.infer<typeof LoginFormSchema>;
 
 export default function Login() {
   const t = useTranslations("Auth");
+  const locale = useLocale();
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const searchParams = useSearchParams();
@@ -44,6 +45,7 @@ export default function Login() {
       email: data.email,
       password: data.password,
       remember: data.remember,
+      locale,
     });
 
     if (res?.error) {
@@ -90,7 +92,7 @@ export default function Login() {
               </div>
               <div className="item-socials-auth__name">Google</div>
             </button>
-            <button
+            {/* <button
               type="button"
               className="socials-auth__item item-socials-auth"
             >
@@ -103,7 +105,7 @@ export default function Login() {
                 />
               </div>
               <div className="item-socials-auth__name">Facebook</div>
-            </button>
+            </button> */}
           </div>
         </div>
         <div className="form-login__block">

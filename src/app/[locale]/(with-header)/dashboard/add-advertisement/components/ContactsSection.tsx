@@ -137,6 +137,7 @@ export default function ContactsSection({
                                 : ""
                                 }`}
                             />
+
                             {phones.length > 1 && phoneIndex > 0 && (
                               <ButtonMain
                                 onPress={() => removePhone(phoneIndex)}

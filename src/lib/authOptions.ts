@@ -3,6 +3,7 @@ import GoogleProvider from "next-auth/providers/google";
 import { AuthOptions } from "next-auth";
 import { UserAuth } from "@/types/types";
 import { jwtDecode } from "jwt-decode";
+import { getLocale } from "@/utils/locale";
 
 const verifyGoogleToken = async (idToken: string, email: string) => {
   console.log("Sending Google token verification request...");
@@ -37,6 +38,7 @@ export const authOptions: AuthOptions = {
       credentials: {
         email: { type: "email" },
         password: { type: "password" },
+        locale: { type: "text" },
       },
       async authorize(credentials) {
         if (!credentials) return null;
@@ -44,7 +46,10 @@ export const authOptions: AuthOptions = {
         try {
           const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/login`, {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: {
+              "Content-Type": "application/json",
+              "Accept-Language": getLocale(credentials.locale || "ukr"),
+            },
             body: JSON.stringify({
               email: credentials.email,
               password: credentials.password,
