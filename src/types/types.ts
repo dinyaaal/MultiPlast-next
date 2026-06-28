@@ -103,16 +103,24 @@ export interface Contact {
   city: string;
   area: string;
 }
+export interface ProductPhone {
+  value: string;
+  telegram_info?: boolean;
+  viber_info?: boolean;
+  whatsapp_info?: boolean;
+}
+
 export interface ProductContact {
   id: number;
   product_id: number;
   name_of_enterprise: string | null;
   name: string;
-  phones?: string[];
+  phones?: (string | ProductPhone)[];
   address: string | null;
   city: string;
   area: string;
   position: string | null;
+  web_site?: string | null;
 }
 export interface ProductType {
   id: number;

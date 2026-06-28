@@ -56,8 +56,6 @@ export default async function Product(props: { params: Params }) {
   const t = await getTranslations("Product");
   const tb = await getTranslations("Breadcrumbs");
 
-  console.log(product);
-
   function isEmpty(string: string | null | undefined) {
     return string ?? "";
   }

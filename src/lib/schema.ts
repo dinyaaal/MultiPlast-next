@@ -115,14 +115,6 @@ export const UserSecuritySchema = z
   });
 
 export const ContactSchema = z.object({
-  // phones: z
-  //   .array(
-  //     z
-  //       .string()
-  //       .min(10, "Номер телефона должен содержать минимум 10 символов")
-  //       .max(15, "Номер телефона не может быть длиннее 15 символов")
-  //   )
-  //   .nonempty("Укажите хотя бы один номер телефона"),
   phones: z
     .array(
       z
@@ -136,6 +128,9 @@ export const ContactSchema = z.object({
     .optional(),
   position: z.string().optional(),
   name: z.string().min(3, "Введите ваше имя"),
+  telegram_info: z.array(z.boolean()).optional().default([]),
+  viber_info: z.array(z.boolean()).optional().default([]),
+  whatsapp_info: z.array(z.boolean()).optional().default([]),
 });
 
 export const AdvertismentSchema = z

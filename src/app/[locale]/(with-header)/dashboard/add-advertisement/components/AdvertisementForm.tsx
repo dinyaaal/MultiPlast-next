@@ -125,14 +125,32 @@ export default function AdvertisementForm({
         web_site: product.web_site || "",
 
         contact_data: Array.isArray(product.contacts)
-          ? product.contacts.map((c) => ({
-            name: c.name,
-            position: c.position || "",
-            phones:
+          ? product.contacts.map((c) => {
+            const phoneEntries =
               Array.isArray(c.phones) && c.phones.length > 0
                 ? c.phones
-                : [""],
-          }))
+                : [""];
+
+            const phones = phoneEntries.map((phone) =>
+              typeof phone === "string" ? phone : phone.value
+            );
+
+            const messengerFromPhones = (
+              field: "telegram_info" | "viber_info" | "whatsapp_info"
+            ) =>
+              phoneEntries.map((phone) =>
+                typeof phone === "string" ? false : !!phone[field]
+              );
+
+            return {
+              name: c.name,
+              position: c.position || "",
+              phones,
+              telegram_info: messengerFromPhones("telegram_info"),
+              viber_info: messengerFromPhones("viber_info"),
+              whatsapp_info: messengerFromPhones("whatsapp_info"),
+            };
+          })
           : [],
       });
       setShowDiscount(!!product.price_per_volume);

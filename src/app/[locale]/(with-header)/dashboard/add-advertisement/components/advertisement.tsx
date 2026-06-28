@@ -69,7 +69,14 @@ export default function Advertisement({ categories }: SellProps) {
     resolver: zodResolver(AdvertismentSchema),
     defaultValues: {
       contact_data: [
-        { name: "", position: "", phones: [""] }, // минимум один контакт с телефоном
+        {
+          name: "",
+          position: "",
+          phones: [""],
+          telegram_info: [false],
+          viber_info: [false],
+          whatsapp_info: [false],
+        },
       ],
     },
   });
@@ -174,23 +181,44 @@ export default function Advertisement({ categories }: SellProps) {
 
     // Контакты
     (contact_data || []).forEach((contact, index) => {
-      const { phones, name, position } = contact;
+      const { phones, name, position, telegram_info, viber_info, whatsapp_info } =
+        contact;
 
       formData.append(`contact_data[${index}][name]`, name);
       if (position) {
         formData.append(`contact_data[${index}][position]`, position);
       }
 
-      const cleanPhones = (phones || []).filter((p) => p && p.trim() !== "");
+      let phoneApiIndex = 0;
+      (phones || []).forEach((phone, phoneIndex) => {
+        if (!phone || phone.trim() === "") return;
 
-      if (cleanPhones.length > 0) {
-        cleanPhones.forEach((phone, phoneIndex) => {
+        formData.append(
+          `contact_data[${index}][phones][${phoneApiIndex}]`,
+          phone
+        );
+
+        if (telegram_info?.[phoneIndex]) {
           formData.append(
-            `contact_data[${index}][phones][${phoneIndex}]`,
-            phone
+            `contact_data[${index}][telegram_info][${phoneApiIndex}]`,
+            "1"
           );
-        });
-      }
+        }
+        if (viber_info?.[phoneIndex]) {
+          formData.append(
+            `contact_data[${index}][viber_info][${phoneApiIndex}]`,
+            "1"
+          );
+        }
+        if (whatsapp_info?.[phoneIndex]) {
+          formData.append(
+            `contact_data[${index}][whatsapp_info][${phoneApiIndex}]`,
+            "1"
+          );
+        }
+
+        phoneApiIndex += 1;
+      });
       // if (phones && phones.length > 0) {
       //   phones.forEach((phone, phoneIndex) => {
       //     formData.append(
