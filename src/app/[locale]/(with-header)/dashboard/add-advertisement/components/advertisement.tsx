@@ -198,24 +198,18 @@ export default function Advertisement({ categories }: SellProps) {
           phone
         );
 
-        if (telegram_info?.[phoneIndex]) {
-          formData.append(
-            `contact_data[${index}][telegram_info][${phoneApiIndex}]`,
-            "1"
-          );
-        }
-        if (viber_info?.[phoneIndex]) {
-          formData.append(
-            `contact_data[${index}][viber_info][${phoneApiIndex}]`,
-            "1"
-          );
-        }
-        if (whatsapp_info?.[phoneIndex]) {
-          formData.append(
-            `contact_data[${index}][whatsapp_info][${phoneApiIndex}]`,
-            "1"
-          );
-        }
+        formData.append(
+          `contact_data[${index}][telegram_info][${phoneApiIndex}]`,
+          telegram_info?.[phoneIndex] ? "1" : "0"
+        );
+        formData.append(
+          `contact_data[${index}][viber_info][${phoneApiIndex}]`,
+          viber_info?.[phoneIndex] ? "1" : "0"
+        );
+        formData.append(
+          `contact_data[${index}][whatsapp_info][${phoneApiIndex}]`,
+          whatsapp_info?.[phoneIndex] ? "1" : "0"
+        );
 
         phoneApiIndex += 1;
       });
