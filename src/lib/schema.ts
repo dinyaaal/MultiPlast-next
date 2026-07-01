@@ -14,8 +14,12 @@ export const RegistrationFormSchema = z
     agreement: z.boolean().refine((val) => val === true, {
       message: "Вы должны принять пользовательское соглашение",
     }),
-    password: z.string().min(6, "Минимум 6 знаков"),
-    passwordConfirmation: z.string().min(6, "Минимум 6 знаков"),
+    password: z
+      .string()
+      .min(12, "Пароль должен состоять минимум из 12 символов"),
+    passwordConfirmation: z
+      .string()
+      .min(12, "Пароль должен состоять минимум из 12 символов"),
   })
   .refine((data) => data.password === data.passwordConfirmation, {
     message: "Пароли должны быть одинаковые",

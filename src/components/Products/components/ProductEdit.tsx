@@ -20,7 +20,7 @@ export default function ProductEdit({ productId }: ProductEditProps) {
             handleEdit();
         }}>
 
-            <SquarePen className="size-8 text-border" />
+            <SquarePen className="size-8 text-blueColor" />
         </ButtonMain>
     );
 }

@@ -30,9 +30,10 @@ export default function Registration() {
     reset,
     trigger,
     setValue,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm<Inputs>({
     resolver: zodResolver(RegistrationFormSchema),
+    mode: "onChange",
   });
 
   useEffect(() => {
@@ -286,6 +287,17 @@ export default function Registration() {
                 }`}
               {...register("password")}
             />
+            <span
+              style={{
+                display: "block",
+                marginTop: 4,
+                fontSize: 12,
+                color: errors.password ? "#FF0000" : "#8A97AC",
+              }}
+            >
+              {errors.password?.message ??
+                "Пароль должен состоять минимум из 12 символов"}
+            </span>
           </div>
           <div className="input-block">
             <p>{t("registration-repeat-password")}</p>
@@ -312,7 +324,11 @@ export default function Registration() {
           </label>
         </div>
 
-        <button type="submit" className="form-login__button button">
+        <button
+          type="submit"
+          className="form-login__button button"
+          disabled={!isValid}
+        >
           {t("registration-button")}
         </button>
       </form>
